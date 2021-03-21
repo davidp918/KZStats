@@ -42,9 +42,19 @@ class homepageDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.person),
+            leading: Icon(Icons.person_pin_rounded),
             title: Text(
               'Profile',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            onTap: null,
+          ),
+          ListTile(
+            leading: Icon(Icons.home_outlined),
+            title: Text(
+              'Homepage',
               style: TextStyle(
                 fontSize: 18,
               ),
@@ -62,7 +72,7 @@ class homepageDrawer extends StatelessWidget {
             onTap: null,
           ),
           ListTile(
-            leading: Icon(Icons.personal_video),
+            leading: Icon(Icons.person),
             title: Text(
               'Players',
               style: TextStyle(
@@ -95,6 +105,16 @@ class homepageDrawer extends StatelessWidget {
             leading: Icon(Icons.not_interested),
             title: Text(
               'Bans',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            onTap: null,
+          ),
+          ListTile(
+            leading: Icon(Icons.settings_applications),
+            title: Text(
+              'Settings',
               style: TextStyle(
                 fontSize: 18,
               ),
