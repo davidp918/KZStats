@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './homepageAppBar.dart';
+import './homepageDrawer.dart';
 
 void main() => runApp(myApp());
 
@@ -16,9 +17,15 @@ class myApp extends StatefulWidget {
 class myAppState extends State<myApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: HomepageAppBar(),
-        drawer: Drawer(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.blue,
+      ),
+      home: MaterialApp(
+        home: Scaffold(
+          appBar: HomepageAppBar(),
+          drawer: homepageDrawer(),
+        ),
       ),
     );
   }
