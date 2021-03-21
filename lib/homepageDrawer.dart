@@ -1,0 +1,108 @@
+import 'package:flutter/material.dart';
+
+class homepageDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Column(
+        children: <Widget>[
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(15),
+            color: Theme.of(context).primaryColor,
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    width: 100,
+                    height: 100,
+                    margin: EdgeInsets.only(
+                      top: 20,
+                      bottom: 15,
+                    ),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/d0/d0039fa17e2ebb41db418fe2ee0e4ecceadbbd8b_full.jpg',
+                        ),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    'Exusiai735',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text(
+              'Profile',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            onTap: null,
+          ),
+          ListTile(
+            leading: Icon(Icons.map),
+            title: Text(
+              'Maps',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            onTap: null,
+          ),
+          ListTile(
+            leading: Icon(Icons.personal_video),
+            title: Text(
+              'Players',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            onTap: null,
+          ),
+          ListTile(
+            leading: Icon(Icons.run_circle),
+            title: Text(
+              'Jumpstats',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            onTap: null,
+          ),
+          ListTile(
+            leading: Icon(Icons.book_online_outlined),
+            title: Text(
+              'Servers',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            onTap: null,
+          ),
+          ListTile(
+            leading: Icon(Icons.not_interested),
+            title: Text(
+              'Bans',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            onTap: null,
+          ),
+        ],
+      ),
+    );
+  }
+}
