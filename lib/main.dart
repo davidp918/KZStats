@@ -24,7 +24,7 @@ class myAppState extends State<myApp> {
       home: MaterialApp(
         home: Scaffold(
           appBar: HomepageAppBar(),
-          drawer: homepageDrawer(),
+          drawer: HomepageDrawer(),
         ),
       ),
     );

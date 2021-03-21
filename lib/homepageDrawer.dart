@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-class homepageDrawer extends StatelessWidget {
+import 'package:kzstats/details/profile.dart';
+
+class HomepageDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -49,7 +51,12 @@ class homepageDrawer extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            onTap: null,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Profile()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.home_outlined),
