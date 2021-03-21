@@ -1,4 +1,4 @@
-# kzstats
+# KZStats
 
 A new Flutter project.
 
