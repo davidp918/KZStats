@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:kzstats/homepageDrawer.dart';
+import 'package:kzstats/common/topbar.dart';
 
 class Profile extends StatelessWidget {
+  final String currentPage = 'Profile';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Profile"),
-      ),
-      drawer: HomepageDrawer(),
-      body: Center(),
+    return MaterialApp(
+      home: Topbar(currentPage),
     );
   }
 }

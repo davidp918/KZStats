@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './homepageAppBar.dart';
-import './homepageDrawer.dart';
+import 'details/homepage.dart';
 
 void main() => runApp(myApp());
 
@@ -9,24 +8,18 @@ void main() => runApp(myApp());
 class myApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return myAppState();
+    return MyAppState();
   }
 }
 
-// ignore: camel_case_types
-class myAppState extends State<myApp> {
+class MyAppState extends State<myApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.blue,
       ),
-      home: MaterialApp(
-        home: Scaffold(
-          appBar: HomepageAppBar(),
-          drawer: HomepageDrawer(),
-        ),
-      ),
+      home: Homepage(),
     );
   }
 }

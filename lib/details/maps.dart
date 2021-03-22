@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:kzstats/common/topbar.dart';
 
-class Homepage extends StatelessWidget {
-  final String currentPage = 'KZStats';
+class Maps extends StatelessWidget {
+  final String currentPage = 'Maps';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'package:kzstats/details/Players.dart';
+import 'package:kzstats/details/bans.dart';
+import 'package:kzstats/details/homepage.dart';
+import 'package:kzstats/details/jumpstats.dart';
+import 'package:kzstats/details/maps.dart';
 import 'package:kzstats/details/profile.dart';
+import 'package:kzstats/details/servers.dart';
+import 'package:kzstats/details/settings.dart';
 
 class HomepageDrawer extends StatelessWidget {
   @override
@@ -66,7 +73,12 @@ class HomepageDrawer extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            onTap: null,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Homepage()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.map),
@@ -76,7 +88,12 @@ class HomepageDrawer extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            onTap: null,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Maps()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.person),
@@ -86,7 +103,12 @@ class HomepageDrawer extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            onTap: null,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Players()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.run_circle),
@@ -96,7 +118,12 @@ class HomepageDrawer extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            onTap: null,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Jumpstats()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.book_online_outlined),
@@ -106,7 +133,12 @@ class HomepageDrawer extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            onTap: null,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Servers()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.not_interested),
@@ -116,7 +148,12 @@ class HomepageDrawer extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            onTap: null,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Bans()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.settings_applications),
@@ -126,7 +163,12 @@ class HomepageDrawer extends StatelessWidget {
                 fontSize: 18,
               ),
             ),
-            onTap: null,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Settings()),
+              );
+            },
           ),
         ],
       ),
