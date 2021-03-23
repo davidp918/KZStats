@@ -8,8 +8,17 @@ import 'package:kzstats/details/maps.dart';
 import 'package:kzstats/details/profile.dart';
 import 'package:kzstats/details/servers.dart';
 import 'package:kzstats/details/settings.dart';
+import 'package:kzstats/others/steamLogin.dart';
 
-class HomepageDrawer extends StatelessWidget {
+class HomepageDrawer extends StatefulWidget {
+  const HomepageDrawer({Key key}) : super(key: key);
+  @override
+  _DrawerState createState() => _DrawerState();
+}
+
+class _DrawerState extends State<HomepageDrawer> {
+  String steamId;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -17,11 +26,12 @@ class HomepageDrawer extends StatelessWidget {
         children: <Widget>[
           Container(
             width: double.infinity,
-            padding: EdgeInsets.all(15),
+            padding: EdgeInsets.all(5),
             color: Theme.of(context).primaryColor,
             child: Center(
               child: Column(
                 children: <Widget>[
+                  /*
                   Container(
                     width: 100,
                     height: 100,
@@ -39,8 +49,26 @@ class HomepageDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
+                  */
+                  IconButton(
+                    icon: Image(
+                      image: AssetImage('assets/login-steam.png'),
+                    ),
+                    iconSize: 200,
+                    onPressed: () async {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SteamLogin()),
+                      );
+                      setState(() {
+                        steamId = result;
+                      });
+                    },
+                  ),
                   Text(
-                    'Exusiai735',
+                    steamId == null
+                        ? 'Click to Login to steam'
+                        : 'You are logged in as $steamId',
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,

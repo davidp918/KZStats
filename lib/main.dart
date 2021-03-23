@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:steam_login/steam_login.dart';
 
 import 'details/homepage.dart';
 
