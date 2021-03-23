@@ -13,7 +13,7 @@ class _ToggleButtonState extends State<ToggleButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return new Container(
       color: Colors.blue.shade200,
       child: ToggleButtons(
         isSelected: _selections,
@@ -22,27 +22,15 @@ class _ToggleButtonState extends State<ToggleButton> {
         selectedColor: Colors.white,
         renderBorder: false,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              list[0],
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              t2,
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              t3,
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
+          ...(widget.list).map((str) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                str,
+                style: TextStyle(fontSize: 18),
+              ),
+            );
+          }).toList(),
         ],
         onPressed: (int index) {
           setState(() {
