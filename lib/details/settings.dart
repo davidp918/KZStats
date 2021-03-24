@@ -9,10 +9,10 @@ class Settings extends StatelessWidget {
   final String currentPage = 'Settings';
   static const _modes = [
     ['KZTimer', 'SimpleKZ', 'Vanilla'],
-    [128, 102, 64],
+    ['128', '102', '64'],
   ];
-  static int mode = 0;
-  static int tickrate = 0;
+
+  //final mode = GlobalKey<_ToggleButtonState>();
 
   @override
   Widget build(BuildContext context) {
