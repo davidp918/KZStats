@@ -14,12 +14,6 @@ class _ToggleButtonState extends State<ToggleButton> {
   List<bool> _selections = [true, false, false];
   int mode = 0;
   int tickrate = 0;
-  String sample = 'asdf';
-  void initSample() {
-    sample = widget.list[0];
-    super.initState();
-  }
-  //sample.length() > 4 ? mode = _selections.indexOf(true) : tickrate = _selections.indexOf(true);
 
   @override
   Widget build(BuildContext context) {
