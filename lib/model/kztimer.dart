@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class KzTimer {
   KzTimer({
     this.id,
@@ -74,6 +72,3 @@ class KzTimer {
         replayId: json["replay_id"],
       );
 }
-
-List<KzTimer> kzInfoFromJson(String str) =>
-    List<KzTimer>.from(json.decode(str).map((x) => KzTimer.fromJson(x)));
