@@ -34,7 +34,14 @@ class _HomepageState extends State<Homepage> {
                       ),
                       color: Colors.white,
                       margin: const EdgeInsets.all(20),
-                      child: Text('${snapshot.data[index].mapName}'),
+                      child: Row(
+                        children: <Widget>[
+                          Image.network('https://picsum.photos/250?image=9'),
+
+                          // https://picsum.photos/250?image=9
+                          // $ImageBaseURL
+                        ],
+                      ),
                     );
                   },
                 )
