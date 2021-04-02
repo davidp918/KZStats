@@ -8,7 +8,7 @@ import 'package:kzstats/details/maps.dart';
 import 'package:kzstats/details/profile.dart';
 import 'package:kzstats/details/servers.dart';
 import 'package:kzstats/details/settings.dart';
-import 'package:kzstats/others/steamLogin.dart';
+import 'package:kzstats/web/steamLogin.dart';
 
 class HomepageDrawer extends StatefulWidget {
   const HomepageDrawer({Key key}) : super(key: key);
