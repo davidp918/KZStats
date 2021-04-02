@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
@@ -38,13 +37,10 @@ class _HomepageState extends State<Homepage> {
                       margin: const EdgeInsets.all(20),
                       child: Row(
                         children: <Widget>[
-                          CachedNetworkImage(
-                            imageUrl: 'https://picsum.photos/250?image=9',
-                            placeholder: (context, url) =>
-                                new CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                new Icon(Icons.error),
-                          ),
+                          Image.network('https://picsum.photos/250?image=9'),
+
+                          // https://picsum.photos/250?image=9
+                          // $ImageBaseURL
                         ],
                       ),
                     );
