@@ -31,25 +31,6 @@ class _DrawerState extends State<HomepageDrawer> {
             child: Center(
               child: Column(
                 children: <Widget>[
-                  /*
-                  Container(
-                    width: 100,
-                    height: 100,
-                    margin: EdgeInsets.only(
-                      top: 20,
-                      bottom: 15,
-                    ),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          'https://cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/d0/d0039fa17e2ebb41db418fe2ee0e4ecceadbbd8b_full.jpg',
-                        ),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                  */
                   IconButton(
                     icon: Image(
                       image: AssetImage('assets/login-steam.png'),
