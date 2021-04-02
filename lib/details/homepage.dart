@@ -38,10 +38,13 @@ class _HomepageState extends State<Homepage> {
                       child: Row(
                         children: <Widget>[
                           Image.network(
-                              'https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/thumbnails/kz_ladderall.jpg'),
-
-                          // https://picsum.photos/250?image=9
-                          // $imageBaseURL
+                              '$imageBaseURL${snapshot.data[index].mapName}.webp'),
+                          Column(
+                            children: <Widget>[
+                              Text(snapshot.data[index].playerName),
+                              Text(snapshot.data[index].time.toString())
+                            ],
+                          ),
                         ],
                       ),
                     );

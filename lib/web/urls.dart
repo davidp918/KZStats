@@ -16,11 +16,11 @@ const kz_vanillaRecords =
 *   Example: Zach47 gets 5 different improvements on bkz_apricity. Only one will display, but 5 are provided from the API.
 */
 const kz_simpleTopRecords =
-    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_simple&place_top_at_least=1&has_teleports=false&stage=0&limit=200&tickrate=128";
+    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_simple&place_top_at_least=1&has_teleports=false&stage=0&limit=20&tickrate=128";
 const kz_timerTopRecords =
-    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_timer&place_top_at_least=1&has_teleports=false&stage=0&limit=200&tickrate=128";
+    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_timer&place_top_at_least=1&has_teleports=false&stage=0&limit=20&tickrate=128";
 const kz_vanillaTopRecords =
-    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_vanilla&place_top_at_least=1&has_teleports=false&stage=0&limit=200&tickrate=128";
+    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_vanilla&place_top_at_least=1&has_teleports=false&stage=0&limit=20&tickrate=128";
 
 // Generic Records per Mode URLs
 const kz_simpleLoadMap =
@@ -53,4 +53,4 @@ const leaderboard_records_vanilla =
 
 // Map image url, add map name e.g kz_ladderall.jpg after the url
 const imageBaseURL =
-    "https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/thumbnails/kz_ladderall.jpg";
+    "https://gokz-globalstats.bakar.workers.dev/?https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/thumb/";
