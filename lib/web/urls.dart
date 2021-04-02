@@ -53,4 +53,4 @@ const leaderboard_records_vanilla =
 
 // Map image url, add map name e.g kz_ladderall.jpg after the url
 const imageBaseURL =
-    "https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/thumbnails/";
+    "https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/thumbnails/kz_ladderall.jpg";

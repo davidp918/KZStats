@@ -4,6 +4,7 @@ import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/web/kzjson.dart';
 import 'package:kzstats/web/get.dart';
+import 'package:kzstats/web/urls.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -36,10 +37,11 @@ class _HomepageState extends State<Homepage> {
                       margin: const EdgeInsets.all(20),
                       child: Row(
                         children: <Widget>[
-                          Image.network('https://picsum.photos/250?image=9'),
+                          Image.network(
+                              'https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/thumbnails/kz_ladderall.jpg'),
 
                           // https://picsum.photos/250?image=9
-                          // $ImageBaseURL
+                          // $imageBaseURL
                         ],
                       ),
                     );
