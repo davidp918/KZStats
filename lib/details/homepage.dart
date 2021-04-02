@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/web/kzjson.dart';
 import 'package:kzstats/web/get.dart';
+import 'package:kzstats/web/urls.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -32,9 +34,19 @@ class _HomepageState extends State<Homepage> {
                           Radius.circular(10.0),
                         ),
                       ),
-                      color: Colors.white,
+                      color: Colors.blue,
                       margin: const EdgeInsets.all(20),
-                      child: Text('${snapshot.data[index].mapName}'),
+                      child: Row(
+                        children: <Widget>[
+                          CachedNetworkImage(
+                            imageUrl: 'https://picsum.photos/250?image=9',
+                            placeholder: (context, url) =>
+                                new CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                new Icon(Icons.error),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 )
