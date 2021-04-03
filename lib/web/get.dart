@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:kzstats/web/urls.dart';
-import 'kzjson.dart';
+import '../model/kzjson.dart';
 
-List<KzTimer> result;
+List<KzTime> result;
 
-Future<List<KzTimer>> gettimerTopRecords() async {
+Future<List<KzTime>> gettimerTopRecords() async {
   try {
     var response = await http.get(Uri.parse(kz_timerTopRecords));
     response.statusCode == HttpStatus.ok

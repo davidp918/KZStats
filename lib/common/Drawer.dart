@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:kzstats/details/Players.dart';
-import 'package:kzstats/details/bans.dart';
-import 'package:kzstats/details/homepage.dart';
-import 'package:kzstats/details/jumpstats.dart';
-import 'package:kzstats/details/maps.dart';
-import 'package:kzstats/details/profile.dart';
-import 'package:kzstats/details/servers.dart';
-import 'package:kzstats/details/settings.dart';
+import 'package:kzstats/pages/Players.dart';
+import 'package:kzstats/pages/bans.dart';
+import 'package:kzstats/pages/homepage.dart';
+import 'package:kzstats/pages/jumpstats.dart';
+import 'package:kzstats/pages/maps.dart';
+import 'package:kzstats/pages/profile.dart';
+import 'package:kzstats/pages/servers.dart';
+import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/web/steamLogin.dart';
 
 class HomepageDrawer extends StatefulWidget {

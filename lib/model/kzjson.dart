@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-class KzTimer {
-  KzTimer({
+class KzTime {
+  KzTime({
     this.id,
     this.steamid64,
     this.playerName,
@@ -49,7 +49,7 @@ class KzTimer {
   int recordFilterId;
   int replayId;
 
-  factory KzTimer.fromJson(Map<String, dynamic> json) => KzTimer(
+  factory KzTime.fromJson(Map<String, dynamic> json) => KzTime(
         id: json["id"],
         steamid64: json["steamid64"],
         playerName: json["player_name"],
@@ -75,5 +75,5 @@ class KzTimer {
       );
 }
 
-List<KzTimer> kzInfoFromJson(String str) =>
-    List<KzTimer>.from(json.decode(str).map((x) => KzTimer.fromJson(x)));
+List<KzTime> kzInfoFromJson(String str) =>
+    List<KzTime>.from(json.decode(str).map((x) => KzTime.fromJson(x)));

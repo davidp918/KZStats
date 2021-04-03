@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
-import 'details/homepage.dart';
+import 'pages/homepage.dart';
 import 'package:kzstats/model/model.dart';
 import 'package:kzstats/redux/actions.dart';
 import 'package:kzstats/redux/reducers.dart';
@@ -19,13 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: store,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
-        ),
-        home: Homepage(),
-      ),
+      child: Homepage(),
     );
   }
 }
