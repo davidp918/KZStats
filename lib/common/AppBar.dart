@@ -59,5 +59,5 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   // ignore: todo
   // TODO: implement preferredSize
-  Size get preferredSize => const Size.fromHeight(55);
+  Size get preferredSize => const Size.fromHeight(50);
 }
