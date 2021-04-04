@@ -75,5 +75,8 @@ class KzTime {
       );
 }
 
-List<KzTime> kzInfoFromJson(String str) =>
-    List<KzTime>.from(json.decode(str).map((x) => KzTime.fromJson(x)));
+List<KzTime> kzInfoFromJson(String str) => List<KzTime>.from(
+      json.decode(str).map(
+            (x) => KzTime.fromJson(x),
+          ),
+    );

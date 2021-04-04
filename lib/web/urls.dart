@@ -18,7 +18,7 @@ const kz_vanillaRecords =
 const kz_simpleTopRecords =
     "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_simple&place_top_at_least=1&has_teleports=false&stage=0&limit=20&tickrate=128";
 const kz_timerTopRecords =
-    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_timer&place_top_at_least=1&has_teleports=false&stage=0&limit=20&tickrate=128";
+    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_timer&place_top_at_least=1&has_teleports=false&stage=0&limit=60&tickrate=128";
 const kz_vanillaTopRecords =
     "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_vanilla&place_top_at_least=1&has_teleports=false&stage=0&limit=20&tickrate=128";
 
@@ -53,4 +53,6 @@ const leaderboard_records_vanilla =
 
 // Map image url, add map name e.g kz_ladderall.jpg after the url
 const imageBaseURL =
-    "https://gokz-globalstats.bakar.workers.dev/?https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/thumb/";
+    "${proxy}https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/thumb/";
+
+const proxy = "https://gokz-globalstats.bakar.workers.dev/?";

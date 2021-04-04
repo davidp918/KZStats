@@ -1,3 +1,3 @@
-String mapNameLenCheck(String str) {
-  return str.length > 20 ? str.substring(0, 20) + '...' : str;
+String lenCheck(String str, int max) {
+  return str.length > max ? str.substring(0, max) + '...' : str;
 }

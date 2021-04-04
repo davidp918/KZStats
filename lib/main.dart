@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kzstats/common/AppBar.dart';
+import 'package:kzstats/common/Drawer.dart';
+import 'package:kzstats/cubit/mode_cubit.dart';
 
 import 'pages/homepage.dart';
-import 'package:kzstats/model/model.dart';
-import 'package:kzstats/redux/actions.dart';
-import 'package:kzstats/redux/reducers.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final Store<AppState> store = Store<AppState>(
-    appStateReducer,
-    initialState: AppState.initialState(),
-  );
-
   @override
   Widget build(BuildContext context) {
-    return StoreProvider<AppState>(
-      store: store,
+    return BlocProvider(
+      lazy: false,
+      create: (context) => ModeCubit(),
       child: Homepage(),
     );
   }
