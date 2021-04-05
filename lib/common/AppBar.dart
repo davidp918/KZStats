@@ -11,27 +11,12 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
   static const modes = <String>[
     'Kztimer',
     'SimpleKZ',
-    'Vanila',
-  ];
-
-  static const nubs = <String>[
+    'Vanilla',
     'Pro',
     'Nub',
   ];
 
-  final List<PopupMenuItem<String>> _modeSelections = modes
-      .map((String value) => PopupMenuItem<String>(
-            value: value,
-            child: Text(
-              value,
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ))
-      .toList();
-
-  final List<PopupMenuItem<String>> _nubSelections = nubs
+  final List<PopupMenuItem<String>> _selections = modes
       .map((String value) => PopupMenuItem<String>(
             value: value,
             child: Text(
@@ -55,23 +40,35 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
         PopupMenuButton(
           color: Color(0xff4a5568),
           offset: Offset(20, 26),
-          itemBuilder: (BuildContext context) => _modeSelections,
+          itemBuilder: (BuildContext context) => _selections,
           onSelected: (String result) {
-            result == 'SimpleKZ'
-                ? BlocProvider.of<ModeCubit>(context).skz()
-                : result == 'Kztimer'
-                    ? BlocProvider.of<ModeCubit>(context).kzt()
-                    : BlocProvider.of<ModeCubit>(context).vnl();
-          },
-        ),
-        PopupMenuButton(
-          color: Color(0xff4a5568),
-          offset: Offset(20, 26),
-          itemBuilder: (BuildContext context) => _nubSelections,
-          onSelected: (String result) {
-            result == 'Nub'
-                ? BlocProvider.of<NubCubit>(context).toNub()
-                : BlocProvider.of<NubCubit>(context).toPro();
+            switch (result) {
+              case 'Kztimer':
+                {
+                  BlocProvider.of<ModeCubit>(context).kzt();
+                }
+                break;
+              case 'SimpleKZ':
+                {
+                  BlocProvider.of<ModeCubit>(context).skz();
+                }
+                break;
+              case 'Vanilla':
+                {
+                  BlocProvider.of<ModeCubit>(context).vnl();
+                }
+                break;
+              case 'Nub':
+                {
+                  BlocProvider.of<ModeCubit>(context).toNub();
+                }
+                break;
+              case 'Pro':
+                {
+                  BlocProvider.of<ModeCubit>(context).toPro();
+                }
+                break;
+            }
           },
         ),
       ],

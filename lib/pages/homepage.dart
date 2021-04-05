@@ -20,10 +20,12 @@ class Homepage extends StatelessWidget {
     width: 14,
   );
 
-  void notifySwitching(String mode, BuildContext context) {
+  void notifySwitching(String mode, bool nub, BuildContext context) {
+    String temp;
+    nub ? temp = 'Nub' : temp = 'Pro';
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Switching to $mode'),
+        content: Text('Switching to $temp $mode'),
         duration: Duration(milliseconds: 4000),
       ),
     );
@@ -40,7 +42,7 @@ class Homepage extends StatelessWidget {
         drawer: HomepageDrawer(),
         body: BlocConsumer<ModeCubit, ModeState>(
             listener: (context, state) =>
-                notifySwitching('${state.mode}', context),
+                notifySwitching('${state.mode}', state.nub, context),
             builder: (context, state) {
               return FutureBuilder<List<KzTime>>(
                 future: getTopRecords(state.mode, state.nub),
