@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/cubit/mode_cubit.dart';
+import 'package:kzstats/cubit/cubit_update.dart';
 
 import 'SearchBar.dart';
 
@@ -12,6 +12,11 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
     'Kztimer',
     'SimpleKZ',
     'Vanila',
+  ];
+
+  static const nubs = <String>[
+    'Pro',
+    'Nub',
   ];
 
   final List<PopupMenuItem<String>> _modeSelections = modes
@@ -26,10 +31,17 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
           ))
       .toList();
 
-/*   void callUpdateMode(String res){
-    res == 'Kztimer'
-    ? 
-  } */
+  final List<PopupMenuItem<String>> _nubSelections = nubs
+      .map((String value) => PopupMenuItem<String>(
+            value: value,
+            child: Text(
+              value,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ))
+      .toList();
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +62,16 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
                 : result == 'Kztimer'
                     ? BlocProvider.of<ModeCubit>(context).kzt()
                     : BlocProvider.of<ModeCubit>(context).vnl();
+          },
+        ),
+        PopupMenuButton(
+          color: Color(0xff4a5568),
+          offset: Offset(20, 26),
+          itemBuilder: (BuildContext context) => _nubSelections,
+          onSelected: (String result) {
+            result == 'Nub'
+                ? BlocProvider.of<NubCubit>(context).toNub()
+                : BlocProvider.of<NubCubit>(context).toPro();
           },
         ),
       ],

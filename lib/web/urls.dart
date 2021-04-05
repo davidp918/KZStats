@@ -22,6 +22,13 @@ const kz_timerTopRecords =
 const kz_vanillaTopRecords =
     "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_vanilla&place_top_at_least=1&has_teleports=false&stage=0&limit=20&tickrate=128";
 
+const kz_simpleTopRecords_nub =
+    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_simple&place_top_at_least=1&stage=0&limit=20&tickrate=128";
+const kz_timerTopRecords_nub =
+    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_timer&place_top_at_least=1&stage=0&limit=60&tickrate=128";
+const kz_vanillaTopRecords_nub =
+    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_vanilla&place_top_at_least=1&stage=0&limit=20&tickrate=128";
+
 // Generic Records per Mode URLs
 const kz_simpleLoadMap =
     "https://kztimerglobal.com/api/v2.0/records/top?modes_list_string=kz_simple";

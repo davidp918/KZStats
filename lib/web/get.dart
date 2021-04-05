@@ -6,15 +6,23 @@ import '../model/kzjson.dart';
 
 List<KzTime> result;
 
-Future<List<KzTime>> getTopRecords(String currentMode) async {
+Future<List<KzTime>> getTopRecords(String currentMode, bool ifNub) async {
   try {
-    var response = await http.get(Uri.parse(
-      currentMode == 'Kztimer'
-          ? kz_timerTopRecords
-          : currentMode == 'SimpleKZ'
-              ? kz_simpleTopRecords
-              : kz_vanillaTopRecords,
-    ));
+    var response = await http.get(
+      Uri.parse(
+        ifNub
+            ? currentMode == 'Kztimer'
+                ? kz_timerTopRecords_nub
+                : currentMode == 'SimpleKZ'
+                    ? kz_simpleTopRecords_nub
+                    : kz_vanillaTopRecords_nub
+            : currentMode == 'Kztimer'
+                ? kz_timerTopRecords
+                : currentMode == 'SimpleKZ'
+                    ? kz_simpleTopRecords
+                    : kz_vanillaTopRecords,
+      ),
+    );
     response.statusCode == HttpStatus.ok
         ? result = kzInfoFromJson(response.body)
         : print('something wrong');

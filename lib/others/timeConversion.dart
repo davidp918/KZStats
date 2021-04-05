@@ -4,6 +4,7 @@ String toMinSec(double sec) {
   return ('$min:$seconds');
 }
 
+// ignore: missing_return
 String diffofNow(DateTime ago) {
   var now = new DateTime.now().toUtc();
   var diff = now.difference(ago).inSeconds.toInt();
