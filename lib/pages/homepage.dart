@@ -20,10 +20,10 @@ class Homepage extends StatelessWidget {
     width: 14,
   );
 
-  Widget notifySwitching(String str, BuildContext context) {
+  void notifySwitching(String mode, BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Switching to $str'),
+        content: Text('Switching to $mode'),
         duration: Duration(milliseconds: 4000),
       ),
     );
@@ -43,9 +43,11 @@ class Homepage extends StatelessWidget {
                 notifySwitching('${state.mode}', context),
             builder: (context, state) {
               return FutureBuilder<List<KzTime>>(
-                future: getTopRecords(state.mode, false),
-                builder: (BuildContext context,
-                    AsyncSnapshot<List<KzTime>> snapshot) {
+                future: getTopRecords(state.mode, state.nub),
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<List<KzTime>> snapshot,
+                ) {
                   return Padding(
                     padding: EdgeInsets.only(top: 10),
                     child: snapshot.connectionState == ConnectionState.done
