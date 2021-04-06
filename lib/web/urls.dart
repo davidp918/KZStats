@@ -67,3 +67,7 @@ const proxy = "https://gokz-globalstats.bakar.workers.dev/?";
 //http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002?key=D382A350B768E5203415355D707065FD&steamids=76561198149087452
 
 const webApiKey = 'D382A350B768E5203415355D707065FD';
+
+const steam_player_url =
+    'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002?key=';
+const steam_player_url_connector = '&steamids=';

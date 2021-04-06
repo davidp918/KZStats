@@ -16,7 +16,7 @@ import 'package:kzstats/others/timeConversion.dart';
 class Homepage extends StatelessWidget {
   final String currentPage = 'KZStats';
   final Widget trophy = SvgPicture.asset(
-    'assets/trophy.svg',
+    'assets/icon/trophy.svg',
     height: 14,
     width: 14,
   );
@@ -48,9 +48,9 @@ class Homepage extends StatelessWidget {
             future: getTopRecords(state.mode, state.nub),
             builder: (
               BuildContext context,
-              AsyncSnapshot<List<KzTime>> snapshot,
+              AsyncSnapshot<List<KzTime>> kzInfosnapshot,
             ) =>
-                mainBody(context, snapshot),
+                mainBody(context, kzInfosnapshot),
           ),
         ),
       ),
@@ -214,14 +214,20 @@ class Homepage extends StatelessWidget {
                       SizedBox(
                         width: 4.5,
                       ),
-                      Image.network(
-                        'https://www.kzstats.com/img/flag/cn.png',
-                        // create a new json obtaining steam user info from
-                        // http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002?key=D382A350B768E5203415355D707065FD&steamids=76561198149087452
-                        // where key = my stean web api key, steamids = ${snapshot.data[index].steamid64}
-                        // use the loccountrycode to obtain image of country flag, ideally from local
-                        height: 10,
+                      FutureBuilder(
+                        future:
+                            getPlayerSteam('${snapshot.data[index].steamid64}'),
+                        builder: (BuildContext steamPlayerContext,
+                            AsyncSnapshot<Player> playerSteamSnapshot) {
+                          return playerSteamSnapshot.hasData
+                              ? Image(
+                                  image: AssetImage(
+                                      'assets/flag/${playerSteamSnapshot.data.response.players[0].loccountrycode.toLowerCase()}.png'),
+                                )
+                              : Icon(Icons.ac_unit);
+                        },
                       ),
+                      // something wrong with playerSteamSnapshot
                     ],
                   ),
                   SizedBox(
