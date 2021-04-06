@@ -220,14 +220,17 @@ class Homepage extends StatelessWidget {
                         builder: (BuildContext steamPlayerContext,
                             AsyncSnapshot<Player> playerSteamSnapshot) {
                           return playerSteamSnapshot.hasData
-                              ? Image(
-                                  image: AssetImage(
-                                      'assets/flag/${playerSteamSnapshot.data.response.players[0].loccountrycode.toLowerCase()}.png'),
-                                )
+                              ? playerSteamSnapshot.data.response.players[0]
+                                          .loccountrycode !=
+                                      null
+                                  ? Image(
+                                      image: AssetImage(
+                                          'assets/flag/${playerSteamSnapshot.data.response.players[0].loccountrycode.toLowerCase()}.png'),
+                                    )
+                                  : Container()
                               : Icon(Icons.ac_unit);
                         },
                       ),
-                      // something wrong with playerSteamSnapshot
                     ],
                   ),
                   SizedBox(
