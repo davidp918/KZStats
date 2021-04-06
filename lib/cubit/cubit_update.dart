@@ -5,6 +5,8 @@ part 'cubit_state.dart';
 class ModeCubit extends Cubit<ModeState> {
   ModeCubit() : super(ModeState(mode: 'Kztimer', nub: false));
 
+  void refresh() => emit(ModeState(mode: state.mode, nub: state.nub));
+
   void kzt() {
     if (state.mode != 'Kztimer') {
       emit(ModeState(mode: 'Kztimer', nub: state.nub));
