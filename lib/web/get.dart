@@ -27,6 +27,5 @@ Future<List<KzTime>> getTopRecords(String currentMode, bool ifNub) async {
         ? result = kzInfoFromJson(response.body)
         : print('something wrong');
   } catch (exception) {}
-
   return result;
 }

@@ -63,7 +63,7 @@ class Homepage extends StatelessWidget {
   ) {
     return Padding(
       padding: EdgeInsets.only(top: 10),
-      child: snapshot.connectionState == ConnectionState.done
+      child: (snapshot.connectionState == ConnectionState.done)
           ? EasyRefresh(
               child: CustomScrollView(
                 slivers: <Widget>[
@@ -77,9 +77,15 @@ class Homepage extends StatelessWidget {
               ),
               onRefresh: () async =>
                   BlocProvider.of<ModeCubit>(context).refresh(),
+              // avoid rebuilding the whole widget so previous
+              // list is not replaced by the refresh indicator
+              // while loading
               onLoad: () async {
                 await Future.delayed(Duration(seconds: 2));
               },
+              // need to accomplish onRefresh rebuild first as
+              // loading more will rebuild the whole widget
+              // tree as well
             )
           : Center(
               child: Column(

@@ -3,13 +3,17 @@ import 'package:bloc/bloc.dart';
 part 'cubit_state.dart';
 
 class ModeCubit extends Cubit<ModeState> {
-  ModeCubit() : super(ModeState(mode: 'Kztimer', nub: false));
+  ModeCubit()
+      : super(ModeState(mode: 'Kztimer', nub: false, fullRefresh: true));
 
-  void refresh() => emit(ModeState(mode: state.mode, nub: state.nub));
+  void refresh() =>
+      emit(ModeState(mode: state.mode, nub: state.nub, fullRefresh: true));
+
+  void stopRefresh() => emit(ModeState(fullRefresh: false));
 
   void kzt() {
     if (state.mode != 'Kztimer') {
-      emit(ModeState(mode: 'Kztimer', nub: state.nub));
+      emit(ModeState(mode: 'Kztimer', nub: state.nub, fullRefresh: false));
     }
   }
 
