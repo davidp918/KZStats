@@ -34,24 +34,19 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xff4a5568),
-      ),
-      home: Scaffold(
-        appBar: HomepageAppBar(currentPage),
-        drawer: HomepageDrawer(),
-        body: BlocConsumer<ModeCubit, ModeState>(
-          listener: (context, state) =>
-              notifySwitching('${state.mode}', state.nub, context),
-          builder: (context, state) => FutureBuilder<List<KzTime>>(
-            future: getTopRecords(state.mode, state.nub),
-            builder: (
-              BuildContext context,
-              AsyncSnapshot<List<KzTime>> kzInfosnapshot,
-            ) =>
-                mainBody(context, kzInfosnapshot),
-          ),
+    return Scaffold(
+      appBar: HomepageAppBar(currentPage),
+      drawer: HomepageDrawer(),
+      body: BlocConsumer<ModeCubit, ModeState>(
+        listener: (context, state) =>
+            notifySwitching('${state.mode}', state.nub, context),
+        builder: (context, state) => FutureBuilder<List<KzTime>>(
+          future: getTopRecords(state.mode, state.nub),
+          builder: (
+            BuildContext context,
+            AsyncSnapshot<List<KzTime>> kzInfosnapshot,
+          ) =>
+              mainBody(context, kzInfosnapshot),
         ),
       ),
     );
