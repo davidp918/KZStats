@@ -13,9 +13,8 @@ import 'package:kzstats/others/strCheckLen.dart';
 import 'package:kzstats/web/get/topRecords.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/others/timeConversion.dart';
-import 'package:kzstats/web/get/playerKzstatsApi.dart';
-import 'package:kzstats/web/json/kzstatsApiPlayer.dart';
-import 'package:kzstats/web/future/kzstatsApiPlayerFlag.dart';
+
+import 'package:kzstats/web/future/kzstatsApiPlayerNation.dart';
 
 class Homepage extends StatelessWidget {
   final String currentPage = 'KZStats';
@@ -44,14 +43,23 @@ class Homepage extends StatelessWidget {
       body: BlocConsumer<ModeCubit, ModeState>(
         listener: (context, state) =>
             notifySwitching('${state.mode}', state.nub, context),
-        builder: (context, state) => FutureBuilder<List<KzTime>>(
-          future: getTopRecords(state.mode, state.nub),
-          builder: (
-            BuildContext kzInfocontext,
-            AsyncSnapshot<List<KzTime>> kzInfosnapshot,
-          ) =>
-              mainBody(kzInfocontext, kzInfosnapshot),
-        ),
+        builder: (context, state) {
+          return FutureBuilder<List<KzTime>>(
+            future: getTopRecords(state.mode, state.nub),
+            builder: (
+              BuildContext kzInfocontext,
+              AsyncSnapshot<List<KzTime>> kzInfosnapshot,
+            ) {
+              return FutureBuilder(
+                future: getPlayerKzstatsNation(kzInfosnapshot),
+                builder: (BuildContext kzstatsPlayerContext,
+                        AsyncSnapshot<List<String>> kzstatsPlayerNation) =>
+                    mainBody(kzInfocontext, kzInfosnapshot,
+                        kzstatsPlayerContext, kzstatsPlayerNation),
+              );
+            },
+          );
+        },
       ),
     );
   }
@@ -59,17 +67,25 @@ class Homepage extends StatelessWidget {
   Widget mainBody(
     BuildContext context,
     AsyncSnapshot<List<KzTime>> kzInfosnapshot,
+    BuildContext kzstatsPlayerContext,
+    AsyncSnapshot<List<String>> kzstatsPlayerNation,
   ) {
     return Padding(
       padding: EdgeInsets.only(top: 10),
-      child: (kzInfosnapshot.connectionState == ConnectionState.done)
+      child: (kzInfosnapshot.connectionState == ConnectionState.done &&
+              kzstatsPlayerNation.connectionState == ConnectionState.done)
           ? EasyRefresh(
               child: CustomScrollView(
                 slivers: <Widget>[
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      (context, index) =>
-                          snippet(context, kzInfosnapshot, index),
+                      (context, index) => snippet(
+                        context,
+                        kzInfosnapshot,
+                        kzstatsPlayerContext,
+                        kzstatsPlayerNation,
+                        index,
+                      ),
                       childCount: kzInfosnapshot.data.length,
                     ),
                   )
@@ -112,8 +128,12 @@ class Homepage extends StatelessWidget {
     );
   }
 
-  Widget snippet(BuildContext context,
-          AsyncSnapshot<List<KzTime>> kzInfosnapshot, int index) =>
+  Widget snippet(
+          BuildContext context,
+          AsyncSnapshot<List<KzTime>> kzInfosnapshot,
+          BuildContext kzstatsPlayerContext,
+          AsyncSnapshot<List<String>> kzstatsPlayerNation,
+          int index) =>
       Column(children: <Widget>[
         Padding(
           padding: EdgeInsets.fromLTRB(35, 15, 0, 15),
@@ -221,15 +241,9 @@ class Homepage extends StatelessWidget {
                       SizedBox(
                         width: 4.5,
                       ),
-                      FutureBuilder(
-                        future: getPlayerKzstatsApi(
-                            '${kzInfosnapshot.data[index].steamid64}'),
-                        builder: (BuildContext kzstatsPlayerContext,
-                            AsyncSnapshot<KzstatsApiPlayer>
-                                kzstatsPlayerSnapshot) {
-                          return getKzstatsApiPlayerFlag(
-                              kzstatsPlayerContext, kzstatsPlayerSnapshot);
-                        },
+                      Image(
+                        image: AssetImage(
+                            'assets/flag/${kzstatsPlayerNation.data[index]}.png'),
                       ),
                     ],
                   ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/common/Drawer.dart';
 
 import '../toggleButton.dart';
 
