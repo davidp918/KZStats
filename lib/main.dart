@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ModeCubit>(
+      lazy: true,
       create: (context) => ModeCubit(),
       child: MaterialApp(
         theme: ThemeData(

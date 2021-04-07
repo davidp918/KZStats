@@ -71,3 +71,7 @@ const webApiKey = 'D382A350B768E5203415355D707065FD';
 const steam_player_url =
     'https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002?key=';
 const steam_player_url_connector = '&steamids=';
+
+const kzstats_api_player = "http://www.kzstats.com/api/player/";
+
+const kzstats_api_player_end = "/steam";

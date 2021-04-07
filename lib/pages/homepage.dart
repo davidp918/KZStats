@@ -12,6 +12,9 @@ import 'package:kzstats/others/strCheckLen.dart';
 import 'package:kzstats/web/get/topRecords.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/others/timeConversion.dart';
+import 'package:kzstats/web/get/playerKzstatsApi.dart';
+import 'package:kzstats/web/json/kzstatsApiPlayer.dart';
+import 'package:kzstats/web/future/kzstatsApiPlayerFlag.dart';
 
 class Homepage extends StatelessWidget {
   final String currentPage = 'KZStats';
@@ -43,10 +46,10 @@ class Homepage extends StatelessWidget {
         builder: (context, state) => FutureBuilder<List<KzTime>>(
           future: getTopRecords(state.mode, state.nub),
           builder: (
-            BuildContext context,
+            BuildContext kzInfocontext,
             AsyncSnapshot<List<KzTime>> kzInfosnapshot,
           ) =>
-              mainBody(context, kzInfosnapshot),
+              mainBody(kzInfocontext, kzInfosnapshot),
         ),
       ),
     );
@@ -219,23 +222,16 @@ class Homepage extends StatelessWidget {
                       SizedBox(
                         width: 4.5,
                       ),
-                      /* FutureBuilder(
-                        future:
-                            getPlayerSteam('${snapshot.data[index].steamid64}'),
-                        builder: (BuildContext steamPlayerContext,
-                            AsyncSnapshot<Player> playerSteamSnapshot) {
-                          return playerSteamSnapshot.hasData
-                              ? playerSteamSnapshot.data.response.players[0]
-                                          .loccountrycode !=
-                                      null
-                                  ? Image(
-                                      image: AssetImage(
-                                          'assets/flag/${playerSteamSnapshot.data.response.players[0].loccountrycode.toLowerCase()}.png'),
-                                    )
-                                  : Container()
-                              : Icon(Icons.ac_unit);
+                      FutureBuilder(
+                        future: getPlayerKzstatsApi(
+                            '${kzInfosnapshot.data[index].steamid64}'),
+                        builder: (BuildContext kzstatsPlayerContext,
+                            AsyncSnapshot<KzstatsApiPlayer>
+                                kzstatsPlayerSnapshot) {
+                          return getKzstatsApiPlayerFlag(
+                              kzstatsPlayerContext, kzstatsPlayerSnapshot);
                         },
-                      ), */
+                      ),
                     ],
                   ),
                   SizedBox(
