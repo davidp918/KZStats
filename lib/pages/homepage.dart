@@ -54,18 +54,19 @@ class Homepage extends StatelessWidget {
 
   Widget mainBody(
     BuildContext context,
-    AsyncSnapshot<List<KzTime>> snapshot,
+    AsyncSnapshot<List<KzTime>> kzInfosnapshot,
   ) {
     return Padding(
       padding: EdgeInsets.only(top: 10),
-      child: (snapshot.connectionState == ConnectionState.done)
+      child: (kzInfosnapshot.connectionState == ConnectionState.done)
           ? EasyRefresh(
               child: CustomScrollView(
                 slivers: <Widget>[
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      (context, index) => snippet(context, snapshot, index),
-                      childCount: snapshot.data.length,
+                      (context, index) =>
+                          snippet(context, kzInfosnapshot, index),
+                      childCount: kzInfosnapshot.data.length,
                     ),
                   )
                 ],
@@ -107,8 +108,8 @@ class Homepage extends StatelessWidget {
     );
   }
 
-  Widget snippet(BuildContext context, AsyncSnapshot<List<KzTime>> snapshot,
-          int index) =>
+  Widget snippet(BuildContext context,
+          AsyncSnapshot<List<KzTime>> kzInfosnapshot, int index) =>
       Column(children: <Widget>[
         Padding(
           padding: EdgeInsets.fromLTRB(35, 15, 0, 15),
@@ -135,7 +136,7 @@ class Homepage extends StatelessWidget {
                       color: Colors.red.shade200,
                     ), */
                     imageUrl:
-                        '$imageBaseURL${snapshot.data[index].mapName}.webp',
+                        '$imageBaseURL${kzInfosnapshot.data[index].mapName}.webp',
                   ),
                 ),
               ),
@@ -145,13 +146,19 @@ class Homepage extends StatelessWidget {
                 children: <Widget>[
                   InkWell(
                     child: Text(
-                      '${lenCheck(snapshot.data[index].mapName, 20)}',
+                      '${lenCheck(kzInfosnapshot.data[index].mapName, 20)}',
                       style: TextStyle(
                         color: Colors.blue.shade100,
                         fontSize: 16,
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/map_detail',
+                        arguments: '${kzInfosnapshot.data[index].mapName}',
+                      );
+                    },
                   ),
                   SizedBox(
                     height: 5,
@@ -159,7 +166,7 @@ class Homepage extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Text(
-                        '${toMinSec(snapshot.data[index].time)}',
+                        '${toMinSec(kzInfosnapshot.data[index].time)}',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -173,10 +180,10 @@ class Homepage extends StatelessWidget {
                         width: 3,
                       ),
                       Text(
-                        snapshot.data[index].teleports == 1
-                            ? '(${snapshot.data[index].teleports.toString()} tp)'
-                            : snapshot.data[index].teleports > 1
-                                ? '(${snapshot.data[index].teleports.toString()} tps)'
+                        kzInfosnapshot.data[index].teleports == 1
+                            ? '(${kzInfosnapshot.data[index].teleports.toString()} tp)'
+                            : kzInfosnapshot.data[index].teleports > 1
+                                ? '(${kzInfosnapshot.data[index].teleports.toString()} tps)'
                                 : '',
                         style: TextStyle(
                           color: Colors.white70,
@@ -199,14 +206,14 @@ class Homepage extends StatelessWidget {
                       ),
                       InkWell(
                         child: Text(
-                          '${lenCheck(snapshot.data[index].playerName, 15)}',
+                          '${lenCheck(kzInfosnapshot.data[index].playerName, 15)}',
                           style: TextStyle(
                             color: Colors.blue.shade100,
                             fontSize: 14.5,
                           ),
                         ),
                         onTap: () {
-                          print(snapshot.data);
+                          // routing to player detail screen
                         },
                       ),
                       SizedBox(
@@ -235,7 +242,7 @@ class Homepage extends StatelessWidget {
                     height: 4,
                   ),
                   Text(
-                    '${diffofNow(snapshot.data[index].createdOn)}',
+                    '${diffofNow(kzInfosnapshot.data[index].createdOn)}',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14.5,

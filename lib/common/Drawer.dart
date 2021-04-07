@@ -7,7 +7,6 @@ import 'package:kzstats/pages/jumpstats.dart';
 import 'package:kzstats/pages/maps.dart';
 import 'package:kzstats/pages/profile.dart';
 import 'package:kzstats/pages/servers.dart';
-import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/web/steamLogin.dart';
 
 class HomepageDrawer extends StatefulWidget {
@@ -192,10 +191,7 @@ class _DrawerState extends State<HomepageDrawer> {
               ),
             ),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Settings()),
-              );
+              Navigator.of(context).pushReplacementNamed('/settings');
             },
           ),
         ],

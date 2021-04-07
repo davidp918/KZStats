@@ -19,7 +19,7 @@ class Settings extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: HomepageAppBar(currentPage),
-        drawer: HomepageDrawer(),
+        //drawer: HomepageDrawer(),
         body: Padding(
           padding: EdgeInsets.all(8),
           child: Center(
