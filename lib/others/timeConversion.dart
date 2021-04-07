@@ -1,13 +1,15 @@
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+
 String toMinSec(double sec) {
   String min = (sec / 60).truncate().toString().padLeft(2, '0');
   String seconds = (sec % 60).toStringAsFixed(3).toString().padLeft(6, '0');
   return ('$min:$seconds');
 }
 
-// ignore: missing_return
-String diffofNow(DateTime ago) {
-  var now = new DateTime.now().toUtc();
-  var diff = now.difference(ago).inSeconds.toInt();
+String diffofNow(DateTime timeRecordCreated) {
+  //final String currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
+  final now = DateTime.now().toUtc();
+  var diff = now.difference(timeRecordCreated).inSeconds.toInt();
 
   List<String> time = [
     'second',
@@ -37,4 +39,6 @@ String diffofNow(DateTime ago) {
     }
     diff = (diff / limit[i]).truncate();
   }
+
+  return ('Fatal error');
 }
