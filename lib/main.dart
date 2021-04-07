@@ -10,9 +10,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      lazy: false,
-      create: (context) => ModeCubit(),
-      child: Homepage(),
-    );
+        lazy: false,
+        create: (context) => ModeCubit(),
+        child: MediaQuery(
+          data: MediaQueryData(),
+          child: MaterialApp(
+            theme: ThemeData(
+              scaffoldBackgroundColor: Color(0xff4a5568),
+            ),
+            home: Homepage(),
+          ),
+        ));
   }
 }
