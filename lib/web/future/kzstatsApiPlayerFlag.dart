@@ -7,6 +7,6 @@ Widget getKzstatsApiPlayerFlag(BuildContext context, AsyncSnapshot snapshot) {
           ? Image(
               image: AssetImage(
                   'assets/flag/${snapshot.data.loccountrycode.toString().toLowerCase()}.png'))
-          : Text('wrong')
+          : Container()
       : Container();
 }
