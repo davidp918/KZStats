@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:kzstats/common/AppBar.dart';
@@ -134,10 +135,6 @@ class Homepage extends StatelessWidget {
                     errorWidget: (context, url, error) => Image(
                       image: AssetImage('assets/icon/noimage.png'),
                     ),
-                    /* Icon(
-                      Icons.error_outline,
-                      color: Colors.red.shade200,
-                    ), */
                     imageUrl:
                         '$imageBaseURL${kzInfosnapshot.data[index].mapName}.webp',
                   ),
@@ -149,7 +146,9 @@ class Homepage extends StatelessWidget {
                 children: <Widget>[
                   InkWell(
                     child: Text(
-                      '${lenCheck(kzInfosnapshot.data[index].mapName, 20)}',
+                      //'${lenCheck(kzInfosnapshot.data[index].mapName, 20)}',
+                      kzInfosnapshot.data[index].mapName,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.blue.shade100,
                         fontSize: 16,
