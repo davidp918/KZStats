@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:kzstats/web/json/kztime.dart';
 
 import 'package:kzstats/web/urls.dart';
-import '../model/kzjson.dart';
 
 List<KzTime> topRecords;
 
@@ -28,21 +28,4 @@ Future<List<KzTime>> getTopRecords(String currentMode, bool ifNub) async {
         : print('something wrong');
   } catch (exception) {}
   return topRecords;
-}
-
-Player playerSteam;
-
-Future<Player> getPlayerSteam(String steam64) async {
-  const steamPlayer_join =
-      '$proxy$steam_player_url$webApiKey$steam_player_url_connector';
-  try {
-    var response1 = await http.get(
-      Uri.parse('$steamPlayer_join$steam64'),
-    );
-    response1.statusCode == HttpStatus.ok
-        ? playerSteam = playerFromJson(response1.body)
-        : print('something wrong');
-  } catch (exception) {}
-
-  return playerSteam;
 }

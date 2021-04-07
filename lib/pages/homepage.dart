@@ -7,9 +7,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/cubit/cubit_update.dart';
-import 'package:kzstats/model/kzjson.dart';
+import 'package:kzstats/web/json/kztime.dart';
 import 'package:kzstats/others/strCheckLen.dart';
-import 'package:kzstats/web/get.dart';
+import 'package:kzstats/web/get/topRecords.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/others/timeConversion.dart';
 
@@ -132,10 +132,13 @@ class Homepage extends StatelessWidget {
                         width: 30,
                       ),
                     ),
-                    errorWidget: (context, url, error) => Icon(
+                    errorWidget: (context, url, error) => Image(
+                      image: AssetImage('assets/icon/noimage.png'),
+                    ),
+                    /* Icon(
                       Icons.error_outline,
                       color: Colors.red.shade200,
-                    ),
+                    ), */
                     imageUrl:
                         '$imageBaseURL${snapshot.data[index].mapName}.webp',
                   ),
@@ -214,7 +217,7 @@ class Homepage extends StatelessWidget {
                       SizedBox(
                         width: 4.5,
                       ),
-                      FutureBuilder(
+                      /* FutureBuilder(
                         future:
                             getPlayerSteam('${snapshot.data[index].steamid64}'),
                         builder: (BuildContext steamPlayerContext,
@@ -230,7 +233,7 @@ class Homepage extends StatelessWidget {
                                   : Container()
                               : Icon(Icons.ac_unit);
                         },
-                      ),
+                      ), */
                     ],
                   ),
                   SizedBox(
