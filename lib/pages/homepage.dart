@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:kzstats/common/AppBar.dart';
@@ -13,7 +13,6 @@ import 'package:kzstats/others/strCheckLen.dart';
 import 'package:kzstats/web/get/topRecords.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/others/timeConversion.dart';
-
 import 'package:kzstats/web/future/kzstatsApiPlayerNation.dart';
 
 class Homepage extends StatelessWidget {
@@ -74,35 +73,70 @@ class Homepage extends StatelessWidget {
       padding: EdgeInsets.only(top: 10),
       child: (kzInfosnapshot.connectionState == ConnectionState.done &&
               kzstatsPlayerNation.connectionState == ConnectionState.done)
-          ? EasyRefresh(
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) => snippet(
-                        context,
-                        kzInfosnapshot,
-                        kzstatsPlayerContext,
-                        kzstatsPlayerNation,
-                        index,
+          ? kzInfosnapshot.hasData
+              ? EasyRefresh(
+                  child: CustomScrollView(
+                    slivers: <Widget>[
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) => snippet(
+                            context,
+                            kzInfosnapshot,
+                            kzstatsPlayerContext,
+                            kzstatsPlayerNation,
+                            index,
+                          ),
+                          childCount: kzInfosnapshot.data.length,
+                        ),
+                      )
+                    ],
+                  ),
+                  onRefresh: () async =>
+                      BlocProvider.of<ModeCubit>(context).refresh(),
+                  // avoid rebuilding the whole widget so previous
+                  // list is not replaced by the refresh indicator
+                  // while loading
+                  onLoad: () async {
+                    await Future.delayed(Duration(seconds: 2));
+                  },
+                  // need to accomplish onRefresh rebuild first as
+                  // loading more will rebuild the whole widget
+                  // tree as well
+                )
+              : RefreshIndicator(
+                  child: Stack(children: <Widget>[
+                    ListView(),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            EvilIcons.exclamation,
+                            size: 120,
+                            color: Colors.red.shade300,
+                          ),
+                          Text(
+                            'Global API is down',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            'Try again later',
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                      childCount: kzInfosnapshot.data.length,
                     ),
-                  )
-                ],
-              ),
-              onRefresh: () async =>
-                  BlocProvider.of<ModeCubit>(context).refresh(),
-              // avoid rebuilding the whole widget so previous
-              // list is not replaced by the refresh indicator
-              // while loading
-              onLoad: () async {
-                await Future.delayed(Duration(seconds: 2));
-              },
-              // need to accomplish onRefresh rebuild first as
-              // loading more will rebuild the whole widget
-              // tree as well
-            )
+                  ]),
+                  onRefresh: () async =>
+                      BlocProvider.of<ModeCubit>(context).refresh(),
+                )
           : Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -241,10 +275,12 @@ class Homepage extends StatelessWidget {
                       SizedBox(
                         width: 4.5,
                       ),
-                      Image(
-                        image: AssetImage(
-                            'assets/flag/${kzstatsPlayerNation.data[index]}.png'),
-                      ),
+                      kzstatsPlayerNation.hasData
+                          ? Image(
+                              image: AssetImage(
+                                  'assets/flag/${kzstatsPlayerNation.data[index]}.png'),
+                            )
+                          : Container()
                     ],
                   ),
                   SizedBox(

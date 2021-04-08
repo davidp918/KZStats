@@ -1,10 +1,11 @@
+import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
 class HomepageSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (IconButton(
-      icon: Icon(Icons.search),
+      icon: Icon(EvilIcons.search),
       onPressed: () {
         showSearch(
           context: context,
