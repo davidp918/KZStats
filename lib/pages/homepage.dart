@@ -40,6 +40,9 @@ class Homepage extends StatelessWidget {
       appBar: HomepageAppBar(currentPage),
       drawer: HomepageDrawer(),
       body: BlocConsumer<ModeCubit, ModeState>(
+        listenWhen: (previous, current) {
+          return previous.mode != current.mode || previous.nub != current.nub;
+        },
         listener: (context, state) =>
             notifySwitching('${state.mode}', state.nub, context),
         builder: (context, state) {
