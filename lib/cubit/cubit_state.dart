@@ -4,5 +4,5 @@ class ModeState {
   String mode;
   bool nub;
   bool fullRefresh;
-  ModeState({this.mode, this.nub, this.fullRefresh});
+  ModeState({this.mode, this.nub});
 }
