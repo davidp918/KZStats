@@ -3,25 +3,21 @@ import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/cubit/cubit_update.dart';
-import 'package:kzstats/web/json/kztime.dart';
+import 'package:kzstats/web/json/kztime_json.dart';
 import 'package:kzstats/others/strCheckLen.dart';
-import 'package:kzstats/web/get/topRecords.dart';
+import 'package:kzstats/web/get/getTopRecords.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/others/timeConversion.dart';
 import 'package:kzstats/web/future/kzstatsApiPlayerNation.dart';
+import 'package:kzstats/common/loading.dart';
+import 'package:kzstats/svg.dart';
 
 class Homepage extends StatelessWidget {
   final String currentPage = 'KZStats';
-  final Widget trophy = SvgPicture.asset(
-    'assets/icon/trophy.svg',
-    height: 14,
-    width: 14,
-  );
 
   void notifySwitching(String mode, bool nub, BuildContext context) {
     String temp;
@@ -140,28 +136,7 @@ class Homepage extends StatelessWidget {
                   onRefresh: () async =>
                       BlocProvider.of<ModeCubit>(context).refresh(),
                 )
-          : Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    child: CircularProgressIndicator(),
-                    width: 60,
-                    height: 60,
-                  ),
-                  Padding(
-                      padding: EdgeInsets.only(top: 16),
-                      child: Text(
-                        'Loading data from API...',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ))
-                ],
-              ),
-            ),
+          : loadingFromApi(),
     );
   }
 
@@ -215,7 +190,7 @@ class Homepage extends StatelessWidget {
                       Navigator.pushNamed(
                         context,
                         '/map_detail',
-                        arguments: '${kzInfosnapshot.data[index].mapName}',
+                        arguments: kzInfosnapshot.data[index],
                       );
                     },
                   ),
@@ -234,7 +209,7 @@ class Homepage extends StatelessWidget {
                       SizedBox(
                         width: 3,
                       ),
-                      trophy,
+                      trophy(14, 14),
                       SizedBox(
                         width: 3,
                       ),

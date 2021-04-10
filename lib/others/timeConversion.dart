@@ -1,4 +1,4 @@
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+//import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 String toMinSec(double sec) {
   String min = (sec / 60).truncate().toString().padLeft(2, '0');

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:kzstats/web/urls.dart';
-import 'package:kzstats/web/json/kzstatsApiPlayer.dart';
+import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
 
 KzstatsApiPlayer kzstatsPlayer;
 

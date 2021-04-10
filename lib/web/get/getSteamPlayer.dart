@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:kzstats/web/urls.dart';
-import '../json/steamPlayer.dart';
+import '../json/steamPlayer_json.dart';
 
 Player playerSteam;
 

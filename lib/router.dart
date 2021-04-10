@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kzstats/pages/homepage.dart';
 import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
+import 'package:kzstats/web/json/kztime_json.dart';
 
 class AppRouter {
   Route onGenerateRoute(RouteSettings settings) {
@@ -15,10 +16,10 @@ class AppRouter {
           builder: (_) => Settings(),
         );
       case '/map_detail':
-        final String mapName = settings.arguments as String;
+        final KzTime prevSnapshotData = settings.arguments as KzTime;
         return MaterialPageRoute(
           builder: (_) => MapDetail(
-            mapName: mapName,
+            prevSnapshotData: prevSnapshotData,
           ),
         );
       default:
