@@ -35,6 +35,9 @@ String mapTopRecordsSelect(String mapName, String mode, bool ifNub) {
       .replaceAll('&ifNub', ifNub ? '' : 'has_teleports=false');
 }
 
+// Map information, such as tier - followed by map id(e.g 200)
+const kz_map_info = 'https://kztimerglobal.com/api/v1/maps/';
+
 // Map image url, add map name e.g kz_ladderall.jpg after the url
 const imageBaseURL =
     "${proxy}https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/thumb/";
