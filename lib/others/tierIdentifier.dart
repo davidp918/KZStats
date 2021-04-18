@@ -22,6 +22,6 @@ String identifyTier(int tierNum) {
       return 'Death';
       break;
     default:
-      return 'error';
+      return 'unknown';
   }
 }
