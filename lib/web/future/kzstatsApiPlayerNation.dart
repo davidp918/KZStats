@@ -4,11 +4,12 @@ import 'package:kzstats/web/get/getPlayerKzstatsApi.dart';
 import 'package:kzstats/web/json/kztime_json.dart';
 
 Future<List<String>> getPlayerKzstatsNation(
-    AsyncSnapshot<List<KzTime>> kzInfosnapshot) async {
-  List<String> steam64s = [];
+  AsyncSnapshot<List<KzTime>> kzInfosnapshot,
+) async {
+  List<String> steam64s = List.filled(20, 'null');
 
   for (var i = 0; i < kzInfosnapshot.data.length; i++) {
-    steam64s.add(kzInfosnapshot.data[i].steamid64);
+    steam64s[i] = kzInfosnapshot.data[i].steamid64;
   }
 
   return Future.wait(

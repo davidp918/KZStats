@@ -1,28 +1,18 @@
 // Latest wr records
-const kz_simpleTopRecords =
-    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_simple&place_top_at_least=1&has_teleports=false&stage=0&limit=20&tickrate=128";
-const kz_timerTopRecords =
-    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_timer&place_top_at_least=1&has_teleports=false&stage=0&limit=20&tickrate=128";
-const kz_vanillaTopRecords =
-    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_vanilla&place_top_at_least=1&has_teleports=false&stage=0&limit=20&tickrate=128";
-const kz_simpleTopRecords_nub =
-    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_simple&place_top_at_least=1&stage=0&limit=20&tickrate=128";
-const kz_timerTopRecords_nub =
-    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_timer&place_top_at_least=1&stage=0&limit=20&tickrate=128";
-const kz_vanillaTopRecords_nub =
-    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=kz_vanilla&place_top_at_least=1&stage=0&limit=20&tickrate=128";
+const kz_wr =
+    "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=mode!&place_top_at_least=1ifnub!&stage=0&limit=amount!&tickrate=128";
 
-String topRecordsSelect(String mode, bool ifNub) => ifNub
-    ? mode == 'Kztimer'
-        ? kz_timerTopRecords_nub
-        : mode == 'SimpleKZ'
-            ? kz_simpleTopRecords_nub
-            : kz_vanillaTopRecords_nub
-    : mode == 'Kztimer'
-        ? kz_timerTopRecords
-        : mode == 'SimpleKZ'
-            ? kz_simpleTopRecords
-            : kz_vanillaTopRecords;
+String topRecordsSelect(String mode, bool ifNub, int amount) {
+  String trueMode = mode == 'Kztimer'
+      ? 'kz_timer'
+      : mode == 'SimpleKZ'
+          ? 'kz_simple'
+          : 'kz_vanilla';
+  return kz_wr
+      .replaceAll('mode!', trueMode)
+      .replaceAll('ifnub!', ifNub ? '' : '&has_teleports=false')
+      .replaceAll('amount!', amount.toString());
+}
 
 // Top records of a specific map
 const kz_mapTopRecords =
@@ -34,6 +24,8 @@ String mapTopRecordsSelect(String mapName, String mode, bool ifNub) {
       .replaceAll('mode', mode)
       .replaceAll('&ifNub', ifNub ? '' : 'has_teleports=false');
 }
+
+// WR of NUB and PRO of a map
 
 // Map information, such as tier - followed by map id(e.g 200)
 const kz_map_info = 'https://kztimerglobal.com/api/v1/maps/';

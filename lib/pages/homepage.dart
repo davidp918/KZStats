@@ -43,17 +43,23 @@ class Homepage extends StatelessWidget {
             notifySwitching('${state.mode}', state.nub, context),
         builder: (context, state) {
           return FutureBuilder<List<KzTime>>(
-            future: getTopRecords(state.mode, state.nub),
+            future: getTopRecords(state.mode, state.nub, 20),
             builder: (
               BuildContext kzInfocontext,
               AsyncSnapshot<List<KzTime>> kzInfosnapshot,
             ) {
               return FutureBuilder(
                 future: getPlayerKzstatsNation(kzInfosnapshot),
-                builder: (BuildContext kzstatsPlayerContext,
-                        AsyncSnapshot<List<String>> kzstatsPlayerNation) =>
-                    mainBody(kzInfocontext, kzInfosnapshot,
-                        kzstatsPlayerContext, kzstatsPlayerNation),
+                builder: (
+                  BuildContext kzstatsPlayerContext,
+                  AsyncSnapshot<List<String>> kzstatsPlayerNation,
+                ) =>
+                    mainBody(
+                  kzInfocontext,
+                  kzInfosnapshot,
+                  kzstatsPlayerContext,
+                  kzstatsPlayerNation,
+                ),
               );
             },
           );
@@ -177,13 +183,16 @@ class Homepage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   InkWell(
-                    child: Text(
-                      //'${lenCheck(kzInfosnapshot.data[index].mapName, 20)}',
-                      kzInfosnapshot.data[index].mapName,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Colors.blue.shade100,
-                        fontSize: 16,
+                    child: Container(
+                      width: 145,
+                      child: Text(
+                        //'${lenCheck(kzInfosnapshot.data[index].mapName, 20)}',
+                        kzInfosnapshot.data[index].mapName,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.blue.shade100,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                     onTap: () {
@@ -256,9 +265,12 @@ class Homepage extends StatelessWidget {
                       kzstatsPlayerNation.hasData
                           ? Image(
                               image: AssetImage(
-                                  'assets/flag/${kzstatsPlayerNation.data[index]}.png'),
+                                'assets/flag/${kzstatsPlayerNation.data[index]}.png',
+                              ),
                             )
-                          : Container()
+                          : Container(
+                              child: Text('${kzstatsPlayerNation.data}'),
+                            ),
                     ],
                   ),
                   SizedBox(

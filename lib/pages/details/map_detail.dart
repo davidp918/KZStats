@@ -52,7 +52,8 @@ class MapDetail extends StatelessWidget {
     AsyncSnapshot<List<MapTop>> mapTopSnapshot,
     AsyncSnapshot<Mapinfo> mapInfoSnapshot,
   ) {
-    return mapTopSnapshot.connectionState == ConnectionState.done
+    return mapTopSnapshot.connectionState == ConnectionState.done &&
+            mapInfoSnapshot.connectionState == ConnectionState.done
         ? mainBody(
             mapTopSnapshot,
             mapInfoSnapshot,
@@ -89,9 +90,12 @@ class MapDetail extends StatelessWidget {
               ),
               Column(
                 children: <Widget>[
-                  Text('${prevSnapshotData.mapName}}'),
                   Text(
-                      'Tier: ${identifyTier(mapInfoSnapshot.data.difficulty)}'),
+                    '${prevSnapshotData.mapName}',
+                  ),
+                  Text(
+                    'Tier: ${identifyTier(mapInfoSnapshot.data.difficulty)}',
+                  ),
                 ],
               ),
               /* DataTable(
