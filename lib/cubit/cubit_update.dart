@@ -27,7 +27,6 @@ class ModeCubit extends Cubit<ModeState> {
 
   void toNub() {
     if (state.nub == false) {
-      print('nub');
       emit(ModeState(nub: true, mode: state.mode));
     }
   }

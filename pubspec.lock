@@ -2,19 +2,12 @@
 # See https://dart.dev/tools/pub/glossary#lockfile
 packages:
   archive:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: archive
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.13"
-  args:
-    dependency: transitive
-    description:
-      name: args
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.6.0"
+    version: "3.1.2"
   async:
     dependency: transitive
     description:
@@ -71,20 +64,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.15.0"
-  convert:
-    dependency: transitive
-    description:
-      name: convert
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.1.1"
   crypto:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: crypto
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.1.5"
+    version: "3.0.1"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -166,7 +152,7 @@ packages:
       name: flutter_svg
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.19.3"
+    version: "0.21.0+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -179,6 +165,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.3.11"
+  hive:
+    dependency: "direct main"
+    description:
+      name: hive
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.3"
   http:
     dependency: "direct main"
     description:
@@ -193,13 +186,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.1.4"
+  hydrated_bloc:
+    dependency: "direct main"
+    description:
+      name: hydrated_bloc
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "7.0.0"
   image:
     dependency: transitive
     description:
       name: image
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.1.19"
+    version: "3.0.2"
   matcher:
     dependency: transitive
     description:
@@ -241,16 +241,16 @@ packages:
       name: path_drawing
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.4.1+1"
+    version: "0.5.0"
   path_parsing:
     dependency: transitive
     description:
       name: path_parsing
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.4"
+    version: "0.2.0"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.flutter-io.cn"
@@ -297,7 +297,7 @@ packages:
       name: petitparser
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "3.1.0"
+    version: "4.1.0"
   platform:
     dependency: transitive
     description:
@@ -421,7 +421,7 @@ packages:
       name: uuid
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.2.2"
+    version: "3.0.4"
   vector_math:
     dependency: transitive
     description:
@@ -444,12 +444,12 @@ packages:
     source: hosted
     version: "0.2.0"
   xml:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: xml
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "4.5.1"
+    version: "5.1.0"
 sdks:
   dart: ">=2.12.0 <3.0.0"
   flutter: ">=1.24.0"
