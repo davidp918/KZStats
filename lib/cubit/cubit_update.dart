@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'cubit_state.dart';
 
-class ModeCubit extends Cubit<ModeState> {
+class ModeCubit extends Cubit<ModeState> with HydratedMixin {
   ModeCubit() : super(ModeState(mode: 'Kztimer', nub: false));
 
   void refresh() => emit(ModeState(mode: state.mode, nub: state.nub));
@@ -35,5 +38,15 @@ class ModeCubit extends Cubit<ModeState> {
     if (state.nub == true) {
       emit(ModeState(nub: false, mode: state.mode));
     }
+  }
+
+  @override
+  ModeState fromJson(Map<String, dynamic> json) {
+    return ModeState.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic> toJson(ModeState state) {
+    return state.toMap();
   }
 }

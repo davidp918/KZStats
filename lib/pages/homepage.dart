@@ -39,8 +39,11 @@ class Homepage extends StatelessWidget {
         listenWhen: (previous, current) {
           return previous.mode != current.mode || previous.nub != current.nub;
         },
-        listener: (context, state) =>
-            notifySwitching('${state.mode}', state.nub, context),
+        listener: (context, state) => notifySwitching(
+          '${state.mode}',
+          state.nub,
+          context,
+        ),
         builder: (context, state) {
           return FutureBuilder<List<KzTime>>(
             future: getTopRecords(state.mode, state.nub, 20),
