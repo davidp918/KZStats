@@ -26,92 +26,72 @@ class MapDetail extends StatelessWidget {
     return Scaffold(
       appBar: HomepageAppBar('Records'),
       body: BlocBuilder<ModeCubit, ModeState>(
-        builder: (context, state) {
-          return FutureBuilder<List<MapTop>>(
-            // get top 100 records
-            future: getMapTopRecords(
+        builder: (context, state) => FutureBuilder<List<List<MapTop>>>(
+          future: Future.wait([
+            getMapTopRecords(
               prevSnapshotData.mapName,
               state.mode,
               state.nub,
               100,
             ),
-            builder: (
-              BuildContext mapTopContext,
-              AsyncSnapshot<List<MapTop>> mapTopSnapshot,
-            ) {
-              return FutureBuilder<List<MapTop>>(
-                // get tp wr
-                future: getMapTopRecords(
-                  prevSnapshotData.mapName,
-                  state.mode,
-                  true,
-                  1,
-                ),
-                builder: (
-                  BuildContext nubWrContext,
-                  AsyncSnapshot<List<MapTop>> nubWrSnapshot,
-                ) {
-                  return FutureBuilder<List<MapTop>>(
-                    // get tp wr
-                    future: getMapTopRecords(
-                      prevSnapshotData.mapName,
-                      state.mode,
-                      false,
-                      1,
-                    ),
-                    builder: (
-                      BuildContext proWrContext,
-                      AsyncSnapshot<List<MapTop>> proWrSnapshot,
-                    ) {
-                      return FutureBuilder<Mapinfo>(
-                        // get map info, e.g tier
-                        future: getMapInfo(prevSnapshotData.mapId.toString()),
-                        builder: (
-                          BuildContext mapInfoContext,
-                          AsyncSnapshot<Mapinfo> mapInfoSnapshot,
-                        ) =>
-                            transition(
-                          mapTopSnapshot,
-                          nubWrSnapshot,
-                          proWrSnapshot,
-                          mapInfoSnapshot,
-                        ),
-                      );
-                    },
-                  );
-                },
-              );
-            },
-          );
-        },
+            getMapTopRecords(
+              prevSnapshotData.mapName,
+              state.mode,
+              true,
+              1,
+            ),
+            getMapTopRecords(
+              prevSnapshotData.mapName,
+              state.mode,
+              false,
+              1,
+            ),
+          ]),
+          builder: (
+            BuildContext context,
+            AsyncSnapshot<List<List<MapTop>>> mapTopSnapshot,
+          ) {
+            return FutureBuilder<Mapinfo>(
+              // get map info, e.g tier
+              future: getMapInfo(prevSnapshotData.mapId.toString()),
+              builder: (
+                BuildContext mapInfoContext,
+                AsyncSnapshot<Mapinfo> mapInfoSnapshot,
+              ) =>
+                  transition(
+                mapTopSnapshot,
+                mapInfoSnapshot,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
 
   Widget transition(
-    AsyncSnapshot<List<MapTop>> mapTopSnapshot,
-    AsyncSnapshot<List<MapTop>> nubWrSnapshot,
-    AsyncSnapshot<List<MapTop>> proWrSnapshot,
+    AsyncSnapshot<List<List<MapTop>>> mapTopSnapshot,
     AsyncSnapshot<Mapinfo> mapInfoSnapshot,
   ) {
     return mapTopSnapshot.connectionState == ConnectionState.done &&
-            nubWrSnapshot.connectionState == ConnectionState.done &&
-            proWrSnapshot.connectionState == ConnectionState.done &&
             mapInfoSnapshot.connectionState == ConnectionState.done
         ? mainBody(
-            mapTopSnapshot,
-            nubWrSnapshot,
-            proWrSnapshot,
-            mapInfoSnapshot,
+            // mapTopSnapshot index 0: top 100 records of current bloc state
+            //                index 1: single instance of Maptop: nub wr
+            //                index 2: single instance of Maptop: pro wr
+            mapTopSnapshot.data[0],
+            mapTopSnapshot.data[1][0],
+            mapTopSnapshot.data[2][0],
+            mapInfoSnapshot.data,
           )
         : loadingFromApi();
   }
 
   Widget mainBody(
-    AsyncSnapshot<List<MapTop>> mapTopSnapshot,
-    AsyncSnapshot<List<MapTop>> nubWrSnapshot,
-    AsyncSnapshot<List<MapTop>> proWrSnapshot,
-    AsyncSnapshot<Mapinfo> mapInfoSnapshot,
+    List<MapTop> mapTop,
+    MapTop nubWr,
+    MapTop proWr,
+    Mapinfo mapInfo,
   ) {
     return Container(
       padding: EdgeInsets.all(10.0),
@@ -133,7 +113,7 @@ class MapDetail extends StatelessWidget {
                   errorWidget: (context, url, error) => Image(
                     image: AssetImage('assets/icon/noimage.png'),
                   ),
-                  imageUrl: '$imageBaseURL${mapInfoSnapshot.data.name}}.webp',
+                  imageUrl: '$imageBaseURL${mapInfo.name}}.webp',
                 ),
               ),
               Column(
@@ -142,7 +122,7 @@ class MapDetail extends StatelessWidget {
                     '${prevSnapshotData.mapName}',
                   ),
                   Text(
-                    'Tier: ${identifyTier(mapInfoSnapshot.data.difficulty)}',
+                    'Tier: ${identifyTier(mapInfo.difficulty)}',
                   ),
                   Row(
                     children: [
@@ -150,8 +130,8 @@ class MapDetail extends StatelessWidget {
                       SizedBox(
                         width: 5,
                       ),
-                      Text('PRO  ${toMinSec(proWrSnapshot.data[0].time)}'),
-                      Text(' by ${proWrSnapshot.data[0].playerName}'),
+                      Text('PRO  ${toMinSec(proWr.time)}'),
+                      Text(' by ${proWr.playerName}'),
                     ],
                   ),
                   Row(
@@ -160,21 +140,21 @@ class MapDetail extends StatelessWidget {
                       SizedBox(
                         width: 5,
                       ),
-                      Text('NUB  ${toMinSec(nubWrSnapshot.data[0].time)}'),
-                      Text(' by ${nubWrSnapshot.data[0].playerName}'),
+                      Text('NUB  ${toMinSec(nubWr.time)}'),
+                      Text(' by ${nubWr.playerName}'),
                     ],
                   ),
                 ],
               ),
             ],
           ),
-          buildDataTable(),
+          buildDataTable(mapTop),
         ],
       ),
     );
   }
 
-  Widget buildDataTable() {
+  Widget buildDataTable(List<MapTop> mapTop) {
     final columns = [
       'Rank',
       'Player',
@@ -191,9 +171,25 @@ class MapDetail extends StatelessWidget {
             ))
         .toList();
 
+    List<DataCell> getCells(List<dynamic> cells) =>
+        cells.map((data) => DataCell(Text('$data'))).toList();
+
+    List<DataRow> getRows(List<MapTop> mapTop) => mapTop.map((MapTop record) {
+          final cells = [
+            record.id,
+            record.playerName,
+            record.time,
+            record.points,
+            record.teleports,
+            record.createdOn,
+            record.serverName,
+          ];
+          return DataRow(cells: getCells(cells));
+        }).toList();
+
     return DataTable(
       columns: getColumns(columns),
-      rows: [],
+      rows: getRows(mapTop),
     );
   }
 }
