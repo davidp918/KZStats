@@ -22,7 +22,7 @@ class MapDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomepageAppBar('Records'),
+      appBar: HomepageAppBar('${prevSnapshotData.mapName}'),
       body: BlocBuilder<ModeCubit, ModeState>(
         builder: (context, state) => FutureBuilder<List<List<MapTop>>>(
           future: Future.wait([
@@ -91,87 +91,84 @@ class MapDetail extends StatelessWidget {
     MapTop proWr,
     Mapinfo mapInfo,
   ) {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            height: 100,
-            child: CachedNetworkImage(
-              placeholder: (context, url) => Center(
-                child: SizedBox(
-                  child: CircularProgressIndicator(),
-                  height: 30,
-                  width: 30,
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Container(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: 100,
+              child: CachedNetworkImage(
+                placeholder: (context, url) => Center(
+                  child: SizedBox(
+                    child: CircularProgressIndicator(),
+                    height: 30,
+                    width: 30,
+                  ),
                 ),
+                errorWidget: (context, url, error) => Image(
+                  image: AssetImage('assets/icon/noimage.png'),
+                ),
+                imageUrl: '$imageBaseURL${prevSnapshotData.mapName}}.webp',
               ),
-              errorWidget: (context, url, error) => Image(
-                image: AssetImage('assets/icon/noimage.png'),
-              ),
-              imageUrl: '$imageBaseURL${prevSnapshotData.mapName}}.webp',
             ),
-          ),
-          Text(
-            '${prevSnapshotData.mapName}',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 14,
+            SizedBox(
+              height: 10,
             ),
-          ),
-          Text(
-            'Tier: ${identifyTier(mapInfo.difficulty)}',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 14,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                trophy(14, 14),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  'PRO  ${toMinSec(proWr.time)}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  ' by ${proWr.playerName}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
             ),
-          ),
-          Row(
-            children: [
-              trophy(14, 14),
-              SizedBox(
-                width: 5,
-              ),
-              Text(
-                'PRO  ${toMinSec(proWr.time)}',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
+            SizedBox(
+              height: 3,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                trophy(14, 14),
+                SizedBox(
+                  width: 5,
                 ),
-              ),
-              Text(
-                ' by ${proWr.playerName}',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
+                Text(
+                  'NUB  ${toMinSec(nubWr.time)}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              trophy(14, 14),
-              SizedBox(
-                width: 5,
-              ),
-              Text(
-                'NUB  ${toMinSec(nubWr.time)}',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
+                Text(
+                  ' by ${nubWr.playerName}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
                 ),
-              ),
-              Text(
-                ' by ${nubWr.playerName}',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-          buildDataTable(mapTop),
-        ],
+              ],
+            ),
+            buildDataTable(mapTop),
+          ],
+        ),
       ),
     );
   }
@@ -194,26 +191,32 @@ class MapDetail extends StatelessWidget {
 
     List<DataCell> getCells(List<dynamic> cells) =>
         cells.map((data) => DataCell(Text('$data'))).toList();
-
-    List<DataRow> getRows(List<MapTop> mapTop) => mapTop.map((MapTop record) {
+    var index = 1;
+    List<DataRow> getRows(List<MapTop> mapTop) {
+      return mapTop.map(
+        (MapTop record) {
           final cells = [
-            record.id,
+            index,
             record.playerName,
             toMinSec(record.time),
             record.points,
             record.teleports,
             record.createdOn,
           ];
+          index = index + 1;
           return DataRow(cells: getCells(cells));
-        }).toList();
+        },
+      ).toList();
+    }
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        child: DataTable(
-          columns: getColumns(columns),
-          rows: getRows(mapTop),
-        ),
+      child: DataTable(
+        headingRowHeight: 30,
+        headingTextStyle: TextStyle(color: Colors.white),
+        columnSpacing: 5,
+        columns: getColumns(columns),
+        rows: getRows(mapTop),
       ),
     );
   }

@@ -164,6 +164,7 @@ class Homepage extends StatelessWidget {
                 padding: EdgeInsets.only(right: 11),
                 child: Container(
                   height: 90,
+                  width: 160,
                   child: CachedNetworkImage(
                     placeholder: (context, url) => Center(
                       child: SizedBox(

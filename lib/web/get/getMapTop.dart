@@ -22,5 +22,6 @@ Future<List<MapTop>> getMapTopRecords(
         ? mapTopRecords = mapTopFromJson(response.body)
         : print('something wrong');
   } catch (exception) {}
+
   return mapTopRecords;
 }

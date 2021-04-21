@@ -16,15 +16,15 @@ String topRecordsSelect(String mode, bool ifNub, int amount) {
 
 // Top records of a specific map
 const kz_mapTopRecords =
-    "https://kztimerglobal.com/api/v1.0/records/top?map_name=mapName&tickrate=128&stage=0&modes_list_string=mode&ifNub&limit=amount";
+    "https://kztimerglobal.com/api/v1.0/records/top?map_name=!mapName&tickrate=128&stage=0&modes_list_string=!mode&ifNub&limit=!amount";
 
 String mapTopRecordsSelect(
     String mapName, String mode, bool ifNub, int amount) {
   return kz_mapTopRecords
-      .replaceAll('mapName', mapName)
-      .replaceAll('mode', mode)
+      .replaceAll('!mapName', mapName)
+      .replaceAll('!mode', mode)
       .replaceAll('&ifNub', ifNub ? '' : 'has_teleports=false')
-      .replaceAll('amount', amount.toString());
+      .replaceAll('!amount', amount.toString());
 }
 
 // WR of NUB and PRO of a map
