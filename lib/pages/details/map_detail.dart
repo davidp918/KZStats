@@ -111,7 +111,7 @@ class MapDetail extends StatelessWidget {
               errorWidget: (context, url, error) => Image(
                 image: AssetImage('assets/icon/noimage.png'),
               ),
-              imageUrl: '$imageBaseURL${mapInfo.name}}.webp',
+              imageUrl: '$imageBaseURL${prevSnapshotData.mapName}}.webp',
             ),
           ),
           Text(
