@@ -16,9 +16,7 @@ import 'package:kzstats/web/get/getMapInfo.dart';
 import 'package:kzstats/others/tierIdentifier.dart';
 
 class MapDetail extends StatelessWidget {
-  final String currentPage = 'KZStats';
   final KzTime prevSnapshotData;
-
   const MapDetail({Key key, this.prevSnapshotData}) : super(key: key);
 
   @override
