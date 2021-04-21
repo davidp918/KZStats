@@ -96,55 +96,79 @@ class MapDetail extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(10.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                height: 90,
-                width: 160.71,
-                child: CachedNetworkImage(
-                  placeholder: (context, url) => Center(
-                    child: SizedBox(
-                      child: CircularProgressIndicator(),
-                      height: 30,
-                      width: 30,
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Image(
-                    image: AssetImage('assets/icon/noimage.png'),
-                  ),
-                  imageUrl: '$imageBaseURL${mapInfo.name}}.webp',
+          Container(
+            height: 100,
+            child: CachedNetworkImage(
+              placeholder: (context, url) => Center(
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  height: 30,
+                  width: 30,
                 ),
               ),
-              Column(
-                children: <Widget>[
-                  Text(
-                    '${prevSnapshotData.mapName}',
-                  ),
-                  Text(
-                    'Tier: ${identifyTier(mapInfo.difficulty)}',
-                  ),
-                  Row(
-                    children: [
-                      trophy(14, 14),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('PRO  ${toMinSec(proWr.time)}'),
-                      Text(' by ${proWr.playerName}'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      trophy(14, 14),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('NUB  ${toMinSec(nubWr.time)}'),
-                      Text(' by ${nubWr.playerName}'),
-                    ],
-                  ),
-                ],
+              errorWidget: (context, url, error) => Image(
+                image: AssetImage('assets/icon/noimage.png'),
+              ),
+              imageUrl: '$imageBaseURL${mapInfo.name}}.webp',
+            ),
+          ),
+          Text(
+            '${prevSnapshotData.mapName}',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            ),
+          ),
+          Text(
+            'Tier: ${identifyTier(mapInfo.difficulty)}',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            ),
+          ),
+          Row(
+            children: [
+              trophy(14, 14),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                'PRO  ${toMinSec(proWr.time)}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                ' by ${proWr.playerName}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              trophy(14, 14),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                'NUB  ${toMinSec(nubWr.time)}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                ' by ${nubWr.playerName}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
               ),
             ],
           ),
@@ -162,7 +186,6 @@ class MapDetail extends StatelessWidget {
       'Points',
       'TPs',
       'Date',
-      'Server',
     ];
 
     List<DataColumn> getColumns(List<String> columns) => columns
@@ -178,18 +201,22 @@ class MapDetail extends StatelessWidget {
           final cells = [
             record.id,
             record.playerName,
-            record.time,
+            toMinSec(record.time),
             record.points,
             record.teleports,
             record.createdOn,
-            record.serverName,
           ];
           return DataRow(cells: getCells(cells));
         }).toList();
 
-    return DataTable(
-      columns: getColumns(columns),
-      rows: getRows(mapTop),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SingleChildScrollView(
+        child: DataTable(
+          columns: getColumns(columns),
+          rows: getRows(mapTop),
+        ),
+      ),
     );
   }
 }
