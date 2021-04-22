@@ -14,6 +14,8 @@ import 'package:kzstats/web/json/mapTop_json.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/get/getMapInfo.dart';
 import 'package:kzstats/others/tierIdentifier.dart';
+import 'package:kzstats/others/modifyDate.dart';
+import 'package:kzstats/others/strCheckLen.dart';
 
 class MapDetail extends StatelessWidget {
   final KzTime prevSnapshotData;
@@ -197,11 +199,11 @@ class MapDetail extends StatelessWidget {
         (MapTop record) {
           final cells = [
             index,
-            record.playerName,
+            lenCheck(record.playerName, 15),
             toMinSec(record.time),
             record.points,
             record.teleports,
-            record.createdOn,
+            modifyDate(record.createdOn.toString()),
           ];
           index = index + 1;
           return DataRow(cells: getCells(cells));
