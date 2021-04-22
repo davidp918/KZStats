@@ -15,6 +15,7 @@ import 'package:kzstats/others/timeConversion.dart';
 import 'package:kzstats/web/future/kzstatsApiPlayerNation.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/svg.dart';
+import 'package:kzstats/theme/colors.dart';
 
 class Homepage extends StatelessWidget {
   final String currentPage = 'KZStats';
@@ -193,7 +194,7 @@ class Homepage extends StatelessWidget {
                         kzInfosnapshot.data[index].mapName,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: Colors.blue.shade100,
+                          color: inkwellBlue(),
                           fontSize: 16,
                         ),
                       ),

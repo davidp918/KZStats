@@ -10,7 +10,7 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color.fromARGB(255, 25, 36, 51),
+      backgroundColor: Color(0xff131821),
       elevation: 20,
       title: Text(currentPage),
       centerTitle: true,

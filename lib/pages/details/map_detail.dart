@@ -16,32 +16,38 @@ import 'package:kzstats/web/get/getMapInfo.dart';
 import 'package:kzstats/others/tierIdentifier.dart';
 import 'package:kzstats/others/modifyDate.dart';
 import 'package:kzstats/others/strCheckLen.dart';
+import 'package:kzstats/theme/colors.dart';
 
-class MapDetail extends StatelessWidget {
+class MapDetail extends StatefulWidget {
   final KzTime prevSnapshotData;
   const MapDetail({Key key, this.prevSnapshotData}) : super(key: key);
 
   @override
+  _MapDetailState createState() => _MapDetailState();
+}
+
+class _MapDetailState extends State<MapDetail> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomepageAppBar('${prevSnapshotData.mapName}'),
+      appBar: HomepageAppBar('${widget.prevSnapshotData.mapName}'),
       body: BlocBuilder<ModeCubit, ModeState>(
         builder: (context, state) => FutureBuilder<List<List<MapTop>>>(
           future: Future.wait([
             getMapTopRecords(
-              prevSnapshotData.mapName,
+              widget.prevSnapshotData.mapName,
               state.mode,
               state.nub,
               100,
             ),
             getMapTopRecords(
-              prevSnapshotData.mapName,
+              widget.prevSnapshotData.mapName,
               state.mode,
               true,
               1,
             ),
             getMapTopRecords(
-              prevSnapshotData.mapName,
+              widget.prevSnapshotData.mapName,
               state.mode,
               false,
               1,
@@ -53,7 +59,7 @@ class MapDetail extends StatelessWidget {
           ) {
             return FutureBuilder<Mapinfo>(
               // get map info, e.g tier
-              future: getMapInfo(prevSnapshotData.mapId.toString()),
+              future: getMapInfo(widget.prevSnapshotData.mapId.toString()),
               builder: (
                 BuildContext mapInfoContext,
                 AsyncSnapshot<Mapinfo> mapInfoSnapshot,
@@ -96,7 +102,7 @@ class MapDetail extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Container(
-        padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -113,7 +119,8 @@ class MapDetail extends StatelessWidget {
                 errorWidget: (context, url, error) => Image(
                   image: AssetImage('assets/icon/noimage.png'),
                 ),
-                imageUrl: '$imageBaseURL${prevSnapshotData.mapName}}.webp',
+                imageUrl:
+                    '$imageBaseURL${widget.prevSnapshotData.mapName}}.webp',
               ),
             ),
             SizedBox(
@@ -168,7 +175,13 @@ class MapDetail extends StatelessWidget {
                 ),
               ],
             ),
-            buildDataTable(mapTop),
+            SizedBox(
+              height: 8,
+            ),
+            Theme(
+              data: Theme.of(context).copyWith(dividerColor: Colors.black),
+              child: buildDataTable(mapTop),
+            ),
           ],
         ),
       ),
@@ -177,49 +190,100 @@ class MapDetail extends StatelessWidget {
 
   Widget buildDataTable(List<MapTop> mapTop) {
     final columns = [
-      'Rank',
+      '#',
       'Player',
       'Time',
-      'Points',
       'TPs',
       'Date',
+      'Server',
     ];
-
     List<DataColumn> getColumns(List<String> columns) => columns
         .map((String column) => DataColumn(
-              label: Text(column),
+              label: Text('$column'),
             ))
         .toList();
 
-    List<DataCell> getCells(List<dynamic> cells) =>
-        cells.map((data) => DataCell(Text('$data'))).toList();
-    var index = 1;
-    List<DataRow> getRows(List<MapTop> mapTop) {
-      return mapTop.map(
-        (MapTop record) {
-          final cells = [
-            index,
-            lenCheck(record.playerName, 15),
-            toMinSec(record.time),
-            record.points,
-            record.teleports,
-            modifyDate(record.createdOn.toString()),
-          ];
-          index = index + 1;
-          return DataRow(cells: getCells(cells));
-        },
-      ).toList();
-    }
-
     return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(
-        headingRowHeight: 30,
-        headingTextStyle: TextStyle(color: Colors.white),
-        columnSpacing: 5,
+      child: PaginatedDataTable(
         columns: getColumns(columns),
-        rows: getRows(mapTop),
+        source: RecordsSource(records: mapTop),
+        dataRowHeight: 50,
       ),
     );
   }
+}
+
+class RecordsSource extends DataTableSource {
+  final List<MapTop> _records;
+  RecordsSource({
+    @required List<MapTop> records,
+  }) : _records = records;
+
+  @override
+  DataRow getRow(int index) {
+    assert(index >= 0);
+    if (index >= _records.length) return null;
+    final MapTop record = _records[index];
+    return DataRow.byIndex(
+      index: index,
+      color: MaterialStateColor.resolveWith(
+        (states) {
+          if (index % 2 == 0) {
+            return Color(0xff4a5568);
+          } else {
+            return Color(0xff242d3d);
+          }
+        },
+      ),
+      cells: <DataCell>[
+        DataCell(Text(
+          '#${[index, 1].reduce((a, b) => a + b)}',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        )),
+        DataCell(Text(
+          '${lenCheck(record.playerName, 15)}',
+          style: TextStyle(color: inkwellBlue()),
+        )),
+        DataCell(Text(
+          '${toMinSec(record.time)}',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        )),
+        DataCell(Text(
+          '${record.teleports}',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        )),
+        DataCell(
+          Text(
+            '${record.createdOn.toString()}',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+        DataCell(
+          Text(
+            '${record.serverName}',
+            style: TextStyle(
+              color: inkwellBlue(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => _records.length;
+
+  @override
+  int get selectedRowCount => 0;
 }

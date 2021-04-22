@@ -9,7 +9,7 @@ String toMinSec(double sec) {
 String diffofNow(DateTime timeRecordCreated) {
   //final String currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
   var now = DateTime.now().toUtc();
-  var diff = now.difference(timeRecordCreated).inSeconds.toInt() - 8 * 60 * 60;
+  var diff = now.difference(timeRecordCreated).inSeconds.toInt();
 
   List<String> time = [
     'second',
