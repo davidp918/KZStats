@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:kzstats/common/Popup_mode.dart';
 import 'SearchBar.dart';
+import 'package:kzstats/theme/colors.dart';
 
 class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String currentPage;
@@ -10,7 +11,7 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color(0xff131821),
+      backgroundColor: appbarColor(),
       elevation: 20,
       title: Text(currentPage),
       centerTitle: true,

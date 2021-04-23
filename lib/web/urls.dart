@@ -1,28 +1,24 @@
+import 'package:kzstats/others/convertMode.dart';
+
 // Latest wr records
 const kz_wr =
     "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=mode!&place_top_at_least=1ifnub!&stage=0&limit=amount!&tickrate=128";
 
 String topRecordsSelect(String mode, bool ifNub, int amount) {
-  String trueMode = mode == 'Kztimer'
-      ? 'kz_timer'
-      : mode == 'SimpleKZ'
-          ? 'kz_simple'
-          : 'kz_vanilla';
   return kz_wr
-      .replaceAll('mode!', trueMode)
+      .replaceAll('mode!', convertMode(mode))
       .replaceAll('ifnub!', ifNub ? '' : '&has_teleports=false')
       .replaceAll('amount!', amount.toString());
 }
 
 // Top records of a specific map
 const kz_mapTopRecords =
-    "https://kztimerglobal.com/api/v1.0/records/top?map_name=!mapName&tickrate=128&stage=0&modes_list_string=!mode!ifNub&limit=!amount";
+    "https://kztimerglobal.com/api/v1.0/records/top?modes_list_string=!mode&map_id=!mapId&stage=0!ifNub&limit=!amount&tickrate=128";
 
-String mapTopRecordsSelect(
-    String mapName, String mode, bool ifNub, int amount) {
+String mapTopRecordsSelect(int mapId, String mode, bool ifNub, int amount) {
   return kz_mapTopRecords
-      .replaceAll('!mapName', mapName)
-      .replaceAll('!mode', mode)
+      .replaceAll('!mapId', mapId.toString())
+      .replaceAll('!mode', convertMode(mode))
       .replaceAll('!ifNub', ifNub ? '' : '&has_teleports=false')
       .replaceAll('!amount', amount.toString());
 }
