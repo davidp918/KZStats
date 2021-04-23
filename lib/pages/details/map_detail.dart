@@ -179,7 +179,10 @@ class _MapDetailState extends State<MapDetail> {
               height: 8,
             ),
             Theme(
-              data: Theme.of(context).copyWith(dividerColor: Colors.black),
+              data: Theme.of(context).copyWith(
+                cardColor: Color(0xff4a5568),
+                dividerColor: Colors.white24,
+              ),
               child: buildDataTable(mapTop),
             ),
           ],
@@ -198,16 +201,28 @@ class _MapDetailState extends State<MapDetail> {
       'Server',
     ];
     List<DataColumn> getColumns(List<String> columns) => columns
-        .map((String column) => DataColumn(
-              label: Text('$column'),
-            ))
+        .map(
+          (String column) => DataColumn(
+            label: Text(
+              '$column',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        )
         .toList();
 
     return SingleChildScrollView(
       child: PaginatedDataTable(
+        headingRowHeight: 42,
+        dataRowHeight: 42,
+        horizontalMargin: 14,
+        columnSpacing: 20,
         columns: getColumns(columns),
         source: RecordsSource(records: mapTop),
-        dataRowHeight: 50,
       ),
     );
   }
@@ -243,7 +258,7 @@ class RecordsSource extends DataTableSource {
           ),
         )),
         DataCell(Text(
-          '${lenCheck(record.playerName, 15)}',
+          '${record.playerName}',
           style: TextStyle(color: inkwellBlue()),
         )),
         DataCell(Text(
