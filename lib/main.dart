@@ -5,6 +5,7 @@ import 'package:kzstats/cubit/cubit_update.dart';
 
 import 'package:kzstats/router.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:kzstats/theme/colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       create: (context) => ModeCubit(),
       child: MaterialApp(
         theme: ThemeData(
-          scaffoldBackgroundColor: Color(0xff4a5568),
+          scaffoldBackgroundColor: backgroundColor(),
         ),
         onGenerateRoute: _appRouter.onGenerateRoute,
       ),

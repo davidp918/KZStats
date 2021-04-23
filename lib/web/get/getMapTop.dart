@@ -7,7 +7,7 @@ import 'package:kzstats/web/urls.dart';
 List<MapTop> mapTopRecords;
 
 Future<List<MapTop>> getMapTopRecords(
-  String mapName,
+  int mapId,
   String currentMode,
   bool ifNub,
   int amount,
@@ -15,13 +15,15 @@ Future<List<MapTop>> getMapTopRecords(
   try {
     var response = await http.get(
       Uri.parse(
-        mapTopRecordsSelect(mapName, currentMode, ifNub, amount),
+        mapTopRecordsSelect(mapId, currentMode, ifNub, amount),
       ),
     );
     response.statusCode == HttpStatus.ok
         ? mapTopRecords = mapTopFromJson(response.body)
         : print('something wrong');
-  } catch (exception) {}
+  } catch (exception) {
+    throw UnimplementedError();
+  }
 
   return mapTopRecords;
 }

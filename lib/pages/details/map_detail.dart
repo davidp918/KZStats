@@ -17,6 +17,7 @@ import 'package:kzstats/others/tierIdentifier.dart';
 import 'package:kzstats/others/modifyDate.dart';
 import 'package:kzstats/others/strCheckLen.dart';
 import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/common/error.dart';
 
 class MapDetail extends StatefulWidget {
   final KzTime prevSnapshotData;
@@ -33,26 +34,28 @@ class _MapDetailState extends State<MapDetail> {
       appBar: HomepageAppBar('${widget.prevSnapshotData.mapName}'),
       body: BlocBuilder<ModeCubit, ModeState>(
         builder: (context, state) => FutureBuilder<List<List<MapTop>>>(
-          future: Future.wait([
-            getMapTopRecords(
-              widget.prevSnapshotData.mapName,
-              state.mode,
-              state.nub,
-              100,
-            ),
-            getMapTopRecords(
-              widget.prevSnapshotData.mapName,
-              state.mode,
-              true,
-              1,
-            ),
-            getMapTopRecords(
-              widget.prevSnapshotData.mapName,
-              state.mode,
-              false,
-              1,
-            ),
-          ]),
+          future: Future.wait(
+            [
+              getMapTopRecords(
+                widget.prevSnapshotData.mapId,
+                state.mode,
+                state.nub,
+                100,
+              ),
+              getMapTopRecords(
+                widget.prevSnapshotData.mapId,
+                state.mode,
+                true,
+                1,
+              ),
+              getMapTopRecords(
+                widget.prevSnapshotData.mapId,
+                state.mode,
+                false,
+                1,
+              ),
+            ],
+          ),
           builder: (
             BuildContext context,
             AsyncSnapshot<List<List<MapTop>>> mapTopSnapshot,
@@ -81,15 +84,17 @@ class _MapDetailState extends State<MapDetail> {
   ) {
     return mapTopSnapshot.connectionState == ConnectionState.done &&
             mapInfoSnapshot.connectionState == ConnectionState.done
-        ? mainBody(
-            // mapTopSnapshot index 0: top 100 records of current bloc state
-            //                index 1: single instance of Maptop: nub wr
-            //                index 2: single instance of Maptop: pro wr
-            mapTopSnapshot.data[0],
-            mapTopSnapshot.data[1][0],
-            mapTopSnapshot.data[2][0],
-            mapInfoSnapshot.data,
-          )
+        ? mapTopSnapshot.hasData
+            ? mainBody(
+                // mapTopSnapshot index 0: top 100 records of current bloc state
+                //                index 1: single instance of Maptop: nub wr
+                //                index 2: single instance of Maptop: pro wr
+                mapTopSnapshot.data[0],
+                mapTopSnapshot.data[1][0],
+                mapTopSnapshot.data[2][0],
+                mapInfoSnapshot.data,
+              )
+            : errorScreen()
         : loadingFromApi();
   }
 
@@ -102,12 +107,12 @@ class _MapDetailState extends State<MapDetail> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Container(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+        padding: EdgeInsets.fromLTRB(5, 14, 5, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-              height: 100,
+              height: 120,
               child: CachedNetworkImage(
                 placeholder: (context, url) => Center(
                   child: SizedBox(
@@ -129,7 +134,7 @@ class _MapDetailState extends State<MapDetail> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                trophy(14, 14),
+                trophy(15, 15),
                 SizedBox(
                   width: 5,
                 ),
@@ -137,14 +142,14 @@ class _MapDetailState extends State<MapDetail> {
                   'PRO  ${toMinSec(proWr.time)}',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 15,
                   ),
                 ),
                 Text(
                   ' by ${proWr.playerName}',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 15,
                   ),
                 ),
               ],
@@ -155,7 +160,7 @@ class _MapDetailState extends State<MapDetail> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                trophy(14, 14),
+                trophy(15, 15),
                 SizedBox(
                   width: 5,
                 ),
@@ -163,25 +168,25 @@ class _MapDetailState extends State<MapDetail> {
                   'NUB  ${toMinSec(nubWr.time)}',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 15,
                   ),
                 ),
                 Text(
                   ' by ${nubWr.playerName}',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 15,
                   ),
                 ),
               ],
             ),
             SizedBox(
-              height: 8,
+              height: 10,
             ),
             Theme(
               data: Theme.of(context).copyWith(
-                cardColor: Color(0xff4a5568),
-                dividerColor: Colors.white24,
+                cardColor: Color(0xff1D202C),
+                dividerColor: Color(0xff333333),
               ),
               child: buildDataTable(mapTop),
             ),
@@ -216,10 +221,12 @@ class _MapDetailState extends State<MapDetail> {
         .toList();
 
     return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
       child: PaginatedDataTable(
-        headingRowHeight: 42,
+        rowsPerPage: 20,
+        headingRowHeight: 40,
         dataRowHeight: 42,
-        horizontalMargin: 14,
+        horizontalMargin: 12,
         columnSpacing: 20,
         columns: getColumns(columns),
         source: RecordsSource(records: mapTop),
@@ -244,9 +251,9 @@ class RecordsSource extends DataTableSource {
       color: MaterialStateColor.resolveWith(
         (states) {
           if (index % 2 == 0) {
-            return Color(0xff4a5568);
+            return stack1();
           } else {
-            return Color(0xff242d3d);
+            return stack2();
           }
         },
       ),
@@ -258,7 +265,7 @@ class RecordsSource extends DataTableSource {
           ),
         )),
         DataCell(Text(
-          '${record.playerName}',
+          '${lenCheck(record.playerName, 15)}',
           style: TextStyle(color: inkwellBlue()),
         )),
         DataCell(Text(
@@ -268,7 +275,7 @@ class RecordsSource extends DataTableSource {
           ),
         )),
         DataCell(Text(
-          '${record.teleports}',
+          '${record.mapId}',
           style: TextStyle(
             color: Colors.white,
           ),

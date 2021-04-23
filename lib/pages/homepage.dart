@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -16,6 +15,7 @@ import 'package:kzstats/web/future/kzstatsApiPlayerNation.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/svg.dart';
 import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/common/error.dart';
 
 class Homepage extends StatelessWidget {
   final String currentPage = 'KZStats';
@@ -113,36 +113,7 @@ class Homepage extends StatelessWidget {
                   // tree as well
                 )
               : RefreshIndicator(
-                  child: Stack(children: <Widget>[
-                    ListView(),
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            EvilIcons.exclamation,
-                            size: 120,
-                            color: Colors.red.shade300,
-                          ),
-                          Text(
-                            'Global API is down',
-                            style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            'Try again later',
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]),
+                  child: errorScreen(),
                   onRefresh: () async =>
                       BlocProvider.of<ModeCubit>(context).refresh(),
                 )
