@@ -131,6 +131,16 @@ class _MapDetailState extends State<MapDetail> {
             SizedBox(
               height: 10,
             ),
+            Text(
+              'Tier: ${identifyTier(mapInfo.difficulty)}',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+            SizedBox(
+              height: 3,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -275,7 +285,7 @@ class RecordsSource extends DataTableSource {
           ),
         )),
         DataCell(Text(
-          '${record.mapId}',
+          '${record.teleports}',
           style: TextStyle(
             color: Colors.white,
           ),
