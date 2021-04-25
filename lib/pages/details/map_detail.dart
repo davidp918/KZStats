@@ -125,7 +125,7 @@ class _MapDetailState extends State<MapDetail> {
                   image: AssetImage('assets/icon/noimage.png'),
                 ),
                 imageUrl:
-                    '$imageBaseURL${widget.prevSnapshotData.mapName}}.webp',
+                    '$imageBaseURL${widget.prevSnapshotData.mapName}.webp',
               ),
             ),
             SizedBox(
@@ -233,7 +233,6 @@ class _MapDetailState extends State<MapDetail> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: PaginatedDataTable(
-        rowsPerPage: 20,
         headingRowHeight: 40,
         dataRowHeight: 42,
         horizontalMargin: 12,
