@@ -6,7 +6,7 @@ import '../json/steamPlayer_json.dart';
 
 Player playerSteam;
 
-Future<Player> getPlayerSteam(String steam64) async {
+Future<Player> getPlayerSteam(int steam64) async {
   const steamPlayer_join =
       '$proxy$steam_player_url$webApiKey$steam_player_url_connector';
   try {

@@ -3,6 +3,7 @@ import 'package:kzstats/pages/homepage.dart';
 import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
 import 'package:kzstats/web/json/kztime_json.dart';
+import 'package:kzstats/pages/details/player_detail.dart';
 
 class AppRouter {
   Route onGenerateRoute(RouteSettings settings) {
@@ -20,6 +21,13 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => MapDetail(
             prevSnapshotData: prevSnapshotData,
+          ),
+        );
+      case '/player_detail':
+        final int steamId64 = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => PlayerDetail(
+            steamId64: steamId64,
           ),
         );
       default:

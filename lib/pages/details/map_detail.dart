@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -233,6 +234,7 @@ class _MapDetailState extends State<MapDetail> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: PaginatedDataTable(
+        dragStartBehavior: DragStartBehavior.down,
         headingRowHeight: 40,
         dataRowHeight: 42,
         horizontalMargin: 12,
@@ -260,9 +262,9 @@ class RecordsSource extends DataTableSource {
       color: MaterialStateColor.resolveWith(
         (states) {
           if (index % 2 == 0) {
-            return stack1();
+            return primarythemeBlue();
           } else {
-            return stack2();
+            return secondarythemeBlue();
           }
         },
       ),

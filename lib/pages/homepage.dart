@@ -232,6 +232,11 @@ class Homepage extends StatelessWidget {
                         ),
                         onTap: () {
                           // routing to player detail screen
+                          Navigator.pushNamed(
+                            context,
+                            '/map_detail',
+                            arguments: kzInfosnapshot.data[index].steamid64,
+                          );
                         },
                       ),
                       SizedBox(
