@@ -7,7 +7,7 @@ class HomepageDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: secondarythemeBlue(),
+        color: primarythemeBlue(),
         child: ListView(
           children: <Widget>[],
         ),
