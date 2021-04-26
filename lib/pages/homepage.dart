@@ -1,21 +1,21 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
-import 'package:kzstats/cubit/cubit_update.dart';
-import 'package:kzstats/web/json/kztime_json.dart';
-import 'package:kzstats/others/strCheckLen.dart';
-import 'package:kzstats/web/get/getTopRecords.dart';
-import 'package:kzstats/web/urls.dart';
-import 'package:kzstats/others/timeConversion.dart';
-import 'package:kzstats/web/future/kzstatsApiPlayerNation.dart';
+import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
+import 'package:kzstats/common/networkImage.dart';
+import 'package:kzstats/cubit/cubit_update.dart';
+import 'package:kzstats/others/strCheckLen.dart';
+import 'package:kzstats/others/timeConversion.dart';
 import 'package:kzstats/svg.dart';
 import 'package:kzstats/theme/colors.dart';
-import 'package:kzstats/common/error.dart';
+import 'package:kzstats/web/future/kzstatsApiPlayerNation.dart';
+import 'package:kzstats/web/get/getTopRecords.dart';
+import 'package:kzstats/web/json/kztime_json.dart';
+import 'package:kzstats/web/urls.dart';
 
 class Homepage extends StatelessWidget {
   final String currentPage = 'KZStats';
@@ -137,19 +137,9 @@ class Homepage extends StatelessWidget {
                 child: Container(
                   height: 90,
                   width: 160,
-                  child: CachedNetworkImage(
-                    placeholder: (context, url) => Center(
-                      child: SizedBox(
-                        child: CircularProgressIndicator(),
-                        height: 30,
-                        width: 30,
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Image(
-                      image: AssetImage('assets/icon/noimage.png'),
-                    ),
-                    imageUrl:
-                        '$imageBaseURL${kzInfosnapshot.data[index].mapName}.webp',
+                  child: getCachedNetworkImage(
+                    '$imageBaseURL${kzInfosnapshot.data[index].mapName}.webp',
+                    AssetImage('assets/icon/noimage.png'),
                   ),
                 ),
               ),
@@ -161,7 +151,6 @@ class Homepage extends StatelessWidget {
                     child: Container(
                       width: 145,
                       child: Text(
-                        //'${lenCheck(kzInfosnapshot.data[index].mapName, 20)}',
                         kzInfosnapshot.data[index].mapName,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -171,8 +160,7 @@ class Homepage extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      Navigator.pushNamed(
-                        context,
+                      Navigator.of(context).pushNamed(
                         '/map_detail',
                         arguments: kzInfosnapshot.data[index],
                       );
@@ -231,10 +219,13 @@ class Homepage extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            '/map_detail',
-                            arguments: kzInfosnapshot.data[index].steamid64,
+                          Navigator.of(context).pushNamed(
+                            '/player_detail',
+                            // [0]: steam64, [1]: player name,
+                            arguments: [
+                              int.parse(kzInfosnapshot.data[index].steamid64),
+                              kzInfosnapshot.data[index].playerName,
+                            ],
                           );
                         },
                       ),

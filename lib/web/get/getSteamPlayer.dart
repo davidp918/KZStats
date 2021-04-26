@@ -1,14 +1,16 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:kzstats/web/json/steamplayer_json.dart';
 
 import 'package:kzstats/web/urls.dart';
-import '../json/steamPlayer_json.dart';
+import '../json/steamplayer_json.dart';
 
 Player playerSteam;
 
-Future<Player> getPlayerSteam(int steam64) async {
+Future<PlayerElement> getPlayerSteam(int steam64) async {
   const steamPlayer_join =
       '$proxy$steam_player_url$webApiKey$steam_player_url_connector';
+
   try {
     var response1 = await http.get(
       Uri.parse('$steamPlayer_join$steam64'),
@@ -18,5 +20,5 @@ Future<Player> getPlayerSteam(int steam64) async {
         : print('something wrong');
   } catch (exception) {}
 
-  return playerSteam;
+  return playerSteam.response.players[0];
 }

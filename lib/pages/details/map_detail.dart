@@ -1,24 +1,21 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:kzstats/common/AppBar.dart';
+import 'package:kzstats/common/datatable.dart';
+import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
+import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/cubit_update.dart';
+import 'package:kzstats/others/tierIdentifier.dart';
 import 'package:kzstats/others/timeConversion.dart';
-import 'package:kzstats/web/json/kztime_json.dart';
-import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/svg.dart';
+import 'package:kzstats/web/get/getMapInfo.dart';
 import 'package:kzstats/web/get/getMapTop.dart';
+import 'package:kzstats/web/json/kztime_json.dart';
 import 'package:kzstats/web/json/mapTop_json.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
-import 'package:kzstats/web/get/getMapInfo.dart';
-import 'package:kzstats/others/tierIdentifier.dart';
-import 'package:kzstats/others/modifyDate.dart';
-import 'package:kzstats/others/strCheckLen.dart';
-import 'package:kzstats/theme/colors.dart';
-import 'package:kzstats/common/error.dart';
+import 'package:kzstats/web/urls.dart';
 
 class MapDetail extends StatefulWidget {
   final KzTime prevSnapshotData;
@@ -114,19 +111,11 @@ class _MapDetailState extends State<MapDetail> {
           children: <Widget>[
             Container(
               height: 120,
-              child: CachedNetworkImage(
-                placeholder: (context, url) => Center(
-                  child: SizedBox(
-                    child: CircularProgressIndicator(),
-                    height: 30,
-                    width: 30,
-                  ),
+              child: getCachedNetworkImage(
+                '$imageBaseURL${widget.prevSnapshotData.mapName}.webp',
+                AssetImage(
+                  'assets/icon/noimage.png',
                 ),
-                errorWidget: (context, url, error) => Image(
-                  image: AssetImage('assets/icon/noimage.png'),
-                ),
-                imageUrl:
-                    '$imageBaseURL${widget.prevSnapshotData.mapName}.webp',
               ),
             ),
             SizedBox(
@@ -194,129 +183,10 @@ class _MapDetailState extends State<MapDetail> {
             SizedBox(
               height: 10,
             ),
-            Theme(
-              data: Theme.of(context).copyWith(
-                cardColor: Color(0xff1D202C),
-                dividerColor: Color(0xff333333),
-              ),
-              child: buildDataTable(mapTop),
-            ),
+            buildPaginatedDataTable(context, mapTop),
           ],
         ),
       ),
     );
   }
-
-  Widget buildDataTable(List<MapTop> mapTop) {
-    final columns = [
-      '#',
-      'Player',
-      'Time',
-      'TPs',
-      'Date',
-      'Server',
-    ];
-    List<DataColumn> getColumns(List<String> columns) => columns
-        .map(
-          (String column) => DataColumn(
-            label: Text(
-              '$column',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        )
-        .toList();
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: PaginatedDataTable(
-        dragStartBehavior: DragStartBehavior.down,
-        headingRowHeight: 40,
-        dataRowHeight: 42,
-        horizontalMargin: 12,
-        columnSpacing: 20,
-        columns: getColumns(columns),
-        source: RecordsSource(records: mapTop),
-      ),
-    );
-  }
-}
-
-class RecordsSource extends DataTableSource {
-  final List<MapTop> _records;
-  RecordsSource({
-    @required List<MapTop> records,
-  }) : _records = records;
-
-  @override
-  DataRow getRow(int index) {
-    assert(index >= 0);
-    if (index >= _records.length) return null;
-    final MapTop record = _records[index];
-    return DataRow.byIndex(
-      index: index,
-      color: MaterialStateColor.resolveWith(
-        (states) {
-          if (index % 2 == 0) {
-            return primarythemeBlue();
-          } else {
-            return secondarythemeBlue();
-          }
-        },
-      ),
-      cells: <DataCell>[
-        DataCell(Text(
-          '#${[index, 1].reduce((a, b) => a + b)}',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        )),
-        DataCell(Text(
-          '${lenCheck(record.playerName, 15)}',
-          style: TextStyle(color: inkwellBlue()),
-        )),
-        DataCell(Text(
-          '${toMinSec(record.time)}',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        )),
-        DataCell(Text(
-          '${record.teleports}',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        )),
-        DataCell(
-          Text(
-            '${record.createdOn.toString()}',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-        DataCell(
-          Text(
-            '${record.serverName}',
-            style: TextStyle(
-              color: inkwellBlue(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get rowCount => _records.length;
-
-  @override
-  int get selectedRowCount => 0;
 }

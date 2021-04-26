@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
-import 'package:kzstats/router.dart';
-import 'package:kzstats/theme/colors.dart';
 import '../toggleButton.dart';
 
 class Settings extends StatelessWidget {
-  final AppRouter _appRouter = AppRouter();
   final String currentPage = 'Settings';
   static const _modes = [
     ['KZTimer', 'SimpleKZ', 'Vanilla'],
