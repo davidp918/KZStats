@@ -21,7 +21,7 @@ String globalApiMaptopRecordsUrl(
       "https://kztimerglobal.com/api/v2.0/records/top?modes_list_string=!mode&map_id=!mapId&stage=0!ifNub&limit=!amount&tickrate=128";
   return kz_mapTopRecords
       .replaceAll('!mapId', mapId.toString())
-      .replaceAll('!mode', convertMode(mode))
+      .replaceAll('!mode', mode)
       .replaceAll('!ifNub', ifNub ? '' : '&has_teleports=false')
       .replaceAll('!amount', amount.toString());
 }
