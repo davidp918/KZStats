@@ -95,7 +95,7 @@ class _MapDetailState extends State<PlayerDetail> {
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 14),
                 Expanded(
                   child: Container(
                     height: 120,
@@ -112,14 +112,15 @@ class _MapDetailState extends State<PlayerDetail> {
                               style: TextStyle(
                                 color: Colors.white70,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 26,
+                                fontSize: 28,
                               ),
                             ),
+                            SizedBox(height: 1),
                             Text(
                               '(${kzstatsPlayerInfo.steamid32})',
                               style: TextStyle(
-                                color: Colors.white60,
-                                fontSize: 14,
+                                color: Colors.white54,
+                                fontSize: 13,
                               ),
                             ),
                           ],

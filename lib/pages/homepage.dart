@@ -10,7 +10,7 @@ import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/cubit_update.dart';
 import 'package:kzstats/others/strCheckLen.dart';
 import 'package:kzstats/others/timeConversion.dart';
-import 'package:kzstats/svg.dart';
+import 'package:kzstats/others/svg.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/future/kzstatsApiPlayerNation.dart';
 import 'package:kzstats/web/get/getTopRecords.dart';
@@ -181,7 +181,7 @@ class Homepage extends StatelessWidget {
                       SizedBox(
                         width: 3,
                       ),
-                      trophy(14, 14),
+                      gold(14, 14),
                       SizedBox(
                         width: 3,
                       ),
@@ -223,7 +223,7 @@ class Homepage extends StatelessWidget {
                             '/player_detail',
                             // [0]: steam64, [1]: player name,
                             arguments: [
-                              int.parse(kzInfosnapshot.data[index].steamid64),
+                              kzInfosnapshot.data[index].steamid64,
                               kzInfosnapshot.data[index].playerName,
                             ],
                           );

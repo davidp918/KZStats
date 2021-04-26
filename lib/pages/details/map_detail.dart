@@ -9,7 +9,7 @@ import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/cubit_update.dart';
 import 'package:kzstats/others/tierIdentifier.dart';
 import 'package:kzstats/others/timeConversion.dart';
-import 'package:kzstats/svg.dart';
+import 'package:kzstats/others/svg.dart';
 import 'package:kzstats/web/get/getMapInfo.dart';
 import 'package:kzstats/web/get/getMapTop.dart';
 import 'package:kzstats/web/json/kztime_json.dart';
@@ -31,7 +31,7 @@ class _MapDetailState extends State<MapDetail> {
     return Scaffold(
       appBar: HomepageAppBar('${widget.prevSnapshotData.mapName}'),
       body: BlocBuilder<ModeCubit, ModeState>(
-        builder: (context, state) => FutureBuilder<List<List<MapTop>>>(
+        builder: (context, state) => FutureBuilder<List<dynamic>>(
           future: Future.wait(
             [
               getMapTopRecords(
@@ -52,23 +52,16 @@ class _MapDetailState extends State<MapDetail> {
                 false,
                 1,
               ),
+              getMapInfo(widget.prevSnapshotData.mapId.toString()),
             ],
           ),
           builder: (
             BuildContext context,
-            AsyncSnapshot<List<List<MapTop>>> mapTopSnapshot,
+            AsyncSnapshot<List<dynamic>> snapshot,
           ) {
-            return FutureBuilder<Mapinfo>(
-              // get map info, e.g tier
-              future: getMapInfo(widget.prevSnapshotData.mapId.toString()),
-              builder: (
-                BuildContext mapInfoContext,
-                AsyncSnapshot<Mapinfo> mapInfoSnapshot,
-              ) =>
-                  transition(
-                mapTopSnapshot,
-                mapInfoSnapshot,
-              ),
+            return transition(
+              context,
+              snapshot,
             );
           },
         ),
@@ -77,20 +70,18 @@ class _MapDetailState extends State<MapDetail> {
   }
 
   Widget transition(
-    AsyncSnapshot<List<List<MapTop>>> mapTopSnapshot,
-    AsyncSnapshot<Mapinfo> mapInfoSnapshot,
-  ) {
-    return mapTopSnapshot.connectionState == ConnectionState.done &&
-            mapInfoSnapshot.connectionState == ConnectionState.done
-        ? mapTopSnapshot.hasData
+      BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+    return snapshot.connectionState == ConnectionState.done
+        ? snapshot.hasData
             ? mainBody(
-                // mapTopSnapshot index 0: top 100 records of current bloc state
-                //                index 1: single instance of Maptop: nub wr
-                //                index 2: single instance of Maptop: pro wr
-                mapTopSnapshot.data[0],
-                mapTopSnapshot.data[1][0],
-                mapTopSnapshot.data[2][0],
-                mapInfoSnapshot.data,
+                // index 0: top 100 records of current bloc state
+                // index 1: single instance of Maptop: nub wr
+                // index 2: single instance of Maptop: pro wr
+                // index 3: map info
+                snapshot.data[0],
+                snapshot.data[1][0],
+                snapshot.data[2][0],
+                snapshot.data[3],
               )
             : errorScreen()
         : loadingFromApi();
@@ -134,7 +125,7 @@ class _MapDetailState extends State<MapDetail> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                trophy(15, 15),
+                gold(15, 15),
                 SizedBox(
                   width: 5,
                 ),
@@ -160,7 +151,7 @@ class _MapDetailState extends State<MapDetail> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                trophy(15, 15),
+                gold(15, 15),
                 SizedBox(
                   width: 5,
                 ),

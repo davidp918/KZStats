@@ -5,6 +5,7 @@ import 'package:kzstats/others/strCheckLen.dart';
 import 'package:kzstats/others/timeConversion.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/json/mapTop_json.dart';
+import 'package:kzstats/others/pointsClassification.dart';
 
 Widget buildPaginatedDataTable(BuildContext context, List<dynamic> records) {
   return Theme(
@@ -21,6 +22,7 @@ Widget buildDataTable(BuildContext context, List<MapTop> mapTop) {
     '#',
     'Player',
     'Time',
+    'Points',
     'TPs',
     'Date',
     'Server',
@@ -90,7 +92,7 @@ class RecordsSource extends DataTableSource {
               return Navigator.of(context).pushNamed(
                 '/player_detail',
                 arguments: [
-                  int.parse(record.steamid64),
+                  record.steamid64,
                   record.playerName,
                 ],
               );
@@ -101,18 +103,25 @@ class RecordsSource extends DataTableSource {
             ),
           ),
         ),
-        DataCell(Text(
-          '${toMinSec(record.time)}',
-          style: TextStyle(
-            color: Colors.white,
+        DataCell(
+          Text(
+            '${toMinSec(record.time)}',
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
-        )),
-        DataCell(Text(
-          '${record.teleports}',
-          style: TextStyle(
-            color: Colors.white,
+        ),
+        DataCell(
+          classifyPoints(record.points),
+        ),
+        DataCell(
+          Text(
+            '${record.teleports}',
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
-        )),
+        ),
         DataCell(
           Text(
             '${record.createdOn.toString()}',

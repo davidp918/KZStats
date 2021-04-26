@@ -52,7 +52,7 @@ class MapTop {
 
   factory MapTop.fromJson(Map<String, dynamic> json) => MapTop(
         id: json["id"],
-        steamid64: json["steamid64"].toDouble(),
+        steamid64: json["steamid64"],
         playerName: json["player_name"],
         steamId: json["steam_id"],
         serverId: json["server_id"],
