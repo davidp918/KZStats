@@ -11,7 +11,9 @@ Future<List<String>> getPlayerKzstatsNation(
       (item) {
         return getPlayerKzstatsApi(item.steamid64).then(
           (value) {
-            return value.loccountrycode.toLowerCase();
+            return value.loccountrycode != null
+                ? value.loccountrycode.toLowerCase()
+                : 'null';
           },
         );
       },
