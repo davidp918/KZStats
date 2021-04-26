@@ -1,7 +1,17 @@
+// To parse this JSON data, do
+//
+//     final wr = wrFromJson(jsonString);
+
 import 'dart:convert';
 
-class KzTime {
-  KzTime({
+List<Wr> wrFromJson(String str) =>
+    List<Wr>.from(json.decode(str).map((x) => Wr.fromJson(x)));
+
+String wrToJson(List<Wr> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class Wr {
+  Wr({
     this.id,
     this.steamid64,
     this.playerName,
@@ -49,7 +59,7 @@ class KzTime {
   int recordFilterId;
   int replayId;
 
-  factory KzTime.fromJson(Map<String, dynamic> json) => KzTime(
+  factory Wr.fromJson(Map<String, dynamic> json) => Wr(
         id: json["id"],
         steamid64: json["steamid64"],
         playerName: json["player_name"],
@@ -73,10 +83,29 @@ class KzTime {
         recordFilterId: json["record_filter_id"],
         replayId: json["replay_id"],
       );
-}
 
-List<KzTime> kzInfoFromJson(String str) => List<KzTime>.from(
-      json.decode(str).map(
-            (x) => KzTime.fromJson(x),
-          ),
-    );
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "steamid64": steamid64,
+        "player_name": playerName,
+        "steam_id": steamId,
+        "server_id": serverId,
+        "map_id": mapId,
+        "stage": stage,
+        "mode": mode,
+        "tickrate": tickrate,
+        "time": time,
+        "teleports": teleports,
+        "created_on": createdOn.toIso8601String(),
+        "updated_on": updatedOn.toIso8601String(),
+        "updated_by": updatedBy,
+        "place": place,
+        "top_100": top100,
+        "top_100_overall": top100Overall,
+        "server_name": serverName,
+        "map_name": mapName,
+        "points": points,
+        "record_filter_id": recordFilterId,
+        "replay_id": replayId,
+      };
+}

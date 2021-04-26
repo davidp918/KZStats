@@ -46,7 +46,7 @@ class AppRouter {
           builder: (context) => About(),
         );
       case '/map_detail':
-        final KzTime prevSnapshotData = settings.arguments as KzTime;
+        final Wr prevSnapshotData = settings.arguments as Wr;
         return MaterialPageRoute(
           builder: (_) => MapDetail(
             prevSnapshotData: prevSnapshotData,

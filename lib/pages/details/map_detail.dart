@@ -18,7 +18,7 @@ import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/urls.dart';
 
 class MapDetail extends StatefulWidget {
-  final KzTime prevSnapshotData;
+  final Wr prevSnapshotData;
   const MapDetail({Key key, this.prevSnapshotData}) : super(key: key);
 
   @override

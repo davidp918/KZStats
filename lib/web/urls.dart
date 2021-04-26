@@ -2,15 +2,14 @@ import 'package:kzstats/others/convertMode.dart';
 
 const imageBaseURL =
     "${proxy}https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/thumb/";
-// proxy
 const proxy = "https://gokz-globalstats.bakar.workers.dev/?";
 
 // Latest wr records
 String globalApiWrRecordsUrl(String mode, bool ifNub, int amount) {
   const kz_wr =
-      "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=mode!&place_top_at_least=1ifnub!&stage=0&limit=amount!&tickrate=128";
+      "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=!mode!&place_top_at_least=1ifnub!&stage=0&limit=amount!&tickrate=128";
   return kz_wr
-      .replaceAll('mode!', convertMode(mode))
+      .replaceAll('!mode!', mode)
       .replaceAll('ifnub!', ifNub ? '' : '&has_teleports=false')
       .replaceAll('amount!', amount.toString());
 }

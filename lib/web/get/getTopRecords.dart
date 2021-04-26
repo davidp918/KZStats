@@ -4,16 +4,19 @@ import 'package:kzstats/web/json/kztime_json.dart';
 
 import 'package:kzstats/web/urls.dart';
 
-List<KzTime> topRecords;
+List<Wr> topRecords;
 
-Future<List<KzTime>> getTopRecords(
-    String currentMode, bool ifNub, int amount) async {
+Future<List<Wr>> getTopRecords(
+  String mode,
+  bool ifNub,
+  int amount,
+) async {
   try {
     var response = await http.get(
-      Uri.parse(globalApiWrRecordsUrl(currentMode, ifNub, amount)),
+      Uri.parse(globalApiWrRecordsUrl(mode, ifNub, amount)),
     );
     response.statusCode == HttpStatus.ok
-        ? topRecords = kzInfoFromJson(response.body)
+        ? topRecords = wrFromJson(response.body)
         : print('something wrong');
   } catch (exception) {}
   return topRecords;

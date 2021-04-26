@@ -4,7 +4,10 @@ String convertMode(String mode) {
       return 'kz_timer';
     case 'SimpleKZ':
       return 'kz_simple';
+    case 'Vanila':
+      return 'kz_vanilla';
     default:
-      return 'vanilla';
+      throw (UnimplementedError);
+      return 'error';
   }
 }

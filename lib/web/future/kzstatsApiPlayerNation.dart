@@ -4,10 +4,10 @@ import 'package:kzstats/web/get/getPlayerKzstatsApi.dart';
 import 'package:kzstats/web/json/kztime_json.dart';
 
 Future<List<String>> getPlayerKzstatsNation(
-  AsyncSnapshot<List<KzTime>> kzInfosnapshot,
+  List<Wr> kzInfosnapshot,
 ) async {
   return Future.wait(
-    kzInfosnapshot.data.map(
+    kzInfosnapshot.map(
       (item) {
         return getPlayerKzstatsApi(item.steamid64).then(
           (value) {
