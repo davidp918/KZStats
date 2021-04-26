@@ -14,7 +14,7 @@ import 'package:kzstats/others/svg.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/future/kzstatsApiPlayerNation.dart';
 import 'package:kzstats/web/get/getTopRecords.dart';
-import 'package:kzstats/web/json/kztime_json.dart';
+import 'package:kzstats/web/json/record_json.dart';
 import 'package:kzstats/web/urls.dart';
 
 class Homepage extends StatelessWidget {

@@ -8,7 +8,9 @@ import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/cubit_update.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/get/getPlayerKzstatsApi.dart';
+import 'package:kzstats/web/get/getPlayerRecordsGlobalApi.dart';
 import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
+import 'package:kzstats/web/json/mapTop_json.dart';
 
 class PlayerDetail extends StatefulWidget {
   final List<String> playerInfo;
@@ -38,7 +40,13 @@ class _MapDetailState extends State<PlayerDetail> {
           return FutureBuilder<List<dynamic>>(
             future: Future.wait(
               [
-                getPlayerKzstatsApi(steamId64.toString()),
+                getPlayerKzstatsApi(steamId64),
+                getPlayerRecordsGlobalApi(
+                  state.mode,
+                  state.nub,
+                  99999,
+                  steamId64,
+                ),
               ],
             ),
             builder: (
@@ -60,7 +68,9 @@ class _MapDetailState extends State<PlayerDetail> {
         ? snapshot.hasData
             ? mainBody(
                 // [0]: kzstats player info
+                // [1]: global api player all records
                 snapshot.data[0],
+                snapshot.data[1],
               )
             : errorScreen()
         : loadingFromApi();
@@ -68,6 +78,7 @@ class _MapDetailState extends State<PlayerDetail> {
 
   Widget mainBody(
     KzstatsApiPlayer kzstatsPlayerInfo,
+    List<Record> records,
   ) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -84,8 +95,8 @@ class _MapDetailState extends State<PlayerDetail> {
                   width: 120,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Color(0xff606060),
-                      width: 1,
+                      color: imageBorderColor(),
+                      width: 4,
                     ),
                   ),
                   child: getCachedNetworkImage(

@@ -12,7 +12,7 @@ import 'package:kzstats/others/timeConversion.dart';
 import 'package:kzstats/others/svg.dart';
 import 'package:kzstats/web/get/getMapInfo.dart';
 import 'package:kzstats/web/get/getMapTop.dart';
-import 'package:kzstats/web/json/kztime_json.dart';
+import 'package:kzstats/web/json/record_json.dart';
 import 'package:kzstats/web/json/mapTop_json.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/urls.dart';
@@ -88,9 +88,9 @@ class _MapDetailState extends State<MapDetail> {
   }
 
   Widget mainBody(
-    List<MapTop> mapTop,
-    MapTop nubWr,
-    MapTop proWr,
+    List<Record> mapTop,
+    Record nubWr,
+    Record proWr,
     Mapinfo mapInfo,
   ) {
     return SingleChildScrollView(
@@ -110,7 +110,7 @@ class _MapDetailState extends State<MapDetail> {
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 4,
             ),
             Text(
               'Tier: ${identifyTier(mapInfo.difficulty)}',

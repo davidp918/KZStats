@@ -1,5 +1,3 @@
-import 'package:kzstats/others/convertMode.dart';
-
 const imageBaseURL =
     "${proxy}https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/thumb/";
 const proxy = "https://gokz-globalstats.bakar.workers.dev/?";
@@ -24,6 +22,18 @@ String globalApiMaptopRecordsUrl(
       .replaceAll('!mode', mode)
       .replaceAll('!ifNub', ifNub ? '' : '&has_teleports=false')
       .replaceAll('!amount', amount.toString());
+}
+
+// all records of a specific player
+String globalApiPlayerRecordsUrl(
+    String mode, bool ifNub, int limit, String steamId64) {
+  const kz_mapTopRecords =
+      "https://kztimerglobal.com/api/v2.0/records/top?steamid64=!steamId64&modes_list_string=!mode!ifNub&limit=!limit&stage=0";
+  return kz_mapTopRecords
+      .replaceAll('!mode', mode)
+      .replaceAll('!steamId64', steamId64)
+      .replaceAll('!limit', limit.toString())
+      .replaceAll('!ifNub', ifNub ? '' : '&has_teleports=false');
 }
 
 // Map information, such as tier - followed by map id(e.g 200)

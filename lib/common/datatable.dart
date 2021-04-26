@@ -17,7 +17,7 @@ Widget buildPaginatedDataTable(BuildContext context, List<dynamic> records) {
   );
 }
 
-Widget buildDataTable(BuildContext context, List<MapTop> mapTop) {
+Widget buildDataTable(BuildContext context, List<Record> mapTop) {
   final columns = [
     '#',
     'Player',
@@ -58,14 +58,14 @@ Widget buildDataTable(BuildContext context, List<MapTop> mapTop) {
 
 class RecordsSource extends DataTableSource {
   BuildContext context;
-  List<MapTop> _records;
+  List<Record> _records;
   RecordsSource(this.context, this._records);
 
   @override
   DataRow getRow(int index) {
     assert(index >= 0);
     if (index >= _records.length) return null;
-    final MapTop record = _records[index];
+    final Record record = _records[index];
     return DataRow.byIndex(
       index: index,
       color: MaterialStateColor.resolveWith(

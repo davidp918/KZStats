@@ -4,26 +4,26 @@ import 'package:kzstats/web/json/mapTop_json.dart';
 
 import 'package:kzstats/web/urls.dart';
 
-List<Record> mapTopRecords;
+List<Record> records;
 
-Future<List<Record>> getMapTopRecords(
-  int mapId,
-  String currentMode,
+Future<List<Record>> getPlayerRecordsGlobalApi(
+  String mode,
   bool ifNub,
-  int amount,
+  int limit,
+  String steamId64,
 ) async {
   try {
     var response = await http.get(
       Uri.parse(
-        globalApiMaptopRecordsUrl(mapId, currentMode, ifNub, amount),
+        globalApiPlayerRecordsUrl(mode, ifNub, limit, steamId64),
       ),
     );
     response.statusCode == HttpStatus.ok
-        ? mapTopRecords = mapTopFromJson(response.body)
+        ? records = mapTopFromJson(response.body)
         : print('something wrong');
   } catch (exception) {
     throw UnimplementedError();
   }
 
-  return mapTopRecords;
+  return records;
 }

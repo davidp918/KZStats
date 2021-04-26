@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:kzstats/web/json/kztime_json.dart';
+import 'package:kzstats/web/json/record_json.dart';
 
 import 'package:kzstats/web/urls.dart';
 

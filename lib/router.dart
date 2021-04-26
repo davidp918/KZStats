@@ -5,7 +5,7 @@ import 'package:kzstats/pages/maps.dart';
 import 'package:kzstats/pages/players.dart';
 import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
-import 'package:kzstats/web/json/kztime_json.dart';
+import 'package:kzstats/web/json/record_json.dart';
 import 'package:kzstats/pages/details/player_detail.dart';
 import 'package:kzstats/pages/loginPage.dart';
 import 'package:kzstats/pages/about.dart';

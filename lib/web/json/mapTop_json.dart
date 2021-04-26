@@ -4,11 +4,11 @@
 
 import 'dart:convert';
 
-List<MapTop> mapTopFromJson(String str) =>
-    List<MapTop>.from(json.decode(str).map((x) => MapTop.fromJson(x)));
+List<Record> mapTopFromJson(String str) =>
+    List<Record>.from(json.decode(str).map((x) => Record.fromJson(x)));
 
-class MapTop {
-  MapTop({
+class Record {
+  Record({
     this.id,
     this.steamid64,
     this.playerName,
@@ -50,7 +50,7 @@ class MapTop {
   int points;
   int replayId;
 
-  factory MapTop.fromJson(Map<String, dynamic> json) => MapTop(
+  factory Record.fromJson(Map<String, dynamic> json) => Record(
         id: json["id"],
         steamid64: json["steamid64"],
         playerName: json["player_name"],
