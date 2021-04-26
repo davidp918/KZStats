@@ -15,7 +15,7 @@ Future<List<MapTop>> getMapTopRecords(
   try {
     var response = await http.get(
       Uri.parse(
-        mapTopRecordsSelect(mapId, currentMode, ifNub, amount),
+        globalApiMaptopRecordsUrl(mapId, currentMode, ifNub, amount),
       ),
     );
     response.statusCode == HttpStatus.ok

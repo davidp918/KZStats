@@ -10,7 +10,7 @@ KzstatsApiPlayer kzstatsPlayer;
 Future<KzstatsApiPlayer> getPlayerKzstatsApi(String steam64) async {
   try {
     var response = await http.get(
-      Uri.parse('$proxy$kzstats_api_player$steam64$kzstats_api_player_end'),
+      Uri.parse(kzstatsApiPlayerInfoUrl(steam64)),
     );
     response.statusCode == HttpStatus.ok
         ? kzstatsPlayer = kzstatsApiPlayerFromJson(response.body)

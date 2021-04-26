@@ -10,7 +10,7 @@ Future<List<KzTime>> getTopRecords(
     String currentMode, bool ifNub, int amount) async {
   try {
     var response = await http.get(
-      Uri.parse(topRecordsSelect(currentMode, ifNub, amount)),
+      Uri.parse(globalApiWrRecordsUrl(currentMode, ifNub, amount)),
     );
     response.statusCode == HttpStatus.ok
         ? topRecords = kzInfoFromJson(response.body)

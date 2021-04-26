@@ -5,7 +5,6 @@ class About extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String currentPage = 'About';
     return Padding(
       padding: EdgeInsets.all(40),
       child: Column(

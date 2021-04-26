@@ -9,7 +9,7 @@ Mapinfo mapInformation;
 Future<Mapinfo> getMapInfo(String mapId) async {
   try {
     var response = await http.get(
-      Uri.parse('$kz_map_info$mapId'),
+      Uri.parse(globalApiMapInfoUrl(mapId)),
     );
     response.statusCode == HttpStatus.ok
         ? mapInformation = mapinfoFromJson(response.body)

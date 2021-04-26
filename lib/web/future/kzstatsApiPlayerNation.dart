@@ -6,17 +6,15 @@ import 'package:kzstats/web/json/kztime_json.dart';
 Future<List<String>> getPlayerKzstatsNation(
   AsyncSnapshot<List<KzTime>> kzInfosnapshot,
 ) async {
-  List<String> steam64s = List.filled(20, 'null');
-
-  for (var i = 0; i < kzInfosnapshot.data.length; i++) {
-    steam64s[i] = kzInfosnapshot.data[i].steamid64;
-  }
-
   return Future.wait(
-    steam64s.map(
-      (item) => getPlayerKzstatsApi(item).then(
-        (value) => value.loccountrycode.toLowerCase(),
-      ),
+    kzInfosnapshot.data.map(
+      (item) {
+        return getPlayerKzstatsApi(item.steamid64).then(
+          (value) {
+            return value.loccountrycode.toLowerCase();
+          },
+        );
+      },
     ),
   );
 }

@@ -49,7 +49,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/login-steam.png
     - assets/icon/
     - assets/flag/
 
