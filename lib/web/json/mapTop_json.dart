@@ -31,7 +31,7 @@ class MapTop {
   });
 
   int id;
-  double steamid64;
+  String steamid64;
   String playerName;
   String steamId;
   int serverId;

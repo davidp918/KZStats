@@ -13,7 +13,7 @@ String topRecordsSelect(String mode, bool ifNub, int amount) {
 
 // Top records of a specific map
 const kz_mapTopRecords =
-    "https://kztimerglobal.com/api/v1.0/records/top?modes_list_string=!mode&map_id=!mapId&stage=0!ifNub&limit=!amount&tickrate=128";
+    "https://kztimerglobal.com/api/v2.0/records/top?modes_list_string=!mode&map_id=!mapId&stage=0!ifNub&limit=!amount&tickrate=128";
 
 String mapTopRecordsSelect(int mapId, String mode, bool ifNub, int amount) {
   return kz_mapTopRecords

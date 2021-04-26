@@ -3,7 +3,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/others/strCheckLen.dart';
 import 'package:kzstats/others/timeConversion.dart';
-import 'package:kzstats/pages/details/player_detail.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/json/mapTop_json.dart';
 
@@ -88,15 +87,12 @@ class RecordsSource extends DataTableSource {
         DataCell(
           InkWell(
             onTap: () {
-              return Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => PlayerDetail(
-                    playerInfo: [
-                      int.parse(record.steamid64.toStringAsFixed(0)),
-                      record.playerName,
-                    ],
-                  ),
-                ),
+              return Navigator.of(context).pushNamed(
+                '/player_detail',
+                arguments: [
+                  int.parse(record.steamid64),
+                  record.playerName,
+                ],
               );
             },
             child: Text(

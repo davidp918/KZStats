@@ -11,7 +11,7 @@ import 'package:kzstats/web/get/getPlayerKzstatsApi.dart';
 import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
 
 class PlayerDetail extends StatefulWidget {
-  final List<dynamic> playerInfo;
+  final List<String> playerInfo;
   const PlayerDetail({Key key, this.playerInfo}) : super(key: key);
 
   @override
@@ -22,7 +22,7 @@ class PlayerDetail extends StatefulWidget {
 }
 
 class _MapDetailState extends State<PlayerDetail> {
-  final int steamId64;
+  final String steamId64;
   final String playerName;
 
   _MapDetailState(this.steamId64, this.playerName);
@@ -132,23 +132,25 @@ class _MapDetailState extends State<PlayerDetail> {
                             fontSize: 15,
                           ),
                         ),
-                        Row(
-                          children: <Widget>[
-                            Image(
-                              image: AssetImage(
-                                'assets/flag/${kzstatsPlayerInfo.loccountrycode.toLowerCase()}.png',
-                              ),
-                            ),
-                            SizedBox(width: 6),
-                            Text(
-                              '${kzstatsPlayerInfo.country}',
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
+                        kzstatsPlayerInfo.loccountrycode != null
+                            ? Row(
+                                children: <Widget>[
+                                  Image(
+                                    image: AssetImage(
+                                      'assets/flag/${kzstatsPlayerInfo.loccountrycode.toLowerCase()}.png',
+                                    ),
+                                  ),
+                                  SizedBox(width: 6),
+                                  Text(
+                                    '${kzstatsPlayerInfo.country}',
+                                    style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Container(),
                         InkWell(
                           child: Text(
                             'steam profile',
