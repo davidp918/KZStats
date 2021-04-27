@@ -7,19 +7,20 @@ import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/cubit_update.dart';
 import 'package:kzstats/theme/colors.dart';
-import 'package:kzstats/web/get/getPlayerKzstatsApi.dart';
-import 'package:kzstats/web/get/getPlayerRecordsGlobalApi.dart';
-import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
-import 'package:kzstats/web/json/mapTop_json.dart';
+import 'package:kzstats/web/getRequest.dart';
+import 'package:kzstats/web/json.dart';
+import 'package:kzstats/web/urls.dart';
 
 class PlayerDetail extends StatefulWidget {
-  final List<String>? playerInfo;
-  const PlayerDetail({Key? key, this.playerInfo}) : super(key: key);
+  final List<String> playerInfo;
+  const PlayerDetail({Key? key, required this.playerInfo}) : super(key: key);
 
   @override
   _MapDetailState createState() => _MapDetailState(
-        playerInfo![0],
-        playerInfo![1],
+        // need further test about: if a player does not have any records,
+        // will this null checks break as it's a list of null
+        playerInfo[0],
+        playerInfo[1],
       );
 }
 
@@ -40,12 +41,18 @@ class _MapDetailState extends State<PlayerDetail> {
           return FutureBuilder<List<dynamic>>(
             future: Future.wait(
               [
-                getPlayerKzstatsApi(steamId64),
-                getPlayerRecordsGlobalApi(
-                  state.mode!,
-                  state.nub!,
-                  99999,
-                  steamId64,
+                getRequest(
+                  kzstatsApiPlayerInfoUrl(steamId64),
+                  kzstatsApiPlayerFromJson,
+                ),
+                getRequest(
+                  globalApiPlayerRecordsUrl(
+                    state.mode!,
+                    state.nub!,
+                    99999,
+                    steamId64,
+                  ),
+                  mapTopFromJson,
                 ),
               ],
             ),

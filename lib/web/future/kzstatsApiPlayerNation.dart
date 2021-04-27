@@ -1,5 +1,7 @@
-import 'package:kzstats/web/get/getPlayerKzstatsApi.dart';
-import 'package:kzstats/web/json/record_json.dart';
+import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
+import 'package:kzstats/web/json.dart';
+import 'package:kzstats/web/getRequest.dart';
+import 'package:kzstats/web/urls.dart';
 
 Future<List<String>> getPlayerKzstatsNation(
   List<Wr> kzInfosnapshot,
@@ -7,9 +9,12 @@ Future<List<String>> getPlayerKzstatsNation(
   return Future.wait(
     kzInfosnapshot.map(
       (item) {
-        return getPlayerKzstatsApi(item.steamid64).then(
+        return getRequest(
+          kzstatsApiPlayerInfoUrl(item.steamid64),
+          kzstatsApiPlayerFromJson,
+        ).then(
           (value) {
-            return value!.loccountrycode != null
+            return value != null && value!.loccountrycode != null
                 // if the player's country is not visible
                 ? value.loccountrycode!.toLowerCase()
                 : 'null';

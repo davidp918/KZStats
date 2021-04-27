@@ -1,17 +1,14 @@
 // To parse this JSON data, do
 //
-//     final wr = wrFromJson(jsonString);
+//     final mapTop = mapTopFromJson(jsonString);
 
 import 'dart:convert';
 
-List<Wr> wrFromJson(String str) =>
-    List<Wr>.from(json.decode(str).map((x) => Wr.fromJson(x)));
+List<Record> mapTopFromJson(String str) =>
+    List<Record>.from(json.decode(str).map((x) => Record.fromJson(x)));
 
-String wrToJson(List<Wr> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class Wr {
-  Wr({
+class Record {
+  Record({
     this.id,
     this.steamid64,
     this.playerName,
@@ -26,13 +23,10 @@ class Wr {
     this.createdOn,
     this.updatedOn,
     this.updatedBy,
-    this.place,
-    this.top100,
-    this.top100Overall,
+    this.recordFilterId,
     this.serverName,
     this.mapName,
     this.points,
-    this.recordFilterId,
     this.replayId,
   });
 
@@ -50,16 +44,13 @@ class Wr {
   DateTime? createdOn;
   DateTime? updatedOn;
   int? updatedBy;
-  int? place;
-  int? top100;
-  int? top100Overall;
+  int? recordFilterId;
   String? serverName;
   String? mapName;
   int? points;
-  int? recordFilterId;
   int? replayId;
 
-  factory Wr.fromJson(Map<String, dynamic> json) => Wr(
+  factory Record.fromJson(Map<String, dynamic> json) => Record(
         id: json["id"],
         steamid64: json["steamid64"],
         playerName: json["player_name"],
@@ -74,38 +65,10 @@ class Wr {
         createdOn: DateTime.parse(json["created_on"]),
         updatedOn: DateTime.parse(json["updated_on"]),
         updatedBy: json["updated_by"],
-        place: json["place"],
-        top100: json["top_100"],
-        top100Overall: json["top_100_overall"],
+        recordFilterId: json["record_filter_id"],
         serverName: json["server_name"],
         mapName: json["map_name"],
         points: json["points"],
-        recordFilterId: json["record_filter_id"],
         replayId: json["replay_id"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "steamid64": steamid64,
-        "player_name": playerName,
-        "steam_id": steamId,
-        "server_id": serverId,
-        "map_id": mapId,
-        "stage": stage,
-        "mode": mode,
-        "tickrate": tickrate,
-        "time": time,
-        "teleports": teleports,
-        "created_on": createdOn!.toIso8601String(),
-        "updated_on": updatedOn!.toIso8601String(),
-        "updated_by": updatedBy,
-        "place": place,
-        "top_100": top100,
-        "top_100_overall": top100Overall,
-        "server_name": serverName,
-        "map_name": mapName,
-        "points": points,
-        "record_filter_id": recordFilterId,
-        "replay_id": replayId,
-      };
 }

@@ -8,14 +8,10 @@ import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/cubit_update.dart';
 import 'package:kzstats/others/tierIdentifier.dart';
-import 'package:kzstats/others/timeConversion.dart';
-import 'package:kzstats/others/svg.dart';
-import 'package:kzstats/web/get/getMapInfo.dart';
-import 'package:kzstats/web/get/getMapTop.dart';
-import 'package:kzstats/web/json/record_json.dart';
-import 'package:kzstats/web/json/mapTop_json.dart';
-import 'package:kzstats/web/json/mapinfo_json.dart';
+import 'package:kzstats/web/getRequest.dart';
+import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
+import 'package:kzstats/common/widgets/worldRecord.dart';
 
 class MapDetail extends StatefulWidget {
   final Wr? prevSnapshotData;
@@ -34,25 +30,37 @@ class _MapDetailState extends State<MapDetail> {
         builder: (context, state) => FutureBuilder<List<dynamic>>(
           future: Future.wait(
             [
-              getMapTopRecords(
-                widget.prevSnapshotData!.mapId,
-                state.mode!,
-                state.nub!,
-                100,
+              getRequest(
+                globalApiMaptopRecordsUrl(
+                  widget.prevSnapshotData!.mapId,
+                  state.mode!,
+                  state.nub!,
+                  100,
+                ),
+                mapTopFromJson,
               ),
-              getMapTopRecords(
-                widget.prevSnapshotData!.mapId,
-                state.mode!,
-                true,
-                1,
+              getRequest(
+                globalApiMaptopRecordsUrl(
+                  widget.prevSnapshotData!.mapId,
+                  state.mode!,
+                  true,
+                  1,
+                ),
+                mapTopFromJson,
               ),
-              getMapTopRecords(
-                widget.prevSnapshotData!.mapId,
-                state.mode!,
-                false,
-                1,
+              getRequest(
+                globalApiMaptopRecordsUrl(
+                  widget.prevSnapshotData!.mapId,
+                  state.mode!,
+                  false,
+                  1,
+                ),
+                mapTopFromJson,
               ),
-              getMapInfo(widget.prevSnapshotData!.mapId.toString()),
+              getRequest(
+                globalApiMapInfoUrl(widget.prevSnapshotData!.mapId.toString()),
+                mapinfoFromJson,
+              ),
             ],
           ),
           builder: (
@@ -78,20 +86,20 @@ class _MapDetailState extends State<MapDetail> {
                 // index 1: single instance of Maptop: nub wr
                 // index 2: single instance of Maptop: pro wr
                 // index 3: map info
-                snapshot.data![0],
-                snapshot.data![1][0],
-                snapshot.data![2][0],
-                snapshot.data![3],
+                snapshot.data?.elementAt(0),
+                snapshot.data?.elementAt(1)?.elementAt(0),
+                snapshot.data?.elementAt(2)?.elementAt(0),
+                snapshot.data?.elementAt(3),
               )
             : errorScreen()
         : loadingFromApi();
   }
 
   Widget mainBody(
-    List<Record>? mapTop,
-    Record nubWr,
-    Record proWr,
-    Mapinfo mapInfo,
+    dynamic? maptop,
+    dynamic? nubWr,
+    dynamic? proWr,
+    Mapinfo? mapInfo,
   ) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -112,72 +120,48 @@ class _MapDetailState extends State<MapDetail> {
             SizedBox(
               height: 4,
             ),
-            Text(
-              'Tier: ${identifyTier(mapInfo.difficulty)}',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-              ),
-            ),
+            mapInfo == null
+                ? Container()
+                : Text(
+                    'Tier: ${identifyTier(mapInfo.difficulty)}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
             SizedBox(
-              height: 3,
+              height: 4,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                gold(15, 15),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  'PRO  ${toMinSec(proWr.time!)}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
-                Text(
-                  ' by ${proWr.playerName}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 3,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                gold(15, 15),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  'NUB  ${toMinSec(nubWr.time!)}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
-                Text(
-                  ' by ${nubWr.playerName}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            BuildDataTable(records: mapTop),
+            ...recordSection(proWr, nubWr, maptop),
           ],
         ),
       ),
     );
+  }
+
+  dynamic recordSection(
+    dynamic proWr,
+    dynamic nubWr,
+    dynamic mapTop,
+  ) {
+    return proWr == null && nubWr == null
+        ? <Widget>[
+            Container(
+              child: Text(
+                'No one has beaten this map yet!',
+                style: TextStyle(
+                  fontSize: 40,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ]
+        : <Widget>[
+            worldRecordRow('Pro', proWr),
+            worldRecordRow('Nub', nubWr),
+            SizedBox(height: 4),
+            BuildDataTable(records: mapTop),
+          ];
   }
 }

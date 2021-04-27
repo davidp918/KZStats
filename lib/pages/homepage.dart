@@ -13,9 +13,9 @@ import 'package:kzstats/others/timeConversion.dart';
 import 'package:kzstats/others/svg.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/future/kzstatsApiPlayerNation.dart';
-import 'package:kzstats/web/get/getTopRecords.dart';
-import 'package:kzstats/web/json/record_json.dart';
 import 'package:kzstats/web/urls.dart';
+import 'package:kzstats/web/getRequest.dart';
+import 'package:kzstats/web/json.dart';
 
 class Homepage extends StatelessWidget {
   final String currentPage = 'KZStats';
@@ -49,8 +49,23 @@ class Homepage extends StatelessWidget {
           return FutureBuilder<List<dynamic>>(
             future: Future.wait(
               [
-                getTopRecords(state.mode!, state.nub!, 20),
-                getTopRecords(state.mode!, state.nub!, 20).then(
+                //getTopRecords(state.mode!, state.nub!, 20),
+                getRequest(
+                  globalApiWrRecordsUrl(
+                    state.mode!,
+                    state.nub!,
+                    20,
+                  ),
+                  wrFromJson,
+                ),
+                getRequest(
+                  globalApiWrRecordsUrl(
+                    state.mode!,
+                    state.nub!,
+                    20,
+                  ),
+                  wrFromJson,
+                ).then(
                   (value) => getPlayerKzstatsNation(value!),
                 ),
               ],
@@ -231,8 +246,8 @@ class Homepage extends StatelessWidget {
                             '/player_detail',
                             // [0]: steam64, [1]: player name,
                             arguments: [
-                              record.steamid64,
-                              record.playerName,
+                              record.steamid64!,
+                              record.playerName!,
                             ],
                           );
                         },

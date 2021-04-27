@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kzstats/others/strCheckLen.dart';
 import 'package:kzstats/others/timeConversion.dart';
 import 'package:kzstats/theme/colors.dart';
-import 'package:kzstats/web/json/mapTop_json.dart';
+import 'package:kzstats/web/json/record_json.dart';
 import 'package:kzstats/others/pointsClassification.dart';
 
 class BuildDataTable extends StatefulWidget {
@@ -19,8 +19,6 @@ class _BuildDataTableState extends State<BuildDataTable> {
   late final List<Record>? _records;
   int? _sortColumnIndex;
   bool _isAscending = false;
-  late int rowCount;
-  List<int> rowsPerPage = [];
   final columns = [
     '#',
     'Player',
@@ -81,16 +79,6 @@ class _BuildDataTableState extends State<BuildDataTable> {
   }
 
   Widget buildDataTable(BuildContext context, List<Record>? records) {
-    records == null ? rowCount = 0 : rowCount = records.length;
-    while (rowCount != 0) {
-      if (rowCount >= 10) {
-        rowCount = rowCount - 10;
-        rowsPerPage.add(10);
-      } else {
-        rowsPerPage.add(rowCount);
-        rowCount = 0;
-      }
-    }
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: PaginatedDataTable(
@@ -102,7 +90,6 @@ class _BuildDataTableState extends State<BuildDataTable> {
         columns: getColumns(columns),
         source: RecordsSource(context, records),
         sortColumnIndex: _sortColumnIndex,
-        availableRowsPerPage: rowsPerPage,
       ),
     );
   }
@@ -116,7 +103,6 @@ class RecordsSource extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     assert(index >= 0);
-    if (index >= _records!.length) return null;
     final Record record = _records![index];
     return DataRow.byIndex(
       index: index,

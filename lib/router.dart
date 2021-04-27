@@ -5,7 +5,7 @@ import 'package:kzstats/pages/maps.dart';
 import 'package:kzstats/pages/players.dart';
 import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
-import 'package:kzstats/web/json/record_json.dart';
+import 'package:kzstats/web/json/wr_json.dart';
 import 'package:kzstats/pages/details/player_detail.dart';
 import 'package:kzstats/pages/loginPage.dart';
 import 'package:kzstats/pages/about.dart';
@@ -54,7 +54,7 @@ class AppRouter {
         );
       case '/player_detail':
         // [0]: steam64, [1]: player name,
-        final List<String>? playerInfo = settings.arguments as List<String>?;
+        final List<String> playerInfo = settings.arguments as List<String>;
         return MaterialPageRoute(
           builder: (_) => PlayerDetail(playerInfo: playerInfo),
         );
