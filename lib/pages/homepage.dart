@@ -240,11 +240,13 @@ class Homepage extends StatelessWidget {
                       SizedBox(
                         width: 4.5,
                       ),
-                      Image(
-                        image: AssetImage(
-                          'assets/flag/$nation.png',
-                        ),
-                      ),
+                      nation != 'null'
+                          ? Image(
+                              image: AssetImage(
+                                'assets/flag/$nation.png',
+                              ),
+                            )
+                          : Container(),
                     ],
                   ),
                   SizedBox(
