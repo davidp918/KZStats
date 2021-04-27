@@ -7,17 +7,20 @@ import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/json/mapTop_json.dart';
 import 'package:kzstats/others/pointsClassification.dart';
 
-Widget buildPaginatedDataTable(BuildContext context, List<dynamic>? records) {
-  return Theme(
-    data: Theme.of(context).copyWith(
-      cardColor: Color(0xff1D202C),
-      dividerColor: Color(0xff333333),
-    ),
-    child: buildDataTable(context, records as List<Record>?),
-  );
+class BuildDataTable extends StatefulWidget {
+  final List<Record>? records;
+  BuildDataTable({Key? key, required this.records}) : super(key: key);
+
+  @override
+  _BuildDataTableState createState() => _BuildDataTableState();
 }
 
-Widget buildDataTable(BuildContext context, List<Record>? mapTop) {
+class _BuildDataTableState extends State<BuildDataTable> {
+  late final List<Record>? _records;
+  int? _sortColumnIndex;
+  bool _isAscending = false;
+  late int rowCount;
+  List<int> rowsPerPage = [];
   final columns = [
     '#',
     'Player',
@@ -27,6 +30,24 @@ Widget buildDataTable(BuildContext context, List<Record>? mapTop) {
     'Date',
     'Server',
   ];
+  @override
+  void initState() {
+    super.initState();
+    this._records = widget.records;
+  }
+
+  void onSort(
+    int columnIndex,
+    bool isAscending,
+  ) {
+    setState(
+      () {
+        this._sortColumnIndex = columnIndex;
+        this._isAscending = isAscending;
+      },
+    );
+  }
+
   List<DataColumn> getColumns(List<String> columns) => columns
       .map(
         (String column) => DataColumn(
@@ -38,22 +59,53 @@ Widget buildDataTable(BuildContext context, List<Record>? mapTop) {
               fontSize: 16,
             ),
           ),
+          onSort: onSort,
         ),
       )
       .toList();
 
-  return SingleChildScrollView(
-    scrollDirection: Axis.vertical,
-    child: PaginatedDataTable(
-      dragStartBehavior: DragStartBehavior.down,
-      headingRowHeight: 40,
-      dataRowHeight: 42,
-      horizontalMargin: 12,
-      columnSpacing: 20,
-      columns: getColumns(columns),
-      source: RecordsSource(context, mapTop),
-    ),
-  );
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        dividerColor: Color(0xff333333),
+        textTheme: TextTheme(
+          caption: TextStyle(color: Colors.white),
+        ),
+        cardTheme: CardTheme(
+          color: Color(0xff1D202C),
+        ),
+      ),
+      child: buildDataTable(context, _records),
+    );
+  }
+
+  Widget buildDataTable(BuildContext context, List<Record>? records) {
+    records == null ? rowCount = 0 : rowCount = records.length;
+    while (rowCount != 0) {
+      if (rowCount >= 10) {
+        rowCount = rowCount - 10;
+        rowsPerPage.add(10);
+      } else {
+        rowsPerPage.add(rowCount);
+        rowCount = 0;
+      }
+    }
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: PaginatedDataTable(
+        dragStartBehavior: DragStartBehavior.down,
+        headingRowHeight: 40,
+        dataRowHeight: 42,
+        horizontalMargin: 12,
+        columnSpacing: 20,
+        columns: getColumns(columns),
+        source: RecordsSource(context, records),
+        sortColumnIndex: _sortColumnIndex,
+        availableRowsPerPage: rowsPerPage,
+      ),
+    );
+  }
 }
 
 class RecordsSource extends DataTableSource {

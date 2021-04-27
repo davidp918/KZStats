@@ -174,7 +174,7 @@ class _MapDetailState extends State<MapDetail> {
             SizedBox(
               height: 10,
             ),
-            buildPaginatedDataTable(context, mapTop),
+            BuildDataTable(records: mapTop),
           ],
         ),
       ),
