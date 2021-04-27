@@ -36,9 +36,9 @@ class HomepageDrawer extends StatelessWidget {
 
   Widget buildItem(
     BuildContext context, {
-    @required String text,
-    @required IconData icon,
-    @required String routeName,
+    required String text,
+    required IconData icon,
+    required String routeName,
   }) {
     final color = Colors.white;
 
@@ -67,8 +67,8 @@ class HomepageDrawer extends StatelessWidget {
 
   Widget userHeader(
     BuildContext context, {
-    @required String name,
-    @required IconData avatar,
+    required String name,
+    required IconData avatar,
   }) {
     return InkWell(
       onTap: () {},

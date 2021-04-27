@@ -4,10 +4,10 @@ import 'package:kzstats/web/json/mapTop_json.dart';
 
 import 'package:kzstats/web/urls.dart';
 
-List<Record> mapTopRecords;
+List<Record>? mapTopRecords;
 
-Future<List<Record>> getMapTopRecords(
-  int mapId,
+Future<List<Record>?> getMapTopRecords(
+  int? mapId,
   String currentMode,
   bool ifNub,
   int amount,

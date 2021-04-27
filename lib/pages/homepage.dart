@@ -42,16 +42,16 @@ class Homepage extends StatelessWidget {
         },
         listener: (context, state) => notifySwitching(
           '${state.mode}',
-          state.nub,
+          state.nub!,
           context,
         ),
         builder: (context, state) {
           return FutureBuilder<List<dynamic>>(
             future: Future.wait(
               [
-                getTopRecords(state.mode, state.nub, 20),
-                getTopRecords(state.mode, state.nub, 20).then(
-                  (value) => getPlayerKzstatsNation(value),
+                getTopRecords(state.mode!, state.nub!, 20),
+                getTopRecords(state.mode!, state.nub!, 20).then(
+                  (value) => getPlayerKzstatsNation(value!),
                 ),
               ],
             ),
@@ -82,8 +82,8 @@ class Homepage extends StatelessWidget {
                   // [0] - wr records
                   // [1] - nations
                   context,
-                  snapshot.data[0],
-                  snapshot.data[1],
+                  snapshot.data![0],
+                  snapshot.data![1],
                 )
               : RefreshIndicator(
                   child: errorScreen(),
@@ -97,7 +97,7 @@ class Homepage extends StatelessWidget {
   Widget mainBody(
     BuildContext context,
     List<Wr> records,
-    List<String> nations,
+    List<String>? nations,
   ) {
     return EasyRefresh(
       child: CustomScrollView(
@@ -108,7 +108,7 @@ class Homepage extends StatelessWidget {
                 context,
                 index,
                 records[index],
-                nations[index],
+                nations![index],
               ),
               childCount: records.length,
             ),
@@ -159,7 +159,7 @@ class Homepage extends StatelessWidget {
                     child: Container(
                       width: 145,
                       child: Text(
-                        record.mapName,
+                        record.mapName!,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: inkwellBlue(),
@@ -180,7 +180,7 @@ class Homepage extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Text(
-                        '${toMinSec(record.time)}',
+                        '${toMinSec(record.time!)}',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -196,7 +196,7 @@ class Homepage extends StatelessWidget {
                       Text(
                         record.teleports == 1
                             ? '(${record.teleports.toString()} tp)'
-                            : record.teleports > 1
+                            : record.teleports! > 1
                                 ? '(${record.teleports.toString()} tps)'
                                 : '',
                         style: TextStyle(
@@ -220,7 +220,7 @@ class Homepage extends StatelessWidget {
                       ),
                       InkWell(
                         child: Text(
-                          '${lenCheck(record.playerName, 15)}',
+                          '${lenCheck(record.playerName!, 15)}',
                           style: TextStyle(
                             color: Colors.blue.shade100,
                             fontSize: 14.5,
@@ -240,22 +240,18 @@ class Homepage extends StatelessWidget {
                       SizedBox(
                         width: 4.5,
                       ),
-                      nation != null
-                          ? Image(
-                              image: AssetImage(
-                                'assets/flag/$nation.png',
-                              ),
-                            )
-                          : Container(
-                              child: Text('$nation'),
-                            ),
+                      Image(
+                        image: AssetImage(
+                          'assets/flag/$nation.png',
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(
                     height: 4,
                   ),
                   Text(
-                    '${diffofNow(record.createdOn)}',
+                    '${diffofNow(record.createdOn!)}',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14.5,

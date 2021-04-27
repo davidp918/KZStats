@@ -1,8 +1,8 @@
 part of 'cubit_update.dart';
 
 class ModeState {
-  String mode;
-  bool nub;
+  String? mode;
+  bool? nub;
 
   ModeState({
     this.mode,
@@ -16,11 +16,11 @@ class ModeState {
     };
   }
 
-  factory ModeState.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+  factory ModeState.fromMap(Map<String, dynamic>? map) {
+    //if (map == null) return null;
 
     return ModeState(
-      mode: map['mode'],
+      mode: map!['mode'],
       nub: map['nub'],
     );
   }

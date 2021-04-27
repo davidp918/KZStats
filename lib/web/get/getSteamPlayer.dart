@@ -5,7 +5,7 @@ import 'package:kzstats/web/json/steamplayer_json.dart';
 import 'package:kzstats/web/urls.dart';
 import '../json/steamplayer_json.dart';
 
-Player playerSteam;
+late Player playerSteam;
 
 Future<PlayerElement> getPlayerSteam(String steam64) async {
   try {
@@ -17,5 +17,5 @@ Future<PlayerElement> getPlayerSteam(String steam64) async {
         : print('something wrong');
   } catch (exception) {}
 
-  return playerSteam.response.players[0];
+  return playerSteam.response!.players![0];
 }

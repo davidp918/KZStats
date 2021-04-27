@@ -11,7 +11,7 @@ import 'package:kzstats/pages/loginPage.dart';
 import 'package:kzstats/pages/about.dart';
 
 class AppRouter {
-  Route onGenerateRoute(RouteSettings settings) {
+  Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
@@ -46,7 +46,7 @@ class AppRouter {
           builder: (context) => About(),
         );
       case '/map_detail':
-        final Wr prevSnapshotData = settings.arguments as Wr;
+        final Wr? prevSnapshotData = settings.arguments as Wr?;
         return MaterialPageRoute(
           builder: (_) => MapDetail(
             prevSnapshotData: prevSnapshotData,
@@ -54,7 +54,7 @@ class AppRouter {
         );
       case '/player_detail':
         // [0]: steam64, [1]: player name,
-        final List<String> playerInfo = settings.arguments as List<String>;
+        final List<String>? playerInfo = settings.arguments as List<String>?;
         return MaterialPageRoute(
           builder: (_) => PlayerDetail(playerInfo: playerInfo),
         );

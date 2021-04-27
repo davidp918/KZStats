@@ -16,7 +16,7 @@ class HomepageSearchBar extends StatelessWidget {
   }
 }
 
-class DataSearch extends SearchDelegate<String> {
+class DataSearch extends SearchDelegate<String?> {
   final allSearch = [
     'kz_aacs',
     'kz_absc',
@@ -55,6 +55,7 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
+    throw (UnimplementedError);
     // do something when the user clicks the result
   }
 

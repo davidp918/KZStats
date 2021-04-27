@@ -36,28 +36,28 @@ class Wr {
     this.replayId,
   });
 
-  int id;
-  String steamid64;
-  String playerName;
-  String steamId;
-  int serverId;
-  int mapId;
-  int stage;
-  String mode;
-  int tickrate;
-  double time;
-  int teleports;
-  DateTime createdOn;
-  DateTime updatedOn;
-  int updatedBy;
-  int place;
-  int top100;
-  int top100Overall;
-  String serverName;
-  String mapName;
-  int points;
-  int recordFilterId;
-  int replayId;
+  int? id;
+  String? steamid64;
+  String? playerName;
+  String? steamId;
+  int? serverId;
+  int? mapId;
+  int? stage;
+  String? mode;
+  int? tickrate;
+  double? time;
+  int? teleports;
+  DateTime? createdOn;
+  DateTime? updatedOn;
+  int? updatedBy;
+  int? place;
+  int? top100;
+  int? top100Overall;
+  String? serverName;
+  String? mapName;
+  int? points;
+  int? recordFilterId;
+  int? replayId;
 
   factory Wr.fromJson(Map<String, dynamic> json) => Wr(
         id: json["id"],
@@ -96,8 +96,8 @@ class Wr {
         "tickrate": tickrate,
         "time": time,
         "teleports": teleports,
-        "created_on": createdOn.toIso8601String(),
-        "updated_on": updatedOn.toIso8601String(),
+        "created_on": createdOn!.toIso8601String(),
+        "updated_on": updatedOn!.toIso8601String(),
         "updated_by": updatedBy,
         "place": place,
         "top_100": top100,

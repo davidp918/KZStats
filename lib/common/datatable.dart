@@ -7,17 +7,17 @@ import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/json/mapTop_json.dart';
 import 'package:kzstats/others/pointsClassification.dart';
 
-Widget buildPaginatedDataTable(BuildContext context, List<dynamic> records) {
+Widget buildPaginatedDataTable(BuildContext context, List<dynamic>? records) {
   return Theme(
     data: Theme.of(context).copyWith(
       cardColor: Color(0xff1D202C),
       dividerColor: Color(0xff333333),
     ),
-    child: buildDataTable(context, records),
+    child: buildDataTable(context, records as List<Record>?),
   );
 }
 
-Widget buildDataTable(BuildContext context, List<Record> mapTop) {
+Widget buildDataTable(BuildContext context, List<Record>? mapTop) {
   final columns = [
     '#',
     'Player',
@@ -58,14 +58,14 @@ Widget buildDataTable(BuildContext context, List<Record> mapTop) {
 
 class RecordsSource extends DataTableSource {
   BuildContext context;
-  List<Record> _records;
+  List<Record>? _records;
   RecordsSource(this.context, this._records);
 
   @override
-  DataRow getRow(int index) {
+  DataRow? getRow(int index) {
     assert(index >= 0);
-    if (index >= _records.length) return null;
-    final Record record = _records[index];
+    if (index >= _records!.length) return null;
+    final Record record = _records![index];
     return DataRow.byIndex(
       index: index,
       color: MaterialStateColor.resolveWith(
@@ -88,24 +88,22 @@ class RecordsSource extends DataTableSource {
         ),
         DataCell(
           InkWell(
-            onTap: () {
-              return Navigator.of(context).pushNamed(
-                '/player_detail',
-                arguments: [
-                  record.steamid64,
-                  record.playerName,
-                ],
-              );
-            },
+            onTap: () => Navigator.of(context).pushNamed(
+              '/player_detail',
+              arguments: [
+                record.steamid64,
+                record.playerName,
+              ],
+            ),
             child: Text(
-              '${lenCheck(record.playerName, 15)}',
+              '${lenCheck(record.playerName!, 15)}',
               style: TextStyle(color: inkwellBlue()),
             ),
           ),
         ),
         DataCell(
           Text(
-            '${toMinSec(record.time)}',
+            '${toMinSec(record.time!)}',
             style: TextStyle(
               color: Colors.white,
             ),
@@ -146,7 +144,7 @@ class RecordsSource extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => _records.length;
+  int get rowCount => _records!.length;
 
   @override
   int get selectedRowCount => 0;

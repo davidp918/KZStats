@@ -7,7 +7,7 @@ class Player {
     this.response,
   });
 
-  Response response;
+  Response? response;
 
   factory Player.fromJson(Map<String, dynamic> json) => Player(
         response: Response.fromJson(json["response"]),
@@ -19,7 +19,7 @@ class Response {
     this.players,
   });
 
-  List<PlayerElement> players;
+  List<PlayerElement>? players;
 
   factory Response.fromJson(Map<String, dynamic> json) => Response(
         players: List<PlayerElement>.from(
@@ -49,24 +49,24 @@ class PlayerElement {
     this.loccountrycode,
   });
 
-  String steamid;
-  int communityvisibilitystate;
-  int profilestate;
-  String personaname;
-  int commentpermission;
-  String profileurl;
-  String avatar;
-  String avatarmedium;
-  String avatarfull;
-  String avatarhash;
-  int lastlogoff;
-  int personastate;
-  String primaryclanid;
-  int timecreated;
-  int personastateflags;
-  String gameextrainfo;
-  String gameid;
-  String loccountrycode;
+  String? steamid;
+  int? communityvisibilitystate;
+  int? profilestate;
+  String? personaname;
+  int? commentpermission;
+  String? profileurl;
+  String? avatar;
+  String? avatarmedium;
+  String? avatarfull;
+  String? avatarhash;
+  int? lastlogoff;
+  int? personastate;
+  String? primaryclanid;
+  int? timecreated;
+  int? personastateflags;
+  String? gameextrainfo;
+  String? gameid;
+  String? loccountrycode;
 
   factory PlayerElement.fromJson(Map<String, dynamic> json) => PlayerElement(
         steamid: json["steamid"],

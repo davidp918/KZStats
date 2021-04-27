@@ -28,23 +28,23 @@ class KzstatsApiPlayer {
     this.steamid32,
   });
 
-  String steamid;
-  int communityvisibilitystate;
-  int profilestate;
-  String personaname;
-  int commentpermission;
-  String profileurl;
-  String avatar;
-  String avatarmedium;
-  String avatarfull;
-  String avatarhash;
-  int personastate;
-  String primaryclanid;
-  int timecreated;
-  int personastateflags;
-  String loccountrycode;
-  String country;
-  String steamid32;
+  String? steamid;
+  int? communityvisibilitystate;
+  int? profilestate;
+  String? personaname;
+  int? commentpermission;
+  String? profileurl;
+  String? avatar;
+  String? avatarmedium;
+  String? avatarfull;
+  String? avatarhash;
+  int? personastate;
+  String? primaryclanid;
+  int? timecreated;
+  int? personastateflags;
+  String? loccountrycode;
+  String? country;
+  String? steamid32;
 
   factory KzstatsApiPlayer.fromJson(Map<String, dynamic> json) =>
       KzstatsApiPlayer(

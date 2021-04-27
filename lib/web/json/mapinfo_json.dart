@@ -20,16 +20,16 @@ class Mapinfo {
     this.downloadUrl,
   });
 
-  int id;
-  String name;
-  int filesize;
-  bool validated;
-  int difficulty;
-  DateTime createdOn;
-  DateTime updatedOn;
-  double approvedBySteamid64;
-  String workshopUrl;
-  String downloadUrl;
+  int? id;
+  String? name;
+  int? filesize;
+  bool? validated;
+  int? difficulty;
+  DateTime? createdOn;
+  DateTime? updatedOn;
+  double? approvedBySteamid64;
+  String? workshopUrl;
+  String? downloadUrl;
 
   factory Mapinfo.fromJson(Map<String, dynamic> json) => Mapinfo(
         id: json["id"],

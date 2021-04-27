@@ -4,9 +4,9 @@ import 'package:kzstats/web/json/mapTop_json.dart';
 
 import 'package:kzstats/web/urls.dart';
 
-List<Record> records;
+List<Record>? records;
 
-Future<List<Record>> getPlayerRecordsGlobalApi(
+Future<List<Record>?> getPlayerRecordsGlobalApi(
   String mode,
   bool ifNub,
   int limit,

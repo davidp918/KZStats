@@ -18,20 +18,19 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  steam_login: ^1.0.3
   flutter_webview_plugin: ^0.3.11
-  http: ^0.12.0
-  cached_network_image: ^2.5.0
-  flutter_svg: ^0.21.0+1
+  http: ^0.13.1
+  cached_network_image: ^3.0.0
+  flutter_svg: ^0.22.0
   flutter_bloc: ^7.0.0
   evil_icons_flutter: ^0.5.0
-  flutter_easyrefresh: ^2.2.0
+  flutter_easyrefresh: ^2.2.1
   flutter_native_timezone: ^1.0.10
   hydrated_bloc: ^7.0.0
   hive: ^2.0.3

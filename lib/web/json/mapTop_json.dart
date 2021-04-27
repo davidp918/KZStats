@@ -30,25 +30,25 @@ class Record {
     this.replayId,
   });
 
-  int id;
-  String steamid64;
-  String playerName;
-  String steamId;
-  int serverId;
-  int mapId;
-  int stage;
-  String mode;
-  int tickrate;
-  double time;
-  int teleports;
-  DateTime createdOn;
-  DateTime updatedOn;
-  int updatedBy;
-  int recordFilterId;
-  String serverName;
-  String mapName;
-  int points;
-  int replayId;
+  int? id;
+  String? steamid64;
+  String? playerName;
+  String? steamId;
+  int? serverId;
+  int? mapId;
+  int? stage;
+  String? mode;
+  int? tickrate;
+  double? time;
+  int? teleports;
+  DateTime? createdOn;
+  DateTime? updatedOn;
+  int? updatedBy;
+  int? recordFilterId;
+  String? serverName;
+  String? mapName;
+  int? points;
+  int? replayId;
 
   factory Record.fromJson(Map<String, dynamic> json) => Record(
         id: json["id"],

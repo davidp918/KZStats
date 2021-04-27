@@ -4,9 +4,9 @@ import 'package:kzstats/web/json/record_json.dart';
 
 import 'package:kzstats/web/urls.dart';
 
-List<Wr> topRecords;
+List<Wr>? topRecords;
 
-Future<List<Wr>> getTopRecords(
+Future<List<Wr>?> getTopRecords(
   String mode,
   bool ifNub,
   int amount,

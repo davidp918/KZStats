@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
 
-KzstatsApiPlayer kzstatsPlayer;
+KzstatsApiPlayer? kzstatsPlayer;
 
-Future<KzstatsApiPlayer> getPlayerKzstatsApi(String steam64) async {
+Future<KzstatsApiPlayer?> getPlayerKzstatsApi(String? steam64) async {
   try {
     var response = await http.get(
       Uri.parse(kzstatsApiPlayerInfoUrl(steam64)),

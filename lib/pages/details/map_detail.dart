@@ -18,8 +18,8 @@ import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/urls.dart';
 
 class MapDetail extends StatefulWidget {
-  final Wr prevSnapshotData;
-  const MapDetail({Key key, this.prevSnapshotData}) : super(key: key);
+  final Wr? prevSnapshotData;
+  const MapDetail({Key? key, this.prevSnapshotData}) : super(key: key);
 
   @override
   _MapDetailState createState() => _MapDetailState();
@@ -29,30 +29,30 @@ class _MapDetailState extends State<MapDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomepageAppBar('${widget.prevSnapshotData.mapName}'),
+      appBar: HomepageAppBar('${widget.prevSnapshotData!.mapName}'),
       body: BlocBuilder<ModeCubit, ModeState>(
         builder: (context, state) => FutureBuilder<List<dynamic>>(
           future: Future.wait(
             [
               getMapTopRecords(
-                widget.prevSnapshotData.mapId,
-                state.mode,
-                state.nub,
+                widget.prevSnapshotData!.mapId,
+                state.mode!,
+                state.nub!,
                 100,
               ),
               getMapTopRecords(
-                widget.prevSnapshotData.mapId,
-                state.mode,
+                widget.prevSnapshotData!.mapId,
+                state.mode!,
                 true,
                 1,
               ),
               getMapTopRecords(
-                widget.prevSnapshotData.mapId,
-                state.mode,
+                widget.prevSnapshotData!.mapId,
+                state.mode!,
                 false,
                 1,
               ),
-              getMapInfo(widget.prevSnapshotData.mapId.toString()),
+              getMapInfo(widget.prevSnapshotData!.mapId.toString()),
             ],
           ),
           builder: (
@@ -78,17 +78,17 @@ class _MapDetailState extends State<MapDetail> {
                 // index 1: single instance of Maptop: nub wr
                 // index 2: single instance of Maptop: pro wr
                 // index 3: map info
-                snapshot.data[0],
-                snapshot.data[1][0],
-                snapshot.data[2][0],
-                snapshot.data[3],
+                snapshot.data![0],
+                snapshot.data![1][0],
+                snapshot.data![2][0],
+                snapshot.data![3],
               )
             : errorScreen()
         : loadingFromApi();
   }
 
   Widget mainBody(
-    List<Record> mapTop,
+    List<Record>? mapTop,
     Record nubWr,
     Record proWr,
     Mapinfo mapInfo,
@@ -103,7 +103,7 @@ class _MapDetailState extends State<MapDetail> {
             Container(
               height: 120,
               child: getCachedNetworkImage(
-                '$imageBaseURL${widget.prevSnapshotData.mapName}.webp',
+                '$imageBaseURL${widget.prevSnapshotData!.mapName}.webp',
                 AssetImage(
                   'assets/icon/noimage.png',
                 ),
@@ -130,7 +130,7 @@ class _MapDetailState extends State<MapDetail> {
                   width: 5,
                 ),
                 Text(
-                  'PRO  ${toMinSec(proWr.time)}',
+                  'PRO  ${toMinSec(proWr.time!)}',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -156,7 +156,7 @@ class _MapDetailState extends State<MapDetail> {
                   width: 5,
                 ),
                 Text(
-                  'NUB  ${toMinSec(nubWr.time)}',
+                  'NUB  ${toMinSec(nubWr.time!)}',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,

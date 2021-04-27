@@ -39,7 +39,7 @@ class Settings extends StatelessWidget {
   }
 }
 
-Widget buildHeader({@required String title, @required Widget child}) => Column(
+Widget buildHeader({required String title, required Widget child}) => Column(
       children: [
         Text(
           title,

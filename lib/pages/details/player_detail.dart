@@ -13,13 +13,13 @@ import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
 import 'package:kzstats/web/json/mapTop_json.dart';
 
 class PlayerDetail extends StatefulWidget {
-  final List<String> playerInfo;
-  const PlayerDetail({Key key, this.playerInfo}) : super(key: key);
+  final List<String>? playerInfo;
+  const PlayerDetail({Key? key, this.playerInfo}) : super(key: key);
 
   @override
   _MapDetailState createState() => _MapDetailState(
-        playerInfo[0],
-        playerInfo[1],
+        playerInfo![0],
+        playerInfo![1],
       );
 }
 
@@ -42,8 +42,8 @@ class _MapDetailState extends State<PlayerDetail> {
               [
                 getPlayerKzstatsApi(steamId64),
                 getPlayerRecordsGlobalApi(
-                  state.mode,
-                  state.nub,
+                  state.mode!,
+                  state.nub!,
                   99999,
                   steamId64,
                 ),
@@ -69,8 +69,8 @@ class _MapDetailState extends State<PlayerDetail> {
             ? mainBody(
                 // [0]: kzstats player info
                 // [1]: global api player all records
-                snapshot.data[0],
-                snapshot.data[1],
+                snapshot.data![0],
+                snapshot.data![1],
               )
             : errorScreen()
         : loadingFromApi();
@@ -78,7 +78,7 @@ class _MapDetailState extends State<PlayerDetail> {
 
   Widget mainBody(
     KzstatsApiPlayer kzstatsPlayerInfo,
-    List<Record> records,
+    List<Record>? records,
   ) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -100,7 +100,7 @@ class _MapDetailState extends State<PlayerDetail> {
                     ),
                   ),
                   child: getCachedNetworkImage(
-                    kzstatsPlayerInfo.avatarfull,
+                    kzstatsPlayerInfo.avatarfull!,
                     AssetImage(
                       'assets/icon/noimage.png',
                     ),
@@ -149,7 +149,7 @@ class _MapDetailState extends State<PlayerDetail> {
                                 children: <Widget>[
                                   Image(
                                     image: AssetImage(
-                                      'assets/flag/${kzstatsPlayerInfo.loccountrycode.toLowerCase()}.png',
+                                      'assets/flag/${kzstatsPlayerInfo.loccountrycode!.toLowerCase()}.png',
                                     ),
                                   ),
                                   SizedBox(width: 6),

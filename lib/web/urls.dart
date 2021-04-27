@@ -14,7 +14,7 @@ String globalApiWrRecordsUrl(String mode, bool ifNub, int amount) {
 
 // Top records of a specific map
 String globalApiMaptopRecordsUrl(
-    int mapId, String mode, bool ifNub, int amount) {
+    int? mapId, String mode, bool ifNub, int amount) {
   const kz_mapTopRecords =
       "https://kztimerglobal.com/api/v2.0/records/top?modes_list_string=!mode&map_id=!mapId&stage=0!ifNub&limit=!amount&tickrate=128";
   return kz_mapTopRecords
@@ -52,7 +52,7 @@ String steamApiPlayerInfoUrl(String steamId64) {
 }
 
 // player data from kzstats api
-String kzstatsApiPlayerInfoUrl(String steamId64) {
+String kzstatsApiPlayerInfoUrl(String? steamId64) {
   const kzstats_api_player = "http://www.kzstats.com/api/player/";
   const kzstats_api_player_end = "/steam";
   return '$proxy$kzstats_api_player$steamId64$kzstats_api_player_end';

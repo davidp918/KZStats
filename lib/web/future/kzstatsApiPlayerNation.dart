@@ -9,8 +9,9 @@ Future<List<String>> getPlayerKzstatsNation(
       (item) {
         return getPlayerKzstatsApi(item.steamid64).then(
           (value) {
-            return value.loccountrycode != null
-                ? value.loccountrycode.toLowerCase()
+            return value!.loccountrycode != null
+                // if the player's country is not visible
+                ? value.loccountrycode!.toLowerCase()
                 : 'null';
           },
         );

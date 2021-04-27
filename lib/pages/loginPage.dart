@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 class Login extends StatelessWidget {
-  const Login({Key key}) : super(key: key);
+  const Login({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
