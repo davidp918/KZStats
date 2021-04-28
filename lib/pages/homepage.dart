@@ -89,24 +89,21 @@ class Homepage extends StatelessWidget {
     BuildContext context,
     AsyncSnapshot<List<dynamic>> snapshot,
   ) {
-    return Padding(
-      padding: EdgeInsets.only(top: 10),
-      child: snapshot.connectionState == ConnectionState.done
-          ? snapshot.hasData
-              ? mainBody(
-                  // [0] - wr records
-                  // [1] - nations
-                  context,
-                  snapshot.data![0],
-                  snapshot.data![1],
-                )
-              : RefreshIndicator(
-                  child: errorScreen(),
-                  onRefresh: () async =>
-                      BlocProvider.of<ModeCubit>(context).refresh(),
-                )
-          : loadingFromApi(),
-    );
+    return snapshot.connectionState == ConnectionState.done
+        ? snapshot.hasData
+            ? mainBody(
+                // [0] - wr records
+                // [1] - nations
+                context,
+                snapshot.data![0],
+                snapshot.data![1],
+              )
+            : RefreshIndicator(
+                child: errorScreen(),
+                onRefresh: () async =>
+                    BlocProvider.of<ModeCubit>(context).refresh(),
+              )
+        : loadingFromApi();
   }
 
   Widget mainBody(
@@ -157,13 +154,12 @@ class Homepage extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(right: 11),
-                child: Container(
+                child: getCachedNetworkImage(
+                  '$imageBaseURL${record.mapName}.webp',
+                  AssetImage('assets/icon/noimage.png'),
+                  borderWidth: 0,
                   height: 90,
-                  width: 160,
-                  child: getCachedNetworkImage(
-                    '$imageBaseURL${record.mapName}.webp',
-                    AssetImage('assets/icon/noimage.png'),
-                  ),
+                  width: 169,
                 ),
               ),
               Column(
@@ -280,9 +276,9 @@ class Homepage extends StatelessWidget {
           ),
         ),
         Divider(
-          height: 1.0,
+          height: 2,
           indent: 0,
-          color: Colors.black,
+          color: dividerColor(),
         ),
       ],
     );

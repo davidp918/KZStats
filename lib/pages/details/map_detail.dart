@@ -115,6 +115,8 @@ class _MapDetailState extends State<MapDetail> {
                 AssetImage(
                   'assets/icon/noimage.png',
                 ),
+                borderWidth: 0,
+                height: 120,
               ),
             ),
             SizedBox(
@@ -161,7 +163,10 @@ class _MapDetailState extends State<MapDetail> {
             worldRecordRow('Pro', proWr),
             worldRecordRow('Nub', nubWr),
             SizedBox(height: 4),
-            BuildDataTable(records: mapTop),
+            BuildDataTable(
+              records: mapTop,
+              tableType: 'map_detail',
+            ),
           ];
   }
 }

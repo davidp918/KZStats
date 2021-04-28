@@ -10,9 +10,11 @@ import 'package:characters/characters.dart';
 
 class BuildDataTable extends StatefulWidget {
   final List<Record>? records;
+  final String tableType;
   BuildDataTable({
     Key? key,
     required this.records,
+    required this.tableType,
   }) : super(key: key);
 
   @override
@@ -23,15 +25,8 @@ class _BuildDataTableState extends State<BuildDataTable> {
   late final List<Record>? _records;
   int? _sortColumnIndex;
   bool _isAscending = false;
-  final columns = [
-    '#',
-    'Player',
-    'Time',
-    'Points',
-    'TPs',
-    'Date',
-    'Server',
-  ];
+  late final columns;
+
   @override
   void initState() {
     super.initState();
@@ -70,7 +65,7 @@ class _BuildDataTableState extends State<BuildDataTable> {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
-        dividerColor: Color(0xff333333),
+        dividerColor: dividerColor(),
         textTheme: TextTheme(
           caption: TextStyle(color: Colors.white),
         ),
@@ -83,6 +78,28 @@ class _BuildDataTableState extends State<BuildDataTable> {
   }
 
   Widget buildDataTable(BuildContext context, List<Record>? records) {
+    if (widget.tableType == 'map_detail') {
+      columns = [
+        '#',
+        'Player',
+        'Time',
+        'Points',
+        'TPs',
+        'Date',
+        'Server',
+      ];
+    } else if (widget.tableType == 'player_detail') {
+      columns = [
+        'map',
+        'time',
+        'points',
+        'teleports',
+        'date',
+        'server',
+      ];
+    } else {
+      throw (UnimplementedError);
+    }
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: PaginatedDataTable(
@@ -92,7 +109,7 @@ class _BuildDataTableState extends State<BuildDataTable> {
         horizontalMargin: 12,
         columnSpacing: 20,
         columns: getColumns(columns),
-        source: RecordsSource(context, records),
+        source: RecordsSource(context, records, widget.tableType),
         sortColumnIndex: _sortColumnIndex,
       ),
     );
@@ -102,7 +119,12 @@ class _BuildDataTableState extends State<BuildDataTable> {
 class RecordsSource extends DataTableSource {
   BuildContext context;
   List<Record>? _records;
-  RecordsSource(this.context, this._records);
+  final String tableType;
+  RecordsSource(
+    this.context,
+    this._records,
+    this.tableType,
+  );
 
   @override
   DataRow? getRow(int index) {
@@ -119,66 +141,7 @@ class RecordsSource extends DataTableSource {
           }
         },
       ),
-      cells: <DataCell>[
-        DataCell(
-          Text(
-            '#${[index, 1].reduce((a, b) => a + b)}',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-        DataCell(
-          InkWell(
-            onTap: () => Navigator.of(context).pushNamed(
-              '/player_detail',
-              arguments: [
-                record.steamid64,
-                record.playerName,
-              ],
-            ),
-            child: Text(
-              '${Characters(lenCheck(record.playerName!, 15))}',
-              style: TextStyle(color: inkwellBlue()),
-            ),
-          ),
-        ),
-        DataCell(
-          Text(
-            '${toMinSec(record.time!)}',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-        DataCell(
-          classifyPoints(record.points),
-        ),
-        DataCell(
-          Text(
-            '${record.teleports}',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-        DataCell(
-          Text(
-            '${record.createdOn.toString()}',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
-        DataCell(
-          Text(
-            '${Characters(record.serverName!)}',
-            style: TextStyle(
-              color: inkwellBlue(),
-            ),
-          ),
-        ),
-      ],
+      cells: mapDetailCells(context, index, record, tableType),
     );
   }
 
@@ -190,4 +153,78 @@ class RecordsSource extends DataTableSource {
 
   @override
   int get selectedRowCount => 0;
+}
+
+List<DataCell> mapDetailCells(
+  BuildContext context,
+  int index,
+  dynamic record,
+  String tableType,
+) {
+  if (tableType == 'map_detail') {
+    return <DataCell>[
+      DataCell(
+        Text(
+          '#${[index, 1].reduce((a, b) => a + b)}',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      DataCell(
+        InkWell(
+          onTap: () => Navigator.of(context).pushNamed(
+            '/player_detail',
+            arguments: [
+              record.steamid64!,
+              record.playerName!,
+            ],
+          ),
+          child: Text(
+            '${Characters(lenCheck(record.playerName!, 15))}',
+            style: TextStyle(color: inkwellBlue()),
+          ),
+        ),
+      ),
+      DataCell(
+        Text(
+          '${toMinSec(record.time!)}',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      DataCell(
+        classifyPoints(record.points),
+      ),
+      DataCell(
+        Text(
+          '${record.teleports}',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      DataCell(
+        Text(
+          '${record.createdOn.toString()}',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      DataCell(
+        Text(
+          '${Characters(record.serverName!)}',
+          style: TextStyle(
+            color: inkwellBlue(),
+          ),
+        ),
+      ),
+    ];
+  } else if (tableType == 'player_detail') {
+    return <DataCell>[];
+  } else {
+    throw (UnimplementedError);
+  }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:kzstats/common/AppBar.dart';
+import 'package:kzstats/common/datatable.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
@@ -97,26 +98,19 @@ class _MapDetailState extends State<PlayerDetail> {
             Row(
               children: <Widget>[
                 SizedBox(width: 9),
-                Container(
-                  height: 120,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: imageBorderColor(),
-                      width: 4,
-                    ),
+                getCachedNetworkImage(
+                  kzstatsPlayerInfo.avatarfull!,
+                  AssetImage(
+                    'assets/icon/noimage.png',
                   ),
-                  child: getCachedNetworkImage(
-                    kzstatsPlayerInfo.avatarfull!,
-                    AssetImage(
-                      'assets/icon/noimage.png',
-                    ),
-                  ),
+                  borderWidth: 3,
+                  height: 130,
+                  width: 130,
                 ),
                 SizedBox(width: 14),
                 Expanded(
                   child: Container(
-                    height: 120,
+                    height: 130,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -186,7 +180,11 @@ class _MapDetailState extends State<PlayerDetail> {
                 ),
               ],
             ),
-            // buildPaginatedDataTable(),
+            SizedBox(height: 6),
+            BuildDataTable(
+              records: records,
+              tableType: 'player_detail',
+            ),
           ],
         ),
       ),
