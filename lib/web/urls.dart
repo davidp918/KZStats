@@ -3,7 +3,11 @@ const imageBaseURL =
 const proxy = "https://gokz-globalstats.bakar.workers.dev/?";
 
 // Latest wr records
-String globalApiWrRecordsUrl(String mode, bool ifNub, int amount) {
+String globalApiWrRecordsUrl(
+  String mode,
+  bool ifNub,
+  int amount,
+) {
   const kz_wr =
       "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=!mode!&place_top_at_least=1ifnub!&stage=0&limit=amount!&tickrate=128";
   return kz_wr
@@ -14,7 +18,11 @@ String globalApiWrRecordsUrl(String mode, bool ifNub, int amount) {
 
 // Top records of a specific map
 String globalApiMaptopRecordsUrl(
-    int? mapId, String mode, bool ifNub, int amount) {
+  int? mapId,
+  String mode,
+  bool ifNub,
+  int amount,
+) {
   const kz_mapTopRecords =
       "https://kztimerglobal.com/api/v2.0/records/top?modes_list_string=!mode&map_id=!mapId&stage=0!ifNub&limit=!amount&tickrate=128";
   return kz_mapTopRecords
@@ -26,7 +34,11 @@ String globalApiMaptopRecordsUrl(
 
 // all records of a specific player
 String globalApiPlayerRecordsUrl(
-    String mode, bool ifNub, int limit, String steamId64) {
+  String mode,
+  bool ifNub,
+  int limit,
+  String steamId64,
+) {
   const kz_mapTopRecords =
       "https://kztimerglobal.com/api/v2.0/records/top?steamid64=!steamId64&modes_list_string=!mode!ifNub&limit=!limit&stage=0";
   return kz_mapTopRecords

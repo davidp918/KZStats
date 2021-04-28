@@ -6,10 +6,14 @@ import 'package:kzstats/others/timeConversion.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/json/record_json.dart';
 import 'package:kzstats/others/pointsClassification.dart';
+import 'package:characters/characters.dart';
 
 class BuildDataTable extends StatefulWidget {
   final List<Record>? records;
-  BuildDataTable({Key? key, required this.records}) : super(key: key);
+  BuildDataTable({
+    Key? key,
+    required this.records,
+  }) : super(key: key);
 
   @override
   _BuildDataTableState createState() => _BuildDataTableState();
@@ -134,7 +138,7 @@ class RecordsSource extends DataTableSource {
               ],
             ),
             child: Text(
-              '${lenCheck(record.playerName!, 15)}',
+              '${Characters(lenCheck(record.playerName!, 15))}',
               style: TextStyle(color: inkwellBlue()),
             ),
           ),
@@ -168,7 +172,7 @@ class RecordsSource extends DataTableSource {
         ),
         DataCell(
           Text(
-            '${record.serverName}',
+            '${Characters(record.serverName!)}',
             style: TextStyle(
               color: inkwellBlue(),
             ),

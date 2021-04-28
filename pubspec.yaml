@@ -39,6 +39,7 @@ dependencies:
   xml: ^5.1.0
   path_provider: ^2.0.1
   editable: ^2.0.0
+  characters: ^1.1.0
 
 dev_dependencies:
   flutter_test:
