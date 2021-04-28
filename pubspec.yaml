@@ -38,13 +38,17 @@ dependencies:
   archive: ^3.1.2
   xml: ^5.1.0
   path_provider: ^2.0.1
-  editable: ^2.0.0
+  flutter_launcher_icons: ^0.9.0
   characters: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
 
 flutter:
   uses-material-design: true
