@@ -12,12 +12,14 @@ class HomepageDrawer extends StatelessWidget {
         padding: EdgeInsets.all(20),
         child: ListView(
           children: <Widget>[
-            userHeader(context,
-                name: 'Click to login', avatar: Icons.person_add_alt),
-            SizedBox(height: 15),
-            Divider(
-              color: Colors.white,
+            userHeader(
+              context,
+              name: 'Click to login',
+              avatar: Icons.person_add_alt,
+              routeName: '/login',
             ),
+            SizedBox(height: 15),
+            Divider(color: Colors.white),
             buildItem(context,
                 text: 'Homepage', icon: Icons.ac_unit, routeName: '/homepage'),
             buildItem(context,
@@ -69,9 +71,15 @@ class HomepageDrawer extends StatelessWidget {
     BuildContext context, {
     required String name,
     required IconData avatar,
+    required String routeName,
   }) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushReplacementNamed(
+          context,
+          routeName,
+        );
+      },
       child: Center(
         child: Column(
           children: <Widget>[

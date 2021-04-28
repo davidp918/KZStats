@@ -38,17 +38,41 @@ class _MapDetailTableState extends State<MapDetailTable> {
     this._records = widget.records;
   }
 
-  int compareString(bool ascending, dynamic value1, dynamic value2) =>
-      ascending ? value1.compareTo(value2) : value2.compareTo(value1);
-
   void onSort(
     int columnIndex,
     bool isAscending,
   ) {
     switch (columnIndex) {
       case 0:
+        _records!.sort((value1, value2) =>
+            compareString(isAscending, value1.time, value2.time));
+        break;
+      case 1:
+        _records!.sort((value1, value2) =>
+            compareString(isAscending, value1.playerName, value2.playerName));
+        break;
+      case 2:
+        _records!.sort((value1, value2) =>
+            compareString(isAscending, value1.time, value2.time));
+        break;
+      case 3:
+        _records!.sort((value1, value2) =>
+            compareString(isAscending, value1.points, value2.points));
+        break;
+      case 4:
+        _records!.sort((value1, value2) =>
+            compareString(isAscending, value1.teleports, value2.teleports));
+        break;
+      case 5:
+        _records!.sort((value1, value2) =>
+            compareString(isAscending, value1.createdOn, value2.createdOn));
+        break;
+      case 6:
+        _records!.sort((value1, value2) =>
+            compareString(isAscending, value1.serverName, value2.serverName));
         break;
       default:
+        throw (UnimplementedError);
     }
     setState(
       () {
@@ -95,7 +119,7 @@ class _MapDetailTableState extends State<MapDetailTable> {
       scrollDirection: Axis.vertical,
       child: PaginatedDataTable(
         dragStartBehavior: DragStartBehavior.down,
-        headingRowHeight: 40,
+        headingRowHeight: 46,
         dataRowHeight: 42,
         horizontalMargin: 12,
         columnSpacing: 15,
@@ -155,7 +179,7 @@ class RecordsSource extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => _records!.length;
+  int get rowCount => _records?.length == null ? 0 : _records!.length;
 
   @override
   int get selectedRowCount => 0;

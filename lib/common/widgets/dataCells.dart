@@ -107,3 +107,6 @@ DataCell mapNameDataCell(
     ),
   );
 }
+
+int compareString(bool ascending, dynamic value1, dynamic value2) =>
+    ascending ? value1.compareTo(value2) : value2.compareTo(value1);
