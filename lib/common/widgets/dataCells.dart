@@ -4,23 +4,6 @@ import 'package:kzstats/others/strCheckLen.dart';
 import 'package:kzstats/others/timeConversion.dart';
 import 'package:kzstats/theme/colors.dart';
 
-const List<String> map_detail_columns = [
-  '#',
-  'Player',
-  'Time',
-  'Points',
-  'TPs',
-  'Date',
-  'Server',
-];
-const List<String> player_detail_columns = [
-  'map',
-  'time',
-  'points',
-  'teleports',
-  'date',
-  'server',
-];
 DataCell indexDataCell(int index) {
   return DataCell(
     Text(
@@ -92,10 +75,14 @@ DataCell createdOnDataCell(dynamic record) {
   );
 }
 
-DataCell serverNameDataCell(dynamic record) {
+DataCell serverNameDataCell(dynamic? record) {
+  late Characters re;
+  record.serverName == null
+      ? re = Characters('<Unknown>')
+      : re = Characters(record.serverName);
   return DataCell(
     Text(
-      '${Characters(record.serverName!)}',
+      '$re',
       style: TextStyle(
         color: inkwellBlue(),
       ),
@@ -103,12 +90,19 @@ DataCell serverNameDataCell(dynamic record) {
   );
 }
 
-DataCell mapNameDataCell(dynamic record) {
+DataCell mapNameDataCell(
+  BuildContext context,
+  dynamic record,
+) {
   return DataCell(
-    Text(
-      '${record.mapName}',
-      style: TextStyle(
-        color: Colors.white,
+    InkWell(
+      onTap: () => Navigator.of(context).pushNamed(
+        '/map_detail',
+        arguments: record,
+      ),
+      child: Text(
+        '${record.mapName}',
+        style: TextStyle(color: inkwellBlue()),
       ),
     ),
   );

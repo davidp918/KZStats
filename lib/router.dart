@@ -5,7 +5,6 @@ import 'package:kzstats/pages/maps.dart';
 import 'package:kzstats/pages/players.dart';
 import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
-import 'package:kzstats/web/json/wr_json.dart';
 import 'package:kzstats/pages/details/player_detail.dart';
 import 'package:kzstats/pages/loginPage.dart';
 import 'package:kzstats/pages/about.dart';
@@ -46,11 +45,9 @@ class AppRouter {
           builder: (context) => About(),
         );
       case '/map_detail':
-        final Wr? prevSnapshotData = settings.arguments as Wr?;
+        final dynamic mapInfo = settings.arguments as dynamic;
         return MaterialPageRoute(
-          builder: (_) => MapDetail(
-            prevSnapshotData: prevSnapshotData,
-          ),
+          builder: (_) => MapDetail(mapInfo: mapInfo),
         );
       case '/player_detail':
         // [0]: steam64, [1]: player name,

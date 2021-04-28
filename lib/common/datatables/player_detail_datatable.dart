@@ -8,11 +8,10 @@ import 'package:kzstats/web/json/record_json.dart';
 
 class BuildDataTable extends StatefulWidget {
   final List<Record>? records;
-  final String tableType;
+
   BuildDataTable({
     Key? key,
     required this.records,
-    required this.tableType,
   }) : super(key: key);
 
   @override
@@ -23,7 +22,14 @@ class _BuildDataTableState extends State<BuildDataTable> {
   late final List<Record>? _records;
   int? _sortColumnIndex;
   bool _isAscending = false;
-  late final columns;
+  final List<String> columns = [
+    'Map',
+    'Time',
+    'Points',
+    'TPs',
+    'Date',
+    'Server',
+  ];
 
   @override
   void initState() {
@@ -31,10 +37,18 @@ class _BuildDataTableState extends State<BuildDataTable> {
     this._records = widget.records;
   }
 
+  int compareString(bool ascending, dynamic value1, dynamic value2) =>
+      ascending ? value1.compareTo(value2) : value2.compareTo(value1);
+
   void onSort(
     int columnIndex,
     bool isAscending,
   ) {
+    switch (columnIndex) {
+      case 0:
+        break;
+      default:
+    }
     setState(
       () {
         this._sortColumnIndex = columnIndex;
@@ -61,6 +75,13 @@ class _BuildDataTableState extends State<BuildDataTable> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.tableType == 'map_detail') {
+      columns = map_detail_columns;
+    } else if (widget.tableType == 'player_detail') {
+      columns = player_detail_columns;
+    } else {
+      throw (UnimplementedError);
+    }
     return Theme(
       data: Theme.of(context).copyWith(
         dividerColor: dividerColor(),
@@ -76,13 +97,6 @@ class _BuildDataTableState extends State<BuildDataTable> {
   }
 
   Widget buildDataTable(BuildContext context, List<Record>? records) {
-    if (widget.tableType == 'map_detail') {
-      columns = map_detail_columns;
-    } else if (widget.tableType == 'player_detail') {
-      columns = player_detail_columns;
-    } else {
-      throw (UnimplementedError);
-    }
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: PaginatedDataTable(
@@ -94,6 +108,7 @@ class _BuildDataTableState extends State<BuildDataTable> {
         columns: getColumns(columns),
         source: RecordsSource(context, records, widget.tableType),
         sortColumnIndex: _sortColumnIndex,
+        sortAscending: _isAscending,
       ),
     );
   }
@@ -126,7 +141,7 @@ class RecordsSource extends DataTableSource {
       ];
     } else if (tableType == 'player_detail') {
       return <DataCell>[
-        mapNameDataCell(record),
+        mapNameDataCell(context, record),
         timeDataCell(record),
         pointsDataCell(record),
         teleportsDataCell(record),

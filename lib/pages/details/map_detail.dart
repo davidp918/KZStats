@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/common/datatable.dart';
+import 'package:kzstats/common/datatables/map_detail_datatable.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
@@ -14,8 +14,8 @@ import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/common/widgets/worldRecord.dart';
 
 class MapDetail extends StatefulWidget {
-  final Wr? prevSnapshotData;
-  const MapDetail({Key? key, this.prevSnapshotData}) : super(key: key);
+  final dynamic mapInfo;
+  const MapDetail({Key? key, this.mapInfo}) : super(key: key);
 
   @override
   _MapDetailState createState() => _MapDetailState();
@@ -25,14 +25,14 @@ class _MapDetailState extends State<MapDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomepageAppBar('${widget.prevSnapshotData!.mapName}'),
+      appBar: HomepageAppBar('${widget.mapInfo.mapName}'),
       body: BlocBuilder<ModeCubit, ModeState>(
         builder: (context, state) => FutureBuilder<List<dynamic>>(
           future: Future.wait(
             [
               getRequest(
                 globalApiMaptopRecordsUrl(
-                  widget.prevSnapshotData!.mapId,
+                  widget.mapInfo!.mapId,
                   state.mode!,
                   state.nub!,
                   100,
@@ -41,7 +41,7 @@ class _MapDetailState extends State<MapDetail> {
               ),
               getRequest(
                 globalApiMaptopRecordsUrl(
-                  widget.prevSnapshotData!.mapId,
+                  widget.mapInfo!.mapId,
                   state.mode!,
                   true,
                   1,
@@ -50,7 +50,7 @@ class _MapDetailState extends State<MapDetail> {
               ),
               getRequest(
                 globalApiMaptopRecordsUrl(
-                  widget.prevSnapshotData!.mapId,
+                  widget.mapInfo!.mapId,
                   state.mode!,
                   false,
                   1,
@@ -58,7 +58,7 @@ class _MapDetailState extends State<MapDetail> {
                 mapTopFromJson,
               ),
               getRequest(
-                globalApiMapInfoUrl(widget.prevSnapshotData!.mapId.toString()),
+                globalApiMapInfoUrl(widget.mapInfo!.mapId.toString()),
                 mapinfoFromJson,
               ),
             ],
@@ -111,7 +111,7 @@ class _MapDetailState extends State<MapDetail> {
             Container(
               height: 120,
               child: getCachedNetworkImage(
-                '$imageBaseURL${widget.prevSnapshotData!.mapName}.webp',
+                '$imageBaseURL${widget.mapInfo!.mapName}.webp',
                 AssetImage(
                   'assets/icon/noimage.png',
                 ),
@@ -163,10 +163,7 @@ class _MapDetailState extends State<MapDetail> {
             worldRecordRow('Pro', proWr),
             worldRecordRow('Nub', nubWr),
             SizedBox(height: 4),
-            BuildDataTable(
-              records: mapTop,
-              tableType: 'map_detail',
-            ),
+            MapDetailTable(records: mapTop),
           ];
   }
 }
