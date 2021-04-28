@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:kzstats/others/strCheckLen.dart';
-import 'package:kzstats/others/timeConversion.dart';
+
+import 'package:kzstats/common/widgets/dataCells.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/json/record_json.dart';
-import 'package:kzstats/others/pointsClassification.dart';
-import 'package:characters/characters.dart';
 
 class BuildDataTable extends StatefulWidget {
   final List<Record>? records;
@@ -79,24 +77,9 @@ class _BuildDataTableState extends State<BuildDataTable> {
 
   Widget buildDataTable(BuildContext context, List<Record>? records) {
     if (widget.tableType == 'map_detail') {
-      columns = [
-        '#',
-        'Player',
-        'Time',
-        'Points',
-        'TPs',
-        'Date',
-        'Server',
-      ];
+      columns = map_detail_columns;
     } else if (widget.tableType == 'player_detail') {
-      columns = [
-        'map',
-        'time',
-        'points',
-        'teleports',
-        'date',
-        'server',
-      ];
+      columns = player_detail_columns;
     } else {
       throw (UnimplementedError);
     }
@@ -107,7 +90,7 @@ class _BuildDataTableState extends State<BuildDataTable> {
         headingRowHeight: 40,
         dataRowHeight: 42,
         horizontalMargin: 12,
-        columnSpacing: 20,
+        columnSpacing: 15,
         columns: getColumns(columns),
         source: RecordsSource(context, records, widget.tableType),
         sortColumnIndex: _sortColumnIndex,
@@ -125,6 +108,35 @@ class RecordsSource extends DataTableSource {
     this._records,
     this.tableType,
   );
+  List<DataCell> selectDataCells(
+    BuildContext context,
+    int index,
+    dynamic record,
+    String tableType,
+  ) {
+    if (tableType == 'map_detail') {
+      return <DataCell>[
+        indexDataCell(index),
+        playerNameDataCell(context, record),
+        timeDataCell(record),
+        pointsDataCell(record),
+        teleportsDataCell(record),
+        createdOnDataCell(record),
+        serverNameDataCell(record),
+      ];
+    } else if (tableType == 'player_detail') {
+      return <DataCell>[
+        mapNameDataCell(record),
+        timeDataCell(record),
+        pointsDataCell(record),
+        teleportsDataCell(record),
+        createdOnDataCell(record),
+        serverNameDataCell(record),
+      ];
+    } else {
+      throw (UnimplementedError);
+    }
+  }
 
   @override
   DataRow? getRow(int index) {
@@ -141,7 +153,7 @@ class RecordsSource extends DataTableSource {
           }
         },
       ),
-      cells: mapDetailCells(context, index, record, tableType),
+      cells: selectDataCells(context, index, record, tableType),
     );
   }
 
@@ -153,78 +165,4 @@ class RecordsSource extends DataTableSource {
 
   @override
   int get selectedRowCount => 0;
-}
-
-List<DataCell> mapDetailCells(
-  BuildContext context,
-  int index,
-  dynamic record,
-  String tableType,
-) {
-  if (tableType == 'map_detail') {
-    return <DataCell>[
-      DataCell(
-        Text(
-          '#${[index, 1].reduce((a, b) => a + b)}',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-      DataCell(
-        InkWell(
-          onTap: () => Navigator.of(context).pushNamed(
-            '/player_detail',
-            arguments: [
-              record.steamid64!,
-              record.playerName!,
-            ],
-          ),
-          child: Text(
-            '${Characters(lenCheck(record.playerName!, 15))}',
-            style: TextStyle(color: inkwellBlue()),
-          ),
-        ),
-      ),
-      DataCell(
-        Text(
-          '${toMinSec(record.time!)}',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-      DataCell(
-        classifyPoints(record.points),
-      ),
-      DataCell(
-        Text(
-          '${record.teleports}',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-      DataCell(
-        Text(
-          '${record.createdOn.toString()}',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-      DataCell(
-        Text(
-          '${Characters(record.serverName!)}',
-          style: TextStyle(
-            color: inkwellBlue(),
-          ),
-        ),
-      ),
-    ];
-  } else if (tableType == 'player_detail') {
-    return <DataCell>[];
-  } else {
-    throw (UnimplementedError);
-  }
 }

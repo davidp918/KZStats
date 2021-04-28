@@ -54,7 +54,7 @@ class AppRouter {
         );
       case '/player_detail':
         // [0]: steam64, [1]: player name,
-        final List<String> playerInfo = settings.arguments as List<String>;
+        final List<dynamic> playerInfo = settings.arguments as List<dynamic>;
         return MaterialPageRoute(
           builder: (_) => PlayerDetail(playerInfo: playerInfo),
         );

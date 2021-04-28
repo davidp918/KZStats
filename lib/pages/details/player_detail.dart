@@ -13,7 +13,7 @@ import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
 
 class PlayerDetail extends StatefulWidget {
-  final List<String> playerInfo;
+  final List<dynamic> playerInfo;
   const PlayerDetail({Key? key, required this.playerInfo}) : super(key: key);
 
   @override
