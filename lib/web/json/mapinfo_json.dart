@@ -4,10 +4,10 @@
 
 import 'dart:convert';
 
-Mapinfo mapinfoFromJson(String str) => Mapinfo.fromJson(json.decode(str));
+MapInfo mapinfoFromJson(String str) => MapInfo.fromJson(json.decode(str));
 
-class Mapinfo {
-  Mapinfo({
+class MapInfo {
+  MapInfo({
     this.id,
     this.name,
     this.filesize,
@@ -27,11 +27,11 @@ class Mapinfo {
   int? difficulty;
   DateTime? createdOn;
   DateTime? updatedOn;
-  double? approvedBySteamid64;
+  String? approvedBySteamid64;
   String? workshopUrl;
   String? downloadUrl;
 
-  factory Mapinfo.fromJson(Map<String, dynamic> json) => Mapinfo(
+  factory MapInfo.fromJson(Map<String, dynamic> json) => MapInfo(
         id: json["id"],
         name: json["name"],
         filesize: json["filesize"],
@@ -39,7 +39,7 @@ class Mapinfo {
         difficulty: json["difficulty"],
         createdOn: DateTime.parse(json["created_on"]),
         updatedOn: DateTime.parse(json["updated_on"]),
-        approvedBySteamid64: json["approved_by_steamid64"].toDouble(),
+        approvedBySteamid64: json["approved_by_steamid64"],
         workshopUrl: json["workshop_url"],
         downloadUrl: json["download_url"],
       );

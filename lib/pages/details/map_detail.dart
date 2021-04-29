@@ -7,7 +7,7 @@ import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/cubit_update.dart';
-import 'package:kzstats/others/tierIdentifier.dart';
+import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
@@ -99,7 +99,7 @@ class _MapDetailState extends State<MapDetail> {
     dynamic? maptop,
     dynamic? nubWr,
     dynamic? proWr,
-    Mapinfo? mapInfo,
+    MapInfo? mapInfo,
   ) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,

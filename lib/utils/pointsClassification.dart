@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kzstats/others/svg.dart';
+import 'package:kzstats/utils/svg.dart';
 
 Widget classifyPoints(int? points) {
   Widget trophy;

@@ -50,8 +50,14 @@ String globalApiPlayerRecordsUrl(
 
 // Map information, such as tier - followed by map id(e.g 200)
 String globalApiMapInfoUrl(String mapId) {
-  const kz_map_info = 'https://kztimerglobal.com/api/v1/maps/';
+  const kz_map_info = 'https://kztimerglobal.com/api/v2.0/maps/';
   return '$kz_map_info$mapId';
+}
+
+// All map info
+String globalApiAllMaps() {
+  const kz_map_all = 'https://kztimerglobal.com/api/v2.0/maps?limit=9999';
+  return kz_map_all;
 }
 
 // player data from steam api

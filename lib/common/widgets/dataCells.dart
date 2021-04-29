@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kzstats/others/pointsClassification.dart';
-import 'package:kzstats/others/strCheckLen.dart';
-import 'package:kzstats/others/timeConversion.dart';
+import 'package:kzstats/utils/pointsClassification.dart';
+import 'package:kzstats/utils/strCheckLen.dart';
+import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/theme/colors.dart';
 
 DataCell indexDataCell(int index) {

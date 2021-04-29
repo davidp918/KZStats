@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kzstats/others/svg.dart';
-import 'package:kzstats/others/timeConversion.dart';
+import 'package:kzstats/utils/svg.dart';
+import 'package:kzstats/utils/timeConversion.dart';
 
 Widget worldRecordRow(String prefix, dynamic wr) {
   return wr == null

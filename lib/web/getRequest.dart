@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-import 'package:kzstats/others/emptyListNull.dart';
+import 'package:kzstats/utils/emptyListNull.dart';
 
 Future<dynamic> getRequest(String url, Function fromjson) async {
   dynamic res;
