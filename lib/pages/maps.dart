@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
-import 'package:kzstats/common/error.dart';
-import 'package:kzstats/common/loading.dart';
+import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/urls.dart';
@@ -13,14 +12,16 @@ class Maps extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomepageAppBar(currentPage),
-      drawer: HomepageDrawer(),
-      body: FutureBuilder<List<dynamic>>(
+        appBar: HomepageAppBar(currentPage),
+        drawer: HomepageDrawer(),
+        body: MapsGridView()
+
+        /* FutureBuilder<List<dynamic>>(
         future: Future.wait(
           [
             getRequest(
               globalApiAllMaps(),
-              mapinfoFromJson,
+              multiMapInfoFromJson,
             ),
           ],
         ),
@@ -30,11 +31,12 @@ class Maps extends StatelessWidget {
         ) {
           return transition(snapshot);
         },
-      ),
-    );
+      ), */
+        );
   }
+}
 
-  Widget transition(
+/*   Widget transition(
     AsyncSnapshot<List<dynamic>> snapshot,
   ) {
     return snapshot.connectionState == ConnectionState.done
@@ -45,26 +47,52 @@ class Maps extends StatelessWidget {
               )
             : errorScreen()
         : loadingFromApi();
-  }
+  } */
 
-  Widget mainBody(
-    List<MapInfo>? allMaps,
-  ) {
+class MapsGridView extends StatelessWidget {
+  static const int pageSize = 6;
+
+  @override
+  Widget build(BuildContext context) {
     return PagewiseGridView.count(
-      pageSize: 10,
+      pageSize: pageSize,
       crossAxisCount: 2,
       mainAxisSpacing: 8.0,
       crossAxisSpacing: 8.0,
       childAspectRatio: 0.555,
       padding: EdgeInsets.all(15.0),
-      itemBuilder: (context, entry, index) {
-        throw (UnimplementedError);
-        // return a widget that displays the entry's data
-      },
-      pageFuture: (pageIndex) {
-        throw (UnimplementedError);
-        // return a Future that resolves to a list containing the page's data
-      },
+      itemBuilder: this._itemBuilder,
+      pageFuture: (pageIndex) => this._loadMore(pageIndex! * pageSize),
+    );
+  }
+
+  Future<List<MapInfo>> _loadMore(int limit) async {
+    return getMultiRequest(
+      globalApiAllMaps(limit),
+      multiMapInfoFromJson,
+    );
+  }
+
+  Widget _itemBuilder(BuildContext context, MapInfo entry, _) {
+    return Card(
+      child: Column(
+        children: [
+          GetNetworkImage(
+            fileName: entry.name!,
+            url: '$imageBaseURL${entry.name!}.webp',
+            errorImage: AssetImage('assets/icon/noimage.png'),
+            borderWidth: 0,
+            height: 120,
+          ),
+          SizedBox(height: 4),
+          Text(
+            '${entry.name!}',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

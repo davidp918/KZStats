@@ -59,7 +59,7 @@ class _MapDetailState extends State<MapDetail> {
               ),
               getRequest(
                 globalApiMapInfoUrl(widget.mapInfo!.mapId.toString()),
-                mapinfoFromJson,
+                mapInfoFromJson,
               ),
             ],
           ),
@@ -113,9 +113,7 @@ class _MapDetailState extends State<MapDetail> {
               child: GetNetworkImage(
                 fileName: '${widget.mapInfo.mapName}',
                 url: '$imageBaseURL${widget.mapInfo!.mapName}.webp',
-                errorImage: AssetImage(
-                  'assets/icon/noimage.png',
-                ),
+                errorImage: AssetImage('assets/icon/noimage.png'),
                 borderWidth: 0,
                 height: 120,
               ),

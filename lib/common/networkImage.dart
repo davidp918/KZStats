@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:synchronized/synchronized.dart';
 
 class GetNetworkImage extends StatefulWidget {
   final String fileName;
@@ -40,6 +41,7 @@ class _GetNetworkImageState extends State<GetNetworkImage> {
   _loadImage() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = documentDirectory.path;
+    String folderPath = path + '/images';
     String filePath = path + '/images/${widget.fileName}';
     bool exists = await File('$filePath').exists();
 
@@ -54,9 +56,12 @@ class _GetNetworkImageState extends State<GetNetworkImage> {
       }
     } else {
       http.Response response = await http.get(Uri.parse(widget.url));
-      //await Directory(filePath).create(recursive: true);
+      // creates the folder path if the folder directory does not exists
+      await Directory(folderPath).create(recursive: true);
       File file = new File(filePath);
-      await file.writeAsBytes(response.bodyBytes);
+      // write the data into the folder '/images'
+      file.writeAsBytesSync(response.bodyBytes);
+
       if (this.mounted) {
         setState(
           () {
@@ -81,14 +86,10 @@ class _GetNetworkImageState extends State<GetNetworkImage> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(4),
-        child: displayImage(),
+        child: dataLoaded
+            ? Image.file(File(imagePath!))
+            : Center(child: CircularProgressIndicator()),
       ),
     );
-  }
-
-  Widget displayImage() {
-    return dataLoaded
-        ? Image.file(File(imagePath!))
-        : Center(child: CircularProgressIndicator());
   }
 }

@@ -14,9 +14,8 @@ void main() async {
   // establish connection between hydrated bloc and the app storage layer
   WidgetsFlutterBinding.ensureInitialized();
   Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
-  HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: appDocumentsDirectory,
-  );
+  HydratedBloc.storage =
+      await HydratedStorage.build(storageDirectory: appDocumentsDirectory);
 
   await UserSharedPreferences.init();
 

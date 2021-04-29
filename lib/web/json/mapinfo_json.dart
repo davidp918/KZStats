@@ -4,7 +4,10 @@
 
 import 'dart:convert';
 
-MapInfo mapinfoFromJson(String str) => MapInfo.fromJson(json.decode(str));
+List<MapInfo> multiMapInfoFromJson(String str) =>
+    List<MapInfo>.from(json.decode(str).map((x) => MapInfo.fromJson(x)));
+
+MapInfo mapInfoFromJson(String str) => MapInfo.fromJson(json.decode(str));
 
 class MapInfo {
   MapInfo({
