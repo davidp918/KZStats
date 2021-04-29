@@ -55,9 +55,15 @@ String globalApiMapInfoUrl(String mapId) {
 }
 
 // All map info
-String globalApiAllMaps(int limit) {
-  const kz_map_all = 'https://kztimerglobal.com/api/v2.0/maps?limit=!max';
-  return kz_map_all.replaceAll('!max', limit.toString());
+String globalApiAllMaps(
+  int limit,
+  int offset,
+) {
+  const kz_map_all =
+      'https://kztimerglobal.com/api/v2.0/maps?limit=!max&offset=!offset';
+  return kz_map_all
+      .replaceAll('!max', limit.toString())
+      .replaceAll('!offset', offset.toString());
 }
 
 // player data from steam api

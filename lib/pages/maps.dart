@@ -62,13 +62,18 @@ class MapsGridView extends StatelessWidget {
       childAspectRatio: 0.555,
       padding: EdgeInsets.all(15.0),
       itemBuilder: this._itemBuilder,
-      pageFuture: (pageIndex) => this._loadMore(pageIndex! * pageSize),
+      pageFuture: (pageIndex) =>
+          this._loadMore(pageSize, pageIndex! * pageSize),
     );
   }
 
-  Future<List<MapInfo>> _loadMore(int limit) async {
-    return getMultiRequest(
-      globalApiAllMaps(limit),
+  Future<List<MapInfo>> _loadMore(
+    int limit,
+    int offset,
+  ) async {
+    return getMaps(
+      limit,
+      offset,
       multiMapInfoFromJson,
     );
   }

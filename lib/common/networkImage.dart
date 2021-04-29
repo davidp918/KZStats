@@ -43,7 +43,6 @@ class _GetNetworkImageState extends State<GetNetworkImage> {
     String folderPath = path + '/images';
     String filePath = path + '/images/${widget.fileName}';
     bool exists = await File('$filePath').exists();
-
     if (exists) {
       if (this.mounted) {
         setState(

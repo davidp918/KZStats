@@ -16,7 +16,6 @@ void main() async {
   Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
   HydratedBloc.storage =
       await HydratedStorage.build(storageDirectory: appDocumentsDirectory);
-
   await UserSharedPreferences.init();
 
   runApp(MyApp());
