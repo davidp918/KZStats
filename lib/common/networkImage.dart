@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:synchronized/synchronized.dart';
 
 class GetNetworkImage extends StatefulWidget {
   final String fileName;
