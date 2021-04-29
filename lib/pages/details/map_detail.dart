@@ -110,9 +110,10 @@ class _MapDetailState extends State<MapDetail> {
           children: <Widget>[
             Container(
               height: 120,
-              child: getCachedNetworkImage(
-                '$imageBaseURL${widget.mapInfo!.mapName}.webp',
-                AssetImage(
+              child: GetNetworkImage(
+                fileName: '${widget.mapInfo.mapName}',
+                url: '$imageBaseURL${widget.mapInfo!.mapName}.webp',
+                errorImage: AssetImage(
                   'assets/icon/noimage.png',
                 ),
                 borderWidth: 0,

@@ -5,8 +5,9 @@ class UserSharedPreferences {
 
   static const _steam32Id = 'steam32Id';
 
-  static Future init() async =>
-      _preferences = await SharedPreferences.getInstance();
+  static Future init() async {
+    _preferences = await SharedPreferences.getInstance();
+  }
 
   static Future setSteam32Id(String id) async =>
       await _preferences?.setString(_steam32Id, id);

@@ -154,9 +154,10 @@ class Homepage extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(right: 11),
-                child: getCachedNetworkImage(
-                  '$imageBaseURL${record.mapName}.webp',
-                  AssetImage('assets/icon/noimage.png'),
+                child: GetNetworkImage(
+                  fileName: '${record.mapName}',
+                  url: '$imageBaseURL${record.mapName}.webp',
+                  errorImage: AssetImage('assets/icon/noimage.png'),
                   borderWidth: 0,
                   height: 90,
                   width: 169,

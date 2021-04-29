@@ -98,9 +98,10 @@ class _MapDetailState extends State<PlayerDetail> {
             Row(
               children: <Widget>[
                 SizedBox(width: 9),
-                getCachedNetworkImage(
-                  kzstatsPlayerInfo.avatarfull!,
-                  AssetImage(
+                GetNetworkImage(
+                  fileName: '${kzstatsPlayerInfo.steamid32}',
+                  url: kzstatsPlayerInfo.avatarfull!,
+                  errorImage: AssetImage(
                     'assets/icon/noimage.png',
                   ),
                   borderWidth: 3,

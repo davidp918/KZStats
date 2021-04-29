@@ -67,6 +67,7 @@ class _LoginState extends State<Login> {
   Widget saveButton() {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
+        backgroundColor: primarythemeBlue(),
         minimumSize: Size.fromHeight(52),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -77,7 +78,7 @@ class _LoginState extends State<Login> {
         style: TextStyle(
           color: Colors.white,
           fontSize: 20,
-          fontWeight: FontWeight.w200,
+          fontWeight: FontWeight.w300,
         ),
       ),
       onPressed: () async {
@@ -89,11 +90,19 @@ class _LoginState extends State<Login> {
   Widget title() {
     return Column(
       children: [
-        Icon(Icons.save_alt, size: 100),
+        Icon(
+          Icons.save_alt,
+          size: 100,
+          color: Colors.white70,
+        ),
         const SizedBox(height: 16),
         Text(
-          'Shared\nPreferences',
-          style: TextStyle(fontSize: 42, fontWeight: FontWeight.w400),
+          'Login using your Steam 32 ID!',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 38,
+            fontWeight: FontWeight.w300,
+          ),
           textAlign: TextAlign.center,
         ),
       ],
