@@ -25,20 +25,16 @@ class About extends StatelessWidget {
                     children: [
                       Text(
                         'KZStats',
-                        style: GoogleFonts.notoSans(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 45,
-                          ),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 45,
                         ),
                       ),
                       Text(
                         'Beta - v0.4',
-                        style: GoogleFonts.notoSans(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
                         ),
                       ),
                       SizedBox(height: 6),
@@ -50,57 +46,45 @@ class About extends StatelessWidget {
                       SizedBox(height: 12),
                       Text(
                         'My Discord id: Exusiai#7677',
-                        style: GoogleFonts.notoSans(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
                         ),
                       ),
                       Text(
                         'Source code available at Github',
-                        style: GoogleFonts.notoSans(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
                         ),
                       ),
                       Text(
                         'Search keyword: kzstats',
-                        style: GoogleFonts.notoSans(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
                         ),
                       ),
                       Divider(color: Colors.white),
                       Text(
                         'Contact me directly if there is any bug',
-                        style: GoogleFonts.notoSans(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
                         ),
                       ),
                       Text(
-                        'Feel free to give feedbacks',
-                        style: GoogleFonts.notoSans(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
+                        'Feel free to raise issues',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
                         ),
                       ),
                       Text(
-                        'Thank you!',
-                        style: GoogleFonts.notoSans(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
+                        'Feedbacks are always welcoming!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
                         ),
                       ),
                     ],
@@ -116,10 +100,11 @@ class About extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   '© 2021 Exusiai - Developed using Flutter',
-                  style: GoogleFonts.notoSans(
+                  style: GoogleFonts.dosis(
                     textStyle: TextStyle(
                       color: Colors.white,
                       fontSize: 15,
+                      fontWeight: FontWeight.w300,
                     ),
                   ),
                 ),
