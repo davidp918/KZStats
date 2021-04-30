@@ -12,11 +12,11 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  String steam32Id = '';
+  String steam64 = '';
   @override
   void initState() {
     super.initState();
-    steam32Id = UserSharedPreferences.getSteam32Id() ?? '';
+    steam64 = UserSharedPreferences.getSteam64() ?? '';
   }
 
   @override
@@ -53,12 +53,12 @@ class _LoginState extends State<Login> {
         ),
         const SizedBox(height: 8),
         TextFormField(
-          initialValue: steam32Id,
+          initialValue: steam64,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
-            hintText: 'Your steam 32 ID',
+            hintText: 'Your steam 64 ID',
           ),
-          onChanged: (val) => setState(() => this.steam32Id = val),
+          onChanged: (val) => setState(() => this.steam64 = val),
         ),
       ],
     );
@@ -74,7 +74,7 @@ class _LoginState extends State<Login> {
         ),
       ),
       child: Text(
-        'Save',
+        'Login',
         style: TextStyle(
           color: Colors.white,
           fontSize: 20,
@@ -82,7 +82,7 @@ class _LoginState extends State<Login> {
         ),
       ),
       onPressed: () async {
-        await UserSharedPreferences.setSteam32Id(steam32Id);
+        await UserSharedPreferences.setSteam32Id(steam64);
       },
     );
   }
@@ -97,7 +97,7 @@ class _LoginState extends State<Login> {
         ),
         const SizedBox(height: 16),
         Text(
-          'Login using your Steam 32 ID!',
+          'Login using your Steam 64 ID!',
           style: TextStyle(
             color: Colors.white,
             fontSize: 38,

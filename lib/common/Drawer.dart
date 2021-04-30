@@ -3,7 +3,17 @@ import 'package:flutter/material.dart';
 
 import 'package:kzstats/theme/colors.dart';
 
-class HomepageDrawer extends StatelessWidget {
+class HomepageDrawer extends StatefulWidget {
+  @override
+  _HomepageDrawerState createState() => _HomepageDrawerState();
+}
+
+class _HomepageDrawerState extends State<HomepageDrawer> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -28,8 +38,11 @@ class HomepageDrawer extends StatelessWidget {
                 text: 'Maps', icon: Icons.map_sharp, routeName: '/maps'),
             buildItem(context,
                 text: 'Bans', icon: Icons.not_interested, routeName: '/bans'),
+            Divider(color: Colors.white),
             buildItem(context,
                 text: 'Settings', icon: EvilIcons.gear, routeName: '/settings'),
+            buildItem(context,
+                text: 'About', icon: EvilIcons.question, routeName: '/about'),
           ],
         ),
       ),
