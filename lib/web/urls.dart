@@ -58,12 +58,14 @@ String globalApiMapInfoUrl(String mapId) {
 String globalApiAllMaps(
   int limit,
   int offset,
+  int tier,
 ) {
   const kz_map_all =
-      'https://kztimerglobal.com/api/v2.0/maps?limit=!max&offset=!offset';
+      'https://kztimerglobal.com/api/v2.0/maps?limit=!max&offset=!offset&difficulty=!tier';
   return kz_map_all
       .replaceAll('!max', limit.toString())
-      .replaceAll('!offset', offset.toString());
+      .replaceAll('!offset', offset.toString())
+      .replaceAll('!tier', tier == 0 ? '' : tier.toString());
 }
 
 // player data from steam api

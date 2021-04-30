@@ -30,11 +30,12 @@ Future<List<MapInfo>> getMaps(
   int limit,
   int offset,
   Function fromjson,
+  int tier,
 ) async {
   dynamic res;
   try {
     var response = await http.get(
-      Uri.parse(globalApiAllMaps(limit,offset)),
+      Uri.parse(globalApiAllMaps(limit, offset, tier)),
     );
     response.statusCode == HttpStatus.ok
         ? res = fromjson(response.body)
