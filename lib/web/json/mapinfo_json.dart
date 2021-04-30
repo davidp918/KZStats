@@ -11,8 +11,8 @@ MapInfo mapInfoFromJson(String str) => MapInfo.fromJson(json.decode(str));
 
 class MapInfo {
   MapInfo({
-    this.id,
-    this.name,
+    this.mapId,
+    this.mapName,
     this.filesize,
     this.validated,
     this.difficulty,
@@ -23,8 +23,8 @@ class MapInfo {
     this.downloadUrl,
   });
 
-  int? id;
-  String? name;
+  int? mapId;
+  String? mapName;
   int? filesize;
   bool? validated;
   int? difficulty;
@@ -35,8 +35,8 @@ class MapInfo {
   String? downloadUrl;
 
   factory MapInfo.fromJson(Map<String, dynamic> json) => MapInfo(
-        id: json["id"],
-        name: json["name"],
+        mapId: json["id"],
+        mapName: json["name"],
         filesize: json["filesize"],
         validated: json["validated"],
         difficulty: json["difficulty"],

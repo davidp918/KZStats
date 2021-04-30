@@ -3,6 +3,9 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/common/networkImage.dart';
+import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/utils/strCheckLen.dart';
+import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/urls.dart';
@@ -12,45 +15,15 @@ class Maps extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: HomepageAppBar(currentPage),
-        drawer: HomepageDrawer(),
-        body: MapsGridView()
-
-        /* FutureBuilder<List<dynamic>>(
-        future: Future.wait(
-          [
-            getRequest(
-              globalApiAllMaps(),
-              multiMapInfoFromJson,
-            ),
-          ],
-        ),
-        builder: (
-          BuildContext context,
-          AsyncSnapshot<List<dynamic>> snapshot,
-        ) {
-          return transition(snapshot);
-        },
-      ), */
-        );
+      appBar: HomepageAppBar(currentPage),
+      drawer: HomepageDrawer(),
+      body: MapsGridView(),
+    );
   }
 }
 
-/*   Widget transition(
-    AsyncSnapshot<List<dynamic>> snapshot,
-  ) {
-    return snapshot.connectionState == ConnectionState.done
-        ? snapshot.hasData
-            ? mainBody(
-                // [0]: all maps info
-                snapshot.data?.elementAt(0),
-              )
-            : errorScreen()
-        : loadingFromApi();
-  } */
-
 class MapsGridView extends StatelessWidget {
-  static const int pageSize = 6;
+  static const int pageSize = 11;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +32,7 @@ class MapsGridView extends StatelessWidget {
       crossAxisCount: 2,
       mainAxisSpacing: 8.0,
       crossAxisSpacing: 8.0,
-      childAspectRatio: 0.555,
+      childAspectRatio: 1,
       padding: EdgeInsets.all(15.0),
       itemBuilder: this._itemBuilder,
       pageFuture: (pageIndex) =>
@@ -70,30 +43,63 @@ class MapsGridView extends StatelessWidget {
   Future<List<MapInfo>> _loadMore(
     int limit,
     int offset,
-  ) async {
-    return getMaps(
-      limit,
-      offset,
-      multiMapInfoFromJson,
-    );
-  }
+  ) async =>
+      getMaps(limit, offset, multiMapInfoFromJson);
 
   Widget _itemBuilder(BuildContext context, MapInfo entry, _) {
     return Card(
+      color: primarythemeBlue(),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GetNetworkImage(
-            fileName: entry.name!,
-            url: '$imageBaseURL${entry.name!}.webp',
+            fileName: entry.mapName!,
+            url: '$imageBaseURL${entry.mapName!}.webp',
             errorImage: AssetImage('assets/icon/noimage.png'),
             borderWidth: 0,
-            height: 120,
           ),
-          SizedBox(height: 4),
-          Text(
-            '${entry.name!}',
-            style: TextStyle(
-              color: Colors.white,
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Container(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        '/map_detail',
+                        arguments: entry,
+                      );
+                    },
+                    child: Text(
+                      '${entry.mapName}',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: inkwellBlue(),
+                        fontSize: 17.5,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Tier: ${identifyTier(entry.difficulty)}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ),
             ),
           ),
         ],
