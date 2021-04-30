@@ -1,15 +1,15 @@
-Date : 2021-04-27 22:24:09
+Date : 2021-04-30 19:49:59
 Directory : c:\Users\davidp\Documents\GitHub\KZStats
-Total : 69 files,  2596 codes, 193 comments, 254 blanks, all 3043 lines
+Total : 73 files,  3411 codes, 206 comments, 323 blanks, all 3940 lines
 
 Languages
 +------------+------------+------------+------------+------------+------------+
 | language   | files      | code       | comment    | blank      | total      |
 +------------+------------+------------+------------+------------+------------+
-| Dart       |         46 |      2,084 |         89 |        214 |      2,387 |
-| XML        |         13 |        264 |         54 |         12 |        330 |
+| Dart       |         50 |      2,890 |         99 |        281 |      3,270 |
+| XML        |         13 |        265 |         54 |         12 |        331 |
 | JSON       |          3 |        168 |          0 |          3 |        171 |
-| YAML       |          1 |         33 |         35 |         11 |         79 |
+| YAML       |          1 |         41 |         38 |         13 |         92 |
 | HTML       |          1 |         26 |         15 |          5 |         46 |
 | Swift      |          1 |         12 |          0 |          2 |         14 |
 | Markdown   |          2 |          5 |          0 |          5 |         10 |
@@ -21,12 +21,12 @@ Directories
 +--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | path                                                                                                   | files      | code       | comment    | blank      | total      |
 +--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| .                                                                                                      |         69 |      2,596 |        193 |        254 |      3,043 |
-| android                                                                                                |          8 |         67 |         49 |         10 |        126 |
-| android\app                                                                                            |          7 |         64 |         49 |          9 |        122 |
-| android\app\src                                                                                        |          7 |         64 |         49 |          9 |        122 |
+| .                                                                                                      |         73 |      3,411 |        206 |        323 |      3,940 |
+| android                                                                                                |          8 |         68 |         49 |         10 |        127 |
+| android\app                                                                                            |          7 |         65 |         49 |          9 |        123 |
+| android\app\src                                                                                        |          7 |         65 |         49 |          9 |        123 |
 | android\app\src\debug                                                                                  |          1 |          4 |          3 |          1 |          8 |
-| android\app\src\main                                                                                   |          5 |         56 |         43 |          7 |        106 |
+| android\app\src\main                                                                                   |          5 |         57 |         43 |          7 |        107 |
 | android\app\src\main\res                                                                               |          4 |         26 |         32 |          6 |         64 |
 | android\app\src\main\res\drawable                                                                      |          1 |          4 |          7 |          2 |         13 |
 | android\app\src\main\res\drawable-v21                                                                  |          1 |          4 |          7 |          2 |         13 |
@@ -41,17 +41,19 @@ Directories
 | ios\Runner\Assets.xcassets\AppIcon.appiconset                                                          |          1 |        122 |          0 |          1 |        123 |
 | ios\Runner\Assets.xcassets\LaunchImage.imageset                                                        |          2 |         26 |          0 |          3 |         29 |
 | ios\Runner\Base.lproj                                                                                  |          2 |         61 |          2 |          2 |         65 |
-| lib                                                                                                    |         45 |      2,070 |         79 |        207 |      2,356 |
-| lib\common                                                                                             |         10 |        564 |          4 |         46 |        614 |
-| lib\common\widgets                                                                                     |          1 |         33 |          0 |          2 |         35 |
-| lib\cubit                                                                                              |          2 |         65 |          1 |         20 |         86 |
-| lib\others                                                                                             |          8 |        114 |          2 |         24 |        140 |
-| lib\pages                                                                                              |         11 |        735 |         19 |         50 |        804 |
-| lib\pages\details                                                                                      |          2 |        339 |          9 |         16 |        364 |
-| lib\theme                                                                                              |          1 |          8 |          0 |          2 |         10 |
-| lib\web                                                                                                |         10 |        444 |         48 |         50 |        542 |
+| lib                                                                                                    |         49 |      2,876 |         89 |        274 |      3,239 |
+| lib\common                                                                                             |         11 |        885 |          6 |         82 |        973 |
+| lib\common\datatables                                                                                  |          2 |        334 |          0 |         35 |        369 |
+| lib\common\widgets                                                                                     |          2 |        136 |          0 |         12 |        148 |
+| lib\cubit                                                                                              |          4 |         80 |          1 |         26 |        107 |
+| lib\data                                                                                               |          1 |         11 |          0 |          6 |         17 |
+| lib\pages                                                                                              |         11 |      1,135 |         24 |         65 |      1,224 |
+| lib\pages\details                                                                                      |          2 |        337 |          8 |         16 |        361 |
+| lib\theme                                                                                              |          1 |          9 |          0 |          2 |         11 |
+| lib\utils                                                                                              |          8 |        114 |          2 |         24 |        140 |
+| lib\web                                                                                                |         10 |        495 |         51 |         53 |        599 |
 | lib\web\future                                                                                         |          1 |         24 |          1 |          2 |         27 |
-| lib\web\json                                                                                           |          5 |        347 |         12 |         36 |        395 |
+| lib\web\json                                                                                           |          5 |        349 |         12 |         37 |        398 |
 | test                                                                                                   |          1 |         14 |         10 |          7 |         31 |
 | web                                                                                                    |          2 |         49 |         15 |          6 |         70 |
 +--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
@@ -62,7 +64,7 @@ Files
 +--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 | c:\Users\davidp\Documents\GitHub\KZStats\README.md                                                     | Markdown   |          2 |          0 |          3 |          5 |
 | c:\Users\davidp\Documents\GitHub\KZStats\android\app\src\debug\AndroidManifest.xml                     | XML        |          4 |          3 |          1 |          8 |
-| c:\Users\davidp\Documents\GitHub\KZStats\android\app\src\main\AndroidManifest.xml                      | XML        |         30 |         11 |          1 |         42 |
+| c:\Users\davidp\Documents\GitHub\KZStats\android\app\src\main\AndroidManifest.xml                      | XML        |         31 |         11 |          1 |         43 |
 | c:\Users\davidp\Documents\GitHub\KZStats\android\app\src\main\res\drawable-v21\launch_background.xml   | XML        |          4 |          7 |          2 |         13 |
 | c:\Users\davidp\Documents\GitHub\KZStats\android\app\src\main\res\drawable\launch_background.xml       | XML        |          4 |          7 |          2 |         13 |
 | c:\Users\davidp\Documents\GitHub\KZStats\android\app\src\main\res\values-night\styles.xml              | XML        |          9 |          9 |          1 |         19 |
@@ -81,53 +83,57 @@ Files
 | c:\Users\davidp\Documents\GitHub\KZStats\ios\Runner\Base.lproj\Main.storyboard                         | XML        |         25 |          1 |          1 |         27 |
 | c:\Users\davidp\Documents\GitHub\KZStats\ios\Runner\Runner-Bridging-Header.h                           | C++        |          1 |          0 |          1 |          2 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\common\AppBar.dart                                        | Dart       |         23 |          2 |          5 |         30 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\common\Drawer.dart                                        | Dart       |         90 |          0 |          6 |         96 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\common\Drawer.dart                                        | Dart       |         98 |          0 |          6 |        104 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\common\Popup_mode.dart                                    | Dart       |         62 |          0 |          4 |         66 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\common\SearchBar.dart                                     | Dart       |         87 |          2 |          7 |         96 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\common\datatable.dart                                     | Dart       |        177 |          0 |         13 |        190 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\common\datatables\map_detail_datatable.dart               | Dart       |        170 |          0 |         17 |        187 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\common\datatables\player_detail_datatable.dart            | Dart       |        164 |          0 |         18 |        182 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\common\error.dart                                         | Dart       |         36 |          0 |          2 |         38 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\common\loading.dart                                       | Dart       |         26 |          0 |          2 |         28 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\common\networkImage.dart                                  | Dart       |         16 |          0 |          2 |         18 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\common\topbar.dart                                        | Dart       |         14 |          0 |          3 |         17 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\common\networkImage.dart                                  | Dart       |         83 |          2 |          9 |         94 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\common\widgets\dataCells.dart                             | Dart       |        103 |          0 |         10 |        113 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\common\widgets\worldRecord.dart                           | Dart       |         33 |          0 |          2 |         35 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\cubit\cubit_state.dart                                    | Dart       |         24 |          1 |          8 |         33 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\cubit\cubit_update.dart                                   | Dart       |         41 |          0 |         12 |         53 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\main.dart                                                 | Dart       |         30 |          1 |          6 |         37 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\others\emptyListNull.dart                                 | Dart       |          3 |          0 |          1 |          4 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\others\modifyDate.dart                                    | Dart       |          6 |          0 |          1 |          7 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\others\pointsClassification.dart                          | Dart       |         29 |          0 |          2 |         31 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\others\strCheckLen.dart                                   | Dart       |          3 |          0 |          1 |          4 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\others\svg.dart                                           | Dart       |         17 |          0 |          4 |         21 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\others\test.dart                                          | Dart       |          0 |          0 |          2 |          2 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\others\tierIdentifier.dart                                | Dart       |         20 |          0 |          6 |         26 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\others\timeConversion.dart                                | Dart       |         36 |          2 |          7 |         45 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\cubit\mode_cubit.dart                                     | Dart       |         41 |          0 |         12 |         53 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\cubit\mode_state.dart                                     | Dart       |         24 |          1 |          8 |         33 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\cubit\tier_cubit.dart                                     | Dart       |          8 |          0 |          4 |         12 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\cubit\tier_state.dart                                     | Dart       |          7 |          0 |          2 |          9 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\data\shared_preferences.dart                              | Dart       |         11 |          0 |          6 |         17 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\main.dart                                                 | Dart       |         40 |          1 |          7 |         48 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\about.dart                                          | Dart       |         13 |          0 |          3 |         16 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\bans.dart                                           | Dart       |         11 |          0 |          3 |         14 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\details\map_detail.dart                             | Dart       |        156 |          4 |          8 |        168 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\details\player_detail.dart                          | Dart       |        183 |          5 |          8 |        196 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\homepage.dart                                       | Dart       |        273 |         10 |          8 |        291 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\jumpstats.dart                                      | Dart       |         11 |          0 |          3 |         14 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\loginPage.dart                                      | Dart       |          8 |          0 |          3 |         11 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\maps.dart                                           | Dart       |         11 |          0 |          3 |         14 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\players.dart                                        | Dart       |         11 |          0 |          3 |         14 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\profile.dart                                        | Dart       |         11 |          0 |          3 |         14 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\bans.dart                                           | Dart       |         13 |          0 |          2 |         15 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\details\map_detail.dart                             | Dart       |        157 |          4 |          8 |        169 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\details\player_detail.dart                          | Dart       |        180 |          4 |          8 |        192 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\homepage.dart                                       | Dart       |        270 |         10 |          8 |        288 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\jumpstats.dart                                      | Dart       |         13 |          0 |          2 |         15 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\loginPage.dart                                      | Dart       |        104 |          0 |          8 |        112 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\maps.dart                                           | Dart       |        312 |          6 |         17 |        335 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\players.dart                                        | Dart       |         13 |          0 |          2 |         15 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\profile.dart                                        | Dart       |         13 |          0 |          2 |         15 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\pages\settings.dart                                       | Dart       |         47 |          0 |          5 |         52 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\router.dart                                               | Dart       |         63 |          1 |          3 |         67 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\theme\colors.dart                                         | Dart       |          8 |          0 |          2 |         10 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\router.dart                                               | Dart       |         60 |          1 |          3 |         64 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\theme\colors.dart                                         | Dart       |          9 |          0 |          2 |         11 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\toggleButton.dart                                         | Dart       |         47 |          3 |          6 |         56 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\utils\emptyListNull.dart                                  | Dart       |          3 |          0 |          1 |          4 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\utils\modifyDate.dart                                     | Dart       |          6 |          0 |          1 |          7 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\utils\pointsClassification.dart                           | Dart       |         29 |          0 |          2 |         31 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\utils\strCheckLen.dart                                    | Dart       |          3 |          0 |          1 |          4 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\utils\svg.dart                                            | Dart       |         17 |          0 |          4 |         21 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\utils\test.dart                                           | Dart       |          0 |          0 |          2 |          2 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\utils\tierIdentifier.dart                                 | Dart       |         20 |          0 |          6 |         26 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\utils\timeConversion.dart                                 | Dart       |         36 |          2 |          7 |         45 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\web\future\kzstatsApiPlayerNation.dart                    | Dart       |         24 |          1 |          2 |         27 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\web\getRequest.dart                                       | Dart       |         21 |          2 |          3 |         26 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\web\getRequest.dart                                       | Dart       |         46 |          4 |          4 |         54 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\web\json.dart                                             | Dart       |          5 |          0 |          1 |          6 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\web\json\kzstatsApiPlayer_json.dart                       | Dart       |         61 |          3 |          6 |         70 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\web\json\mapinfo_json.dart                                | Dart       |         38 |          3 |          6 |         47 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\web\json\mapinfo_json.dart                                | Dart       |         40 |          3 |          7 |         50 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\web\json\record_json.dart                                 | Dart       |         66 |          3 |          6 |         75 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\web\json\steamplayer_json.dart                            | Dart       |         81 |          0 |         11 |         92 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\web\json\wr_json.dart                                     | Dart       |        101 |          3 |          7 |        111 |
 | c:\Users\davidp\Documents\GitHub\KZStats\lib\web\steamLogin.dart                                       | Dart       |          0 |         27 |          1 |         28 |
-| c:\Users\davidp\Documents\GitHub\KZStats\lib\web\urls.dart                                             | Dart       |         47 |          6 |          7 |         60 |
-| c:\Users\davidp\Documents\GitHub\KZStats\pubspec.yaml                                                  | YAML       |         33 |         35 |         11 |         79 |
+| c:\Users\davidp\Documents\GitHub\KZStats\lib\web\urls.dart                                             | Dart       |         71 |          7 |          8 |         86 |
+| c:\Users\davidp\Documents\GitHub\KZStats\pubspec.yaml                                                  | YAML       |         41 |         38 |         13 |         92 |
 | c:\Users\davidp\Documents\GitHub\KZStats\test\widget_test.dart                                         | Dart       |         14 |         10 |          7 |         31 |
 | c:\Users\davidp\Documents\GitHub\KZStats\web\index.html                                                | HTML       |         26 |         15 |          5 |         46 |
 | c:\Users\davidp\Documents\GitHub\KZStats\web\manifest.json                                             | JSON       |         23 |          0 |          1 |         24 |
-| Total                                                                                                  |            |      2,596 |        193 |        254 |      3,043 |
+| Total                                                                                                  |            |      3,411 |        206 |        323 |      3,940 |
 +--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

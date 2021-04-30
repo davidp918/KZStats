@@ -7,11 +7,5 @@ class TierCubit extends Cubit<TierState> {
 
   void set(int newTier) {
     emit(TierState(tier: newTier));
-    print(state.tier);
-  }
-
-  void reset() {
-    emit(TierState(tier: 0));
-    print(state.tier);
   }
 }

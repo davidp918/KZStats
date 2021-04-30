@@ -10,6 +10,7 @@ import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/urls.dart';
+import 'package:line_icons/line_icons.dart';
 
 class Maps extends StatefulWidget {
   @override
@@ -19,9 +20,14 @@ class Maps extends StatefulWidget {
 class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
   static int pageSize = 12;
   late AnimationController animationController;
-  late Animation degOneTranslationAnimatinon,
-      degTwoTranslationAnimatinon,
-      degThreeTranslationAnimatinon,
+  late Animation oneAnimation,
+      twoAnimation,
+      threeAnimation,
+      fourAnimation,
+      fiveAnimation,
+      sixAnimation,
+      sevenAnimation,
+      zeroAnimation,
       rotationAnimation;
 
   double getRadiansFromDegree(double degree) {
@@ -38,25 +44,55 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 350));
 
-    degOneTranslationAnimatinon = TweenSequence([
+    oneAnimation = TweenSequence([
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0.0, end: 1.2), weight: 75.0),
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.2, end: 1.0), weight: 25.0),
     ]).animate(animationController);
-    degTwoTranslationAnimatinon = TweenSequence([
+    twoAnimation = TweenSequence([
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0.0, end: 1.4), weight: 55.0),
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.4, end: 1.0), weight: 45.0),
     ]).animate(animationController);
-    degThreeTranslationAnimatinon = TweenSequence([
+    threeAnimation = TweenSequence([
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0.0, end: 1.75), weight: 35.0),
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.75, end: 1.0), weight: 65.0),
+    ]).animate(animationController);
+    fourAnimation = TweenSequence([
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 0.0, end: 1.1), weight: 85.0),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 1.1, end: 1.0), weight: 15.0),
+    ]).animate(animationController);
+    fiveAnimation = TweenSequence([
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 0.0, end: 1.3), weight: 70.0),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 1.3, end: 1.0), weight: 30.0),
+    ]).animate(animationController);
+    sixAnimation = TweenSequence([
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 0.0, end: 1.5), weight: 55.0),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 1.5, end: 1.0), weight: 45.0),
+    ]).animate(animationController);
+    sevenAnimation = TweenSequence([
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 0.0, end: 1.7), weight: 40.0),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 1.7, end: 1.0), weight: 60.0),
+    ]).animate(animationController);
+    zeroAnimation = TweenSequence([
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 0.0, end: 1.9), weight: 25.0),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 1.9, end: 1.0), weight: 75.0),
     ]).animate(animationController);
 
     rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
@@ -66,20 +102,6 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
     animationController.addListener(() {
       setState(() {});
     });
-  }
-
-  Widget mapsGridView(int tier) {
-    return PagewiseGridView.count(
-      pageSize: pageSize,
-      crossAxisCount: 2,
-      mainAxisSpacing: 8.0,
-      crossAxisSpacing: 8.0,
-      childAspectRatio: 1,
-      padding: EdgeInsets.all(15.0),
-      itemBuilder: _itemBuilder,
-      pageFuture: (pageIndex) =>
-          _loadMore(pageSize, pageIndex! * pageSize, tier),
-    );
   }
 
   @override
@@ -105,6 +127,20 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
     );
   }
 
+  Widget mapsGridView(int tier) {
+    return PagewiseGridView.count(
+      pageSize: pageSize,
+      crossAxisCount: 2,
+      mainAxisSpacing: 8.0,
+      crossAxisSpacing: 8.0,
+      childAspectRatio: 1,
+      padding: EdgeInsets.all(15.0),
+      itemBuilder: _itemBuilder,
+      pageFuture: (pageIndex) =>
+          _loadMore(pageSize, pageIndex! * pageSize, tier),
+    );
+  }
+
   Widget floater(int tier) {
     return Positioned(
       right: 30,
@@ -113,14 +149,10 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
         alignment: Alignment.bottomRight,
         children: <Widget>[
           IgnorePointer(
-              child: Container(
-                  color: Colors.transparent, height: 150.0, width: 150.0)),
-          subFloater(270, degThreeTranslationAnimatinon, Colors.green,
-              Icon(Icons.accessible_forward_sharp), () {}),
-          subFloater(225, degTwoTranslationAnimatinon, Colors.yellow,
-              Icon(Icons.ac_unit), () {}),
-          subFloater(180, degOneTranslationAnimatinon, Colors.red,
-              Icon(Icons.access_alarm), () {}),
+            child: Container(
+                color: Colors.transparent, height: 200.0, width: 200.0),
+          ),
+          ...subFloaters(),
           Transform(
             transform: Matrix4.rotationZ(
                 getRadiansFromDegree(rotationAnimation.value)),
@@ -131,11 +163,9 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
               color: Colors.white,
               icon: Icon(Icons.menu),
               onClick: () {
-                if (animationController.isCompleted) {
-                  animationController.reverse();
-                } else {
-                  animationController.forward();
-                }
+                animationController.isCompleted
+                    ? animationController.reverse()
+                    : animationController.forward();
               },
             ),
           ),
@@ -147,15 +177,14 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
   Transform subFloater(
     double angle,
     Animation<dynamic> parameter,
+    double magnitude,
     Color color,
     Icon icon,
-    Function onClick,
+    int newTier,
   ) {
     return Transform.translate(
       offset: Offset.fromDirection(
-        getRadiansFromDegree(angle),
-        parameter.value * 90,
-      ),
+          getRadiansFromDegree(angle), parameter.value * magnitude),
       child: Transform(
         transform:
             Matrix4.rotationZ(getRadiansFromDegree(rotationAnimation.value))
@@ -166,10 +195,35 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
           height: 40,
           color: color,
           icon: icon,
-          onClick: onClick,
+          onClick: () {
+            BlocProvider.of<TierCubit>(context).set(newTier);
+            print(newTier);
+            Navigator.pushReplacementNamed(context, '/maps');
+          },
         ),
       ),
     );
+  }
+
+  List<Transform> subFloaters() {
+    return [
+      subFloater(270, zeroAnimation, 140, Colors.white70,
+          Icon(Icons.looks_5_outlined), 5),
+      subFloater(248, sevenAnimation, 140, Colors.white70,
+          Icon(Icons.looks_4_outlined), 4),
+      subFloater(225, sixAnimation, 140, Colors.white70,
+          Icon(Icons.looks_3_outlined), 3),
+      subFloater(202, fiveAnimation, 140, Colors.white70,
+          Icon(Icons.looks_two_outlined), 2),
+      subFloater(180, fourAnimation, 140, Colors.white70,
+          Icon(Icons.looks_one_outlined), 1),
+      subFloater(
+          265, threeAnimation, 80, Colors.white70, Icon(LineIcons.trash), 7),
+      subFloater(
+          225, twoAnimation, 80, Colors.white70, Icon(Icons.home_outlined), 0),
+      subFloater(185, oneAnimation, 80, Colors.white70,
+          Icon(Icons.looks_6_outlined), 6),
+    ];
   }
 
   Future<List<MapInfo>> _loadMore(int limit, int offset, int tier) async =>
