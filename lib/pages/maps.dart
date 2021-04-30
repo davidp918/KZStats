@@ -38,7 +38,7 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 600));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
 
     degOneTranslationAnimatinon = TweenSequence([
       TweenSequenceItem<double>(
