@@ -123,7 +123,10 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
                         height: 40,
                         color: Colors.yellow,
                         icon: Icon(Icons.menu),
-                        onClick: () => increaseTier(),
+                        onClick: () {
+                          increaseTier();
+                          print('$difficulty');
+                        },
                       ),
                     ),
                   ),
@@ -142,7 +145,10 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
                         height: 40,
                         color: Colors.blue,
                         icon: Icon(Icons.menu),
-                        onClick: () => resetTier(),
+                        onClick: () {
+                          resetTier();
+                          print('$difficulty');
+                        },
                       ),
                     ),
                   ),
@@ -161,7 +167,10 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
                         height: 40,
                         color: Colors.red,
                         icon: Icon(Icons.menu),
-                        onClick: () => decreaseTier(),
+                        onClick: () {
+                          decreaseTier();
+                          print('$difficulty');
+                        },
                       ),
                     ),
                   ),
