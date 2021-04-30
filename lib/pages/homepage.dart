@@ -7,7 +7,7 @@ import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
-import 'package:kzstats/cubit/cubit_update.dart';
+import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/utils/strCheckLen.dart';
 import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/utils/svg.dart';

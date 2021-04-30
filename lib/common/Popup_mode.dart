@@ -1,7 +1,7 @@
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/cubit/cubit_update.dart';
+import 'package:kzstats/cubit/mode_cubit.dart';
 
 class PopUpModeSelect extends StatelessWidget {
   static const modes = <String>[

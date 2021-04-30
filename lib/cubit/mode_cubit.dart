@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-part 'cubit_state.dart';
+part 'mode_state.dart';
 
 class ModeCubit extends Cubit<ModeState> with HydratedMixin {
   ModeCubit() : super(ModeState(mode: 'kz_timer', nub: false));

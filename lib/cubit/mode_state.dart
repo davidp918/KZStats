@@ -1,4 +1,4 @@
-part of 'cubit_update.dart';
+part of 'mode_cubit.dart';
 
 class ModeState {
   String? mode;

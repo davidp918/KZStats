@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:kzstats/cubit/cubit_update.dart';
+import 'package:kzstats/cubit/mode_cubit.dart';
+import 'package:kzstats/cubit/tier_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 
 import 'package:kzstats/router.dart';
@@ -26,9 +27,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ModeCubit>(
-      lazy: false,
-      create: (context) => ModeCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ModeCubit>(
+          create: (context) => ModeCubit(),
+        ),
+        BlocProvider<TierCubit>(
+          create: (context) => TierCubit(),
+        ),
+      ],
       child: MaterialApp(
         theme: ThemeData(
           scaffoldBackgroundColor: backgroundColor(),
