@@ -6,6 +6,7 @@ import 'package:kzstats/utils/checkisNum.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
 import 'package:kzstats/web/urls.dart';
+import 'package:kzstats/global/userInfo_class.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -13,7 +14,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  late String steam64, name;
+  String steam64 = '';
+  String name = '';
 
   late bool validatedAsNum,
       validatedLen,
@@ -23,8 +25,7 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    name = UserSharedPreferences.getName() ?? '';
-    steam64 = UserSharedPreferences.getSteam64() ?? '';
+
     validatedAsNum = false;
     validatedLen = false;
     showErrorSection = false;
@@ -183,10 +184,13 @@ class _LoginState extends State<Login> {
   }
 
   saveToSharedPreferences(KzstatsApiPlayer userInfo) async {
-    await UserSharedPreferences.setAvatar(userInfo.avatarfull!);
-    await UserSharedPreferences.setName(userInfo.personaname!);
-    await UserSharedPreferences.setSteam64Id(steam64);
-    await UserSharedPreferences.setSteam32Id(userInfo.steamid32.toString());
+    UserInfo user = UserInfo(
+      steam32: userInfo.steamid32.toString(),
+      steam64: this.steam64,
+      avatarUrl: userInfo.avatarfull ?? '',
+      name: userInfo.personaname ?? '',
+    );
+    await UserSharedPreferences.setUserInfo(user);
   }
 
   Widget loginFailed() {

@@ -1,34 +1,23 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:kzstats/global/userInfo_class.dart';
 
 class UserSharedPreferences {
   static SharedPreferences? _preferences;
 
-  static const _steam32Id = 'steam32Id';
-  static const _steam64Id = 'steam64Id';
-  static const _name = 'name';
-  static const _avatar = 'avatar';
+  static const _userInfo = 'userInfo';
 
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
   }
 
-  static Future setSteam64Id(String id) async =>
-      await _preferences?.setString(_steam64Id, id);
+  static Future setUserInfo(UserInfo userInfo) async {
+    await _preferences?.setString(_userInfo, jsonEncode(userInfo.toJson()));
+  }
 
-  static Future setSteam32Id(String id) async =>
-      await _preferences?.setString(_steam32Id, id);
-
-  static Future setAvatar(String avatar) async =>
-      await _preferences?.setString(_avatar, avatar);
-
-  static Future setName(String name) async =>
-      await _preferences?.setString(_name, name);
-
-  static String? getSteam64() => _preferences?.getString(_steam64Id);
-
-  static String? getSteam32() => _preferences?.getString(_steam32Id);
-
-  static String? getAvatar() => _preferences?.getString(_avatar);
-
-  static String? getName() => _preferences?.getString(_name);
+  static UserInfo? getUserInfo() {
+    dynamic data = _preferences?.getString(_userInfo);
+    return data == null ? null : UserInfo.fromJson(jsonDecode(data));
+  }
 }

@@ -4,6 +4,7 @@ import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 
 import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/global/userInfo_class.dart';
 
 class HomepageDrawer extends StatefulWidget {
   @override
@@ -11,14 +12,11 @@ class HomepageDrawer extends StatefulWidget {
 }
 
 class _HomepageDrawerState extends State<HomepageDrawer> {
-  late String name, avatar, steam64Id, steam32Id;
+  late UserInfo? user;
   @override
   void initState() {
     super.initState();
-    steam64Id = UserSharedPreferences.getSteam64() ?? '';
-    steam32Id = UserSharedPreferences.getSteam32() ?? '';
-    name = UserSharedPreferences.getName() ?? '';
-    avatar = UserSharedPreferences.getAvatar() ?? '';
+    user = UserSharedPreferences.getUserInfo();
   }
 
   @override
@@ -29,7 +27,7 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
         padding: EdgeInsets.all(20),
         child: ListView(
           children: <Widget>[
-            this.name == '' ? clickToLogin(context) : userHeader(),
+            this.user == null ? clickToLogin(context) : userHeader(),
             SizedBox(height: 15),
             Divider(color: Colors.white),
             buildItem(context,
@@ -117,20 +115,27 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
         Navigator.pushNamed(
           context,
           '/player_detail',
-          arguments: [this.steam64Id, this.name],
+          arguments: [this.user!.steam64, this.user!.name],
         );
       },
       child: Center(
         child: Column(
           children: <Widget>[
-            GetNetworkImage(
-              fileName: this.steam32Id,
-              url: this.avatar,
-              errorImage: AssetImage('assets/icon/noimage.png'),
-              borderWidth: 2,
+            SizedBox(
+              height: 200,
+              width: 200,
+              child: FittedBox(
+                fit: BoxFit.fill,
+                child: GetNetworkImage(
+                  fileName: this.user!.steam32,
+                  url: this.user!.avatarUrl,
+                  errorImage: AssetImage('assets/icon/noimage.png'),
+                  borderWidth: 2,
+                ),
+              ),
             ),
             Text(
-              this.name,
+              this.user!.name,
               style: TextStyle(
                 color: Colors.white,
               ),
