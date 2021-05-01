@@ -1,5 +1,7 @@
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:kzstats/common/networkImage.dart';
+import 'package:kzstats/data/shared_preferences.dart';
 
 import 'package:kzstats/theme/colors.dart';
 
@@ -9,9 +11,14 @@ class HomepageDrawer extends StatefulWidget {
 }
 
 class _HomepageDrawerState extends State<HomepageDrawer> {
+  late String name, avatar, steam64Id, steam32Id;
   @override
   void initState() {
     super.initState();
+    steam64Id = UserSharedPreferences.getSteam64() ?? '';
+    steam32Id = UserSharedPreferences.getSteam32() ?? '';
+    name = UserSharedPreferences.getName() ?? '';
+    avatar = UserSharedPreferences.getAvatar() ?? '';
   }
 
   @override
@@ -22,12 +29,7 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
         padding: EdgeInsets.all(20),
         child: ListView(
           children: <Widget>[
-            userHeader(
-              context,
-              name: 'Click to login',
-              avatar: Icons.person_add_alt,
-              routeName: '/login',
-            ),
+            this.name == '' ? clickToLogin(context) : userHeader(),
             SizedBox(height: 15),
             Divider(color: Colors.white),
             buildItem(context,
@@ -80,30 +82,55 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
     );
   }
 
-  Widget userHeader(
-    BuildContext context, {
-    required String name,
-    required IconData avatar,
-    required String routeName,
-  }) {
+  Widget clickToLogin(BuildContext context) {
     return InkWell(
       onTap: () {
         Navigator.pushReplacementNamed(
           context,
-          routeName,
+          '/login',
         );
       },
       child: Center(
         child: Column(
           children: <Widget>[
             Icon(
-              avatar,
+              Icons.person_add_alt,
               color: Colors.white,
               size: 100,
             ),
             SizedBox(height: 5),
             Text(
-              name,
+              'Click to login',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget userHeader() {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          '/player_detail',
+          arguments: [this.steam64Id, this.name],
+        );
+      },
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            GetNetworkImage(
+              fileName: this.steam32Id,
+              url: this.avatar,
+              errorImage: AssetImage('assets/icon/noimage.png'),
+              borderWidth: 2,
+            ),
+            Text(
+              this.name,
               style: TextStyle(
                 color: Colors.white,
               ),

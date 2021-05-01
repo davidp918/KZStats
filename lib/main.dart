@@ -4,14 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/cubit/tier_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
-
-import 'package:kzstats/router.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:kzstats/global/router.dart';
 import 'package:kzstats/theme/colors.dart';
 
 void main() async {

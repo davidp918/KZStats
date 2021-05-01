@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
-import '../toggleButton.dart';
+import 'package:kzstats/common/widgets/toggleButton.dart';
 
 class Settings extends StatelessWidget {
   final String currentPage = 'Settings';

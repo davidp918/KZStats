@@ -101,9 +101,7 @@ class _MapDetailState extends State<PlayerDetail> {
                 GetNetworkImage(
                   fileName: '${kzstatsPlayerInfo.steamid32}',
                   url: kzstatsPlayerInfo.avatarfull!,
-                  errorImage: AssetImage(
-                    'assets/icon/noimage.png',
-                  ),
+                  errorImage: AssetImage('assets/icon/noimage.png'),
                   borderWidth: 3,
                   height: 130,
                   width: 130,
