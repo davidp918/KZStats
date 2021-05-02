@@ -1,3 +1,5 @@
+import 'package:kzstats/utils/getModeId.dart';
+
 const imageBaseURL =
     "${proxy}https://raw.githubusercontent.com/KZGlobalTeam/map-images/public/webp/thumb/";
 const proxy = "https://gokz-globalstats.bakar.workers.dev/?";
@@ -82,4 +84,18 @@ String kzstatsApiPlayerInfoUrl(String? steamId64) {
   const kzstats_api_player = "http://www.kzstats.com/api/player/";
   const kzstats_api_player_end = "/steam";
   return '$proxy$kzstats_api_player$steamId64$kzstats_api_player_end';
+}
+
+// player points leaderboard
+String globalApiLeaderboardPoints(
+  String mode,
+  bool ifNub,
+  int limit,
+) {
+  const leaderboardPointsUrl =
+      'https://kztimerglobal.com/api/v2.0/player_ranks?finishes_greater_than=0&mode_ids=modeid!ifNub!&limit=limit!&tickrates=128';
+  return leaderboardPointsUrl
+      .replaceAll('modeid!', getModeId(mode).toString())
+      .replaceAll('limit!', limit.toString())
+      .replaceAll('ifNub!', ifNub ? '' : '&has_teleports=false');
 }
