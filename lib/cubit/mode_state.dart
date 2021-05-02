@@ -1,12 +1,12 @@
 part of 'mode_cubit.dart';
 
 class ModeState {
-  String? mode;
-  bool? nub;
+  String mode;
+  bool nub;
 
   ModeState({
-    this.mode,
-    this.nub,
+    required this.mode,
+    required this.nub,
   });
 
   Map<String, dynamic> toMap() {

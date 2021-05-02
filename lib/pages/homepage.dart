@@ -39,17 +39,17 @@ class Homepage extends StatelessWidget {
           return previous.mode != current.mode || previous.nub != current.nub;
         },
         listener: (context, state) =>
-            notifySwitching('${state.mode}', state.nub!, context),
+            notifySwitching('${state.mode}', state.nub, context),
         builder: (context, state) {
           return FutureBuilder<List<dynamic>>(
             future: Future.wait(
               [
                 getRequest(
-                  globalApiWrRecordsUrl(state.mode!, state.nub!, 20),
+                  globalApiWrRecordsUrl(state.mode, state.nub, 20),
                   wrFromJson,
                 ),
                 getRequest(
-                  globalApiWrRecordsUrl(state.mode!, state.nub!, 20),
+                  globalApiWrRecordsUrl(state.mode, state.nub, 20),
                   wrFromJson,
                 ).then((value) => getPlayerKzstatsNation(value!)),
               ],

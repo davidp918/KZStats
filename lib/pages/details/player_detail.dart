@@ -53,8 +53,8 @@ class _MapDetailState extends State<PlayerDetail> {
                 ),
                 getRequest(
                   globalApiPlayerRecordsUrl(
-                    state.mode!,
-                    state.nub!,
+                    state.mode,
+                    state.nub,
                     99999,
                     steamId64,
                   ),

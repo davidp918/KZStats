@@ -17,19 +17,20 @@ DataCell indexDataCell(int index) {
 
 DataCell playerNameDataCell(
   BuildContext context,
-  dynamic record,
+  String steamId64,
+  String name,
 ) {
   return DataCell(
     InkWell(
       onTap: () => Navigator.of(context).pushNamed(
         '/player_detail',
         arguments: [
-          record.steamid64!,
-          record.playerName!,
+          steamId64,
+          name,
         ],
       ),
       child: Text(
-        '${Characters(lenCheck(record.playerName!, 15))}',
+        '${Characters(lenCheck(name, 15))}',
         style: TextStyle(color: inkwellBlue()),
       ),
     ),
@@ -108,5 +109,53 @@ DataCell mapNameDataCell(
   );
 }
 
+DataCell averageDataCell(double? average) {
+  return DataCell(
+    Text(
+      '$average',
+      style: TextStyle(
+        color: Colors.white,
+      ),
+    ),
+  );
+}
+
 int compareString(bool ascending, dynamic value1, dynamic value2) =>
     ascending ? value1.compareTo(value2) : value2.compareTo(value1);
+
+DataCell vanillaDataCell(String? str) {
+  late Characters re;
+  str == null ? re = Characters('<Unknown>') : re = Characters(str);
+  return DataCell(
+    Text(
+      '$re',
+      style: TextStyle(
+        color: Colors.white,
+      ),
+    ),
+  );
+}
+
+DataCell buttonDataCell(
+  BuildContext context,
+  String str,
+  String destination,
+  dynamic parameter,
+) {
+  late Characters re;
+  str == null ? re = Characters('<Unknown>') : re = Characters(str);
+  return DataCell(
+    InkWell(
+      onTap: () => Navigator.of(context).pushNamed(
+        destination,
+        arguments: parameter,
+      ),
+      child: Text(
+        '$re',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+    ),
+  );
+}

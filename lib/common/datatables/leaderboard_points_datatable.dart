@@ -4,38 +4,37 @@ import 'package:flutter/material.dart';
 
 import 'package:kzstats/common/widgets/dataCells.dart';
 import 'package:kzstats/theme/colors.dart';
-import 'package:kzstats/web/json/record_json.dart';
+import 'package:kzstats/web/json.dart';
 
-class MapDetailTable extends StatefulWidget {
-  final List<Record>? records;
+class LeaderboardPointsTable extends StatefulWidget {
+  final List<LeaderboardPoints>? data;
 
-  MapDetailTable({
+  LeaderboardPointsTable({
     Key? key,
-    required this.records,
+    required this.data,
   }) : super(key: key);
 
   @override
-  _MapDetailTableState createState() => _MapDetailTableState();
+  _LeaderboardPointsTableState createState() => _LeaderboardPointsTableState();
 }
 
-class _MapDetailTableState extends State<MapDetailTable> {
-  late final List<Record>? _records;
+class _LeaderboardPointsTableState extends State<LeaderboardPointsTable> {
+  late final List<LeaderboardPoints>? _data;
   int? _sortColumnIndex;
   bool _isAscending = false;
   List<String> columns = [
     '#',
     'Player',
-    'Time',
+    'Average',
     'Points',
-    'TPs',
-    'Date',
-    'Server',
+    'Rating',
+    'Finishes',
   ];
 
   @override
   void initState() {
     super.initState();
-    this._records = widget.records;
+    this._data = widget.data;
   }
 
   void onSort(
@@ -44,32 +43,28 @@ class _MapDetailTableState extends State<MapDetailTable> {
   ) {
     switch (columnIndex) {
       case 0:
-        _records!.sort((value1, value2) =>
-            compareString(isAscending, value1.time, value2.time));
+        _data!.sort((value1, value2) =>
+            compareString(isAscending, value1.points, value2.points));
         break;
       case 1:
-        _records!.sort((value1, value2) =>
+        _data!.sort((value1, value2) =>
             compareString(isAscending, value1.playerName, value2.playerName));
         break;
       case 2:
-        _records!.sort((value1, value2) =>
-            compareString(isAscending, value1.time, value2.time));
+        _data!.sort((value1, value2) =>
+            compareString(isAscending, value1.average, value2.average));
         break;
       case 3:
-        _records!.sort((value1, value2) =>
+        _data!.sort((value1, value2) =>
             compareString(isAscending, value1.points, value2.points));
         break;
       case 4:
-        _records!.sort((value1, value2) =>
-            compareString(isAscending, value1.teleports, value2.teleports));
+        _data!.sort((value1, value2) =>
+            compareString(isAscending, value1.rating, value2.rating));
         break;
       case 5:
-        _records!.sort((value1, value2) =>
-            compareString(isAscending, value1.createdOn, value2.createdOn));
-        break;
-      case 6:
-        _records!.sort((value1, value2) =>
-            compareString(isAscending, value1.serverName, value2.serverName));
+        _data!.sort((value1, value2) =>
+            compareString(isAscending, value1.finishes, value2.finishes));
         break;
       default:
         throw (UnimplementedError);
@@ -110,11 +105,12 @@ class _MapDetailTableState extends State<MapDetailTable> {
           color: Color(0xff1D202C),
         ),
       ),
-      child: buildDataTable(context, _records),
+      child: buildDataTable(context, _data),
     );
   }
 
-  Widget buildDataTable(BuildContext context, List<Record>? records) {
+  Widget buildDataTable(
+      BuildContext context, List<LeaderboardPoints>? records) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: PaginatedDataTable(
@@ -134,32 +130,37 @@ class _MapDetailTableState extends State<MapDetailTable> {
 
 class RecordsSource extends DataTableSource {
   BuildContext context;
-  List<Record>? _records;
+  List<LeaderboardPoints>? _data;
 
   RecordsSource(
     this.context,
-    this._records,
+    this._data,
   );
   List<DataCell> selectDataCells(
     BuildContext context,
     int index,
-    Record record,
+    LeaderboardPoints data,
   ) {
     return <DataCell>[
+/*       '#',
+      'Player',
+      'Average',
+      'Points',
+      'Rating',
+      'Finishes', */
       indexDataCell(index),
-      playerNameDataCell(context, record.steamid64!, record.playerName!),
-      timeDataCell(record),
-      pointsDataCell(record),
-      teleportsDataCell(record),
-      createdOnDataCell(record),
-      serverNameDataCell(record),
+      playerNameDataCell(context, data.steamid64!, data.playerName!),
+      averageDataCell(data.average),
+      pointsDataCell(data.points),
+
+      //leftof
     ];
   }
 
   @override
   DataRow? getRow(int index) {
     assert(index >= 0);
-    final Record record = _records![index];
+    final LeaderboardPoints record = _data![index];
     return DataRow.byIndex(
       index: index,
       color: MaterialStateColor.resolveWith(
@@ -179,7 +180,7 @@ class RecordsSource extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => _records?.length == null ? 0 : _records!.length;
+  int get rowCount => _data?.length == null ? 0 : _data!.length;
 
   @override
   int get selectedRowCount => 0;

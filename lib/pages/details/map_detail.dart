@@ -33,8 +33,8 @@ class _MapDetailState extends State<MapDetail> {
               getRequest(
                 globalApiMaptopRecordsUrl(
                   widget.mapInfo!.mapId,
-                  state.mode!,
-                  state.nub!,
+                  state.mode,
+                  state.nub,
                   100,
                 ),
                 mapTopFromJson,
@@ -42,7 +42,7 @@ class _MapDetailState extends State<MapDetail> {
               getRequest(
                 globalApiMaptopRecordsUrl(
                   widget.mapInfo!.mapId,
-                  state.mode!,
+                  state.mode,
                   true,
                   1,
                 ),
@@ -51,7 +51,7 @@ class _MapDetailState extends State<MapDetail> {
               getRequest(
                 globalApiMaptopRecordsUrl(
                   widget.mapInfo!.mapId,
-                  state.mode!,
+                  state.mode,
                   false,
                   1,
                 ),
