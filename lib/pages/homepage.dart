@@ -150,7 +150,7 @@ class Homepage extends StatelessWidget {
                           record.mapName!,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: inkwellBlue(),
+                            color: inkWellBlue(),
                             fontSize: 16,
                           ),
                         ),

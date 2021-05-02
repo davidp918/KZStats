@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:kzstats/common/widgets/dataCells.dart';
 import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/utils/pointsClassification.dart';
+import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/web/json/record_json.dart';
 
 class MapDetailTable extends StatefulWidget {
@@ -146,13 +148,19 @@ class RecordsSource extends DataTableSource {
     Record record,
   ) {
     return <DataCell>[
-      indexDataCell(index),
-      playerNameDataCell(context, record.steamid64!, record.playerName!),
-      timeDataCell(record),
-      pointsDataCell(record),
-      teleportsDataCell(record),
-      createdOnDataCell(record),
-      serverNameDataCell(record),
+      //indexDataCell(index),
+      vanillaDataCell('#${[index, 1].reduce((a, b) => a + b)}'),
+      buttonDataCell(
+        context,
+        record.playerName,
+        '/player_detail',
+        [record.steamid64, record.playerName],
+      ),
+      vanillaDataCell('${toMinSec(record.time)}'),
+      DataCell(classifyPoints(record.points)),
+      vanillaDataCell('${record.teleports}'),
+      vanillaDataCell('${record.createdOn.toString().substring(0, 19)}'),
+      vanillaDataCell('${record.serverName}'),
     ];
   }
 

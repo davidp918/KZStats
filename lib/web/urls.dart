@@ -97,5 +97,6 @@ String globalApiLeaderboardPoints(
   return leaderboardPointsUrl
       .replaceAll('modeid!', getModeId(mode).toString())
       .replaceAll('limit!', limit.toString())
-      .replaceAll('ifNub!', ifNub ? '' : '&has_teleports=false');
+      .replaceAll(
+          'ifNub!', ifNub ? '&has_teleports=true' : '&has_teleports=false');
 }

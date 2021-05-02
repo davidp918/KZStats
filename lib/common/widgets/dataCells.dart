@@ -1,113 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kzstats/utils/pointsClassification.dart';
-import 'package:kzstats/utils/strCheckLen.dart';
-import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/theme/colors.dart';
-
-DataCell indexDataCell(int index) {
-  return DataCell(
-    Text(
-      '#${[index, 1].reduce((a, b) => a + b)}',
-      style: TextStyle(
-        color: Colors.white,
-      ),
-    ),
-  );
-}
-
-DataCell playerNameDataCell(
-  BuildContext context,
-  String steamId64,
-  String name,
-) {
-  return DataCell(
-    InkWell(
-      onTap: () => Navigator.of(context).pushNamed(
-        '/player_detail',
-        arguments: [
-          steamId64,
-          name,
-        ],
-      ),
-      child: Text(
-        '${Characters(lenCheck(name, 15))}',
-        style: TextStyle(color: inkwellBlue()),
-      ),
-    ),
-  );
-}
-
-DataCell timeDataCell(dynamic record) {
-  return DataCell(
-    Text(
-      '${toMinSec(record.time!)}',
-      style: TextStyle(
-        color: Colors.white,
-      ),
-    ),
-  );
-}
-
-DataCell pointsDataCell(dynamic record) {
-  return DataCell(
-    classifyPoints(record.points),
-  );
-}
-
-DataCell teleportsDataCell(dynamic record) {
-  return DataCell(
-    Text(
-      '${record.teleports}',
-      style: TextStyle(
-        color: Colors.white,
-      ),
-    ),
-  );
-}
-
-DataCell createdOnDataCell(dynamic record) {
-  return DataCell(
-    Text(
-      '${record.createdOn.toString().substring(0, 19)}',
-      style: TextStyle(
-        color: Colors.white,
-      ),
-    ),
-  );
-}
-
-DataCell serverNameDataCell(dynamic? record) {
-  late Characters re;
-  record.serverName == null
-      ? re = Characters('<Unknown>')
-      : re = Characters(record.serverName);
-  return DataCell(
-    Text(
-      '$re',
-      style: TextStyle(
-        color: inkwellBlue(),
-      ),
-    ),
-  );
-}
-
-DataCell mapNameDataCell(
-  BuildContext context,
-  dynamic record,
-) {
-  return DataCell(
-    InkWell(
-      onTap: () => Navigator.of(context).pushNamed(
-        '/map_detail',
-        arguments: record,
-      ),
-      child: Text(
-        '${record.mapName}',
-        style: TextStyle(color: inkwellBlue()),
-      ),
-    ),
-  );
-}
 
 DataCell averageDataCell(double? average) {
   return DataCell(
@@ -138,7 +30,7 @@ DataCell vanillaDataCell(String? str) {
 
 DataCell buttonDataCell(
   BuildContext context,
-  String str,
+  String? str,
   String destination,
   dynamic parameter,
 ) {
@@ -153,7 +45,7 @@ DataCell buttonDataCell(
       child: Text(
         '$re',
         style: TextStyle(
-          color: Colors.white,
+          color: inkWellBlue(),
         ),
       ),
     ),

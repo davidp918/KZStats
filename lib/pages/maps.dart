@@ -11,6 +11,8 @@ import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:kzstats/utils/convertDegreeRad.dart';
+import 'package:kzstats/global/floater.dart';
 
 class Maps extends StatefulWidget {
   @override
@@ -30,17 +32,12 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
       zeroAnimation,
       rotationAnimation;
 
-  double getRadiansFromDegree(double degree) {
-    double unitRadian = 57.295779513;
-    return degree / unitRadian;
-  }
-
-/*   @override
+  @override
   void dispose() {
     animationController.dispose();
     super.dispose();
   }
- */
+
   @override
   void initState() {
     animationController =
@@ -263,7 +260,7 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
                       '${entry.mapName}',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: inkwellBlue(),
+                        color: inkWellBlue(),
                         fontSize: 17.5,
                         fontWeight: FontWeight.w300,
                       ),
@@ -290,40 +287,6 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CircularFloatingButton extends StatelessWidget {
-  final double width;
-  final double height;
-  final Color color;
-  final Icon icon;
-  final onClick;
-
-  CircularFloatingButton({
-    Key? key,
-    required this.width,
-    required this.height,
-    required this.color,
-    required this.icon,
-    required this.onClick,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-      ),
-      child: IconButton(
-        icon: icon,
-        enableFeedback: true,
-        onPressed: onClick,
       ),
     );
   }

@@ -1,6 +1,9 @@
 //import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
-String toMinSec(double sec) {
+String? toMinSec(double? sec) {
+  if (sec == null) {
+    return null;
+  }
   String min = (sec / 60).truncate().toString().padLeft(2, '0');
   String seconds = (sec % 60).toStringAsFixed(3).toString().padLeft(6, '0');
   return ('$min:$seconds');

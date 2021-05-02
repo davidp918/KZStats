@@ -96,18 +96,18 @@ class _MapDetailState extends State<PlayerDetail> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Container(
-        padding: EdgeInsets.fromLTRB(5, 14, 5, 0),
+        padding: EdgeInsets.all(12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Row(
               children: <Widget>[
-                SizedBox(width: 9),
+                SizedBox(width: 2),
                 GetNetworkImage(
                   fileName: '${kzstatsPlayerInfo.steamid32}',
                   url: kzstatsPlayerInfo.avatarfull!,
                   errorImage: AssetImage('assets/icon/noimage.png'),
-                  borderWidth: 3,
+                  borderWidth: 2,
                   height: 130,
                   width: 130,
                 ),
@@ -172,7 +172,7 @@ class _MapDetailState extends State<PlayerDetail> {
                           child: Text(
                             'steam profile',
                             style: TextStyle(
-                              color: inkwellBlue(),
+                              color: inkWellBlue(),
                               fontSize: 14,
                             ),
                           ),

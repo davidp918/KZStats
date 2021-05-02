@@ -123,6 +123,7 @@ class _LeaderboardPointsTableState extends State<LeaderboardPointsTable> {
         source: RecordsSource(context, records),
         sortColumnIndex: _sortColumnIndex,
         sortAscending: _isAscending,
+        rowsPerPage: 20,
       ),
     );
   }
@@ -142,18 +143,17 @@ class RecordsSource extends DataTableSource {
     LeaderboardPoints data,
   ) {
     return <DataCell>[
-/*       '#',
-      'Player',
-      'Average',
-      'Points',
-      'Rating',
-      'Finishes', */
-      indexDataCell(index),
-      playerNameDataCell(context, data.steamid64!, data.playerName!),
-      averageDataCell(data.average),
-      pointsDataCell(data.points),
-
-      //leftof
+      vanillaDataCell('#${[index, 1].reduce((a, b) => a + b)}'),
+      buttonDataCell(
+        context,
+        data.playerName,
+        '/player_detail',
+        [data.steamid64, data.playerName],
+      ),
+      vanillaDataCell('${data.average}'),
+      vanillaDataCell('${data.points}'),
+      vanillaDataCell('${data.rating}'),
+      vanillaDataCell('${data.finishes}'),
     ];
   }
 

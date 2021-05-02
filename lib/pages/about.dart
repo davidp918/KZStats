@@ -73,19 +73,12 @@ class About extends StatelessWidget {
                             child: Text(
                               'Github',
                               style: TextStyle(
-                                color: inkwellBlue(),
+                                color: inkWellBlue(),
                                 fontSize: 18,
                               ),
                             ),
                           )
                         ],
-                      ),
-                      Text(
-                        'Search keyword: kzstats',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
                       ),
                       Divider(color: Colors.white),
                       Text(
