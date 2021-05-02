@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/theme/colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class About extends StatelessWidget {
   const About({Key? key}) : super(key: key);
@@ -51,12 +52,33 @@ class About extends StatelessWidget {
                           fontSize: 18,
                         ),
                       ),
-                      Text(
-                        'Source code available at Github',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Source code available at ',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              String url =
+                                  'https://github.com/davidp918/KZStats';
+                              await canLaunch(url)
+                                  ? await launch(url)
+                                  : throw ('could not launch $url');
+                            },
+                            child: Text(
+                              'Github',
+                              style: TextStyle(
+                                color: inkwellBlue(),
+                                fontSize: 18,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                       Text(
                         'Search keyword: kzstats',
