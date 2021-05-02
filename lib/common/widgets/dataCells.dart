@@ -67,7 +67,7 @@ DataCell teleportsDataCell(dynamic record) {
 DataCell createdOnDataCell(dynamic record) {
   return DataCell(
     Text(
-      '${record.createdOn.toString()}',
+      '${record.createdOn.toString().substring(0, 19)}',
       style: TextStyle(
         color: Colors.white,
       ),

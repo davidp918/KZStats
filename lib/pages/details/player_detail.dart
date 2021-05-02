@@ -29,6 +29,11 @@ class _MapDetailState extends State<PlayerDetail> {
   final String steamId64;
   final String playerName;
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   _MapDetailState(this.steamId64, this.playerName);
   @override
   Widget build(BuildContext context) {

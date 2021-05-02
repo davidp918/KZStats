@@ -12,7 +12,7 @@ class HomepageDrawer extends StatefulWidget {
 }
 
 class _HomepageDrawerState extends State<HomepageDrawer> {
-  late UserInfo? user;
+  late UserInfo user;
   @override
   void initState() {
     super.initState();
@@ -21,13 +21,16 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Drawer(
       child: Container(
         color: primarythemeBlue(),
         padding: EdgeInsets.all(20),
         child: ListView(
           children: <Widget>[
-            this.user == null ? clickToLogin(context) : userHeader(),
+            this.user.avatarUrl == '' && this.user.steam32 == ''
+                ? clickToLogin(context)
+                : userHeader(size),
             SizedBox(height: 15),
             Divider(color: Colors.white),
             buildItem(context,
@@ -109,35 +112,39 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
     );
   }
 
-  Widget userHeader() {
+  Widget userHeader(Size size) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(
           context,
           '/player_detail',
-          arguments: [this.user!.steam64, this.user!.name],
+          arguments: [this.user.steam64, this.user.name],
         );
       },
       child: Center(
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 200,
-              width: 200,
+              height: size.width * 2 / 5,
               child: FittedBox(
                 fit: BoxFit.fill,
                 child: GetNetworkImage(
-                  fileName: this.user!.steam32,
-                  url: this.user!.avatarUrl,
+                  fileName: this.user.steam32,
+                  url: this.user.avatarUrl,
                   errorImage: AssetImage('assets/icon/noimage.png'),
                   borderWidth: 2,
                 ),
               ),
             ),
-            Text(
-              this.user!.name,
-              style: TextStyle(
-                color: Colors.white,
+            SizedBox(height: 8),
+            Container(
+              child: Text(
+                this.user.name,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
               ),
             )
           ],

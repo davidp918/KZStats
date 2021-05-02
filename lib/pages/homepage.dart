@@ -121,87 +121,91 @@ class Homepage extends StatelessWidget {
     String nation,
     SizeInfo constraints,
   ) {
-    return Container(
-      width: constraints.width,
-      child: Align(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
-              child: Row(
-                children: <Widget>[
-                  GetNetworkImage(
-                    fileName: '${record.mapName}',
-                    url: '$imageBaseURL${record.mapName}.webp',
-                    errorImage: AssetImage('assets/icon/noimage.png'),
-                    borderWidth: 0,
-                    height: 90,
-                    width: 169,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      InkWell(
-                        child: Container(
-                          width: 145,
-                          child: Text(
-                            record.mapName!,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: inkwellBlue(),
-                              fontSize: 16,
-                            ),
+    double halfWidth = constraints.width / 2;
+    double crossWidth = halfWidth * 33 / 40 - 7;
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              GetNetworkImage(
+                fileName: '${record.mapName}',
+                url: '$imageBaseURL${record.mapName}.webp',
+                errorImage: AssetImage('assets/icon/noimage.png'),
+                borderWidth: 0,
+                width: crossWidth,
+              ),
+              SizedBox(width: 14),
+              Container(
+                width: crossWidth,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    InkWell(
+                      child: Container(
+                        child: Text(
+                          record.mapName!,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: inkwellBlue(),
+                            fontSize: 16,
                           ),
                         ),
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                            '/map_detail',
-                            arguments: record,
-                          );
-                        },
                       ),
-                      Row(
-                        children: <Widget>[
-                          Text(
-                            '${toMinSec(record.time!)}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          '/map_detail',
+                          arguments: record,
+                        );
+                      },
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          '${toMinSec(record.time!)}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
                           ),
-                          SizedBox(
-                            width: 3,
+                        ),
+                        SizedBox(
+                          width: 3,
+                        ),
+                        gold(14, 14),
+                        SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          record.teleports == 1
+                              ? '(${record.teleports.toString()} tp)'
+                              : record.teleports! > 1
+                                  ? '(${record.teleports.toString()} tps)'
+                                  : '',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
                           ),
-                          gold(14, 14),
-                          SizedBox(
-                            width: 3,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'by ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.5,
                           ),
-                          Text(
-                            record.teleports == 1
-                                ? '(${record.teleports.toString()} tp)'
-                                : record.teleports! > 1
-                                    ? '(${record.teleports.toString()} tps)'
-                                    : '',
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'by ',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14.5,
-                            ),
-                          ),
-                          InkWell(
+                        ),
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: InkWell(
                             child: Text(
                               '${lenCheck(record.playerName!, 15)}',
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: Colors.blue.shade100,
                                 fontSize: 14.5,
@@ -210,7 +214,6 @@ class Homepage extends StatelessWidget {
                             onTap: () {
                               Navigator.of(context).pushNamed(
                                 '/player_detail',
-                                // [0]: steam64, [1]: player name,
                                 arguments: [
                                   record.steamid64!,
                                   record.playerName!
@@ -218,34 +221,34 @@ class Homepage extends StatelessWidget {
                               );
                             },
                           ),
-                          SizedBox(
-                            width: 4.5,
-                          ),
-                          nation != 'null'
-                              ? Image(
-                                  image: AssetImage(
-                                    'assets/flag/$nation.png',
-                                  ),
-                                )
-                              : Container(),
-                        ],
-                      ),
-                      Text(
-                        '${diffofNow(record.createdOn!)}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14.5,
                         ),
+                        SizedBox(
+                          width: 4.5,
+                        ),
+                        nation != 'null'
+                            ? Image(
+                                image: AssetImage(
+                                  'assets/flag/$nation.png',
+                                ),
+                              )
+                            : Container(),
+                      ],
+                    ),
+                    Text(
+                      '${diffofNow(record.createdOn!)}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14.5,
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Divider(height: 2, color: dividerColor()),
-          ],
+            ],
+          ),
         ),
-      ),
+        Divider(height: 2, color: dividerColor()),
+      ],
     );
   }
 }

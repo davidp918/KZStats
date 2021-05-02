@@ -35,6 +35,7 @@ class _PlayerDetailTableState extends State<PlayerDetailTable> {
   void initState() {
     super.initState();
     this._records = widget.records;
+    onSort(4, false);
   }
 
   void onSort(

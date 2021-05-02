@@ -29,7 +29,7 @@ class PopUpModeSelect extends StatelessWidget {
     return PopupMenuButton(
       color: Color(0xff4a5568),
       icon: Icon(EvilIcons.chevron_down),
-      offset: Offset(20, 26),
+      //offset: Offset(20, 26),
       itemBuilder: (BuildContext context) => _selections,
       onSelected: (String result) {
         switch (result) {

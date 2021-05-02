@@ -237,11 +237,14 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GetNetworkImage(
-            fileName: entry.mapName!,
-            url: '$imageBaseURL${entry.mapName!}.webp',
-            errorImage: AssetImage('assets/icon/noimage.png'),
-            borderWidth: 0,
+          AspectRatio(
+            aspectRatio: 200 / 113,
+            child: GetNetworkImage(
+              fileName: entry.mapName!,
+              url: '$imageBaseURL${entry.mapName!}.webp',
+              errorImage: AssetImage('assets/icon/noimage.png'),
+              borderWidth: 0,
+            ),
           ),
           Expanded(
             child: Padding(
