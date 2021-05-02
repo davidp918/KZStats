@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kzstats/pages/bans.dart';
 import 'package:kzstats/pages/homepage.dart';
 import 'package:kzstats/pages/maps.dart';
-import 'package:kzstats/pages/players.dart';
+import 'package:kzstats/pages/leaderboard.dart';
 import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
 import 'package:kzstats/pages/details/player_detail.dart';
@@ -20,9 +20,9 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (context) => Homepage(),
         );
-      case '/players':
+      case '/leaderboard':
         return MaterialPageRoute(
-          builder: (context) => Players(),
+          builder: (context) => Leaderboard(),
         );
       case '/maps':
         return MaterialPageRoute(
