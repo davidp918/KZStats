@@ -12,6 +12,7 @@ import 'package:kzstats/cubit/tier_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/global/router.dart';
 import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/cubit/leaderboard_cubit.dart';
 
 void main() async {
   // establish connection between hydrated bloc and the app storage layer
@@ -36,12 +37,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ModeCubit>(
-          create: (context) => ModeCubit(),
-        ),
-        BlocProvider<TierCubit>(
-          create: (context) => TierCubit(),
-        ),
+        BlocProvider<ModeCubit>(create: (context) => ModeCubit()),
+        BlocProvider<TierCubit>(create: (context) => TierCubit()),
+        BlocProvider<LeaderboardCubit>(create: (context) => LeaderboardCubit()),
       ],
       child: MaterialApp(
         theme: ThemeData(

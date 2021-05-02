@@ -100,3 +100,18 @@ String globalApiLeaderboardPoints(
       .replaceAll(
           'ifNub!', ifNub ? '&has_teleports=true' : '&has_teleports=false');
 }
+
+String globalApiLeaderboardRecords(
+  String mode,
+  bool ifNub,
+  int limit,
+) {
+  const leaderboardRecordsUrl =
+      'https://kztimerglobal.com/api/v2.0/records/top/world_records?stages=0&mode_ids=modeid!&tickrates=128ifNub!&limit=limit!';
+
+  return leaderboardRecordsUrl
+      .replaceAll('modeid!', getModeId(mode).toString())
+      .replaceAll('limit!', limit.toString())
+      .replaceAll(
+          'ifNub!', ifNub ? '&has_teleports=true' : '&has_teleports=false');
+}

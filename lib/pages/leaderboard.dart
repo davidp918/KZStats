@@ -11,6 +11,9 @@ import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/utils/convertDegreeRad.dart';
 import 'package:kzstats/global/floater.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:kzstats/cubit/leaderboard_cubit.dart';
+import 'package:kzstats/common/datatables/leaderboard_records_datatable.dart';
 
 class Leaderboard extends StatefulWidget {
   @override
@@ -19,8 +22,110 @@ class Leaderboard extends StatefulWidget {
 
 class _LeaderboardState extends State<Leaderboard>
     with SingleTickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveWidget(
+      ifDrawer: true,
+      currentPage: 'Leaderboard',
+      builder: (context, constraints) {
+        final modeState = context.watch<ModeCubit>().state;
+        final typeState = context.watch<LeaderboardCubit>().state;
+        return FutureBuilder(
+          future: Future.wait([
+            typeState.type == 'records'
+                ? getRequest(
+                    globalApiLeaderboardPoints(
+                        modeState.mode, modeState.nub, 100),
+                    leaderboardPointsFromJson,
+                  )
+                : getRequest(
+                    globalApiLeaderboardRecords(
+                        modeState.mode, modeState.nub, 100),
+                    leaderboardRecordsFromJson,
+                  )
+          ]),
+          builder: (
+            BuildContext context,
+            AsyncSnapshot<List<dynamic>> snapshot,
+          ) {
+            return transition(
+              snapshot,
+              constraints,
+              typeState.type,
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget transition(
+    AsyncSnapshot<List<dynamic>> snapshot,
+    SizeInfo constraints,
+    String type,
+  ) {
+    return snapshot.connectionState == ConnectionState.done
+        ? snapshot.hasData && snapshot.data![0] != null
+            ? mainBody(
+                snapshot.data![0],
+                constraints,
+                type,
+              )
+            : errorScreen()
+        : loadingFromApi();
+  }
+
+  Widget mainBody(
+    List<dynamic> data,
+    SizeInfo constraints,
+    String type,
+  ) {
+    return Container(
+      width: constraints.width,
+      height: constraints.height,
+      child: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: ListView(
+              children: [
+                SizedBox(height: 12),
+                Center(
+                  child: Text(
+                    'Top - $type',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8),
+                type == 'records'
+                    ? LeaderboardPointsTable(
+                        data: data as List<LeaderboardPoints>)
+                    : LeaderboardRecordsTable(
+                        data: data as List<LeaderboardRecords>),
+              ],
+            ),
+          ),
+          LeaderboardFloater(),
+        ],
+      ),
+    );
+  }
+}
+
+class LeaderboardFloater extends StatefulWidget {
+  LeaderboardFloater({Key? key}) : super(key: key);
+
+  @override
+  _LeaderboardFloaterState createState() => _LeaderboardFloaterState();
+}
+
+class _LeaderboardFloaterState extends State<LeaderboardFloater>
+    with SingleTickerProviderStateMixin {
   late AnimationController animationController;
-  late Animation oneAnimation, twoAnimation, threeAnimation, rotationAnimation;
+  late Animation oneAnimation, twoAnimation, rotationAnimation;
 
   @override
   void initState() {
@@ -40,12 +145,6 @@ class _LeaderboardState extends State<Leaderboard>
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.4, end: 1.0), weight: 45.0),
     ]).animate(animationController);
-    threeAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.75), weight: 35.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.75, end: 1.0), weight: 65.0),
-    ]).animate(animationController);
     rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
       CurvedAnimation(parent: animationController, curve: Curves.easeOut),
     );
@@ -57,82 +156,6 @@ class _LeaderboardState extends State<Leaderboard>
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveWidget(
-      ifDrawer: true,
-      currentPage: 'Leaderboard',
-      builder: (context, constraints) {
-        return BlocBuilder<ModeCubit, ModeState>(
-          builder: (context, state) {
-            return FutureBuilder(
-              future: Future.wait(
-                [
-                  getRequest(
-                    globalApiLeaderboardPoints(state.mode, state.nub, 20),
-                    leaderboardPointsFromJson,
-                  ),
-                ],
-              ),
-              builder: (
-                BuildContext context,
-                AsyncSnapshot<List<dynamic>> snapshot,
-              ) {
-                return transition(snapshot, constraints);
-              },
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget transition(
-    AsyncSnapshot<List<dynamic>> snapshot,
-    SizeInfo constraints,
-  ) {
-    return snapshot.connectionState == ConnectionState.done
-        ? snapshot.hasData && snapshot.data![0] != null
-            ? mainBody(
-                snapshot.data![0],
-                constraints,
-              )
-            : errorScreen()
-        : loadingFromApi();
-  }
-
-  Widget mainBody(
-    List<LeaderboardPoints> data,
-    SizeInfo constraints,
-  ) {
-    return Container(
-      width: constraints.width,
-      height: constraints.height,
-      child: Stack(
-        children: [
-          LeaderboardPointsTable(data: data),
-          floater(),
-        ],
-      ),
-    );
-  }
-}
-
-class LeaderboardFloater extends StatefulWidget {
-  LeaderboardFloater({Key? key}) : super(key: key);
-
-  @override
-  _LeaderboardFloaterState createState() => _LeaderboardFloaterState();
-}
-
-class _LeaderboardFloaterState extends State<LeaderboardFloater>
-    with SingleTickerProviderStateMixin {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: child,
-    );
-  }
-
-  Widget floater() {
     return Positioned(
       right: 30,
       bottom: 30,
@@ -166,7 +189,12 @@ class _LeaderboardFloaterState extends State<LeaderboardFloater>
   }
 
   List<Transform> subFloaters() {
-    return [];
+    return [
+      subFloater(250, twoAnimation, 100, Colors.white70, Icon(LineIcons.trash),
+          'records'),
+      subFloater(200, oneAnimation, 100, Colors.white70,
+          Icon(Icons.looks_6_outlined), 'points'),
+    ];
   }
 
   Transform subFloater(
@@ -175,7 +203,7 @@ class _LeaderboardFloaterState extends State<LeaderboardFloater>
     double magnitude,
     Color color,
     Icon icon,
-    int newTier,
+    String newType,
   ) {
     return Transform.translate(
       offset: Offset.fromDirection(
