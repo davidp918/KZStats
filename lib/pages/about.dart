@@ -45,13 +45,13 @@ class About extends StatelessWidget {
                         child: Image.asset('assets/icon/icon.png'),
                       ),
                       SizedBox(height: 12),
-                      Text(
+                      /* Text(
                         'My Discord id: Exusiai#7677',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                         ),
-                      ),
+                      ), */
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

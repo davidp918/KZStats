@@ -193,7 +193,7 @@ class _LeaderboardFloaterState extends State<LeaderboardFloater>
       subFloater(250, twoAnimation, 100, Colors.white70,
           Icon(CommunityMaterialIcons.alpha_r_circle_outline), 'records'),
       subFloater(200, oneAnimation, 100, Colors.white70,
-          Icon(CommunityMaterialIcons.alpha_s_circle_outline), 'points'),
+          Icon(CommunityMaterialIcons.alpha_p_circle_outline), 'points'),
     ];
   }
 

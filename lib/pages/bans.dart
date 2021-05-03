@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/global/responsive.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json.dart';
-import 'package:kzstats/web/urls.dart';
 
 class Bans extends StatelessWidget {
   @override
