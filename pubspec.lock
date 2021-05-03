@@ -71,6 +71,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.15.0"
+  community_material_icon:
+    dependency: "direct main"
+    description:
+      name: community_material_icon
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.9.55"
   crypto:
     dependency: "direct main"
     description:

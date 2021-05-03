@@ -115,3 +115,14 @@ String globalApiLeaderboardRecords(
       .replaceAll(
           'ifNub!', ifNub ? '&has_teleports=true' : '&has_teleports=false');
 }
+
+String globalApiBans(
+  int limit,
+  int offset,
+) {
+  const bans =
+      'https://kztimerglobal.com/api/v2.0/bans?offset=offset!&limit=limit!';
+  return bans
+      .replaceAll('offset!', offset.toString())
+      .replaceAll('limit!', limit.toString());
+}

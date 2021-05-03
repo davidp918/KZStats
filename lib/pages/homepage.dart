@@ -247,7 +247,7 @@ class Homepage extends StatelessWidget {
             ],
           ),
         ),
-        Divider(height: 2, color: dividerColor()),
+        Divider(height: 4, color: dividerColor()),
       ],
     );
   }

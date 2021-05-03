@@ -5,3 +5,4 @@ export 'package:kzstats/web/json/steamplayer_json.dart';
 export 'package:kzstats/web/json/record_json.dart';
 export 'package:kzstats/web/json/leaderboardPoints_json.dart';
 export 'package:kzstats/web/json/leaderboardRecords_json.dart';
+export 'package:kzstats/web/json/globalApiBans_json.dart';

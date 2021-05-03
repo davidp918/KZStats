@@ -45,6 +45,7 @@ dependencies:
   line_icons: ^2.0.1
   google_fonts: ^2.0.0
   url_launcher: ^6.0.3
+  community_material_icon: ^5.9.55
   #flutter_native_timezone: ^1.0.10
   #synchronized: ^3.0.0
 

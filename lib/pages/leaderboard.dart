@@ -1,3 +1,4 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/datatables/leaderboard_points_datatable.dart';
@@ -11,7 +12,6 @@ import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/utils/convertDegreeRad.dart';
 import 'package:kzstats/global/floater.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:kzstats/cubit/leaderboard_cubit.dart';
 import 'package:kzstats/common/datatables/leaderboard_records_datatable.dart';
 
@@ -32,7 +32,7 @@ class _LeaderboardState extends State<Leaderboard>
         final typeState = context.watch<LeaderboardCubit>().state;
         return FutureBuilder(
           future: Future.wait([
-            typeState.type == 'records'
+            typeState.type == 'points'
                 ? getRequest(
                     globalApiLeaderboardPoints(
                         modeState.mode, modeState.nub, 100),
@@ -100,7 +100,7 @@ class _LeaderboardState extends State<Leaderboard>
                   ),
                 ),
                 SizedBox(height: 8),
-                type == 'records'
+                type == 'points'
                     ? LeaderboardPointsTable(
                         data: data as List<LeaderboardPoints>)
                     : LeaderboardRecordsTable(
@@ -190,10 +190,10 @@ class _LeaderboardFloaterState extends State<LeaderboardFloater>
 
   List<Transform> subFloaters() {
     return [
-      subFloater(250, twoAnimation, 100, Colors.white70, Icon(LineIcons.trash),
-          'records'),
+      subFloater(250, twoAnimation, 100, Colors.white70,
+          Icon(CommunityMaterialIcons.alpha_r_circle_outline), 'records'),
       subFloater(200, oneAnimation, 100, Colors.white70,
-          Icon(Icons.looks_6_outlined), 'points'),
+          Icon(CommunityMaterialIcons.alpha_s_circle_outline), 'points'),
     ];
   }
 
@@ -218,7 +218,9 @@ class _LeaderboardFloaterState extends State<LeaderboardFloater>
           height: 40,
           color: color,
           icon: icon,
-          onClick: () {},
+          onClick: () {
+            BlocProvider.of<LeaderboardCubit>(context).set(newType);
+          },
         ),
       ),
     );
