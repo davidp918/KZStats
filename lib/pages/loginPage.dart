@@ -163,7 +163,7 @@ class _LoginState extends State<Login> {
     return <Widget>[
       Icon(
         Icons.save_alt,
-        size: 100,
+        size: 80,
         color: Colors.white70,
       ),
       const SizedBox(height: 16),
@@ -171,7 +171,7 @@ class _LoginState extends State<Login> {
         'Login using your Steam 64 ID',
         style: TextStyle(
           color: Colors.white,
-          fontSize: 38,
+          fontSize: 34,
           fontWeight: FontWeight.w300,
         ),
         textAlign: TextAlign.center,
