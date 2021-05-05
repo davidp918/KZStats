@@ -11,6 +11,7 @@ import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PlayerDetail extends StatefulWidget {
   final List<dynamic> playerInfo;
@@ -176,7 +177,12 @@ class _MapDetailState extends State<PlayerDetail> {
                               fontSize: 14,
                             ),
                           ),
-                          onTap: () {},
+                          onTap: () async {
+                            String url = '${kzstatsPlayerInfo.profileurl}';
+                            await canLaunch(url)
+                                ? await launch(url)
+                                : throw ('could not launch $url');
+                          },
                         )
                       ],
                     ),

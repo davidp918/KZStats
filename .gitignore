@@ -54,5 +54,9 @@ android/gradle/wrapper/gradle-wrapper.properties
 *.gradle
 android/build.gradle
 
-# others
+# counter
 /.VSCodeCounter
+
+# firebase
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist

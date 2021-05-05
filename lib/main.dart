@@ -7,17 +7,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'package:kzstats/cubit/leaderboard_cubit.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/cubit/tier_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/global/router.dart';
 import 'package:kzstats/theme/colors.dart';
-import 'package:kzstats/cubit/leaderboard_cubit.dart';
 
 void main() async {
   // establish connection between hydrated bloc and the app storage layer
   WidgetsFlutterBinding.ensureInitialized();
   Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+
   HydratedBloc.storage =
       await HydratedStorage.build(storageDirectory: appDocumentsDirectory);
   await UserSharedPreferences.init();
