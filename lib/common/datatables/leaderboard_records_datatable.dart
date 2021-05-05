@@ -84,9 +84,6 @@ class _LeaderboardRecordsTableState extends State<LeaderboardRecordsTable> {
     return Theme(
       data: Theme.of(context).copyWith(
         dividerColor: dividerColor(),
-        textTheme: TextTheme(
-          caption: TextStyle(color: Colors.white),
-        ),
         cardTheme: CardTheme(
           color: Color(0xff1D202C),
         ),

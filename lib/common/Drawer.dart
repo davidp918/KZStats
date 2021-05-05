@@ -60,21 +60,14 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
     required IconData icon,
     required String routeName,
   }) {
-    final color = Colors.white;
-
     return Material(
       color: Colors.transparent,
       child: ListTile(
         leading: Icon(
           icon,
-          color: color,
+          color: Colors.white,
         ),
-        title: Text(
-          text,
-          style: TextStyle(
-            color: color,
-          ),
-        ),
+        title: Text(text),
         onTap: () {
           Navigator.pushReplacementNamed(
             context,
@@ -102,12 +95,7 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
               size: 100,
             ),
             SizedBox(height: 5),
-            Text(
-              'Click to login',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            )
+            Text('Click to login'),
           ],
         ),
       ),
@@ -144,7 +132,6 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
                 this.user.name,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 20,
                 ),
               ),

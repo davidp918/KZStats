@@ -46,6 +46,13 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           scaffoldBackgroundColor: backgroundColor(),
           fontFamily: 'NotoSansHK',
+          textTheme: TextTheme(
+            bodyText1: TextStyle(),
+            bodyText2: TextStyle(),
+          ).apply(
+            bodyColor: Colors.white,
+            displayColor: Colors.white,
+          ),
         ),
         onGenerateRoute: _appRouter.onGenerateRoute,
       ),

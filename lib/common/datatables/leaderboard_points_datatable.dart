@@ -83,7 +83,6 @@ class _LeaderboardPointsTableState extends State<LeaderboardPointsTable> {
           label: Text(
             '$column',
             style: TextStyle(
-              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
@@ -98,9 +97,6 @@ class _LeaderboardPointsTableState extends State<LeaderboardPointsTable> {
     return Theme(
       data: Theme.of(context).copyWith(
         dividerColor: dividerColor(),
-        textTheme: TextTheme(
-          caption: TextStyle(color: Colors.white),
-        ),
         cardTheme: CardTheme(
           color: Color(0xff1D202C),
         ),

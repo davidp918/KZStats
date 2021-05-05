@@ -16,14 +16,12 @@ Widget errorScreen() {
           'Global API is down',
           style: TextStyle(
             fontSize: 25,
-            color: Colors.white,
           ),
         ),
         Text(
           'Try again later',
           style: TextStyle(
             fontSize: 22,
-            color: Colors.white,
           ),
         ),
       ],

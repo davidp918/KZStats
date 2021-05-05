@@ -141,7 +141,7 @@ class Homepage extends StatelessWidget {
               Container(
                 width: crossWidth,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     InkWell(
@@ -163,11 +163,11 @@ class Homepage extends StatelessWidget {
                       },
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
                           '${toMinSec(record.time!)}',
                           style: TextStyle(
-                            color: Colors.white,
                             fontSize: 14,
                           ),
                         ),
@@ -192,11 +192,11 @@ class Homepage extends StatelessWidget {
                       ],
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'by ',
                           style: TextStyle(
-                            color: Colors.white,
                             fontSize: 14.5,
                           ),
                         ),
@@ -237,8 +237,7 @@ class Homepage extends StatelessWidget {
                     Text(
                       '${diffofNow(record.createdOn!)}',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.5,
+                        fontSize: 13,
                       ),
                     ),
                   ],

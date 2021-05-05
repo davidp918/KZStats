@@ -17,7 +17,6 @@ Widget loadingFromApi() {
             child: Text(
               'Loading data from API...',
               style: TextStyle(
-                color: Colors.white,
                 fontSize: 18,
               ),
             ))

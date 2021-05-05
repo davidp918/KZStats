@@ -61,12 +61,10 @@ class _GetNetworkImageState extends State<GetNetworkImage> {
       file.writeAsBytesSync(response.bodyBytes);
 
       if (this.mounted) {
-        setState(
-          () {
-            imagePath = filePath;
-            dataLoaded = true;
-          },
-        );
+        setState(() {
+          imagePath = filePath;
+          dataLoaded = true;
+        });
       }
     }
   }

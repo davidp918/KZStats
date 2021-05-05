@@ -10,14 +10,6 @@ class UserSharedPreferences {
 
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
-    await UserSharedPreferences.setUserInfo(
-      UserInfo(
-        steam32: '',
-        steam64: '',
-        avatarUrl: '',
-        name: '',
-      ),
-    );
   }
 
   static Future setUserInfo(UserInfo userInfo) async {
@@ -26,6 +18,14 @@ class UserSharedPreferences {
 
   static UserInfo getUserInfo() {
     dynamic data = _preferences.getString(_userInfo);
+    if (data == null) {
+      return UserInfo(
+        steam32: '',
+        steam64: '',
+        avatarUrl: '',
+        name: '',
+      );
+    }
     return UserInfo.fromJson(jsonDecode(data));
   }
 }

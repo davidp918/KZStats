@@ -90,7 +90,6 @@ class _MapDetailTableState extends State<MapDetailTable> {
           label: Text(
             '$column',
             style: TextStyle(
-              color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),

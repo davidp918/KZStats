@@ -14,8 +14,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  String steam64 = '';
-  String name = '';
+  late UserInfo user;
+  late String steam64;
 
   late bool validatedAsNum,
       validatedLen,
@@ -25,6 +25,8 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
+    user = UserSharedPreferences.getUserInfo();
+    steam64 = user.steam64;
 
     validatedAsNum = false;
     validatedLen = false;
@@ -46,7 +48,9 @@ class _LoginState extends State<Login> {
             SizedBox(height: 32),
             ...inputField(),
             SizedBox(height: 30),
-            saveButton(),
+            loginButton(),
+            SizedBox(height: 15),
+            logOutButton(),
             SizedBox(height: 15),
             errorSection(),
             showLoggedIn(),
@@ -80,7 +84,7 @@ class _LoginState extends State<Login> {
     ];
   }
 
-  Widget saveButton() {
+  Widget loginButton() {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
         backgroundColor: primarythemeBlue(),
@@ -118,6 +122,39 @@ class _LoginState extends State<Login> {
             showLogging = true;
           });
         }
+      },
+    );
+  }
+
+  Widget logOutButton() {
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        backgroundColor: primarythemeBlue(),
+        minimumSize: Size.fromHeight(52),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      child: Text(
+        'Log out',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.w300,
+        ),
+      ),
+      onPressed: () async {
+        UserInfo user = UserInfo(
+          steam32: '',
+          steam64: '',
+          avatarUrl: '',
+          name: '',
+        );
+        await UserSharedPreferences.setUserInfo(user);
+        Navigator.pushReplacementNamed(
+          context,
+          '/login',
+        );
       },
     );
   }
@@ -180,7 +217,7 @@ class _LoginState extends State<Login> {
 
   Widget loginSucceed(KzstatsApiPlayer userInfo) {
     saveToSharedPreferences(userInfo);
-    return Text('You are now logged in as: ${userInfo.personaname}');
+    return Text('You are logged in as: ${userInfo.personaname}');
   }
 
   saveToSharedPreferences(KzstatsApiPlayer userInfo) async {
