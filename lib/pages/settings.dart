@@ -1,6 +1,5 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 
 import 'package:kzstats/global/responsive.dart';
@@ -83,9 +82,8 @@ class _SettingsState extends State<Settings> {
                         Icons.keyboard_arrow_right,
                         color: Colors.white,
                       ),
-                      onTap: () {
-                        //open change password
-                      },
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/table_layout'),
                     ),
                     _buildDivider(),
                     ListTile(

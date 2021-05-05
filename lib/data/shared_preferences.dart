@@ -7,6 +7,7 @@ class UserSharedPreferences {
   static late SharedPreferences _preferences;
 
   static const _userInfo = 'userInfo';
+  static const _rowsPerPage = 'rowsPerPage';
 
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
@@ -27,5 +28,17 @@ class UserSharedPreferences {
       );
     }
     return UserInfo.fromJson(jsonDecode(data));
+  }
+
+  static Future setRowsPerPage(int rowsPerPage) async {
+    await _preferences.setInt(_rowsPerPage, rowsPerPage);
+  }
+
+  static int getRowsPerPage() {
+    dynamic data = _preferences.getInt(_rowsPerPage);
+    if (data == null) {
+      return 20;
+    }
+    return data;
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:kzstats/common/widgets/dataCells.dart';
+import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/utils/pointsClassification.dart';
 import 'package:kzstats/utils/timeConversion.dart';
@@ -21,6 +22,7 @@ class MapDetailTable extends StatefulWidget {
 }
 
 class _MapDetailTableState extends State<MapDetailTable> {
+  late int _rowsPerPage;
   late final List<Record>? _records;
   int? _sortColumnIndex;
   bool _isAscending = false;
@@ -38,6 +40,7 @@ class _MapDetailTableState extends State<MapDetailTable> {
   void initState() {
     super.initState();
     this._records = widget.records;
+    this._rowsPerPage = UserSharedPreferences.getRowsPerPage();
   }
 
   void onSort(
@@ -116,6 +119,9 @@ class _MapDetailTableState extends State<MapDetailTable> {
   }
 
   Widget buildDataTable(BuildContext context, List<Record>? records) {
+    if (records == null) {
+      return Container();
+    }
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: PaginatedDataTable(
@@ -128,6 +134,14 @@ class _MapDetailTableState extends State<MapDetailTable> {
         source: RecordsSource(context, records),
         sortColumnIndex: _sortColumnIndex,
         sortAscending: _isAscending,
+        rowsPerPage: this._rowsPerPage,
+        onPageChanged: (index) {
+          // change rowsPerPage when the page changes
+          // on responding to the index
+          if (index + this._rowsPerPage > records.length) {
+            setState(() {});
+          }
+        },
       ),
     );
   }
