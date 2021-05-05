@@ -15,7 +15,6 @@ import 'package:kzstats/global/router.dart';
 import 'package:kzstats/theme/colors.dart';
 
 void main() async {
-  // establish connection between hydrated bloc and the app storage layer
   WidgetsFlutterBinding.ensureInitialized();
   Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
 
