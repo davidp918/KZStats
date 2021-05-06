@@ -15,7 +15,6 @@ import 'package:kzstats/utils/convertDegreeRad.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PlayerDetail extends StatefulWidget {
