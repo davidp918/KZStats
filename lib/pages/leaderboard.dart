@@ -31,19 +31,21 @@ class _LeaderboardState extends State<Leaderboard>
         final modeState = context.watch<ModeCubit>().state;
         final typeState = context.watch<LeaderboardCubit>().state;
         return FutureBuilder(
-          future: Future.wait([
-            typeState.type == 'points'
-                ? getRequest(
-                    globalApiLeaderboardPoints(
-                        modeState.mode, modeState.nub, 100),
-                    leaderboardPointsFromJson,
-                  )
-                : getRequest(
-                    globalApiLeaderboardRecords(
-                        modeState.mode, modeState.nub, 100),
-                    leaderboardRecordsFromJson,
-                  )
-          ]),
+          future: Future.wait(
+            [
+              typeState.type == 'points'
+                  ? getRequest(
+                      globalApiLeaderboardPoints(
+                          modeState.mode, modeState.nub, 100),
+                      leaderboardPointsFromJson,
+                    )
+                  : getRequest(
+                      globalApiLeaderboardRecords(
+                          modeState.mode, modeState.nub, 100),
+                      leaderboardRecordsFromJson,
+                    )
+            ],
+          ),
           builder: (
             BuildContext context,
             AsyncSnapshot<List<dynamic>> snapshot,

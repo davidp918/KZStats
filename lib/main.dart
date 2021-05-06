@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:kzstats/cubit/leaderboard_cubit.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/cubit/tier_cubit.dart';
+import 'package:kzstats/cubit/playerdisplay_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/global/router.dart';
 import 'package:kzstats/theme/colors.dart';
@@ -40,6 +41,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<ModeCubit>(create: (context) => ModeCubit()),
         BlocProvider<TierCubit>(create: (context) => TierCubit()),
         BlocProvider<LeaderboardCubit>(create: (context) => LeaderboardCubit()),
+        BlocProvider<PlayerdisplayCubit>(
+            create: (context) => PlayerdisplayCubit()),
       ],
       child: MaterialApp(
         theme: ThemeData(

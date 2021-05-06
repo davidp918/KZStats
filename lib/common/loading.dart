@@ -8,18 +8,16 @@ Widget loadingFromApi() {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         SizedBox(
-          child: CircularProgressIndicator(),
-          width: 60,
-          height: 60,
+          child: Image.asset('assets/icon/loading.gif'),
+          width: 120,
+          height: 120,
         ),
-        Padding(
-            padding: EdgeInsets.only(top: 16),
-            child: Text(
-              'Loading data from API...',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ))
+        Text(
+          'Loading...',
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
       ],
     ),
   );
