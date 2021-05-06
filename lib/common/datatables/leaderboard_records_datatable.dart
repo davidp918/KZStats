@@ -7,7 +7,7 @@ import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/json.dart';
 
 class LeaderboardRecordsTable extends StatefulWidget {
-  final List<LeaderboardRecords>? data;
+  final List<LeaderboardRecords> data;
 
   LeaderboardRecordsTable({
     Key? key,
@@ -20,7 +20,8 @@ class LeaderboardRecordsTable extends StatefulWidget {
 }
 
 class _LeaderboardRecordsTableState extends State<LeaderboardRecordsTable> {
-  late final List<LeaderboardRecords>? _data;
+  late int _rowsPerPage, _curRowsPerPage;
+  late final List<LeaderboardRecords> _data;
   int? _sortColumnIndex;
   bool _isAscending = false;
   List<String> columns = [
@@ -33,6 +34,11 @@ class _LeaderboardRecordsTableState extends State<LeaderboardRecordsTable> {
   void initState() {
     super.initState();
     this._data = widget.data;
+    if (this._rowsPerPage > _data.length) {
+      this._curRowsPerPage = _data.length;
+    } else {
+      this._curRowsPerPage = this._rowsPerPage;
+    }
   }
 
   void onSort(
@@ -41,15 +47,15 @@ class _LeaderboardRecordsTableState extends State<LeaderboardRecordsTable> {
   ) {
     switch (columnIndex) {
       case 0:
-        _data!.sort((value1, value2) =>
+        _data.sort((value1, value2) =>
             compareString(isAscending, value1.count, value2.count));
         break;
       case 1:
-        _data!.sort((value1, value2) =>
+        _data.sort((value1, value2) =>
             compareString(isAscending, value1.playerName, value2.playerName));
         break;
       case 2:
-        _data!.sort((value1, value2) =>
+        _data.sort((value1, value2) =>
             compareString(isAscending, value1.count, value2.count));
         break;
       default:
@@ -94,7 +100,7 @@ class _LeaderboardRecordsTableState extends State<LeaderboardRecordsTable> {
 
   Widget buildDataTable(
     BuildContext context,
-    List<LeaderboardRecords>? records,
+    List<LeaderboardRecords> records,
   ) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -108,7 +114,20 @@ class _LeaderboardRecordsTableState extends State<LeaderboardRecordsTable> {
         source: RecordsSource(context, records),
         sortColumnIndex: _sortColumnIndex,
         sortAscending: _isAscending,
-        rowsPerPage: 20,
+        rowsPerPage: this._curRowsPerPage,
+        onPageChanged: (index) {
+          // change rowsPerPage when the page changes
+          // on responding to the index
+          if (index + this._rowsPerPage > records.length) {
+            setState(() {
+              this._curRowsPerPage = records.length - index;
+            });
+          } else {
+            setState(() {
+              this._curRowsPerPage = _rowsPerPage;
+            });
+          }
+        },
       ),
     );
   }

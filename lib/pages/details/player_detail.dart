@@ -92,7 +92,7 @@ class _MapDetailState extends State<PlayerDetail> {
 
   Widget mainBody(
     KzstatsApiPlayer kzstatsPlayerInfo,
-    List<Record>? records,
+    List<Record> records,
   ) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,

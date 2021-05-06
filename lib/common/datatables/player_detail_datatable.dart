@@ -3,13 +3,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:kzstats/common/widgets/dataCells.dart';
+import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/utils/pointsClassification.dart';
 import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/web/json/record_json.dart';
 
 class PlayerDetailTable extends StatefulWidget {
-  final List<Record>? records;
+  final List<Record> records;
 
   PlayerDetailTable({
     Key? key,
@@ -21,7 +22,8 @@ class PlayerDetailTable extends StatefulWidget {
 }
 
 class _PlayerDetailTableState extends State<PlayerDetailTable> {
-  late final List<Record>? _records;
+  late int _rowsPerPage, _curRowsPerPage;
+  late final List<Record> _records;
   int? _sortColumnIndex;
   bool _isAscending = false;
   final List<String> columns = [
@@ -37,6 +39,12 @@ class _PlayerDetailTableState extends State<PlayerDetailTable> {
   void initState() {
     super.initState();
     this._records = widget.records;
+    this._rowsPerPage = UserSharedPreferences.getRowsPerPage();
+    if (this._rowsPerPage > _records.length) {
+      this._curRowsPerPage = _records.length;
+    } else {
+      this._curRowsPerPage = this._rowsPerPage;
+    }
     onSort(4, false);
   }
 
@@ -46,27 +54,27 @@ class _PlayerDetailTableState extends State<PlayerDetailTable> {
   ) {
     switch (columnIndex) {
       case 0:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.mapName, value2.mapName));
         break;
       case 1:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.time, value2.time));
         break;
       case 2:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.points, value2.points));
         break;
       case 3:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.teleports, value2.teleports));
         break;
       case 4:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.createdOn, value2.createdOn));
         break;
       case 5:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.serverName, value2.serverName));
         break;
 
@@ -113,7 +121,7 @@ class _PlayerDetailTableState extends State<PlayerDetailTable> {
     );
   }
 
-  Widget buildDataTable(BuildContext context, List<Record>? records) {
+  Widget buildDataTable(BuildContext context, List<Record> records) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: PaginatedDataTable(
@@ -126,6 +134,20 @@ class _PlayerDetailTableState extends State<PlayerDetailTable> {
         source: RecordsSource(context, records),
         sortColumnIndex: _sortColumnIndex,
         sortAscending: _isAscending,
+        rowsPerPage: this._curRowsPerPage,
+        onPageChanged: (index) {
+          // change rowsPerPage when the page changes
+          // on responding to the index
+          if (index + this._rowsPerPage > records.length) {
+            setState(() {
+              this._curRowsPerPage = records.length - index;
+            });
+          } else {
+            setState(() {
+              this._curRowsPerPage = _rowsPerPage;
+            });
+          }
+        },
       ),
     );
   }

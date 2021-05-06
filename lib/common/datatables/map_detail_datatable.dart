@@ -10,7 +10,7 @@ import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/web/json/record_json.dart';
 
 class MapDetailTable extends StatefulWidget {
-  final List<Record>? records;
+  final List<Record> records;
 
   MapDetailTable({
     Key? key,
@@ -22,8 +22,8 @@ class MapDetailTable extends StatefulWidget {
 }
 
 class _MapDetailTableState extends State<MapDetailTable> {
-  late int _rowsPerPage;
-  late final List<Record>? _records;
+  late int _rowsPerPage, _curRowsPerPage;
+  late final List<Record> _records;
   int? _sortColumnIndex;
   bool _isAscending = false;
   List<String> columns = [
@@ -41,6 +41,11 @@ class _MapDetailTableState extends State<MapDetailTable> {
     super.initState();
     this._records = widget.records;
     this._rowsPerPage = UserSharedPreferences.getRowsPerPage();
+    if (this._rowsPerPage > _records.length) {
+      this._curRowsPerPage = _records.length;
+    } else {
+      this._curRowsPerPage = this._rowsPerPage;
+    }
   }
 
   void onSort(
@@ -49,31 +54,31 @@ class _MapDetailTableState extends State<MapDetailTable> {
   ) {
     switch (columnIndex) {
       case 0:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.time, value2.time));
         break;
       case 1:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.playerName, value2.playerName));
         break;
       case 2:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.time, value2.time));
         break;
       case 3:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.points, value2.points));
         break;
       case 4:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.teleports, value2.teleports));
         break;
       case 5:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.createdOn, value2.createdOn));
         break;
       case 6:
-        _records!.sort((value1, value2) =>
+        _records.sort((value1, value2) =>
             compareString(isAscending, value1.serverName, value2.serverName));
         break;
       default:
@@ -134,12 +139,18 @@ class _MapDetailTableState extends State<MapDetailTable> {
         source: RecordsSource(context, records),
         sortColumnIndex: _sortColumnIndex,
         sortAscending: _isAscending,
-        rowsPerPage: this._rowsPerPage,
+        rowsPerPage: this._curRowsPerPage,
         onPageChanged: (index) {
           // change rowsPerPage when the page changes
           // on responding to the index
           if (index + this._rowsPerPage > records.length) {
-            setState(() {});
+            setState(() {
+              this._curRowsPerPage = records.length - index;
+            });
+          } else {
+            setState(() {
+              this._curRowsPerPage = _rowsPerPage;
+            });
           }
         },
       ),
