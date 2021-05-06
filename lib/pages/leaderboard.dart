@@ -31,30 +31,19 @@ class _LeaderboardState extends State<Leaderboard>
         final modeState = context.watch<ModeCubit>().state;
         final typeState = context.watch<LeaderboardCubit>().state;
         return FutureBuilder(
-          future: Future.wait(
-            [
-              typeState.type == 'points'
-                  ? getRequest(
-                      globalApiLeaderboardPoints(
-                          modeState.mode, modeState.nub, 100),
-                      leaderboardPointsFromJson,
-                    )
-                  : getRequest(
-                      globalApiLeaderboardRecords(
-                          modeState.mode, modeState.nub, 100),
-                      leaderboardRecordsFromJson,
-                    )
-            ],
-          ),
-          builder: (
-            BuildContext context,
-            AsyncSnapshot<List<dynamic>> snapshot,
-          ) {
-            return transition(
-              snapshot,
-              constraints,
-              typeState.type,
-            );
+          future: typeState.type == 'points'
+              ? getRequest(
+                  globalApiLeaderboardPoints(
+                      modeState.mode, modeState.nub, 100),
+                  leaderboardPointsFromJson,
+                )
+              : getRequest(
+                  globalApiLeaderboardRecords(
+                      modeState.mode, modeState.nub, 100),
+                  leaderboardRecordsFromJson,
+                ),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            return transition(snapshot, constraints, typeState.type);
           },
         );
       },
@@ -62,14 +51,11 @@ class _LeaderboardState extends State<Leaderboard>
   }
 
   Widget transition(
-    AsyncSnapshot<List<dynamic>> snapshot,
-    SizeInfo constraints,
-    String type,
-  ) {
+      AsyncSnapshot<dynamic> snapshot, SizeInfo constraints, String type) {
     return snapshot.connectionState == ConnectionState.done
-        ? snapshot.hasData && snapshot.data![0] != null
+        ? snapshot.hasData && snapshot.data != null
             ? mainBody(
-                snapshot.data![0],
+                snapshot.data,
                 constraints,
                 type,
               )

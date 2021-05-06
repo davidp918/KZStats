@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
+import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/tier_cubit.dart';
 import 'package:kzstats/theme/colors.dart';
@@ -135,6 +136,9 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
       itemBuilder: _itemBuilder,
       pageFuture: (pageIndex) =>
           _loadMore(pageSize, pageIndex! * pageSize, tier),
+      loadingBuilder: (context) {
+        return loadingFromApi();
+      },
     );
   }
 

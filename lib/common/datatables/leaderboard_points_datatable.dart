@@ -45,10 +45,7 @@ class _LeaderboardPointsTableState extends State<LeaderboardPointsTable> {
     }
   }
 
-  void onSort(
-    int columnIndex,
-    bool isAscending,
-  ) {
+  void onSort(int columnIndex, bool isAscending) {
     switch (columnIndex) {
       case 0:
         _data.sort((value1, value2) =>
@@ -92,6 +89,7 @@ class _LeaderboardPointsTableState extends State<LeaderboardPointsTable> {
             '$column',
             style: TextStyle(
               fontWeight: FontWeight.bold,
+              color: Colors.white,
               fontSize: 16,
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
+import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/global/responsive.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/getRequest.dart';
@@ -28,6 +29,9 @@ class BansListView extends StatelessWidget {
       itemBuilder: this._itemBuilder,
       pageFuture: (pageIndex) =>
           getBans(pageSize, pageSize * pageIndex!, banFromJson),
+      loadingBuilder: (context) {
+        return loadingFromApi();
+      },
     );
   }
 
@@ -35,6 +39,7 @@ class BansListView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        SizedBox(height: 8),
         ListTile(
           dense: false,
           leading: Icon(
@@ -110,6 +115,7 @@ class BansListView extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(height: 8),
         Divider(height: 4, color: dividerColor()),
       ],
     );

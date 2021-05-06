@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:kzstats/common/widgets/dataCells.dart';
+import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/json.dart';
 
@@ -34,6 +35,7 @@ class _LeaderboardRecordsTableState extends State<LeaderboardRecordsTable> {
   void initState() {
     super.initState();
     this._data = widget.data;
+    this._rowsPerPage = UserSharedPreferences.getRowsPerPage();
     if (this._rowsPerPage > _data.length) {
       this._curRowsPerPage = _data.length;
     } else {
@@ -41,10 +43,7 @@ class _LeaderboardRecordsTableState extends State<LeaderboardRecordsTable> {
     }
   }
 
-  void onSort(
-    int columnIndex,
-    bool isAscending,
-  ) {
+  void onSort(int columnIndex, bool isAscending) {
     switch (columnIndex) {
       case 0:
         _data.sort((value1, value2) =>

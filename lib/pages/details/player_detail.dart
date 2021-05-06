@@ -12,6 +12,7 @@ import 'package:kzstats/cubit/playerdisplay_cubit.dart';
 import 'package:kzstats/global/floater.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/utils/convertDegreeRad.dart';
+import 'package:kzstats/utils/pointsSum.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
@@ -37,15 +38,24 @@ class _MapDetailState extends State<PlayerDetail> {
   _MapDetailState(this.steamId64, this.playerName);
   @override
   Widget build(BuildContext context) {
+    final modeState = context.watch<ModeCubit>().state;
     return Scaffold(
       appBar: HomepageAppBar(playerName),
       body: FutureBuilder<dynamic>(
-        future: getRequest(
-            kzstatsApiPlayerInfoUrl(steamId64), kzstatsApiPlayerFromJson),
+        future: Future.wait(
+          [
+            getRequest(
+                kzstatsApiPlayerInfoUrl(steamId64), kzstatsApiPlayerFromJson),
+            getRequest(
+                globalApiPlayerRecordsUrl(
+                    modeState.mode, modeState.nub, 99999, steamId64),
+                mapTopFromJson),
+          ],
+        ),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           return snapshot.connectionState == ConnectionState.done
               ? snapshot.hasData
-                  ? whole(snapshot.data)
+                  ? whole(snapshot.data[0], snapshot.data[1])
                   : errorScreen()
               : loadingFromApi();
         },
@@ -53,7 +63,8 @@ class _MapDetailState extends State<PlayerDetail> {
     );
   }
 
-  Widget whole(KzstatsApiPlayer kzstatsPlayerInfo) {
+  Widget whole(KzstatsApiPlayer kzstatsPlayerInfo, dynamic records) {
+    int totalPoints = pointsSum(records);
     Size size = MediaQuery.of(context).size;
     return Container(
       width: size.width,
@@ -63,7 +74,7 @@ class _MapDetailState extends State<PlayerDetail> {
         children: [
           ListView(
             children: [
-              playerHeader(kzstatsPlayerInfo),
+              playerHeader(kzstatsPlayerInfo, totalPoints),
               MainBody(steamId64: this.steamId64),
             ],
           ),
@@ -73,7 +84,7 @@ class _MapDetailState extends State<PlayerDetail> {
     );
   }
 
-  Widget playerHeader(KzstatsApiPlayer kzstatsPlayerInfo) {
+  Widget playerHeader(KzstatsApiPlayer kzstatsPlayerInfo, int totalPoints) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -94,7 +105,7 @@ class _MapDetailState extends State<PlayerDetail> {
                 height: 130,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,7 +115,7 @@ class _MapDetailState extends State<PlayerDetail> {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: Colors.white70,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
                             fontSize: 28,
                           ),
                         ),
@@ -118,10 +129,10 @@ class _MapDetailState extends State<PlayerDetail> {
                       ],
                     ),
                     Text(
-                      'Points: beta',
+                      'Points: ${totalPoints.toString()}',
                       style: TextStyle(
                         color: Colors.white70,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w400,
                         fontSize: 15,
                       ),
                     ),
@@ -296,33 +307,26 @@ class MainBody extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final modeState = context.watch<ModeCubit>().state;
     final playerDisplayState = context.watch<PlayerdisplayCubit>().state;
-    return FutureBuilder(
-      future: getRequest(
-        globalApiPlayerRecordsUrl(
-            modeState.mode, modeState.nub, 99999, steamId64),
-        mapTopFromJson,
-      ),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        return snapshot.connectionState == ConnectionState.done
-            ? snapshot.hasData
-                ? select(playerDisplayState.playerDisplay, snapshot.data)
-                : errorScreen(exception: 'none')
-            : Container(
-                height: size.height - 395,
-                child: loadingFromApi(),
-              );
-      },
-    );
-  }
-
-  Widget select(String select, dynamic data) {
-    if (select == 'records') {
-      return PlayerDetailTable(records: data);
-    } else if (select == 'jumpstats') {
-      return Container(child: Text('jumpststas'));
-    } else if (select == 'stats') {
-      return Container(child: Text('stats'));
-    }
+    if (playerDisplayState.playerDisplay == 'records') {
+      return FutureBuilder(
+        future: getRequest(
+          globalApiPlayerRecordsUrl(
+              modeState.mode, modeState.nub, 99999, steamId64),
+          mapTopFromJson,
+        ),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          return snapshot.connectionState == ConnectionState.done
+              ? snapshot.hasData
+                  ? PlayerDetailTable(records: snapshot.data)
+                  : errorScreen(exception: 'none')
+              : Container(
+                  height: size.height - 395,
+                  child: loadingFromApi(),
+                );
+        },
+      );
+    } else if (playerDisplayState.playerDisplay == 'stats') {
+    } else if (playerDisplayState.playerDisplay == 'jumpstats') {}
     return Container();
   }
 }
