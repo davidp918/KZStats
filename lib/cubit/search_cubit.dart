@@ -4,8 +4,6 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 class SearchState {
   List<String> history;
   SearchState({required this.history});
-
-  List<String> get his => history;
 }
 
 class SearchCubit extends Cubit<SearchState> {

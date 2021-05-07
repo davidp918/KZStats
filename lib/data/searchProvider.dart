@@ -6,10 +6,11 @@ import 'package:kzstats/cubit/search_cubit.dart';
 
 class SearchProvider extends ChangeNotifier {
   List<MapInfo>? allMapData = UserSharedPreferences.getMapData();
+  List<MapInfo> history = UserSharedPreferences.getHistory();
 
   bool _isLoading = false;
   String _query = '';
-  List<MapInfo> _suggestions = history;
+  List<MapInfo> _suggestions = UserSharedPreferences.getHistory(); // = history
 
   bool get isLoading => _isLoading;
   String get query => _query;
@@ -45,5 +46,3 @@ class SearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-const List<MapInfo> history = [];

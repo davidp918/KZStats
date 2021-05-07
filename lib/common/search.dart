@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:provider/provider.dart';
@@ -77,11 +78,7 @@ class SearchBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('History', style: TextStyle(fontSize: 16)),
-            BlocBuilder<SearchCubit, SearchState>(
-              builder: (context, state) {
-                return Text('${state.history}');
-              },
-            ),
+            Text('${UserSharedPreferences.getHistory().toString()}'),
             Divider(color: dividerColor()),
             Text('Explore', style: TextStyle(fontSize: 16)),
             Divider(color: dividerColor()),
@@ -126,11 +123,8 @@ class SearchBody extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            BlocProvider.of<SearchCubit>(context).addToHistory(each.mapName!);
-            Navigator.of(context).pushNamed(
-              '/map_detail',
-              arguments: each,
-            );
+            UserSharedPreferences.updateHistory(each);
+            Navigator.of(context).pushNamed('/map_detail', arguments: each);
           },
           child: Padding(
             padding: EdgeInsets.all(16),
@@ -140,7 +134,8 @@ class SearchBody extends StatelessWidget {
                   width: 36,
                   child: AnimatedSwitcher(
                     duration: Duration(milliseconds: 500),
-                    child: provider.suggestions == history
+                    child: provider.suggestions ==
+                            UserSharedPreferences.getHistory()
                         ? Icon(Icons.history, color: Colors.white)
                         : Icon(Icons.map_sharp, color: Colors.white),
                   ),

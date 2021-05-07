@@ -11,6 +11,7 @@ class UserSharedPreferences {
   static const _userInfo = 'userInfo';
   static const _rowsPerPage = 'rowsPerPage';
   static const _mapData = 'mapData';
+  static const _history = 'history';
 
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
@@ -52,5 +53,17 @@ class UserSharedPreferences {
   static dynamic getMapData() {
     dynamic data = _preferences.getString(_mapData);
     return data == null ? null : multiMapInfoFromJson(data);
+  }
+
+  // search history
+  static Future updateHistory(MapInfo newHistory) async {
+    var old = getHistory();
+    old.add(newHistory);
+    await _preferences.setString(_history, multiMapInfoToJson(old));
+  }
+
+  static List<MapInfo> getHistory() {
+    dynamic data = _preferences.getString(_history);
+    return data == null ? [] : multiMapInfoFromJson(data);
   }
 }
