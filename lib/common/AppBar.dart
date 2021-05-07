@@ -1,7 +1,8 @@
+import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:kzstats/common/Popup_mode.dart';
-import 'SearchBar.dart';
+import 'search.dart';
 import 'package:kzstats/theme/colors.dart';
 
 class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -16,14 +17,17 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(currentPage),
       centerTitle: true,
       actions: <Widget>[
-        HomepageSearchBar(),
+        IconButton(
+          icon: Icon(EvilIcons.search),
+          onPressed: () {
+            Navigator.pushNamed(context, '/search');
+          },
+        ),
         PopUpModeSelect(),
       ],
     );
   }
 
   @override
-  // ignore: todo
-  // TODO: implement preferredSize
   Size get preferredSize => const Size.fromHeight(50);
 }

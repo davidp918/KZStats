@@ -9,6 +9,7 @@ import 'package:kzstats/pages/details/player_detail.dart';
 import 'package:kzstats/pages/loginPage.dart';
 import 'package:kzstats/pages/about.dart';
 import 'package:kzstats/pages/settings/tablelayout.dart';
+import 'package:kzstats/common/search.dart';
 
 class AppRouter {
   Route? onGenerateRoute(RouteSettings settings) {
@@ -49,6 +50,9 @@ class AppRouter {
 
       case '/table_layout':
         return MaterialPageRoute(builder: (_) => SettingsTableLayout());
+
+      case '/search':
+        return MaterialPageRoute(builder: (_) => Search());
 
       default:
         return null;

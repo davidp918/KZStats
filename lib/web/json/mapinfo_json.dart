@@ -6,6 +6,8 @@ import 'dart:convert';
 
 List<MapInfo> multiMapInfoFromJson(String str) =>
     List<MapInfo>.from(json.decode(str).map((x) => MapInfo.fromJson(x)));
+String multiMapInfoToJson(List<MapInfo> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 MapInfo mapInfoFromJson(String str) => MapInfo.fromJson(json.decode(str));
 
@@ -46,4 +48,16 @@ class MapInfo {
         workshopUrl: json["workshop_url"],
         downloadUrl: json["download_url"],
       );
+  Map<String, dynamic> toJson() => {
+        "id": mapId,
+        "name": mapName,
+        "filesize": filesize,
+        "validated": validated,
+        "difficulty": difficulty,
+        "created_on": createdOn?.toIso8601String(),
+        "updated_on": updatedOn?.toIso8601String(),
+        "approved_by_steamid64": approvedBySteamid64,
+        "workshop_url": workshopUrl,
+        "download_url": downloadUrl,
+      };
 }

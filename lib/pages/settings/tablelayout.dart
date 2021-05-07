@@ -21,36 +21,38 @@ class _SettingsTableLayoutState extends State<SettingsTableLayout> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'No. of Table Rows:',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              Container(
-                child: TextFormField(
-                  decoration: InputDecoration(labelText: "Enter your number"),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: new TextFormField(
-                  maxLines: 1,
-                  decoration: new InputDecoration(
-                      labelText: 'Username',
-                      suffixIcon: new IconButton(
-                        highlightColor: Colors.transparent,
-                        icon: new Container(
-                            width: 36.0, child: new Icon(Icons.clear)),
-                        splashColor: Colors.transparent,
-                        onPressed: () {},
+              Row(
+                children: [
+                  Text(
+                    'No. of Table Rows:',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(10, 25, 10, 35),
+                      child: TextFormField(
+                        maxLines: 1,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            highlightColor: Colors.transparent,
+                            icon: Container(
+                              width: 36.0,
+                              child: Icon(Icons.clear),
+                            ),
+                            splashColor: Colors.transparent,
+                            onPressed: () {},
+                          ),
+                        ),
                       ),
-                      prefixIcon: new Icon(Icons.account_circle)),
-                ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

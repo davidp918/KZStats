@@ -28,11 +28,7 @@ Future<dynamic> getRequest(String url, Function fromjson) async {
 }
 
 Future<List<MapInfo>> getMaps(
-  int limit,
-  int offset,
-  Function fromjson,
-  int tier,
-) async {
+    int limit, int offset, Function fromjson, int tier) async {
   dynamic res;
   try {
     var response = await http.get(

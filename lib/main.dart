@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ModeCubit>(create: (context) => ModeCubit()), 
+        BlocProvider<ModeCubit>(create: (context) => ModeCubit()),
         BlocProvider<TierCubit>(create: (context) => TierCubit()),
         BlocProvider<LeaderboardCubit>(create: (context) => LeaderboardCubit()),
         BlocProvider<PlayerdisplayCubit>(
@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         onGenerateRoute: _appRouter.onGenerateRoute,
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

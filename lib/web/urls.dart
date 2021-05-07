@@ -57,11 +57,7 @@ String globalApiMapInfoUrl(String mapId) {
 }
 
 // All map info
-String globalApiAllMaps(
-  int limit,
-  int offset,
-  int tier,
-) {
+String globalApiAllMaps(int limit, int offset, int tier) {
   const kz_map_all =
       'https://kztimerglobal.com/api/v2.0/maps?limit=!max&offset=!offset&difficulty=!tier';
   return kz_map_all

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:kzstats/web/getRequest.dart';
+import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kzstats/global/userInfo_class.dart';
 
@@ -8,11 +10,13 @@ class UserSharedPreferences {
 
   static const _userInfo = 'userInfo';
   static const _rowsPerPage = 'rowsPerPage';
+  static const _mapData = 'mapData';
 
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
   }
 
+  // User settings
   static Future setUserInfo(UserInfo userInfo) async {
     await _preferences.setString(_userInfo, jsonEncode(userInfo.toJson()));
   }
@@ -30,6 +34,7 @@ class UserSharedPreferences {
     return UserInfo.fromJson(jsonDecode(data));
   }
 
+  // DataTable row settigns
   static Future setRowsPerPage(int rowsPerPage) async {
     await _preferences.setInt(_rowsPerPage, rowsPerPage);
   }
@@ -40,5 +45,18 @@ class UserSharedPreferences {
       return 20;
     }
     return data;
+  }
+
+  // Maps Data
+  static Future updateMapData() async {
+    List<MapInfo> allMaps = await getMaps(9999, 0, multiMapInfoFromJson, 0);
+    dynamic prev = getMapData();
+    if (prev == 'null' or prev.length < )
+    await _preferences.setString(_mapData, multiMapInfoToJson(allMaps));
+  }
+
+  static dynamic getMapData() {
+    dynamic data = _preferences.getString(_mapData);
+    return data == null ? 'null' : multiMapInfoFromJson(data);
   }
 }
