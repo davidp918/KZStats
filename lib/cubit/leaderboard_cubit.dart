@@ -1,6 +1,9 @@
 import 'package:bloc/bloc.dart';
 
-part 'leaderboard_state.dart';
+class LeaderboardState {
+  String type;
+  LeaderboardState({required this.type});
+}
 
 class LeaderboardCubit extends Cubit<LeaderboardState> {
   LeaderboardCubit() : super(LeaderboardState(type: 'records'));

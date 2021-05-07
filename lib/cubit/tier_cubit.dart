@@ -1,6 +1,11 @@
 import 'package:bloc/bloc.dart';
 
-part 'tier_state.dart';
+class TierState {
+  int tier;
+  TierState({
+    required this.tier,
+  });
+}
 
 class TierCubit extends Cubit<TierState> {
   TierCubit() : super(TierState(tier: 0));

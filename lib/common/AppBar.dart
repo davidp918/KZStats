@@ -2,7 +2,6 @@ import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:kzstats/common/Popup_mode.dart';
-import 'search.dart';
 import 'package:kzstats/theme/colors.dart';
 
 class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {

@@ -1,6 +1,9 @@
 import 'package:bloc/bloc.dart';
 
-part 'playerdisplay_state.dart';
+class PlayerdisplayState {
+  String playerDisplay;
+  PlayerdisplayState({required this.playerDisplay});
+}
 
 class PlayerdisplayCubit extends Cubit<PlayerdisplayState> {
   PlayerdisplayCubit() : super(PlayerdisplayState(playerDisplay: 'records'));

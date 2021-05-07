@@ -14,6 +14,7 @@ class UserSharedPreferences {
 
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
+    await updateMapData();
   }
 
   // User settings
@@ -24,12 +25,7 @@ class UserSharedPreferences {
   static UserInfo getUserInfo() {
     dynamic data = _preferences.getString(_userInfo);
     if (data == null) {
-      return UserInfo(
-        steam32: '',
-        steam64: '',
-        avatarUrl: '',
-        name: '',
-      );
+      return UserInfo(steam32: '', steam64: '', avatarUrl: '', name: '');
     }
     return UserInfo.fromJson(jsonDecode(data));
   }
@@ -41,22 +37,20 @@ class UserSharedPreferences {
 
   static int getRowsPerPage() {
     dynamic data = _preferences.getInt(_rowsPerPage);
-    if (data == null) {
-      return 20;
-    }
-    return data;
+    return data == null ? 20 : data;
   }
 
   // Maps Data
   static Future updateMapData() async {
     List<MapInfo> allMaps = await getMaps(9999, 0, multiMapInfoFromJson, 0);
     dynamic prev = getMapData();
-    if (prev == 'null' or prev.length < )
-    await _preferences.setString(_mapData, multiMapInfoToJson(allMaps));
+    if (prev == null || prev.length < allMaps.length) {
+      await _preferences.setString(_mapData, multiMapInfoToJson(allMaps));
+    }
   }
 
   static dynamic getMapData() {
     dynamic data = _preferences.getString(_mapData);
-    return data == null ? 'null' : multiMapInfoFromJson(data);
+    return data == null ? null : multiMapInfoFromJson(data);
   }
 }
