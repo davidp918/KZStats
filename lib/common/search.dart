@@ -2,30 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
-import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:provider/provider.dart';
-
-import 'package:kzstats/data/searchProvider.dart';
-import 'package:kzstats/theme/colors.dart';
-import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:substring_highlight/substring_highlight.dart';
+
 import 'package:kzstats/cubit/search_cubit.dart';
+import 'package:kzstats/data/searchProvider.dart';
+import 'package:kzstats/data/shared_preferences.dart';
+import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/utils/tierIdentifier.dart';
+import 'package:kzstats/web/json/mapinfo_json.dart';
 
 class Search extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => SearchProvider(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SearchBody(),
-      ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SearchBody(context: context),
     );
   }
 }
 
-class SearchBody extends StatelessWidget {
+class SearchBody extends StatefulWidget {
+  final BuildContext context;
+  const SearchBody({
+    Key? key,
+    required this.context,
+  }) : super(key: key);
+  @override
+  _SearchBodyState createState() => _SearchBodyState();
+}
+
+class _SearchBodyState extends State<SearchBody> {
+  late BuildContext context;
+  List<MapInfo>? allMapData = UserSharedPreferences.getMapData();
+
+  @override
+  void initState() {
+    super.initState();
+    this.context = widget.context;
+  }
+
   final List<FloatingSearchBarAction> actions = [
     FloatingSearchBarAction(
       showIfOpened: false,
@@ -39,29 +56,42 @@ class SearchBody extends StatelessWidget {
     ),
   ];
 
+  onQueryChanged(String query) {
+    if (query.isEmpty || allMapData == null) {
+      BlocProvider.of<SearchCubit>(context).suggest([]);
+    } else {
+      List<MapInfo> back = [];
+      for (MapInfo each in allMapData!) {
+        if (each.mapName!.contains(query)) {
+          back.add(each);
+        }
+      }
+      back.sort((a, b) =>
+          a.mapName!.indexOf(query).compareTo(b.mapName!.indexOf(query)));
+      BlocProvider.of<SearchCubit>(context).suggest(back);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
 
-    return Consumer<SearchProvider>(
-      builder: (context, provider, _) => FloatingSearchBar(
-        actions: actions,
-        automaticallyImplyBackButton: true,
-        iconColor: Colors.white,
-        backgroundColor: appbarColor(),
-        shadowColor: primarythemeBlue(),
-        transitionCurve: Curves.easeInOutCubic,
-        hintStyle: TextStyle(color: Colors.white70),
-        queryStyle: TextStyle(color: Colors.white),
-        transition: CircularFloatingSearchBarTransition(),
-        physics: BouncingScrollPhysics(),
-        axisAlignment: isPortrait ? 0.0 : -1.0,
-        onQueryChanged: provider.onQueryChanged,
-        progress: provider.isLoading,
-        builder: (context, _) => builder(provider),
-        body: buildBody(),
-      ),
+    return FloatingSearchBar(
+      actions: actions,
+      automaticallyImplyBackButton: true,
+      iconColor: Colors.white,
+      backgroundColor: appbarColor(),
+      shadowColor: primarythemeBlue(),
+      transitionCurve: Curves.easeInOutCubic,
+      hintStyle: TextStyle(color: Colors.white70),
+      queryStyle: TextStyle(color: Colors.white),
+      transition: CircularFloatingSearchBarTransition(),
+      physics: BouncingScrollPhysics(),
+      axisAlignment: isPortrait ? 0.0 : -1.0,
+      onQueryChanged: onQueryChanged,
+      builder: (context, _) => builder(),
+      body: buildBody(),
     );
   }
 
@@ -91,7 +121,7 @@ class SearchBody extends StatelessWidget {
     );
   }
 
-  Widget builder(SearchProvider provider) {
+  Widget builder() {
     return Material(
       color: backgroundColor(),
       elevation: 4.0,
@@ -101,7 +131,7 @@ class SearchBody extends StatelessWidget {
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         // need to deal with null
-        items: provider.suggestions,
+        items: BlocProvider.of<SearchCubit>(context).state.suggestions,
         areItemsTheSame: (a, b) => a == b,
         itemBuilder: (context, animation, each, i) {
           return SizeFadeTransition(
@@ -120,7 +150,7 @@ class SearchBody extends StatelessWidget {
   }
 
   Widget buildItem(BuildContext context, MapInfo each) {
-    final provider = Provider.of<SearchProvider>(context, listen: false);
+    final searchState = context.watch<SearchCubit>().state;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -140,7 +170,7 @@ class SearchBody extends StatelessWidget {
                   width: 36,
                   child: AnimatedSwitcher(
                     duration: Duration(milliseconds: 500),
-                    child: provider.suggestions == history
+                    child: searchState.suggestions == searchState.history
                         ? Icon(Icons.history, color: Colors.white)
                         : Icon(Icons.map_sharp, color: Colors.white),
                   ),
@@ -155,7 +185,7 @@ class SearchBody extends StatelessWidget {
                         textDirection: TextDirection.ltr,
                         child: SubstringHighlight(
                           text: each.mapName!,
-                          term: provider.query,
+                          term: '',
                           textStyle:
                               TextStyle(color: Colors.white, fontSize: 18),
                           textStyleHighlight: TextStyle(
@@ -179,9 +209,6 @@ class SearchBody extends StatelessWidget {
             ),
           ),
         ),
-        if (provider.suggestions.isNotEmpty &&
-            each != provider.suggestions.last)
-          const Divider(height: 0),
       ],
     );
   }
