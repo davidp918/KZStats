@@ -327,6 +327,6 @@ class MainBody extends StatelessWidget {
       );
     } else if (playerDisplayState.playerDisplay == 'stats') {
     } else if (playerDisplayState.playerDisplay == 'jumpstats') {}
-    return Container();
+    return Text('Error! Contact Exusiai');
   }
 }
