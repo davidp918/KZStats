@@ -58,15 +58,22 @@ class UserSharedPreferences {
   // search history
   static Future updateHistory(MapInfo newHistory) async {
     var old = getHistory();
-    if (old.contains(newHistory)) {
-      old.removeWhere((element) => element == newHistory);
+    if (old.any((element) => element.mapName == newHistory.mapName)) {
+      old.removeWhere((element) => element.mapName! == newHistory.mapName!);
     }
     old.insert(0, newHistory);
+    if (old.length > 20) {
+      old.removeAt(20);
+    }
     await _preferences.setString(_history, multiMapInfoToJson(old));
   }
 
   static List<MapInfo> getHistory() {
     dynamic data = _preferences.getString(_history);
     return data == null ? [] : multiMapInfoFromJson(data);
+  }
+
+  static Future clearHistory() async {
+    await _preferences.remove(_history);
   }
 }

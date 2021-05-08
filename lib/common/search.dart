@@ -1,3 +1,4 @@
+import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
@@ -25,6 +26,7 @@ class Search extends StatelessWidget {
 }
 
 class SearchBody extends StatelessWidget {
+  final isExpanded = false;
   final List<FloatingSearchBarAction> actions = [
     FloatingSearchBarAction(
       showIfOpened: false,
@@ -59,12 +61,13 @@ class SearchBody extends StatelessWidget {
         onQueryChanged: provider.onQueryChanged,
         progress: provider.isLoading,
         builder: (context, _) => builder(provider),
-        body: buildBody(),
+        body: buildBody(context, provider),
       ),
     );
   }
 
-  Widget buildBody() {
+  Widget buildBody(BuildContext context, SearchProvider provider) {
+    Color light = Colors.grey.shade200.withOpacity(0.9);
     return FloatingSearchAppBar(
       height: 58,
       transitionDuration: Duration(milliseconds: 400),
@@ -75,14 +78,88 @@ class SearchBody extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('History', style: TextStyle(fontSize: 16)),
-            Text('${UserSharedPreferences.getHistory().toString()}'),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text('History', style: TextStyle(fontSize: 24)),
+                Expanded(child: Container()),
+                InkWell(
+                  onTap: () {
+                    provider.expand();
+                  },
+                  child: Text(
+                    'expand',
+                    style: TextStyle(fontSize: 12, color: light),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 4),
+            this.historyTags(context, provider),
+            Row(
+              children: [
+                Expanded(child: Container()),
+                InkWell(
+                  onTap: () {
+                    // clear history
+                    UserSharedPreferences.clearHistory();
+                    provider.refresh();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(EvilIcons.trash, color: light),
+                      Text(
+                        'Clear History',
+                        style: TextStyle(color: light, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(child: Container()),
+              ],
+            ),
             Divider(color: dividerColor()),
-            Text('Explore', style: TextStyle(fontSize: 16)),
+            Text('Explore', style: TextStyle(fontSize: 24)),
+            SizedBox(height: 4),
             Divider(color: dividerColor()),
           ],
         ),
       ),
+    );
+  }
+
+  Widget historyTags(BuildContext context, SearchProvider provider) {
+    provider.refresh();
+    final _history = provider.history;
+    return Container(
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 0,
+        children: _history.map((each) => tag(context, each)).toList(),
+      ),
+    );
+  }
+
+  Widget tag(BuildContext context, MapInfo each) {
+    return ActionChip(
+      labelPadding: EdgeInsets.all(0),
+      avatar: CircleAvatar(
+        child: Center(
+            child: Text(
+          '${each.difficulty}',
+          style: TextStyle(fontSize: 14),
+        )),
+        backgroundColor: primarythemeBlue().withOpacity(0.8),
+      ),
+      label: Text(' ${each.mapName!} '),
+      labelStyle: TextStyle(fontSize: 12),
+      backgroundColor: Colors.white54,
+      onPressed: () {
+        UserSharedPreferences.updateHistory(each);
+        Navigator.of(context).pushNamed('/map_detail', arguments: each);
+      },
     );
   }
 
@@ -174,7 +251,7 @@ class SearchBody extends StatelessWidget {
         ),
         if (provider.suggestions.isNotEmpty &&
             each != provider.suggestions.last)
-          const Divider(height: 0),
+          const Divider(height: 4),
       ],
     );
   }
