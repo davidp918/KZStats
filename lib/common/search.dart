@@ -88,7 +88,7 @@ class SearchBody extends StatelessWidget {
                     provider.expand();
                   },
                   child: Text(
-                    'expand',
+                    provider.expanded ? 'show less' : 'show more',
                     style: TextStyle(fontSize: 12, color: light),
                   ),
                 ),
@@ -131,18 +131,20 @@ class SearchBody extends StatelessWidget {
   }
 
   Widget historyTags(BuildContext context, SearchProvider provider) {
-    provider.refresh();
-    final _history = provider.history;
+    //provider.refresh();
+    final _history = provider.expanded
+        ? UserSharedPreferences.getHistory()
+        : UserSharedPreferences.getHistory().take(6).toList();
     return Container(
       child: Wrap(
         spacing: 8,
         runSpacing: 0,
-        children: _history.map((each) => tag(context, each)).toList(),
+        children: _history.map((each) => tag(context, each, provider)).toList(),
       ),
     );
   }
 
-  Widget tag(BuildContext context, MapInfo each) {
+  Widget tag(BuildContext context, MapInfo each, SearchProvider provider) {
     return ActionChip(
       labelPadding: EdgeInsets.all(0),
       avatar: CircleAvatar(
@@ -158,6 +160,7 @@ class SearchBody extends StatelessWidget {
       backgroundColor: Colors.white54,
       onPressed: () {
         UserSharedPreferences.updateHistory(each);
+        provider.refresh();
         Navigator.of(context).pushNamed('/map_detail', arguments: each);
       },
     );
