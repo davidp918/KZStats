@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/common/datatables/map_detail_datatable.dart';
+import 'package:kzstats/pages/details/shown/map_detail_datatable.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';

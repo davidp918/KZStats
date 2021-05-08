@@ -32,7 +32,7 @@ class About extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Version - 0.7.0',
+                        'Version - 1.0.0',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
