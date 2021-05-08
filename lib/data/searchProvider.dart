@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
-import 'package:kzstats/cubit/search_cubit.dart';
 
 class SearchProvider extends ChangeNotifier {
   List<MapInfo>? allMapData = UserSharedPreferences.getMapData();

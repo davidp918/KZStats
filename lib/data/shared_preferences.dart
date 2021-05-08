@@ -58,7 +58,10 @@ class UserSharedPreferences {
   // search history
   static Future updateHistory(MapInfo newHistory) async {
     var old = getHistory();
-    old.add(newHistory);
+    if (old.contains(newHistory)) {
+      old.removeWhere((element) => element == newHistory);
+    }
+    old.insert(0, newHistory);
     await _preferences.setString(_history, multiMapInfoToJson(old));
   }
 

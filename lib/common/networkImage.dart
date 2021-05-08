@@ -57,8 +57,8 @@ class _GetNetworkImageState extends State<GetNetworkImage> {
       // creates the folder path if the folder directory does not exists
       await Directory(folderPath).create(recursive: true);
       File file = new File(filePath);
-      // write the data into the folder '/images'
-      file.writeAsBytesSync(response.bodyBytes);
+      // write the data into the folder '/images/'
+      file.writeAsBytes(response.bodyBytes);
 
       if (this.mounted) {
         setState(() {
@@ -82,10 +82,22 @@ class _GetNetworkImageState extends State<GetNetworkImage> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(4),
-        child: dataLoaded
-            ? Image.file(File(imagePath!))
-            : Center(child: CircularProgressIndicator()),
+        child: loadImage(),
       ),
     );
+  }
+
+  Widget loadImage() {
+    if (dataLoaded) {
+      return Image.file(
+        File(imagePath!),
+        errorBuilder: (context, object, stacktrace) {
+          print('${widget.url}');
+          return Image(image: widget.errorImage);
+        },
+      );
+    } else {
+      return Center(child: CircularProgressIndicator());
+    }
   }
 }

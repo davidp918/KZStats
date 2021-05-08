@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
-import 'package:kzstats/data/shared_preferences.dart';
-import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:substring_highlight/substring_highlight.dart';
 
 import 'package:kzstats/data/searchProvider.dart';
+import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
-import 'package:substring_highlight/substring_highlight.dart';
-import 'package:kzstats/cubit/search_cubit.dart';
 
 class Search extends StatelessWidget {
   @override
