@@ -26,7 +26,6 @@ class Search extends StatelessWidget {
 }
 
 class SearchBody extends StatelessWidget {
-  final isExpanded = false;
   final List<FloatingSearchBarAction> actions = [
     FloatingSearchBarAction(
       showIfOpened: false,
@@ -60,6 +59,7 @@ class SearchBody extends StatelessWidget {
         axisAlignment: isPortrait ? 0.0 : -1.0,
         onQueryChanged: provider.onQueryChanged,
         progress: provider.isLoading,
+        debounceDelay: Duration.zero,
         builder: (context, _) => builder(provider),
         body: buildBody(context, provider),
       ),

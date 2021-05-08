@@ -194,12 +194,7 @@ class Homepage extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          'by ',
-                          style: TextStyle(
-                            fontSize: 14.5,
-                          ),
-                        ),
+                        Text('by ', style: TextStyle(fontSize: 14.5)),
                         Flexible(
                           fit: FlexFit.loose,
                           child: InkWell(
@@ -207,16 +202,14 @@ class Homepage extends StatelessWidget {
                               '${lenCheck(record.playerName!, 15)}',
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                color: Colors.blue.shade100,
-                                fontSize: 14.5,
-                              ),
+                                  color: Colors.blue.shade100, fontSize: 14.5),
                             ),
                             onTap: () {
                               Navigator.of(context).pushNamed(
                                 '/player_detail',
                                 arguments: [
                                   record.steamid64!,
-                                  record.playerName!
+                                  record.playerName
                                 ],
                               );
                             },
@@ -227,18 +220,14 @@ class Homepage extends StatelessWidget {
                         ),
                         nation != 'null'
                             ? Image(
-                                image: AssetImage(
-                                  'assets/flag/$nation.png',
-                                ),
+                                image: AssetImage('assets/flag/$nation.png'),
                               )
                             : Container(),
                       ],
                     ),
                     Text(
                       '${diffofNow(record.createdOn!)}',
-                      style: TextStyle(
-                        fontSize: 13,
-                      ),
+                      style: TextStyle(fontSize: 13),
                     ),
                   ],
                 ),
