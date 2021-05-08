@@ -42,7 +42,7 @@ String globalApiPlayerRecordsUrl(
   String steamId64,
 ) {
   const kz_mapTopRecords =
-      "https://kztimerglobal.com/api/v2.0/records/top?steamid64=!steamId64&modes_list_string=!mode!ifNub&limit=!limit&stage=0";
+      "https://kztimerglobal.com/api/v2.0/records/top?steamid64=!steamId64&modes_list_string=!mode!ifNub&limit=!limit&stage=0&tickrate=128";
   return kz_mapTopRecords
       .replaceAll('!mode', mode)
       .replaceAll('!steamId64', steamId64)
