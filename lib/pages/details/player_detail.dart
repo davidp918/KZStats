@@ -1,22 +1,23 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/pages/details/shown/player_detail_datatable.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/cubit/playerdisplay_cubit.dart';
 import 'package:kzstats/global/floater.dart';
+import 'package:kzstats/pages/details/shown/player_detail_datatable.dart';
+import 'package:kzstats/pages/details/shown/player_detail_stats.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/utils/convertDegreeRad.dart';
 import 'package:kzstats/utils/pointsSum.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class PlayerDetail extends StatefulWidget {
   final List<dynamic> playerInfo;
@@ -63,7 +64,7 @@ class _MapDetailState extends State<PlayerDetail> {
     );
   }
 
-  Widget whole(KzstatsApiPlayer kzstatsPlayerInfo, dynamic records) {
+  Widget whole(KzstatsApiPlayer kzstatsPlayerInfo, List<Record> records) {
     int totalPoints = pointsSum(records);
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -75,7 +76,7 @@ class _MapDetailState extends State<PlayerDetail> {
           ListView(
             children: [
               playerHeader(kzstatsPlayerInfo, totalPoints),
-              MainBody(steamId64: this.steamId64),
+              MainBody(steamId64: this.steamId64, records: records),
             ],
           ),
           Floater(),
@@ -300,7 +301,12 @@ class _FloaterState extends State<Floater> with SingleTickerProviderStateMixin {
 
 class MainBody extends StatelessWidget {
   final String steamId64;
-  const MainBody({Key? key, required this.steamId64}) : super(key: key);
+  final List<Record> records;
+  const MainBody({
+    Key? key,
+    required this.steamId64,
+    required this.records,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -308,6 +314,10 @@ class MainBody extends StatelessWidget {
     final modeState = context.watch<ModeCubit>().state;
     final playerDisplayState = context.watch<PlayerdisplayCubit>().state;
     if (playerDisplayState.playerDisplay == 'records') {
+      return PlayerDetailTable(records: records);
+    } else if (playerDisplayState.playerDisplay == 'stats') {
+      return PlayerDetailStats(records: records);
+    } else if (playerDisplayState.playerDisplay == 'jumpstats') {
       return FutureBuilder(
         future: getRequest(
           globalApiPlayerRecordsUrl(
@@ -325,8 +335,8 @@ class MainBody extends StatelessWidget {
                 );
         },
       );
-    } else if (playerDisplayState.playerDisplay == 'stats') {
-    } else if (playerDisplayState.playerDisplay == 'jumpstats') {}
-    return Text('Error! Contact Exusiai');
+    }
+    // minus 395 to make the loading icon center
+    return Container(height: size.height - 395, child: loadingFromApi());
   }
 }
