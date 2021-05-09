@@ -28,5 +28,5 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(50);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

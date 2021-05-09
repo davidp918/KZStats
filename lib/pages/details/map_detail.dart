@@ -7,6 +7,7 @@ import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
+import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json.dart';
@@ -147,13 +148,14 @@ class _MapDetailState extends State<MapDetail> {
   ) {
     return proWr == null && nubWr == null
         ? <Widget>[
-            Container(
+            Center(
               child: Text(
                 'No one has beaten this map yet!',
                 style: TextStyle(
-                  fontSize: 40,
+                  fontSize: 18,
                   color: Colors.white,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.italic,
                 ),
               ),
             ),

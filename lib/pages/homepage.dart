@@ -23,8 +23,8 @@ class Homepage extends StatelessWidget {
     nub ? temp = 'Nub' : temp = 'Pro';
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Switching to $temp $mode'),
-        duration: Duration(milliseconds: 4000),
+        content: Text('Switching to $temp ${mode.substring(3, mode.length)}'),
+        duration: Duration(milliseconds: 1600),
       ),
     );
   }
@@ -45,11 +45,11 @@ class Homepage extends StatelessWidget {
             future: Future.wait(
               [
                 getRequest(
-                  globalApiWrRecordsUrl(state.mode, state.nub, 20),
+                  globalApiWrRecordsUrl(state.mode, state.nub, 1),
                   wrFromJson,
                 ),
                 getRequest(
-                  globalApiWrRecordsUrl(state.mode, state.nub, 20),
+                  globalApiWrRecordsUrl(state.mode, state.nub, 1),
                   wrFromJson,
                 ).then((value) => getPlayerKzstatsNation(value!)),
               ],

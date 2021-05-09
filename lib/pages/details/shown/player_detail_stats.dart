@@ -85,7 +85,10 @@ class PlayerDetailStats extends StatelessWidget {
           linearGradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [color.withOpacity(1), color.withOpacity(0.5)],
+            colors: [
+              color.withOpacity(1),
+              color.withOpacity(0.6 * sin(_percent) + 0.5)
+            ],
           ),
           animation: true,
           animationDuration: 500,
@@ -93,8 +96,9 @@ class PlayerDetailStats extends StatelessWidget {
           center: Text(
             '${_percentage.substring(0, min(5, _percentage.length))}%',
             style: TextStyle(
-              color: Colors.black87,
+              color: Colors.black,
               fontWeight: FontWeight.w300,
+              fontSize: 13,
             ),
           ),
         ),
@@ -109,7 +113,7 @@ class PlayerDetailStats extends StatelessWidget {
           playerTierFinishes[i],
           tierCount[i],
           gold[i],
-          Colors.amber,
+          tierColors()[i],
         );
       },
     );

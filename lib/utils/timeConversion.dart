@@ -11,8 +11,15 @@ String? toMinSec(double? sec) {
 
 String diffofNow(DateTime timeRecordCreated) {
   //final String currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
-  var now = DateTime.now().toUtc();
-  var diff = now.difference(timeRecordCreated).inSeconds.toInt();
+  DateTime now = DateTime.now();
+  DateTime utc =
+      DateTime(now.year, now.month, now.day, now.hour, now.minute, now.second)
+          .toUtc();
+
+  print(utc.timeZoneOffset);
+  int diff = utc.difference(timeRecordCreated).inSeconds.toInt();
+  print(now);
+  print(utc);
 
   List<String> time = [
     'second',
@@ -23,7 +30,6 @@ String diffofNow(DateTime timeRecordCreated) {
     'month',
     'year'
   ];
-
   List<int> limit = [
     60,
     60,
