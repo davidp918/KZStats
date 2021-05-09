@@ -43,9 +43,26 @@ class UserSharedPreferences {
 
   // Maps Data
   static Future updateMapData() async {
-    List<MapInfo> allMaps = await getMaps(9999, 0, multiMapInfoFromJson, 0);
+    // first check if need to update by:
+    // 1. local is null?
+    // 2. if local is null then ofcourse write,
+    // 3. if not, check if it is outdated by
     dynamic prev = getMapData();
-    if (prev == null || prev.length < allMaps.length) {
+    if (prev == null) {
+      updateAllMapData();
+    } else {
+      int prevLength = prev.length;
+      List<MapInfo>? check =
+          await getMaps(1, prevLength, multiMapInfoFromJson, 0);
+      if (check != null || check == []) {
+        updateAllMapData();
+      }
+    }
+  }
+
+  static void updateAllMapData() async {
+    List<MapInfo>? allMaps = await getMaps(9999, 0, multiMapInfoFromJson, 0);
+    if (allMaps != null) {
       await _preferences.setString(_mapData, multiMapInfoToJson(allMaps));
     }
   }

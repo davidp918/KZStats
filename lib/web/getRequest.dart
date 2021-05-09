@@ -20,14 +20,13 @@ Future<dynamic> getRequest(String url, Function fromjson) async {
   }
   if (res is List) {
     return ifEmptyListReNull(res);
-  } else {
-    // may need to perform null replace check for
-    // other data types
-    return res;
   }
+  // may need to perform null replace check for
+  // other data types
+  return res;
 }
 
-Future<List<MapInfo>> getMaps(
+Future<List<MapInfo>?> getMaps(
     int limit, int offset, Function fromjson, int tier) async {
   dynamic res;
   try {
@@ -38,15 +37,12 @@ Future<List<MapInfo>> getMaps(
         ? res = fromjson(response.body)
         : print('something wrong');
   } catch (exception) {
-    print('get map exceptions: $exception');
+    throw ('get map exceptions: $exception');
   }
   if (res is List) {
     return ifEmptyListReNull(res);
-  } else {
-    // may need to perform null replace check for
-    // other data types
-    return res;
   }
+  return res;
 }
 
 Future<List<Ban>> getBans(int limit, int offset, Function fromjson) async {
@@ -63,9 +59,6 @@ Future<List<Ban>> getBans(int limit, int offset, Function fromjson) async {
   }
   if (res is List) {
     return ifEmptyListReNull(res);
-  } else {
-    // may need to perform null replace check for
-    // other data types
-    return res;
   }
+  return res;
 }

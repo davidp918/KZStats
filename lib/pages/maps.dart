@@ -227,8 +227,14 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
     ];
   }
 
-  Future<List<MapInfo>> _loadMore(int limit, int offset, int tier) async =>
-      getMaps(limit, offset, multiMapInfoFromJson, tier);
+  Future<List<MapInfo>> _loadMore(int limit, int offset, int tier) async {
+    dynamic temp = getMaps(limit, offset, multiMapInfoFromJson, tier);
+    if (temp != null) {
+      return temp;
+    } else {
+      return [];
+    }
+  }
 
   Widget _itemBuilder(BuildContext context, MapInfo entry, _) {
     return Card(
