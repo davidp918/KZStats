@@ -8,7 +8,7 @@ Widget worldRecordRow(String prefix, dynamic wr) {
       : Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            gold(15, 15),
+            goldSvg(15, 15),
             SizedBox(
               width: 4,
             ),

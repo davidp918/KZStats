@@ -7,13 +7,13 @@ Widget classifyPoints(int? points) {
     return Row(
       children: [
         SizedBox(width: 8),
-        gold(26, 26),
+        goldSvg(26, 26),
       ],
     );
   } else if (points! >= 900) {
-    trophy = silver(15, 15);
+    trophy = silverSvg(15, 15);
   } else if (points >= 750) {
-    trophy = bronze(15, 15);
+    trophy = bronzeSvg(15, 15);
   } else {
     return Text('$points', style: TextStyle(color: Colors.white));
   }

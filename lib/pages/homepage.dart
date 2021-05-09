@@ -174,7 +174,7 @@ class Homepage extends StatelessWidget {
                         SizedBox(
                           width: 3,
                         ),
-                        gold(14, 14),
+                        goldSvg(14, 14),
                         SizedBox(
                           width: 3,
                         ),

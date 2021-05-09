@@ -39,27 +39,28 @@ class _MapDetailState extends State<PlayerDetail> {
   _MapDetailState(this.steamId64, this.playerName);
   @override
   Widget build(BuildContext context) {
-    final modeState = context.watch<ModeCubit>().state;
     return Scaffold(
       appBar: HomepageAppBar(playerName),
-      body: FutureBuilder<dynamic>(
-        future: Future.wait(
-          [
-            getRequest(
-                kzstatsApiPlayerInfoUrl(steamId64), kzstatsApiPlayerFromJson),
-            getRequest(
-                globalApiPlayerRecordsUrl(
-                    modeState.mode, modeState.nub, 99999, steamId64),
-                mapTopFromJson),
-          ],
+      body: BlocBuilder<ModeCubit, ModeState>(
+        builder: (context, modeState) => FutureBuilder<dynamic>(
+          future: Future.wait(
+            [
+              getRequest(
+                  kzstatsApiPlayerInfoUrl(steamId64), kzstatsApiPlayerFromJson),
+              getRequest(
+                  globalApiPlayerRecordsUrl(
+                      modeState.mode, modeState.nub, 99999, steamId64),
+                  mapTopFromJson),
+            ],
+          ),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            return snapshot.connectionState == ConnectionState.done
+                ? snapshot.hasData
+                    ? whole(snapshot.data[0], snapshot.data[1])
+                    : errorScreen()
+                : loadingFromApi();
+          },
         ),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          return snapshot.connectionState == ConnectionState.done
-              ? snapshot.hasData
-                  ? whole(snapshot.data[0], snapshot.data[1])
-                  : errorScreen()
-              : loadingFromApi();
-        },
       ),
     );
   }

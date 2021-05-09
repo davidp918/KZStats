@@ -122,3 +122,7 @@ String globalApiBans(
       .replaceAll('offset!', offset.toString())
       .replaceAll('limit!', limit.toString());
 }
+
+String globalApiPastWrs() {
+  return 'https://kztimerglobal.com/api/v2.0/records/top/recent?map_name=kz_zhop_function3&has_teleports=false&tickrate=128&stage=0&modes_list_string=kz_timer&place_top_at_least=1&limit=99';
+}

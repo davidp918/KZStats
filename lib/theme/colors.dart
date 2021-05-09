@@ -8,3 +8,5 @@ Color primarythemeBlue() => Color(0xff313747);
 Color secondarythemeBlue() => Color(0xff282D3C);
 Color imageBorderColor() => Color(0xff606060);
 Color dividerColor() => Color(0xff333333);
+Color colorLight() => Colors.grey.shade200.withOpacity(0.9);
+List<Color> tierColors() => [];

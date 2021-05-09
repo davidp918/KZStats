@@ -67,7 +67,6 @@ class SearchBody extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context, SearchProvider provider) {
-    Color light = Colors.grey.shade200.withOpacity(0.9);
     return FloatingSearchAppBar(
       height: 58,
       transitionDuration: Duration(milliseconds: 400),
@@ -89,7 +88,7 @@ class SearchBody extends StatelessWidget {
                   },
                   child: Text(
                     provider.expanded ? 'show less' : 'show more',
-                    style: TextStyle(fontSize: 12, color: light),
+                    style: TextStyle(fontSize: 12, color: colorLight()),
                   ),
                 ),
               ],
@@ -109,10 +108,10 @@ class SearchBody extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(EvilIcons.trash, color: light),
+                      Icon(EvilIcons.trash, color: colorLight()),
                       Text(
                         'Clear History',
-                        style: TextStyle(color: light, fontSize: 12),
+                        style: TextStyle(color: colorLight(), fontSize: 12),
                       ),
                     ],
                   ),

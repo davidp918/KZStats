@@ -1,55 +1,121 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:kzstats/data/shared_preferences.dart';
+import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/utils/svg.dart';
+import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/json/record_json.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class PlayerDetailStats extends StatelessWidget {
   final List<Record> records;
-  const PlayerDetailStats({Key? key, required this.records}) : super(key: key);
+  PlayerDetailStats({Key? key, required this.records}) : super(key: key);
+
+  final trash = [0];
+  final List<int> playerTierFinishes = [0, 0, 0, 0, 0, 0, 0];
+  final List<int> gold = [0, 0, 0, 0, 0, 0, 0];
+  final List<int> silver = [0, 0, 0, 0, 0, 0, 0];
+  final List<int> bronze = [0, 0, 0, 0, 0, 0, 0];
 
   @override
   Widget build(BuildContext context) {
+    final Set<int> seen = {};
+    Size size = MediaQuery.of(context).size;
+    double _indicatorWidth = (size.width - 24) * 7 / 10;
+    double _indicatorHeight = 22; // size.height / 50;
+    Color _bgColor = colorLight();
+
     final List<MapInfo>? allMapData = UserSharedPreferences.getMapData();
-
-    if (allMapData == null || allMapData.length < 700) {
+    if (allMapData == null || allMapData.length < 700)
       return Text('failed to retrieve map info, restart the app to retry');
-    }
 
-    final List<int> mapStats = [0, 0, 0, 0, 0, 0, 0];
-    final List<int> playerStats = [0, 0, 0, 0, 0, 0, 0];
-    final Map<String, int> difficultyMapping = {};
-    int gold = 0;
-    int silver = 0;
-    int bronze = 0;
+    final Map<String, int> tierMapping =
+        UserSharedPreferences.getTierMapping()!;
 
-    // sort by mapId, starting from 200, ascending?
-    allMapData.sort((a, b) => a.mapId!.compareTo(b.mapId!));
+    final List<int> tierCount = UserSharedPreferences.getTierCount()!;
 
-    for (MapInfo each in allMapData) {
-      mapStats[each.difficulty! - 1] += 1;
-      difficultyMapping[each.mapName!] = each.difficulty!;
-    }
-    print(difficultyMapping);
     for (Record each in this.records) {
-      int curDifficulty = difficultyMapping[each.mapName!]!;
-      playerStats[curDifficulty - 1] += 1;
+      if (seen.contains(each.mapId)) continue;
+      seen.add(each.mapId!);
+      int curTierIndex = tierMapping[each.mapName!]! - 1;
+      playerTierFinishes[curTierIndex] += 1;
       each.points == 1000
-          ? gold += 1
+          ? this.gold[curTierIndex] += 1
           : each.points! >= 900
-              ? silver += 1
+              ? this.silver[curTierIndex] += 1
               : each.points! >= 750
-                  ? bronze += 1
-                  : bronze = bronze;
+                  ? this.bronze[curTierIndex] += 1
+                  : trash[0] = 0;
     }
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(12),
-      child: Column(
-        children: <Widget>[
-          Text(''),
-          Text('$mapStats'),
-          Text('$playerStats'),
-        ],
+
+    print(tierCount);
+    print(tierMapping);
+
+    List<Widget> indicator(
+      int tier,
+      int numerator,
+      int denominator,
+      int gold,
+      Color color,
+    ) {
+      double _percent = numerator / denominator;
+      if (numerator == 0) _percent = 0;
+      if (denominator == 0) _percent = 1;
+      double _percentage = 100 * _percent;
+      return <Widget>[
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                '${identifyTier(tier)} ($numerator/$denominator)',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+            goldSvg(14, 14),
+            Text(' $gold', style: TextStyle(fontSize: 12)),
+          ],
+        ),
+        SizedBox(height: 4),
+        LinearPercentIndicator(
+          width: _indicatorWidth,
+          lineHeight: _indicatorHeight,
+          percent: _percent,
+          backgroundColor: _bgColor,
+          linearGradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [color.withOpacity(1), color.withOpacity(0.5)],
+          ),
+          animation: true,
+          animationDuration: 800,
+          linearStrokeCap: LinearStrokeCap.roundAll,
+          center: Text(
+            '${_percentage.toString().substring(0, 5)}%',
+            style: TextStyle(
+              color: Colors.black87,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+        ),
+      ];
+    }
+
+    return Center(
+      child: Container(
+        width: _indicatorWidth,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            ...indicator(
+                1, playerTierFinishes[0], tierCount[0], gold[0], Colors.amber),
+          ],
+        ),
       ),
     );
   }
