@@ -38,7 +38,7 @@ Future<List<MapInfo>> getMaps(
         ? res = fromjson(response.body)
         : print('something wrong');
   } catch (exception) {
-    throw UnimplementedError();
+    print('get map exceptions: $exception');
   }
   if (res is List) {
     return ifEmptyListReNull(res);
@@ -49,11 +49,7 @@ Future<List<MapInfo>> getMaps(
   }
 }
 
-Future<List<Ban>> getBans(
-  int limit,
-  int offset,
-  Function fromjson,
-) async {
+Future<List<Ban>> getBans(int limit, int offset, Function fromjson) async {
   dynamic res;
   try {
     var response = await http.get(
