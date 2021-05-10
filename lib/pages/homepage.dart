@@ -191,39 +191,42 @@ class Homepage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text('by ', style: TextStyle(fontSize: 14.5)),
-                        Flexible(
-                          fit: FlexFit.loose,
-                          child: InkWell(
-                            child: Text(
-                              '${lenCheck(record.playerName!, 15)}',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.blue.shade100, fontSize: 14.5),
+                    Container(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('by ', style: TextStyle(fontSize: 14.5)),
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: InkWell(
+                              child: Text(
+                                '${lenCheck(record.playerName!, 15)}',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.blue.shade100,
+                                    fontSize: 14.5),
+                              ),
+                              onTap: () {
+                                Navigator.of(context).pushNamed(
+                                  '/player_detail',
+                                  arguments: [
+                                    record.steamid64!,
+                                    record.playerName
+                                  ],
+                                );
+                              },
                             ),
-                            onTap: () {
-                              Navigator.of(context).pushNamed(
-                                '/player_detail',
-                                arguments: [
-                                  record.steamid64!,
-                                  record.playerName
-                                ],
-                              );
-                            },
                           ),
-                        ),
-                        SizedBox(
-                          width: 4.5,
-                        ),
-                        nation != 'null'
-                            ? Image(
-                                image: AssetImage('assets/flag/$nation.png'),
-                              )
-                            : Container(),
-                      ],
+                          SizedBox(
+                            width: 4,
+                          ),
+                          nation != 'null'
+                              ? Image(
+                                  image: AssetImage('assets/flag/$nation.png'),
+                                )
+                              : Container(),
+                        ],
+                      ),
                     ),
                     Text(
                       '${diffofNow(record.createdOn!)}',
