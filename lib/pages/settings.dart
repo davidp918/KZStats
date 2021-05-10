@@ -82,8 +82,9 @@ class _SettingsState extends State<Settings> {
                         Icons.keyboard_arrow_right,
                         color: Colors.white,
                       ),
-                      onTap: () =>
-                          Navigator.pushNamed(context, '/table_layout'),
+                      onTap: () {
+                        //Navigator.pushNamed(context, '/table_layout');
+                      },
                     ),
                     _buildDivider(),
                     ListTile(
@@ -106,6 +107,20 @@ class _SettingsState extends State<Settings> {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    'coming soon...',
+                    style: TextStyle(
+                      color: colorLight(),
+                      fontSize: 14,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         );

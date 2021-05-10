@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/global/responsive.dart';
 
 class SettingsTableLayout extends StatefulWidget {
@@ -10,6 +11,13 @@ class SettingsTableLayout extends StatefulWidget {
 }
 
 class _SettingsTableLayoutState extends State<SettingsTableLayout> {
+  late int rowNum;
+  @override
+  void initState() {
+    super.initState();
+    this.rowNum = UserSharedPreferences.getRowsPerPage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveWidget(
