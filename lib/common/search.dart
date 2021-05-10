@@ -378,6 +378,17 @@ class SearchPlayerBody extends StatelessWidget {
             Text('Explore', style: TextStyle(fontSize: 24)),
             SizedBox(height: 4),
             Divider(color: dividerColor()),
+            Align(
+              alignment: Alignment.topRight,
+              child: Text(
+                ' - search using name or steam 64 id',
+                style: TextStyle(
+                  color: colorLight(),
+                  fontSize: 13,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
           ],
         ),
       ),
