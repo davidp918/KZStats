@@ -160,17 +160,24 @@ class SearchMapBody extends StatelessWidget {
 
   Widget tag(BuildContext context, MapInfo each, SearchMapProvider provider) {
     return ActionChip(
-      labelPadding: EdgeInsets.all(0),
+      labelPadding: EdgeInsets.all(1),
       avatar: CircleAvatar(
         child: Center(
-            child: Text(
-          '${each.difficulty}',
-          style: TextStyle(fontSize: 14),
-        )),
+          child: Text(
+            '${each.difficulty}',
+            style: TextStyle(fontSize: 15),
+          ),
+        ),
         backgroundColor: primarythemeBlue().withOpacity(0.8),
       ),
-      label: Text(' ${each.mapName!} '),
-      labelStyle: TextStyle(fontSize: 12),
+      label: Text(
+        ' ${each.mapName!} ',
+        style: TextStyle(fontSize: 16),
+      ),
+      labelStyle: TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w400,
+      ),
       backgroundColor: Colors.white54,
       onPressed: () {
         UserSharedPreferences.updateMapHistory(each);
@@ -396,15 +403,17 @@ class SearchPlayerBody extends StatelessWidget {
     return ActionChip(
       labelPadding: EdgeInsets.all(0),
       avatar: CircleAvatar(
-        child: Center(
-            child: Text(
-          '${each.player_name}',
+        child: Text(
+          '${each.player_name.substring(0, 1).toUpperCase()}',
           style: TextStyle(fontSize: 14),
-        )),
+        ),
         backgroundColor: primarythemeBlue().withOpacity(0.8),
       ),
-      label: Text(' ${each.player_name} '),
-      labelStyle: TextStyle(fontSize: 12),
+      label: Text(' ${each.player_name}  '),
+      labelStyle: TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w400,
+      ),
       backgroundColor: Colors.white54,
       onPressed: () {
         UserSharedPreferences.updatePlayerHistory(each);

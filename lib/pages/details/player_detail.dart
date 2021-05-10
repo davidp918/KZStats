@@ -55,7 +55,8 @@ class _MapDetailState extends State<PlayerDetail> {
           ),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             return snapshot.connectionState == ConnectionState.done
-                ? snapshot.hasData
+                ? snapshot.hasData && snapshot.data[0] != null
+                    // snapshot.data[1] can be null
                     ? whole(snapshot.data[0], snapshot.data[1])
                     : errorScreen()
                 : loadingFromApi();
@@ -65,7 +66,7 @@ class _MapDetailState extends State<PlayerDetail> {
     );
   }
 
-  Widget whole(KzstatsApiPlayer kzstatsPlayerInfo, List<Record> records) {
+  Widget whole(KzstatsApiPlayer kzstatsPlayerInfo, List<Record>? records) {
     int totalPoints = pointsSum(records);
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -302,7 +303,7 @@ class _FloaterState extends State<Floater> with SingleTickerProviderStateMixin {
 
 class MainBody extends StatelessWidget {
   final String steamId64;
-  final List<Record> records;
+  final List<Record>? records;
   const MainBody({
     Key? key,
     required this.steamId64,
@@ -311,31 +312,22 @@ class MainBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (this.records == null) {
+      return Align(
+        alignment: Alignment.center,
+        child: Text('No data available'),
+      );
+    }
     Size size = MediaQuery.of(context).size;
-    final modeState = context.watch<ModeCubit>().state;
     final playerDisplayState = context.watch<PlayerdisplayCubit>().state;
     if (playerDisplayState.playerDisplay == 'records') {
-      return PlayerDetailTable(records: records);
+      return PlayerDetailTable(records: records!);
     } else if (playerDisplayState.playerDisplay == 'stats') {
-      return PlayerDetailStats(records: records);
+      return PlayerDetailStats(records: records!);
     } else if (playerDisplayState.playerDisplay == 'jumpstats') {
-      return FutureBuilder(
-        future: getRequest(
-          globalApiPlayerRecordsUrl(
-              modeState.mode, modeState.nub, 99999, steamId64),
-          recordFromJson,
-        ),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          return snapshot.connectionState == ConnectionState.done
-              ? snapshot.hasData
-                  ? PlayerDetailTable(records: snapshot.data)
-                  : errorScreen(exception: 'none')
-              : Container(
-                  height: size.height - 395,
-                  child: loadingFromApi(),
-                );
-        },
-      );
+      return Align(
+          alignment: Alignment.center,
+          child: Text('JumpStats page coming soon ~'));
     }
     // minus 395 to make the loading icon center
     return Container(height: size.height - 395, child: loadingFromApi());

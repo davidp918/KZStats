@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/data/localPlayerClass.dart';
 import 'package:http/http.dart' as http;
-import 'package:rxdart/rxdart.dart';
 
 class SearchPlayerProvider extends ChangeNotifier {
   List<LocalPlayer> _history =
