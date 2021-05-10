@@ -356,7 +356,7 @@ class SearchPlayerBody extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     // clear history
-                    UserSharedPreferences.clearMapHistory();
+                    UserSharedPreferences.clearPlayerHistory();
                     provider.refresh();
                   },
                   child: Row(
