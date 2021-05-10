@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-List<Record> mapTopFromJson(String str) =>
+List<Record> recordFromJson(String str) =>
     List<Record>.from(json.decode(str).map((x) => Record.fromJson(x)));
 
 class Record {

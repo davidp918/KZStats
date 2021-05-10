@@ -18,9 +18,7 @@ Future<dynamic> getRequest(String url, Function fromjson) async {
   } catch (exception) {
     throw UnimplementedError();
   }
-  if (res is List) {
-    return ifEmptyListReNull(res);
-  }
+  if (res is List) return ifEmptyListReNull(res);
   // may need to perform null replace check for
   // other data types
   return res;

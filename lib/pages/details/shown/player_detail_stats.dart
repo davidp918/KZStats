@@ -58,8 +58,9 @@ class PlayerDetailStats extends StatelessWidget {
       if (numerator == 0) _percent = 0;
       if (denominator == 0) _percent = 1;
       String _percentage = (100 * _percent).toString();
-      int avg =
-          (playerPtrs[tier - 1] / playerTierFinishes[tier - 1]).truncate();
+      int avg = playerTierFinishes[tier - 1] == 0
+          ? 0
+          : (playerPtrs[tier - 1] / playerTierFinishes[tier - 1]).truncate();
       return <Widget>[
         Row(
           children: [

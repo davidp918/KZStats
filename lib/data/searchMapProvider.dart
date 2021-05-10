@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 
-class SearchProvider extends ChangeNotifier {
+class SearchMapProvider extends ChangeNotifier {
   List<MapInfo>? allMapData = UserSharedPreferences.getMapData();
-  List<MapInfo> _history = UserSharedPreferences.getHistory().take(6).toList();
+  List<MapInfo> _history =
+      UserSharedPreferences.getSearchMapHistory().take(6).toList();
 
   bool _expanded = false;
   bool get expanded => _expanded;
 
   void loadHis() {
     _history = _expanded
-        ? UserSharedPreferences.getHistory()
-        : UserSharedPreferences.getHistory().take(6).toList();
+        ? UserSharedPreferences.getSearchMapHistory()
+        : UserSharedPreferences.getSearchMapHistory().take(6).toList();
     notifyListeners();
   }
 
@@ -56,17 +57,8 @@ class SearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void clear() {
-    _suggestions = UserSharedPreferences.getHistory();
-    notifyListeners();
-  }
-
   void expand() {
-    if (_expanded == false) {
-      _expanded = true;
-    } else {
-      _expanded = false;
-    }
+    _expanded = !expanded;
     loadHis();
     notifyListeners();
   }

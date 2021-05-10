@@ -45,11 +45,11 @@ class Homepage extends StatelessWidget {
             future: Future.wait(
               [
                 getRequest(
-                  globalApiWrRecordsUrl(state.mode, state.nub, 1),
+                  globalApiWrRecordsUrl(state.mode, state.nub, 20),
                   wrFromJson,
                 ),
                 getRequest(
-                  globalApiWrRecordsUrl(state.mode, state.nub, 1),
+                  globalApiWrRecordsUrl(state.mode, state.nub, 20),
                   wrFromJson,
                 ).then((value) => getPlayerKzstatsNation(value!)),
               ],

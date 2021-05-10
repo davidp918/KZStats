@@ -50,7 +50,7 @@ class _MapDetailState extends State<PlayerDetail> {
               getRequest(
                   globalApiPlayerRecordsUrl(
                       modeState.mode, modeState.nub, 99999, steamId64),
-                  mapTopFromJson),
+                  recordFromJson),
             ],
           ),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -323,7 +323,7 @@ class MainBody extends StatelessWidget {
         future: getRequest(
           globalApiPlayerRecordsUrl(
               modeState.mode, modeState.nub, 99999, steamId64),
-          mapTopFromJson,
+          recordFromJson,
         ),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           return snapshot.connectionState == ConnectionState.done

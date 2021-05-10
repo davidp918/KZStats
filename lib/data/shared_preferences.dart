@@ -4,6 +4,7 @@ import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kzstats/global/userInfo_class.dart';
+import 'package:kzstats/data/localPlayerClass.dart';
 
 class UserSharedPreferences {
   static late SharedPreferences _preferences;
@@ -11,7 +12,8 @@ class UserSharedPreferences {
   static const _userInfo = 'userInfo';
   static const _rowsPerPage = 'rowsPerPage';
   static const _mapData = 'mapData';
-  static const _history = 'history';
+  static const _mapHistory = 'mapHistory';
+  static const _playerHistory = 'playerHistory';
   static const _tierMap = 'tierMapping';
   static const _tierCount = 'tierCount';
 
@@ -107,21 +109,40 @@ class UserSharedPreferences {
   }
 
   // search history
-  static Future updateHistory(MapInfo newHistory) async {
-    var old = getHistory();
+  static Future updateMapHistory(MapInfo newHistory) async {
+    var old = getSearchMapHistory();
     if (old.any((element) => element.mapName == newHistory.mapName))
       old.removeWhere((element) => element.mapName! == newHistory.mapName!);
     old.insert(0, newHistory);
     if (old.length > 20) old.removeAt(20);
-    await _preferences.setString(_history, multiMapInfoToJson(old));
+    await _preferences.setString(_mapHistory, multiMapInfoToJson(old));
   }
 
-  static List<MapInfo> getHistory() {
-    dynamic data = _preferences.getString(_history);
+  static List<MapInfo> getSearchMapHistory() {
+    dynamic data = _preferences.getString(_mapHistory);
     return data == null ? [] : multiMapInfoFromJson(data);
   }
 
-  static Future clearHistory() async {
-    await _preferences.remove(_history);
+  static Future clearMapHistory() async {
+    await _preferences.remove(_mapHistory);
+  }
+
+  static Future updatePlayerHistory(LocalPlayer newHistory) async {
+    var old = getSearchPlayerHistory();
+    if (old.any((element) => element.steamid64 == newHistory.steamid64))
+      old.removeWhere((element) => element.steamid64 == newHistory.steamid64);
+    old.insert(0, newHistory);
+    if (old.length > 20) old.removeAt(20);
+    await _preferences.setString(_playerHistory, localPlayerToJson(old));
+  }
+
+  static List<LocalPlayer> getSearchPlayerHistory() {
+    String? data = _preferences.getString(_playerHistory);
+    if (data == null) return [];
+    return localPlayerFromJson(data);
+  }
+
+  static Future clearPlayerHistory() async {
+    await _preferences.remove(_playerHistory);
   }
 }
