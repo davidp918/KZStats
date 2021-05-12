@@ -175,14 +175,8 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
     );
   }
 
-  Transform subFloater(
-    double angle,
-    Animation<dynamic> parameter,
-    double magnitude,
-    Color color,
-    Icon icon,
-    int newTier,
-  ) {
+  Transform subFloater(double angle, Animation<dynamic> parameter,
+      double magnitude, Color color, Icon icon, int newTier) {
     return Transform.translate(
       offset: Offset.fromDirection(
           getRadiansFromDegree(angle), parameter.value * magnitude),
@@ -228,7 +222,7 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
   }
 
   Future<List<MapInfo>> _loadMore(int limit, int offset, int tier) async {
-    dynamic temp = getMaps(limit, offset, multiMapInfoFromJson, tier);
+    dynamic temp = getAMaps(limit, offset, multiMapInfoFromJson, tier);
     if (temp != null) {
       return temp;
     } else {

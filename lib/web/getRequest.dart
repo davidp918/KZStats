@@ -43,6 +43,25 @@ Future<List<MapInfo>?> getMaps(
   return res;
 }
 
+Future<List<MapInfo>> getAMaps(
+    int limit, int offset, Function fromjson, int tier) async {
+  dynamic res;
+  try {
+    var response = await http.get(
+      Uri.parse(globalApiAllMaps(limit, offset, tier)),
+    );
+    response.statusCode == HttpStatus.ok
+        ? res = fromjson(response.body)
+        : print('something wrong');
+  } catch (exception) {
+    throw ('get map exceptions: $exception');
+  }
+  if (res is List) {
+    return ifEmptyListReNull(res);
+  }
+  return res;
+}
+
 Future<List<Ban>> getBans(int limit, int offset, Function fromjson) async {
   dynamic res;
   try {
