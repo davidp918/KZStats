@@ -16,6 +16,7 @@
         </intent>
     </queries>
     <application
+         android:name=".Application"
         android:label="KZStats"
         android:icon="@mipmap/launcher_icon">
         <activity
