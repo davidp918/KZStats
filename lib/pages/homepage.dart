@@ -114,13 +114,8 @@ class Homepage extends StatelessWidget {
     );
   }
 
-  Widget snippet(
-    BuildContext context,
-    int index,
-    Wr record,
-    String nation,
-    SizeInfo constraints,
-  ) {
+  Widget snippet(BuildContext context, int index, Wr record, String nation,
+      SizeInfo constraints) {
     double halfWidth = constraints.width / 2;
     double crossWidth = halfWidth * 33 / 40 - 7;
     return Column(
