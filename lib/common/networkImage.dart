@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kzstats/theme/colors.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -74,12 +73,6 @@ class _GetNetworkImageState extends State<GetNetworkImage> {
     return Container(
       height: widget.height,
       width: widget.width,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: imageBorderColor(),
-          width: widget.borderWidth,
-        ),
-      ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(4),
         child: loadImage(),
