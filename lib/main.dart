@@ -19,12 +19,10 @@ import 'package:kzstats/theme/colors.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
   print('Handling a background message ${message.messageId}');
 }
 
-const AndroidNotificationChannel channel = AndroidNotificationChannel(
+/* const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
   'This channel is used for important notifications.', // description
@@ -32,7 +30,7 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 );
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin(); */
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -46,36 +44,7 @@ void main() async {
   });
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
-  flutterLocalNotificationsPlugin.initialize(
-    InitializationSettings(
-      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-    ),
-  );
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('received');
-    RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification?.android;
-    if (notification != null && android != null) {
-      flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            channel.description,
-            icon: android.smallIcon,
-          ),
-        ),
-      );
-    }
-  });
-  //getToken();
+  await getToken();
   runApp(MyApp());
 }
 
@@ -112,7 +81,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-getToken() async {
+Future<String?> getToken() async {
   String? token = await FirebaseMessaging.instance.getToken();
   print(token);
+  return token;
 }
