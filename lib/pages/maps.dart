@@ -136,9 +136,7 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
       itemBuilder: _itemBuilder,
       pageFuture: (pageIndex) =>
           _loadMore(pageSize, pageIndex! * pageSize, tier),
-      loadingBuilder: (context) {
-        return loadingFromApi();
-      },
+      loadingBuilder: (context) => loadingFromApi(),
     );
   }
 
