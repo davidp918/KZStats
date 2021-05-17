@@ -9,17 +9,11 @@ class GetNetworkImage extends StatefulWidget {
   final String fileName;
   final String url;
   final AssetImage errorImage;
-  final double borderWidth;
-  final double? height;
-  final double? width;
   GetNetworkImage({
     Key? key,
     required this.fileName,
     required this.url,
     required this.errorImage,
-    required this.borderWidth,
-    this.height,
-    this.width,
   }) : super(key: key);
 
   @override
@@ -27,7 +21,7 @@ class GetNetworkImage extends StatefulWidget {
 }
 
 class _GetNetworkImageState extends State<GetNetworkImage> {
-  String? imagePath;
+  late String imagePath;
   bool dataLoaded = false;
 
   @override
@@ -70,25 +64,22 @@ class _GetNetworkImageState extends State<GetNetworkImage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.height,
-      width: widget.width,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(4),
-        child: loadImage(),
-      ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(4),
+      child: loadImage(),
     );
   }
 
   Widget loadImage() {
-    if (dataLoaded) {
-      return Image.file(
-        File(imagePath!),
+    if (!dataLoaded) {
+      Image image = Image.file(
+        File(imagePath),
         errorBuilder: (context, object, stacktrace) {
           print('${widget.url}');
           return Image(image: widget.errorImage);
         },
       );
+      return image;
     } else {
       return Center(child: CircularProgressIndicator());
     }

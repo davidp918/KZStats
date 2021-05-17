@@ -5,17 +5,14 @@ const imageBaseURL =
 const proxy = "https://gokz-globalstats.bakar.workers.dev/?";
 
 // Latest wr records
-String globalApiWrRecordsUrl(
-  String mode,
-  bool ifNub,
-  int amount,
-) {
+String globalApiWrRecordsUrl(String mode, bool ifNub, int amount, int offset) {
   const kz_wr =
-      "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=!mode!&place_top_at_least=1ifnub!&stage=0&limit=amount!&tickrate=128";
+      "https://kztimerglobal.com/api/v2.0/records/top/recent?modes_list_string=!mode!&place_top_at_least=1ifnub!&stage=0&limit=amount!&tickrate=128&offset=!offset";
   return kz_wr
       .replaceAll('!mode!', mode)
       .replaceAll('ifnub!', ifNub ? '' : '&has_teleports=false')
-      .replaceAll('amount!', amount.toString());
+      .replaceAll('amount!', amount.toString())
+      .replaceAll('!offset', offset.toString());
 }
 
 // Top records of a specific map

@@ -114,8 +114,6 @@ class _MapDetailState extends State<MapDetail> {
                 fileName: '${widget.mapInfo.mapName}',
                 url: '$imageBaseURL${widget.mapInfo!.mapName}.webp',
                 errorImage: AssetImage('assets/icon/noimage.png'),
-                borderWidth: 0,
-                height: 120,
               ),
             ),
             SizedBox(

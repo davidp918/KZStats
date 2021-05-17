@@ -122,7 +122,6 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
                   fileName: this.user.steam32,
                   url: this.user.avatarUrl,
                   errorImage: AssetImage('assets/icon/noimage.png'),
-                  borderWidth: 2,
                 ),
               ),
             ),

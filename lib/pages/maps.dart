@@ -242,7 +242,6 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
               fileName: entry.mapName!,
               url: '$imageBaseURL${entry.mapName!}.webp',
               errorImage: AssetImage('assets/icon/noimage.png'),
-              borderWidth: 0,
             ),
           ),
           Expanded(

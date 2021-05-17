@@ -98,9 +98,6 @@ class _MapDetailState extends State<PlayerDetail> {
               fileName: '${kzstatsPlayerInfo.steamid32}',
               url: kzstatsPlayerInfo.avatarfull!,
               errorImage: AssetImage('assets/icon/noimage.png'),
-              borderWidth: 2,
-              height: 130,
-              width: 130,
             ),
             SizedBox(width: 14),
             Expanded(
