@@ -27,7 +27,6 @@ class About extends StatelessWidget {
                       Text(
                         'KZStats',
                         style: TextStyle(
-                          color: Colors.white,
                           fontSize: 45,
                         ),
                       ),
@@ -115,12 +114,10 @@ class About extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   '© 2021 Exusiai - Developed using Flutter',
-                  style: GoogleFonts.dosis(
-                    textStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w300,
-                    ),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w300,
                   ),
                 ),
               ),

@@ -9,11 +9,13 @@ class GetNetworkImage extends StatefulWidget {
   final String fileName;
   final String url;
   final AssetImage errorImage;
+  double? height;
   GetNetworkImage({
     Key? key,
     required this.fileName,
     required this.url,
     required this.errorImage,
+    this.height,
   }) : super(key: key);
 
   @override
@@ -21,7 +23,7 @@ class GetNetworkImage extends StatefulWidget {
 }
 
 class _GetNetworkImageState extends State<GetNetworkImage> {
-  late String imagePath;
+  String imagePath = '';
   bool dataLoaded = false;
 
   @override
@@ -66,12 +68,14 @@ class _GetNetworkImageState extends State<GetNetworkImage> {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(4),
-      child: loadImage(),
+      child: Container(
+        child: loadImage(),
+      ),
     );
   }
 
   Widget loadImage() {
-    if (!dataLoaded) {
+    if (dataLoaded) {
       Image image = Image.file(
         File(imagePath),
         errorBuilder: (context, object, stacktrace) {

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
@@ -31,8 +33,11 @@ class Homepage extends StatelessWidget {
 
   Widget _itemBuilder(BuildContext context, Map data, int index) {
     Size size = MediaQuery.of(context).size;
-    double crossWidth = (size.width / 2) * 33 / 41;
-    double crossHeight = (size.height - 56) / 6;
+    double ratio = 113 / 200;
+    double crossWidth = min((size.width / 2) * 33 / 41, 180);
+    double crossHeight = min((size.height - 56) / 6.4, 180 * 113 / 200);
+    crossWidth = 170;
+    crossHeight = crossWidth * ratio;
     return Column(
       children: [
         Padding(
@@ -44,6 +49,7 @@ class Homepage extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Container(
                     width: crossWidth,
+                    height: crossHeight,
                     child: GetNetworkImage(
                       fileName: data['mapName'],
                       url: '$imageBaseURL${data['mapName']}.webp',
