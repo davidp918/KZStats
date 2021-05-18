@@ -77,7 +77,6 @@ class _GetNetworkImageState extends State<GetNetworkImage> {
       Image image = Image.file(
         File(imagePath),
         errorBuilder: (context, object, stacktrace) {
-          print('${widget.url}');
           return Image(image: widget.errorImage);
         },
       );

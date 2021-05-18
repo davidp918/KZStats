@@ -198,7 +198,6 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
           icon: icon,
           onClick: () {
             BlocProvider.of<TierCubit>(context).set(newTier);
-            print(newTier);
             Navigator.pushReplacementNamed(context, '/maps');
           },
         ),
