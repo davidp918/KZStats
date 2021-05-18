@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/data/shared_preferences.dart';
@@ -13,11 +15,13 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   late UserInfo user;
+  late bool enabled;
 
   @override
   void initState() {
     super.initState();
     user = UserSharedPreferences.getUserInfo();
+    enabled = UserSharedPreferences.getNotification();
   }
 
   @override
@@ -64,7 +68,7 @@ class _SettingsState extends State<Settings> {
               Card(
                 color: primarythemeBlue(),
                 elevation: 4.0,
-                margin: const EdgeInsets.fromLTRB(32, 8, 32, 16),
+                margin: const EdgeInsets.fromLTRB(32, 8, 32, 6),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 child: Column(
@@ -108,7 +112,7 @@ class _SettingsState extends State<Settings> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.fromLTRB(32, 0, 32, 6),
                 child: Align(
                   alignment: Alignment.topRight,
                   child: Text(
@@ -120,12 +124,54 @@ class _SettingsState extends State<Settings> {
                     ),
                   ),
                 ),
-              )
+              ),
+              _buildDivider(),
+              SizedBox(height: 16),
+              Text(
+                "Notification Settings",
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
+              ),
+              SwitchListTile(
+                title: Text(
+                  'Enable Notification',
+                  style: TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  '- get subscribed to the latest wr',
+                  style: TextStyle(
+                    color: Colors.white54,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                activeColor: Colors.white70,
+                contentPadding: EdgeInsets.all(0),
+                value: this.enabled,
+                onChanged: (val) {
+                  UserSharedPreferences.toggleNotification();
+                  setState(() {
+                    this.enabled = val;
+                  });
+                  print(
+                      this.enabled == UserSharedPreferences.getNotification());
+                },
+              ),
+              ...notificationArea(),
             ],
           ),
         );
       },
     );
+  }
+
+  List<Widget> notificationArea() {
+    if (!this.enabled) return [Container()];
+    return [
+      Text('af'),
+    ];
   }
 
   Container _buildDivider() {
