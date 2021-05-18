@@ -9,7 +9,8 @@ String? toMinSec(double? sec) {
   return ('$min:$seconds');
 }
 
-String diffofNow(DateTime timeRecordCreated) {
+String diffofNow(DateTime? timeRecordCreated) {
+  if (timeRecordCreated == null) return '';
   DateTime now = new DateTime.now();
   Duration timezoneOffset = now.timeZoneOffset;
   int offset = timezoneOffset.inSeconds;

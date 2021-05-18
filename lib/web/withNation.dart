@@ -3,17 +3,18 @@ import 'package:kzstats/web/urls.dart';
 
 import 'future/kzstatsApiPlayerNation.dart';
 import 'json/wr_json.dart';
+import 'package:kzstats/global/recordInfo_class.dart';
 
-Future<List<Map>> getInfoWithNation(
+Future<List<RecordInfo>> getInfoWithNation(
     String mode, bool nub, int limit, int offset) async {
   List<dynamic> data = await Future.wait(
     [
       getRequest(
-        globalApiWrRecordsUrl(mode, nub, limit,offset),
+        globalApiWrRecordsUrl(mode, nub, limit, offset),
         wrFromJson,
       ),
       getRequest(
-        globalApiWrRecordsUrl(mode, nub, limit,offset),
+        globalApiWrRecordsUrl(mode, nub, limit, offset),
         wrFromJson,
       ).then((value) => getPlayerKzstatsNation(value!)),
     ],
@@ -21,17 +22,23 @@ Future<List<Map>> getInfoWithNation(
   List<Wr?>? wrs = data[0];
   List<String?>? nations = data[1];
   int n = wrs?.length ?? 0;
-  List<Map> res = [];
+  List<RecordInfo> res = [];
   for (int i = 0; i < n; i++) {
     Wr? wr = wrs![i];
-    Map<String, dynamic> map = {};
-    map['mapName'] = wr?.mapName ?? '';
-    map['time'] = wr?.time.toString() ?? '';
-    map['teleports'] = wr?.teleports.toString() ?? '';
-    map['playerName'] = wr?.playerName ?? '';
-    map['steamid64'] = wr?.steamid64 ?? '';
-    map['playerNation'] = nations?[i] ?? '';
-    res.add(map);
+
+    res.add(
+      RecordInfo(
+        mapName: wr?.mapName ?? '',
+        mapId: wr?.mapId ?? 0,
+        playerName: wr?.playerName ?? '',
+        playerNation: nations?[i] ?? '',
+        steamid64: wr?.steamid64 ?? '',
+        teleports: wr?.teleports ?? 0,
+        time: wr?.time ?? 0.0,
+        nation: nations?[i],
+        createdOn: wr?.createdOn,
+      ),
+    );
   }
   return res;
 }

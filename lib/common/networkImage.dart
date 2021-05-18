@@ -9,13 +9,11 @@ class GetNetworkImage extends StatefulWidget {
   final String fileName;
   final String url;
   final AssetImage errorImage;
-  double? height;
   GetNetworkImage({
     Key? key,
     required this.fileName,
     required this.url,
     required this.errorImage,
-    this.height,
   }) : super(key: key);
 
   @override

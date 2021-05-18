@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
@@ -21,7 +23,9 @@ class Maps extends StatefulWidget {
 }
 
 class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
-  static int pageSize = 12;
+  late Size size;
+  late double ratio, imageWidth, crossWidth, crossHeight;
+  late int pageSize, rowCount;
   late AnimationController animationController;
   late Animation oneAnimation,
       twoAnimation,
@@ -43,7 +47,6 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
   void initState() {
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
-
     oneAnimation = TweenSequence([
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0.0, end: 1.2), weight: 75.0),
@@ -104,7 +107,12 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
+    ratio = 113 / 200;
+    imageWidth = 200;
+    crossWidth = min((size.width / 2), imageWidth);
+    rowCount = size.width ~/ crossWidth;
+    pageSize = rowCount * 10;
     return Scaffold(
       appBar: HomepageAppBar('Maps'),
       drawer: HomepageDrawer(),
@@ -128,7 +136,7 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
   Widget mapsGridView(int tier) {
     return PagewiseGridView.count(
       pageSize: pageSize,
-      crossAxisCount: 2,
+      crossAxisCount: rowCount,
       mainAxisSpacing: 8.0,
       crossAxisSpacing: 8.0,
       childAspectRatio: 1,
