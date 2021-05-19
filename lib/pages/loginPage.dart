@@ -27,7 +27,6 @@ class _LoginState extends State<Login> {
     super.initState();
     user = UserSharedPreferences.getUserInfo();
     steam64 = user.steam64;
-
     validatedAsNum = false;
     validatedLen = false;
     showErrorSection = false;
