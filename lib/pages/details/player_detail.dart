@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +37,6 @@ class PlayerDetail extends StatefulWidget {
 class _MapDetailState extends State<PlayerDetail> {
   final String steamId64;
   final String playerName;
-
   _MapDetailState(this.steamId64, this.playerName);
   @override
   Widget build(BuildContext context) {
@@ -88,16 +89,22 @@ class _MapDetailState extends State<PlayerDetail> {
   }
 
   Widget playerHeader(KzstatsApiPlayer kzstatsPlayerInfo, int totalPoints) {
+    Size size = MediaQuery.of(context).size;
+    double avatarSize = min(140, size.width / 3);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Row(
           children: <Widget>[
             SizedBox(width: 2),
-            GetNetworkImage(
-              fileName: '${kzstatsPlayerInfo.steamid32}',
-              url: kzstatsPlayerInfo.avatarfull!,
-              errorImage: AssetImage('assets/icon/noimage.png'),
+            Container(
+              width: avatarSize,
+              height: avatarSize,
+              child: GetNetworkImage(
+                fileName: '${kzstatsPlayerInfo.steamid32}',
+                url: kzstatsPlayerInfo.avatarfull!,
+                errorImage: AssetImage('assets/icon/noimage.png'),
+              ),
             ),
             SizedBox(width: 14),
             Expanded(
