@@ -7,9 +7,6 @@ import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/global/responsive.dart';
 import 'package:kzstats/global/userInfo_class.dart';
 import 'package:kzstats/theme/colors.dart';
-import 'package:kzstats/web/getRequest.dart';
-import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
-import 'package:kzstats/web/urls.dart';
 
 class Settings extends StatefulWidget {
   @override
