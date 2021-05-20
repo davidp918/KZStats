@@ -1,5 +1,6 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:kzstats/global/responsive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/theme/colors.dart';
@@ -67,7 +68,7 @@ class _LoginState extends State<Login> {
                     child: Icon(Icons.person, color: Colors.white),
                   ),
                   trailing: userState.info.steam64 == ''
-                      ? Icon(Icons.coronavirus_sharp, color: Colors.red)
+                      ? Icon(LineariconsFree.cross, color: Colors.red)
                       : Icon(Icons.check, color: Colors.green),
                 ),
               ),
@@ -82,7 +83,7 @@ class _LoginState extends State<Login> {
                   children: <Widget>[
                     ListTile(
                       leading: Icon(
-                        CommunityMaterialIcons.table,
+                        CommunityMaterialIcons.login,
                         color: Colors.white,
                       ),
                       title: Text(
@@ -109,7 +110,7 @@ class _LoginState extends State<Login> {
                     _buildDivider(),
                     ListTile(
                       leading: Icon(
-                        Icons.brightness_6_outlined,
+                        CommunityMaterialIcons.logout,
                         color: Colors.white,
                       ),
                       title: Text(

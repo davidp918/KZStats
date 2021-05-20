@@ -9,10 +9,10 @@ class UserState {
   bool loading;
   UserState({required this.info, required this.loading});
 
-  Map<String, dynamic> toMap() => {'info': info};
+  Map<String, dynamic> toMap() => {'info': info.toJson(), 'loading': loading};
 
   factory UserState.fromMap(Map<String, dynamic> map) =>
-      UserState(info: map['info'], loading: map['loading']);
+      UserState(info: UserInfo.fromJson(map['info']), loading: map['loading']);
 }
 
 class UserCubit extends Cubit<UserState> with HydratedMixin {

@@ -171,7 +171,7 @@ class _SettingsState extends State<Settings> {
   List<Widget> notificationArea() {
     if (!this.enabled) return [Container()];
     return [
-      Text('af'),
+      Text(''),
     ];
   }
 
