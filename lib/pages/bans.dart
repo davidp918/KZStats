@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
+import 'package:kzstats/common/AppBar.dart';
+import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/common/loading.dart';
-import 'package:kzstats/global/responsive.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json.dart';
@@ -9,12 +10,10 @@ import 'package:kzstats/web/json.dart';
 class Bans extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ResponsiveWidget(
-      ifDrawer: true,
-      currentPage: 'Bans',
-      builder: (context, constraints) {
-        return BansListView();
-      },
+    return Scaffold(
+      appBar: HomepageAppBar('Bans'),
+      drawer: HomepageDrawer(),
+      body: BansListView(),
     );
   }
 }
