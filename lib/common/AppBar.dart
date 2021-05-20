@@ -15,6 +15,7 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 20,
       title: Text(currentPage),
       centerTitle: true,
+      brightness: Brightness.dark,
       actions: <Widget>[
         IconButton(
           icon: Icon(EvilIcons.search),
