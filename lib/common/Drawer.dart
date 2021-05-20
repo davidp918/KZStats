@@ -76,7 +76,7 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
   Widget clickToLogin(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushReplacementNamed(
+        Navigator.pushNamed(
           context,
           '/login',
         );

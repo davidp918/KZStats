@@ -56,6 +56,8 @@ void main() async {
   );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await getToken();
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarBrightness: Brightness.dark));
   runApp(MyApp());
 }
 

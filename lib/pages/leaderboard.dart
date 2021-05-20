@@ -1,12 +1,12 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kzstats/common/AppBar.dart';
+import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/common/datatables/leaderboard_points_datatable.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
-import 'package:kzstats/global/responsive.dart';
-import 'package:kzstats/global/sizeInfo_class.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
@@ -24,39 +24,33 @@ class _LeaderboardState extends State<Leaderboard>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    return ResponsiveWidget(
-      ifDrawer: true,
-      currentPage: 'Leaderboard',
-      builder: (context, constraints) {
-        final modeState = context.watch<ModeCubit>().state;
-        final typeState = context.watch<LeaderboardCubit>().state;
-        return FutureBuilder(
-          future: typeState.type == 'points'
-              ? getRequest(
-                  globalApiLeaderboardPoints(
-                      modeState.mode, modeState.nub, 100),
-                  leaderboardPointsFromJson,
-                )
-              : getRequest(
-                  globalApiLeaderboardRecords(
-                      modeState.mode, modeState.nub, 100),
-                  leaderboardRecordsFromJson,
-                ),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            return transition(snapshot, constraints, typeState.type);
-          },
-        );
-      },
+    final modeState = context.watch<ModeCubit>().state;
+    final typeState = context.watch<LeaderboardCubit>().state;
+    return Scaffold(
+      appBar: HomepageAppBar('Leaderboard'),
+      drawer: HomepageDrawer(),
+      body: FutureBuilder(
+        future: typeState.type == 'points'
+            ? getRequest(
+                globalApiLeaderboardPoints(modeState.mode, modeState.nub, 100),
+                leaderboardPointsFromJson,
+              )
+            : getRequest(
+                globalApiLeaderboardRecords(modeState.mode, modeState.nub, 100),
+                leaderboardRecordsFromJson,
+              ),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          return transition(snapshot, typeState.type);
+        },
+      ),
     );
   }
 
-  Widget transition(
-      AsyncSnapshot<dynamic> snapshot, SizeInfo constraints, String type) {
+  Widget transition(AsyncSnapshot<dynamic> snapshot, String type) {
     return snapshot.connectionState == ConnectionState.done
         ? snapshot.hasData && snapshot.data != null
             ? mainBody(
                 snapshot.data,
-                constraints,
                 type,
               )
             : errorScreen()
@@ -65,9 +59,9 @@ class _LeaderboardState extends State<Leaderboard>
 
   Widget mainBody(
     List<dynamic> data,
-    SizeInfo constraints,
     String type,
   ) {
+    Size constraints = MediaQuery.of(context).size;
     return Container(
       width: constraints.width,
       height: constraints.height,

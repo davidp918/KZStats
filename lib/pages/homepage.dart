@@ -3,10 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
+import 'package:kzstats/common/AppBar.dart';
+import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
-import 'package:kzstats/global/responsive.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/utils/strCheckLen.dart';
 import 'package:kzstats/utils/svg.dart';
@@ -20,10 +21,10 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveWidget(
-      ifDrawer: true,
-      currentPage: 'Latest',
-      builder: (context, constraints) => BlocBuilder<ModeCubit, ModeState>(
+    return Scaffold(
+      appBar: HomepageAppBar('Latest'),
+      drawer: HomepageDrawer(),
+      body: BlocBuilder<ModeCubit, ModeState>(
         builder: (context, state) => PagewiseListView<RecordInfo>(
           pageSize: pageSize,
           itemBuilder: this._itemBuilder,
