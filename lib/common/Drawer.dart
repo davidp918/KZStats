@@ -2,11 +2,10 @@ import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
-import 'package:kzstats/data/shared_preferences.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:kzstats/theme/colors.dart';
-import 'package:kzstats/global/userInfo_class.dart';
 
 class HomepageDrawer extends StatefulWidget {
   @override
@@ -112,7 +111,6 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
           children: <Widget>[
             SizedBox(
               height: size.width * 2 / 5,
-              //TODO: resize
               child: GetNetworkImage(
                 fileName: state.info.steam32,
                 url: state.info.avatarUrl,
