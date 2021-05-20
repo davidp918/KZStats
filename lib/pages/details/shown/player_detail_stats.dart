@@ -185,7 +185,6 @@ class PlayerDetailStats extends StatelessWidget {
             sectionTitle('BreakDown'),
             SizedBox(height: 4),
             ...indicators,
-            Container(height: 100),
           ],
         ),
       ),

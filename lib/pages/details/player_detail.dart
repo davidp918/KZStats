@@ -80,6 +80,7 @@ class _MapDetailState extends State<PlayerDetail> {
             children: [
               playerHeader(kzstatsPlayerInfo, totalPoints),
               MainBody(steamId64: this.steamId64, records: records),
+              Container(height: 100),
             ],
           ),
           Floater(),
