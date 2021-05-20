@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "70269398767",
+    "project_id": "kzstats-14342",
+    "storage_bucket": "kzstats-14342.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70269398767:android:d47341313e1b7a67b9751a",
+        "android_client_info": {
+          "package_name": "com.dp.kzstats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70269398767-gqiliktg8tkaloqu764tglsdeipsu53f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEd6FNBl6GoMMoZZiTcliJmzSj1uyDneg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70269398767-gqiliktg8tkaloqu764tglsdeipsu53f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
