@@ -10,6 +10,7 @@ import 'package:kzstats/pages/loginPage.dart';
 import 'package:kzstats/pages/about.dart';
 import 'package:kzstats/pages/settings/tablelayout.dart';
 import 'package:kzstats/common/search.dart';
+import 'package:kzstats/pages/steamLogin.dart';
 
 class AppRouter {
   Route? onGenerateRoute(RouteSettings settings) {
@@ -34,6 +35,9 @@ class AppRouter {
 
       case '/login':
         return MaterialPageRoute(builder: (context) => Login());
+
+      case '/steamLogin':
+        return MaterialPageRoute(builder: (context) => SteamLogin());
 
       case '/about':
         return MaterialPageRoute(builder: (context) => About());

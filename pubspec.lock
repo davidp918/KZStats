@@ -21,7 +21,7 @@ packages:
       name: async
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.5.0"
+    version: "2.6.1"
   bloc:
     dependency: transitive
     description:
@@ -264,17 +264,10 @@ packages:
   flutter_webview_plugin:
     dependency: "direct main"
     description:
-      name: flutter_webview_plugin
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.3.11"
-  google_fonts:
-    dependency: "direct main"
-    description:
-      name: google_fonts
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.1.0"
+      path: "../flutter_webview_plugin"
+      relative: true
+    source: path
+    version: "1.0.0-nullsafety.0"
   hive:
     dependency: "direct main"
     description:
@@ -517,7 +510,7 @@ packages:
       name: source_span
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.8.0"
+    version: "1.8.1"
   stack_trace:
     dependency: transitive
     description:
@@ -528,10 +521,10 @@ packages:
   steam_login:
     dependency: "direct main"
     description:
-      path: "C:/Workspace/steam_login/"
-      relative: false
-    source: path
-    version: "1.0.1"
+      name: steam_login
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.0"
   stream_channel:
     dependency: transitive
     description:
@@ -573,7 +566,7 @@ packages:
       name: test_api
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.2.19"
+    version: "0.3.0"
   timezone:
     dependency: transitive
     description:

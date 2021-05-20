@@ -8,12 +8,9 @@ class SearchState {
   SearchState({required this.field});
 
   Map<String, dynamic> toMap() => {'field': field};
-  String toJson() => json.encode(toMap());
 
   factory SearchState.fromMap(Map<String, dynamic> map) =>
       SearchState(field: map['field']);
-  factory SearchState.fromJson(String source) =>
-      SearchState.fromMap(json.decode(source));
 }
 
 class SearchCubit extends Cubit<SearchState> with HydratedMixin {

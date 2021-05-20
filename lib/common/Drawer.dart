@@ -116,13 +116,11 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
           children: <Widget>[
             SizedBox(
               height: size.width * 2 / 5,
-              child: FittedBox(
-                fit: BoxFit.fill,
-                child: GetNetworkImage(
-                  fileName: this.user.steam32,
-                  url: this.user.avatarUrl,
-                  errorImage: AssetImage('assets/icon/noimage.png'),
-                ),
+              //TODO: resize
+              child: GetNetworkImage(
+                fileName: this.user.steam32,
+                url: this.user.avatarUrl,
+                errorImage: AssetImage('assets/icon/noimage.png'),
               ),
             ),
             SizedBox(height: 8),

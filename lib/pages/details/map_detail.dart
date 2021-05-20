@@ -96,9 +96,9 @@ class _MapDetailState extends State<MapDetail> {
   }
 
   Widget mainBody(
-    dynamic? maptop,
-    dynamic? nubWr,
-    dynamic? proWr,
+    dynamic maptop,
+    dynamic nubWr,
+    dynamic proWr,
     MapInfo? mapInfo,
   ) {
     return SingleChildScrollView(

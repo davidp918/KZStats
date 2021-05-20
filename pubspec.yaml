@@ -36,7 +36,6 @@ dependencies:
   characters: ^1.1.0
   flutter_pagewise: ^2.0.1
   shared_preferences: ^2.0.5
-  google_fonts: ^2.0.0
   url_launcher: ^6.0.3
   fl_chart: ^0.36.0
   provider: ^5.0.0
@@ -44,9 +43,9 @@ dependencies:
   implicitly_animated_reorderable_list: ^0.4.0
   substring_highlight: ^1.0.26
   percent_indicator: ^3.0.1
-  steam_login: 
-    path: C:/Workspace/steam_login/
-  flutter_webview_plugin: ^0.3.11
+  steam_login: ^1.1.0
+  flutter_webview_plugin:
+    path: ../flutter_webview_plugin/
 
   firebase_messaging: ^9.1.4
   firebase_analytics: ^8.0.4

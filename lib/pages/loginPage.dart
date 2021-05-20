@@ -1,9 +1,10 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/global/responsive.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/theme/colors.dart';
-import 'package:kzstats/utils/checkisNum.dart';
 import 'package:kzstats/web/getRequest.dart';
+import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/global/userInfo_class.dart';
@@ -14,222 +15,181 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  late UserInfo user;
-  late String steam64;
-
-  late bool validatedAsNum,
-      validatedLen,
-      isLoggedIn,
-      showLogging,
-      showErrorSection;
+  String steamid64 = '';
   @override
   void initState() {
     super.initState();
-    user = UserSharedPreferences.getUserInfo();
-    steam64 = user.steam64;
-    validatedAsNum = false;
-    validatedLen = false;
-    showErrorSection = false;
-    isLoggedIn = steam64 == '' ? false : true;
-    showLogging = false;
   }
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveWidget(
       currentPage: 'Login page',
-      ifDrawer: true,
-      builder: (context, constraints) => Padding(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          children: [
-            ...title(),
-            SizedBox(height: 32),
-            ...inputField(),
-            SizedBox(height: 30),
-            loginButton(),
-            SizedBox(height: 15),
-            logOutButton(),
-            SizedBox(height: 15),
-            errorSection(),
-            showLoggedIn(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  List<Widget> inputField() {
-    return [
-      Text(
-        'Steam ID',
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w300,
-          fontSize: 18,
-        ),
-      ),
-      const SizedBox(height: 8),
-      TextFormField(
-        initialValue: steam64,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: 'Your steam 64 ID',
-        ),
-        onChanged: (val) {
-          setState(() => this.steam64 = val);
-        },
-      ),
-    ];
-  }
-
-  Widget loginButton() {
-    return OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        backgroundColor: primarythemeBlue(),
-        minimumSize: Size.fromHeight(52),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-      child: Text(
-        'Login',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.w300,
-        ),
-      ),
-      onPressed: () async {
-        showErrorSection = true;
-
-        setState(() {
-          if (isNumber(this.steam64)) {
-            validatedAsNum = true;
-          } else {
-            validatedAsNum = false;
-          }
-          if (this.steam64.length == 17) {
-            validatedLen = true;
-          } else {
-            validatedLen = false;
-          }
-        });
-
-        if (validatedAsNum && validatedLen) {
-          setState(() {
-            showLogging = true;
-          });
-        }
-      },
-    );
-  }
-
-  Widget logOutButton() {
-    return OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        backgroundColor: primarythemeBlue(),
-        minimumSize: Size.fromHeight(52),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-      child: Text(
-        'Log out',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.w300,
-        ),
-      ),
-      onPressed: () async {
-        UserInfo user = UserInfo(
-          steam32: '',
-          steam64: '',
-          avatarUrl: '',
-          name: '',
-        );
-        await UserSharedPreferences.setUserInfo(user);
-        Navigator.pushReplacementNamed(
-          context,
-          '/login',
-        );
-      },
-    );
-  }
-
-  List<Widget> title() {
-    return <Widget>[
-      Icon(
-        Icons.save_alt,
-        size: 80,
-        color: Colors.white70,
-      ),
-      const SizedBox(height: 16),
-      Text(
-        'Login using your Steam 64 ID',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 34,
-          fontWeight: FontWeight.w300,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    ];
-  }
-
-  Widget errorSection() {
-    return showErrorSection
-        ? Column(
+      ifDrawer: false,
+      builder: (context, constraints) {
+        final UserState userState = context.watch<UserCubit>().state;
+        return Padding(
+          padding: const EdgeInsets.all(30),
+          child: Column(
             children: [
-              validatedAsNum == false
-                  ? Text('Steam 64 Id should only consists of numbers')
-                  : Container(),
-              validatedLen == false
-                  ? Text('Steam 64 Id should be 17 characters long')
-                  : Container(),
+              Icon(
+                Icons.save_alt,
+                size: 80,
+                color: Colors.white70,
+              ),
+              Text(
+                'Login through Steam',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 34,
+                  fontWeight: FontWeight.w300,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 15),
+              Card(
+                elevation: 2.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                color: primarythemeBlue(),
+                child: ListTile(
+                  title: Text(
+                    userState.info.steam64 == ''
+                        ? 'You are not logged in'
+                        : 'You are logged in as: ${userState.info.name}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  leading: Container(
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: Icon(Icons.person, color: Colors.white),
+                  ),
+                  trailing: userState.info.steam64 == ''
+                      ? Icon(Icons.coronavirus_sharp, color: Colors.red)
+                      : Icon(Icons.check, color: Colors.green),
+                ),
+              ),
+              SizedBox(height: 8),
+              Card(
+                color: primarythemeBlue(),
+                elevation: 4.0,
+                margin: const EdgeInsets.fromLTRB(36, 8, 36, 6),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(
+                        CommunityMaterialIcons.table,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'Login',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      trailing: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                      ),
+                      onTap: () async {
+                        final steamid64 = await Navigator.pushNamed(
+                          context,
+                          '/steamLogin',
+                        );
+                        if (steamid64 != null) {
+                          BlocProvider.of<UserCubit>(context).load();
+                          setState(() {
+                            this.steamid64 = steamid64.toString();
+                          });
+                        }
+                      },
+                    ),
+                    _buildDivider(),
+                    ListTile(
+                      leading: Icon(
+                        Icons.brightness_6_outlined,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'Logout',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      trailing: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                      ),
+                      onTap: () async {
+                        UserInfo user = UserInfo(
+                          steam32: '',
+                          steam64: '',
+                          avatarUrl: '',
+                          name: '',
+                        );
+                        BlocProvider.of<UserCubit>(context).setinfo(user);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              progress(userState),
             ],
-          )
-        : Container();
+          ),
+        );
+      },
+    );
   }
 
-  Widget showLoggedIn() {
-    return showLogging
-        ? FutureBuilder(
-            future: getRequest(
-              kzstatsApiPlayerInfoUrl(this.steam64),
-              kzstatsApiPlayerFromJson,
-            ),
-            builder: (
-              BuildContext context,
-              AsyncSnapshot<dynamic> snapshot,
-            ) {
-              return snapshot.connectionState == ConnectionState.done
-                  ? snapshot.hasData
-                      ? loginSucceed(snapshot.data)
-                      : loginFailed()
-                  : Center(child: CircularProgressIndicator());
-            },
-          )
-        : Container();
+  Container _buildDivider() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      width: double.infinity,
+      height: 1.0,
+      color: Colors.white30,
+    );
   }
 
-  Widget loginSucceed(KzstatsApiPlayer userInfo) {
-    saveToSharedPreferences(userInfo);
-    return Text('You are logged in as: ${userInfo.personaname}');
+  Widget progress(UserState state) {
+    if (!state.loading) return Container();
+    return FutureBuilder(
+      future: getRequest(
+        kzstatsApiPlayerInfoUrl(this.steamid64),
+        kzstatsApiPlayerFromJson,
+      ),
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<dynamic> snapshot,
+      ) {
+        return snapshot.connectionState != ConnectionState.done
+            ? Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white70,
+                ),
+              )
+            : !snapshot.hasData || snapshot.data == null
+                ? failed()
+                : success(snapshot.data);
+      },
+    );
   }
 
-  saveToSharedPreferences(KzstatsApiPlayer userInfo) async {
+  Widget failed() {
+    UserInfo user = UserInfo(steam32: '', steam64: '', avatarUrl: '', name: '');
+    BlocProvider.of<UserCubit>(context).setinfo(user);
+    return Container();
+  }
+
+  Widget success(dynamic data) {
+    KzstatsApiPlayer userInfo = data;
     UserInfo user = UserInfo(
       steam32: userInfo.steamid32.toString(),
-      steam64: this.steam64,
+      steam64: userInfo.steamid.toString(),
       avatarUrl: userInfo.avatarfull ?? '',
       name: userInfo.personaname ?? '',
     );
-    await UserSharedPreferences.setUserInfo(user);
-  }
-
-  Widget loginFailed() {
-    return Text('Could not login');
+    BlocProvider.of<UserCubit>(context).setinfo(user);
+    return Container();
   }
 }

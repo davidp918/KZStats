@@ -41,6 +41,7 @@ class Homepage extends StatelessWidget {
     double imageWidth = 200;
     double crossWidth = min((size.width / 2) * 33 / 41, imageWidth);
     double crossHeight = min((size.height - 56) / 6.4, imageWidth * ratio);
+    double padding = size.width - 2 * crossWidth - 30;
     return Column(
       children: [
         Padding(
@@ -169,7 +170,10 @@ class Homepage extends StatelessWidget {
             ],
           ),
         ),
-        Divider(height: 4, color: dividerColor()),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          child: Divider(height: 4, color: dividerColor()),
+        ),
       ],
     );
   }

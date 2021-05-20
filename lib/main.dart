@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:kzstats/cubit/leaderboard_cubit.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
+import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/cubit/tier_cubit.dart';
 import 'package:kzstats/cubit/search_cubit.dart';
 import 'package:kzstats/cubit/playerdisplay_cubit.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<UserCubit>(create: (context) => UserCubit()),
         BlocProvider<ModeCubit>(create: (context) => ModeCubit()),
         BlocProvider<TierCubit>(create: (context) => TierCubit()),
         BlocProvider<LeaderboardCubit>(create: (context) => LeaderboardCubit()),

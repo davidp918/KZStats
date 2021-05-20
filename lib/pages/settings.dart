@@ -7,6 +7,9 @@ import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/global/responsive.dart';
 import 'package:kzstats/global/userInfo_class.dart';
 import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/web/getRequest.dart';
+import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
+import 'package:kzstats/web/urls.dart';
 
 class Settings extends StatefulWidget {
   @override
@@ -41,8 +44,8 @@ class _SettingsState extends State<Settings> {
                     borderRadius: BorderRadius.circular(10.0)),
                 color: primarythemeBlue(),
                 child: ListTile(
-                  onTap: () {
-                    Navigator.pushReplacementNamed(
+                  onTap: () async {
+                    Navigator.pushNamed(
                       context,
                       '/login',
                     );
@@ -155,8 +158,6 @@ class _SettingsState extends State<Settings> {
                   setState(() {
                     this.enabled = val;
                   });
-                  print(
-                      this.enabled == UserSharedPreferences.getNotification());
                 },
               ),
               ...notificationArea(),
