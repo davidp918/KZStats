@@ -1,7 +1,9 @@
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/networkImage.dart';
+import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/global/userInfo_class.dart';
@@ -12,25 +14,19 @@ class HomepageDrawer extends StatefulWidget {
 }
 
 class _HomepageDrawerState extends State<HomepageDrawer> {
-  late UserInfo user;
-  @override
-  void initState() {
-    super.initState();
-    user = UserSharedPreferences.getUserInfo();
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final UserState userState = context.watch<UserCubit>().state;
     return Drawer(
       child: Container(
         color: primarythemeBlue(),
         padding: EdgeInsets.all(20),
         child: ListView(
           children: <Widget>[
-            this.user.avatarUrl == '' && this.user.steam32 == ''
+            userState.info.avatarUrl == '' && userState.info.steam32 == ''
                 ? clickToLogin(context)
-                : userHeader(size),
+                : userHeader(size, userState),
             SizedBox(height: 15),
             Divider(color: Colors.white),
             buildItem(context,
@@ -102,13 +98,13 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
     );
   }
 
-  Widget userHeader(Size size) {
+  Widget userHeader(Size size, UserState state) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(
           context,
           '/player_detail',
-          arguments: [this.user.steam64, this.user.name],
+          arguments: [state.info.steam64, state.info.name],
         );
       },
       child: Center(
@@ -118,15 +114,15 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
               height: size.width * 2 / 5,
               //TODO: resize
               child: GetNetworkImage(
-                fileName: this.user.steam32,
-                url: this.user.avatarUrl,
+                fileName: state.info.steam32,
+                url: state.info.avatarUrl,
                 errorImage: AssetImage('assets/icon/noimage.png'),
               ),
             ),
             SizedBox(height: 8),
             Container(
               child: Text(
-                this.user.name,
+                state.info.name,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 20,
