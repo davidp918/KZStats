@@ -34,10 +34,13 @@ class _SteamLoginState extends State<SteamLogin> {
       body: WebView(
         javascriptMode: JavascriptMode.unrestricted,
         initialUrl: openId.authUrl().toString(),
-        onPageStarted: (url) {
-          var openId = OpenId.fromUri(Uri.parse(url));
-          if (openId.mode == 'id_res')
+        navigationDelegate: (navigation) {
+          var openId = OpenId.fromUri(Uri.parse(navigation.url));
+          if (openId.mode == 'id_res') {
             Navigator.of(context).pop(openId.validate());
+            return NavigationDecision.prevent;
+          }
+          return NavigationDecision.navigate;
         },
       ),
     );

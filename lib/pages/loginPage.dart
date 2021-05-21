@@ -31,16 +31,15 @@ class _LoginState extends State<Login> {
         padding: const EdgeInsets.all(30),
         child: Column(
           children: [
-            Icon(
-              Icons.save_alt,
-              size: 80,
-              color: Colors.white70,
+            SizedBox(
+              height: 80,
+              child: Image.asset('assets/icon/steam_icon.png'),
             ),
             Text(
-              'Login through Steam',
+              'Login via Steam',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 34,
+                fontSize: 30,
                 fontWeight: FontWeight.w300,
               ),
               textAlign: TextAlign.center,
