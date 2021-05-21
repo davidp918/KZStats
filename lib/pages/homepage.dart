@@ -92,7 +92,7 @@ class Homepage extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: inkWellBlue(),
-                                fontSize: 16,
+                                fontSize: 17,
                               ),
                             ),
                           ),
@@ -109,13 +109,13 @@ class Homepage extends StatelessWidget {
                             Text(
                               '${toMinSec(info.time)}',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 15,
                               ),
                             ),
                             SizedBox(
                               width: 3,
                             ),
-                            goldSvg(14, 14),
+                            goldSvg(15, 15),
                             SizedBox(
                               width: 3,
                             ),
@@ -127,7 +127,7 @@ class Homepage extends StatelessWidget {
                                       : '',
                               style: TextStyle(
                                 color: Colors.white70,
-                                fontSize: 12,
+                                fontSize: 13,
                               ),
                             ),
                           ],
@@ -136,7 +136,7 @@ class Homepage extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text('by ', style: TextStyle(fontSize: 14.5)),
+                              Text('by ', style: TextStyle(fontSize: 15)),
                               Flexible(
                                 fit: FlexFit.loose,
                                 child: InkWell(
@@ -145,7 +145,7 @@ class Homepage extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color: Colors.blue.shade100,
-                                        fontSize: 14.5),
+                                        fontSize: 15),
                                   ),
                                   onTap: () {
                                     Navigator.of(context).pushNamed(
@@ -172,7 +172,7 @@ class Homepage extends StatelessWidget {
                         ),
                         Text(
                           '${diffofNow(info.createdOn)}',
-                          style: TextStyle(fontSize: 13),
+                          style: TextStyle(fontSize: 14),
                         ),
                       ],
                     ),

@@ -66,7 +66,14 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
           icon,
           color: Colors.white,
         ),
-        title: Text(text),
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 16),
+            textAlign: TextAlign.start,
+          ),
+        ),
         onTap: () {
           Navigator.pushReplacementNamed(
             context,
@@ -91,10 +98,13 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
             Icon(
               Icons.person_add_alt,
               color: Colors.white,
-              size: 100,
+              size: 120,
             ),
-            SizedBox(height: 5),
-            Text('Click to login'),
+            SizedBox(height: 3),
+            Text(
+              'Click to login',
+              style: TextStyle(fontSize: 17),
+            ),
           ],
         ),
       ),
