@@ -22,6 +22,7 @@ class About extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         'KZStats',
@@ -30,19 +31,19 @@ class About extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Version - 1.1.0',
+                        'Version - 1.2.0',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                         ),
                       ),
                       SizedBox(height: 6),
-                      SizedBox(
+                      /* SizedBox(
                         height: size.width / 3,
                         width: size.width / 3,
                         child: Image.asset('assets/icon/icon.png'),
                       ),
-                      SizedBox(height: 12),
+                      SizedBox(height: 12), */
                       /* Text(
                         'My Discord id: Exusiai#7677',
                         style: TextStyle(
@@ -50,7 +51,7 @@ class About extends StatelessWidget {
                           fontSize: 18,
                         ),
                       ), */
-                      Row(
+                      /* Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
@@ -77,9 +78,9 @@ class About extends StatelessWidget {
                             ),
                           )
                         ],
-                      ),
-                      Divider(color: Colors.white),
-                      Text(
+                      ), 
+                      Divider(color: Colors.white), */
+                      /*  Text(
                         'Contact me directly if there is any bug',
                         style: TextStyle(
                           color: Colors.white,
@@ -99,7 +100,7 @@ class About extends StatelessWidget {
                           color: Colors.white,
                           fontSize: 18,
                         ),
-                      ),
+                      ), */
                     ],
                   ),
                 ),

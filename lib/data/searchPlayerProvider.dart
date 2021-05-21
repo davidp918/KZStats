@@ -47,7 +47,7 @@ class SearchPlayerProvider extends ChangeNotifier {
         Uri.parse(
           (query.length == 17 && double.tryParse(query) != null)
               ? 'https://kztimerglobal.com/api/v2.0/players?steamid64_list=$query'
-              : 'https://kztimerglobal.com/api/v2.0/records/top?player_name=$query&limit=50',
+              : 'https://kztimerglobal.com/api/v2.0/records/top?player_name=$query&limit=100',
         ),
       );
       if (response == null) {
