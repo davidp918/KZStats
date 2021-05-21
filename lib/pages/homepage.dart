@@ -17,21 +17,24 @@ import 'package:kzstats/web/withNation.dart';
 import 'package:kzstats/global/recordInfo_class.dart';
 
 class Homepage extends StatelessWidget {
-  static int pageSize = 12;
-
+  final int pageSize = 12;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HomepageAppBar('Latest'),
       drawer: HomepageDrawer(),
-      body: BlocBuilder<ModeCubit, ModeState>(
-        builder: (context, state) => PagewiseListView<RecordInfo>(
-          pageSize: pageSize,
-          itemBuilder: this._itemBuilder,
-          loadingBuilder: (context) => loadingFromApi(),
-          pageFuture: (pageIndex) => getInfoWithNation(
-              state.mode, state.nub, pageSize, pageSize * pageIndex!),
-        ),
+      body: BlocConsumer<ModeCubit, ModeState>(
+        listener: (context, state) =>
+            Navigator.of(context).pushReplacementNamed('/homepage'),
+        builder: (context, state) {
+          return PagewiseListView<RecordInfo>(
+            pageSize: this.pageSize,
+            itemBuilder: this._itemBuilder,
+            loadingBuilder: (context) => loadingFromApi(),
+            pageFuture: (pageIndex) => getInfoWithNation(state.mode, state.nub,
+                this.pageSize, this.pageSize * pageIndex!),
+          );
+        },
       ),
     );
   }
