@@ -1,28 +1,47 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:steam_login/steam_login.dart';
+import 'dart:io';
 
-class SteamLogin extends StatelessWidget {
-  final _webView = FlutterWebviewPlugin();
+import 'package:flutter/material.dart';
+import 'package:steam_login/steam_login.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+import 'package:kzstats/theme/colors.dart';
+
+class SteamLogin extends StatefulWidget {
+  @override
+  _SteamLoginState createState() => _SteamLoginState();
+}
+
+class _SteamLoginState extends State<SteamLogin> {
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isAndroid) {
+      WebView.platform = SurfaceAndroidWebView();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Listen to the onUrlChanged events, and when we are ready to validate do so.
-    _webView.onUrlChanged.listen(
-      (String url) async {
-        var openId = OpenId.fromUri(Uri.parse(url));
-        if (openId.mode == 'id_res') {
-          await _webView.close();
-          Navigator.of(context).pop(openId.validate());
-        }
-      },
-    );
-
     var openId = OpenId.raw('https://kzstats', 'https://kzstats/', {});
-    return WebviewScaffold(
-      url: openId.authUrl().toString(),
+    return Scaffold(
       appBar: AppBar(
+        backgroundColor: appbarColor(),
+        elevation: 20,
         title: Text('Steam Login'),
+        centerTitle: true,
+        brightness: Brightness.dark,
+      ),
+      body: WebView(
+        javascriptMode: JavascriptMode.unrestricted,
+        initialUrl: openId.authUrl().toString(),
+        navigationDelegate: (navigation) {
+          var openId = OpenId.fromUri(Uri.parse(navigation.url));
+          if (openId.mode == 'id_res') {
+            Navigator.of(context).pop(openId.validate());
+            return NavigationDecision.prevent;
+          }
+          return NavigationDecision.navigate;
+        },
       ),
     );
   }

@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.1
+version: 1.2.0
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -44,14 +44,13 @@ dependencies:
   substring_highlight: ^1.0.26
   percent_indicator: ^3.0.1
   steam_login: ^1.1.0
-  flutter_webview_plugin:
-    path: ../flutter_webview_plugin/
+  webview_flutter: ^2.0.7
 
-  firebase_messaging: ^9.1.4
-  firebase_analytics: ^8.0.4
-  firebase_core: ^1.1.1
+  firebase_messaging: ^10.0.0
+  firebase_analytics: ^8.1.0
+  firebase_core: ^1.2.0
   flutter_local_notifications: ^5.0.0+4
-  
+ 
   cupertino_icons: ^1.0.2
   line_icons: ^2.0.1
   community_material_icon: ^5.9.55
@@ -62,11 +61,18 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_native_splash: ^1.1.8+4
 
 flutter_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/icon/icon.png"
+
+flutter_native_splash:
+  color: "#000000"
+  image: assets/icon/splash.png
+  android: true
+  ios: true
 
 flutter:
   uses-material-design: true

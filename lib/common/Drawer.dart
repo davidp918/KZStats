@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/networkImage.dart';
@@ -21,8 +23,9 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
       child: Container(
         color: primarythemeBlue(),
         padding: EdgeInsets.all(20),
-        child: ListView(
+        child: Column(
           children: <Widget>[
+            Expanded(flex: 1, child: Container()),
             userState.info.avatarUrl == '' && userState.info.steam32 == ''
                 ? clickToLogin(context)
                 : userHeader(size, userState),
@@ -43,6 +46,7 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
                 text: 'Settings', icon: EvilIcons.gear, routeName: '/settings'),
             buildItem(context,
                 text: 'About', icon: EvilIcons.question, routeName: '/about'),
+            Expanded(flex: 2, child: Container()),
           ],
         ),
       ),
@@ -62,7 +66,14 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
           icon,
           color: Colors.white,
         ),
-        title: Text(text),
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 16),
+            textAlign: TextAlign.start,
+          ),
+        ),
         onTap: () {
           Navigator.pushReplacementNamed(
             context,
@@ -87,10 +98,13 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
             Icon(
               Icons.person_add_alt,
               color: Colors.white,
-              size: 100,
+              size: 120,
             ),
-            SizedBox(height: 5),
-            Text('Click to login'),
+            SizedBox(height: 3),
+            Text(
+              'Click to login',
+              style: TextStyle(fontSize: 17),
+            ),
           ],
         ),
       ),
@@ -98,6 +112,7 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
   }
 
   Widget userHeader(Size size, UserState state) {
+    double side = min(size.width * 2 / 5, 185);
     return InkWell(
       onTap: () {
         Navigator.pushNamed(
@@ -110,7 +125,7 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: size.width * 2 / 5,
+              height: side,
               child: GetNetworkImage(
                 fileName: state.info.steam32,
                 url: state.info.avatarUrl,

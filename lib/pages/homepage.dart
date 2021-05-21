@@ -17,21 +17,24 @@ import 'package:kzstats/web/withNation.dart';
 import 'package:kzstats/global/recordInfo_class.dart';
 
 class Homepage extends StatelessWidget {
-  static int pageSize = 12;
-
+  final int pageSize = 12;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HomepageAppBar('Latest'),
       drawer: HomepageDrawer(),
-      body: BlocBuilder<ModeCubit, ModeState>(
-        builder: (context, state) => PagewiseListView<RecordInfo>(
-          pageSize: pageSize,
-          itemBuilder: this._itemBuilder,
-          loadingBuilder: (context) => loadingFromApi(),
-          pageFuture: (pageIndex) => getInfoWithNation(
-              state.mode, state.nub, pageSize, pageSize * pageIndex!),
-        ),
+      body: BlocConsumer<ModeCubit, ModeState>(
+        listener: (context, state) =>
+            Navigator.of(context).pushReplacementNamed('/homepage'),
+        builder: (context, state) {
+          return PagewiseListView<RecordInfo>(
+            pageSize: this.pageSize,
+            itemBuilder: this._itemBuilder,
+            loadingBuilder: (context) => loadingFromApi(),
+            pageFuture: (pageIndex) => getInfoWithNation(state.mode, state.nub,
+                this.pageSize, this.pageSize * pageIndex!),
+          );
+        },
       ),
     );
   }
@@ -42,7 +45,7 @@ class Homepage extends StatelessWidget {
     double imageWidth = 200;
     double crossWidth = min((size.width / 2) * 33 / 41, imageWidth);
     double crossHeight = min((size.height - 56) / 6.4, imageWidth * ratio);
-    double padding = size.width - 2 * crossWidth - 30;
+    double padding = (size.width - 2 * crossWidth - 30) / 2;
     return Column(
       children: [
         Padding(
@@ -55,10 +58,18 @@ class Homepage extends StatelessWidget {
                   child: Container(
                     width: crossWidth,
                     height: crossHeight,
-                    child: GetNetworkImage(
-                      fileName: info.mapName,
-                      url: '$imageBaseURL${info.mapName}.webp',
-                      errorImage: AssetImage('assets/icon/noimage.png'),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          '/map_detail',
+                          arguments: info,
+                        );
+                      },
+                      child: GetNetworkImage(
+                        fileName: info.mapName,
+                        url: '$imageBaseURL${info.mapName}.webp',
+                        errorImage: AssetImage('assets/icon/noimage.png'),
+                      ),
                     ),
                   ),
                 ),
@@ -81,7 +92,7 @@ class Homepage extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: inkWellBlue(),
-                                fontSize: 16,
+                                fontSize: 17,
                               ),
                             ),
                           ),
@@ -98,13 +109,13 @@ class Homepage extends StatelessWidget {
                             Text(
                               '${toMinSec(info.time)}',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 15,
                               ),
                             ),
                             SizedBox(
                               width: 3,
                             ),
-                            goldSvg(14, 14),
+                            goldSvg(15, 15),
                             SizedBox(
                               width: 3,
                             ),
@@ -116,7 +127,7 @@ class Homepage extends StatelessWidget {
                                       : '',
                               style: TextStyle(
                                 color: Colors.white70,
-                                fontSize: 12,
+                                fontSize: 13,
                               ),
                             ),
                           ],
@@ -125,7 +136,7 @@ class Homepage extends StatelessWidget {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text('by ', style: TextStyle(fontSize: 14.5)),
+                              Text('by ', style: TextStyle(fontSize: 15)),
                               Flexible(
                                 fit: FlexFit.loose,
                                 child: InkWell(
@@ -134,7 +145,7 @@ class Homepage extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color: Colors.blue.shade100,
-                                        fontSize: 14.5),
+                                        fontSize: 15),
                                   ),
                                   onTap: () {
                                     Navigator.of(context).pushNamed(
@@ -150,7 +161,7 @@ class Homepage extends StatelessWidget {
                               SizedBox(
                                 width: 4,
                               ),
-                              info.nation != null
+                              info.nation != 'null'
                                   ? Image(
                                       image: AssetImage(
                                           'assets/flag/${info.nation}.png'),
@@ -161,7 +172,7 @@ class Homepage extends StatelessWidget {
                         ),
                         Text(
                           '${diffofNow(info.createdOn)}',
-                          style: TextStyle(fontSize: 13),
+                          style: TextStyle(fontSize: 14),
                         ),
                       ],
                     ),

@@ -4,13 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
 
 class PopUpModeSelect extends StatelessWidget {
-  static const modes = <String>[
-    'Kztimer',
-    'SimpleKZ',
-    'Vanilla',
-    'Pro',
-    'Nub',
-  ];
+  static const modes = <String>['Kztimer', 'SimpleKZ', 'Vanilla', 'Pro', 'Nub'];
 
   final List<PopupMenuItem<String>> _selections = modes
       .map((String value) => PopupMenuItem<String>(
@@ -34,29 +28,19 @@ class PopUpModeSelect extends StatelessWidget {
       onSelected: (String result) {
         switch (result) {
           case 'Kztimer':
-            {
-              BlocProvider.of<ModeCubit>(context).kzt();
-            }
+            BlocProvider.of<ModeCubit>(context).kzt();
             break;
           case 'SimpleKZ':
-            {
-              BlocProvider.of<ModeCubit>(context).skz();
-            }
+            BlocProvider.of<ModeCubit>(context).skz();
             break;
           case 'Vanilla':
-            {
-              BlocProvider.of<ModeCubit>(context).vnl();
-            }
+            BlocProvider.of<ModeCubit>(context).vnl();
             break;
           case 'Nub':
-            {
-              BlocProvider.of<ModeCubit>(context).toNub();
-            }
+            BlocProvider.of<ModeCubit>(context).toNub();
             break;
           case 'Pro':
-            {
-              BlocProvider.of<ModeCubit>(context).toPro();
-            }
+            BlocProvider.of<ModeCubit>(context).toPro();
             break;
         }
       },
