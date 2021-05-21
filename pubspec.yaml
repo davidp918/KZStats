@@ -47,11 +47,11 @@ dependencies:
   flutter_webview_plugin:
     path: ../flutter_webview_plugin/
 
-  firebase_messaging: ^9.1.4
-  firebase_analytics: ^8.0.4
-  firebase_core: ^1.1.1
+  firebase_messaging: ^10.0.0
+  firebase_analytics: ^8.1.0
+  firebase_core: ^1.2.0
   flutter_local_notifications: ^5.0.0+4
-  
+ 
   cupertino_icons: ^1.0.2
   line_icons: ^2.0.1
   community_material_icon: ^5.9.55
