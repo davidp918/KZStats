@@ -42,7 +42,7 @@ class Homepage extends StatelessWidget {
     double imageWidth = 200;
     double crossWidth = min((size.width / 2) * 33 / 41, imageWidth);
     double crossHeight = min((size.height - 56) / 6.4, imageWidth * ratio);
-    double padding = size.width - 2 * crossWidth - 30;
+    double padding = (size.width - 2 * crossWidth - 30) / 2;
     return Column(
       children: [
         Padding(
@@ -55,10 +55,18 @@ class Homepage extends StatelessWidget {
                   child: Container(
                     width: crossWidth,
                     height: crossHeight,
-                    child: GetNetworkImage(
-                      fileName: info.mapName,
-                      url: '$imageBaseURL${info.mapName}.webp',
-                      errorImage: AssetImage('assets/icon/noimage.png'),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          '/map_detail',
+                          arguments: info,
+                        );
+                      },
+                      child: GetNetworkImage(
+                        fileName: info.mapName,
+                        url: '$imageBaseURL${info.mapName}.webp',
+                        errorImage: AssetImage('assets/icon/noimage.png'),
+                      ),
                     ),
                   ),
                 ),
@@ -150,7 +158,7 @@ class Homepage extends StatelessWidget {
                               SizedBox(
                                 width: 4,
                               ),
-                              info.nation != null
+                              info.nation != 'null'
                                   ? Image(
                                       image: AssetImage(
                                           'assets/flag/${info.nation}.png'),

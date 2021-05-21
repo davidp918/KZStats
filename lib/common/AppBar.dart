@@ -19,9 +19,7 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: <Widget>[
         IconButton(
           icon: Icon(EvilIcons.search),
-          onPressed: () {
-            Navigator.pushNamed(context, '/search');
-          },
+          onPressed: () => Navigator.pushNamed(context, '/search'),
         ),
         PopUpModeSelect(),
       ],

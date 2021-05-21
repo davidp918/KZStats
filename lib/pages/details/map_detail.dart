@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -103,10 +101,6 @@ class _MapDetailState extends State<MapDetail> {
     dynamic proWr,
     MapInfo? mapInfo,
   ) {
-    Size size = MediaQuery.of(context).size;
-    double height = 120;
-    double ratio = 200 / 113;
-    double width = min(140, size.width / 2);
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Container(
@@ -115,7 +109,6 @@ class _MapDetailState extends State<MapDetail> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-              height: height,
               child: GetNetworkImage(
                 fileName: '${widget.mapInfo.mapName}',
                 url: '$imageBaseURL${widget.mapInfo!.mapName}.webp',
