@@ -101,7 +101,7 @@ Future<String?> getToken() async {
   return token;
 }
 
-Future firstStart(BuildContext context) async {
+void firstStart(BuildContext context) async {
   if (!UserSharedPreferences.getFirstStart()) return;
   print('first');
   await UserSharedPreferences.setStarted();
@@ -115,6 +115,7 @@ Future firstStart(BuildContext context) async {
     provisional: false,
     sound: true,
   );
-  BlocProvider.of<NotificationCubit>(context)
-      .init(settings.authorizationStatus == AuthorizationStatus.authorized);
+  BlocProvider.of<NotificationCubit>(context).toggleKZT();
+  if (settings.authorizationStatus == AuthorizationStatus.authorized)
+    BlocProvider.of<NotificationCubit>(context).toggleEnabled();
 }

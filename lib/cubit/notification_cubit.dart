@@ -45,25 +45,12 @@ class NotificationCubit extends Cubit<NotificationState> with HydratedMixin {
   NotificationCubit()
       : super(NotificationState(
           enabled: false,
-          kzt: true,
+          kzt: false,
           skz: false,
           vnl: false,
           nub: false,
         ));
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  void init(bool enable) {
-    emit(NotificationState(
-      enabled: enable,
-      kzt: true,
-      skz: false,
-      vnl: false,
-      nub: false,
-    ));
-    if (enable) subscribeV(false, 'enabled');
-    subscribeV(false, 'kzt');
-    print(state);
-  }
 
   void toggleEnabled() async {
     await subscribe(state.enabled, 'enabled');

@@ -9,11 +9,13 @@ import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
+import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/utils/svg.dart';
 import 'package:kzstats/utils/tierIdentifier.dart';
+import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
-import 'package:kzstats/common/widgets/worldRecord.dart';
 
 class MapDetail extends StatefulWidget {
   final dynamic mapInfo;
@@ -170,5 +172,42 @@ class _MapDetailState extends State<MapDetail> {
             SizedBox(height: 4),
             MapDetailTable(records: mapTop),
           ];
+  }
+
+  Widget worldRecordRow(String prefix, dynamic wr) {
+    return wr == null
+        ? Container()
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              goldSvg(15, 15),
+              SizedBox(
+                width: 4,
+              ),
+              Text(
+                '$prefix  ${toMinSec(wr?.time)} by ',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
+              ),
+              InkWell(
+                child: Text(
+                  '${wr.playerName}',
+                  style: TextStyle(
+                    color: inkWellBlue(),
+                    fontSize: 15,
+                  ),
+                ),
+                onTap: () => Navigator.of(context).pushNamed(
+                  '/player_detail',
+                  arguments: [wr.steamid64, wr.playerName],
+                ),
+              ),
+              SizedBox(
+                height: 3,
+              ),
+            ],
+          );
   }
 }

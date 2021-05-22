@@ -43,12 +43,7 @@ class _SettingsState extends State<Settings> {
                   borderRadius: BorderRadius.circular(10.0)),
               color: primarythemeBlue(),
               child: ListTile(
-                onTap: () async {
-                  Navigator.pushNamed(
-                    context,
-                    '/login',
-                  );
-                },
+                onTap: () async => Navigator.pushNamed(context, '/login'),
                 title: Text(
                   user.name == '' ? 'Click to Login' : '${user.name}',
                   style: TextStyle(
@@ -138,6 +133,17 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             notificationArea(),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Text(
+                'Internet connection required',
+                style: TextStyle(
+                  color: Colors.white54,
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -157,8 +163,8 @@ class _SettingsState extends State<Settings> {
               subtitle: Text(
                 '- get subscribed to the latest wr',
                 style: TextStyle(
-                  color: Colors.white54,
-                  fontStyle: FontStyle.italic,
+                  color: colorLight(),
+                  fontSize: 12,
                 ),
               ),
               activeColor: Colors.white70,
