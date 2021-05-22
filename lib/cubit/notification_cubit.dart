@@ -60,13 +60,13 @@ class NotificationCubit extends Cubit<NotificationState> with HydratedMixin {
       vnl: false,
       nub: false,
     ));
-    if (enable) subscribe(false, 'enabled');
-    subscribe(false, 'kzt');
+    if (enable) subscribeV(false, 'enabled');
+    subscribeV(false, 'kzt');
     print(state);
   }
 
   void toggleEnabled() async {
-    subscribe(state.enabled, 'enabled');
+    await subscribe(state.enabled, 'enabled');
     emit(NotificationState(
       enabled: !state.enabled,
       kzt: state.kzt,
@@ -78,7 +78,7 @@ class NotificationCubit extends Cubit<NotificationState> with HydratedMixin {
   }
 
   void toggleKZT() async {
-    subscribe(state.kzt, 'kzt');
+    await subscribe(state.kzt, 'kzt');
     emit(NotificationState(
       enabled: state.enabled,
       kzt: !state.kzt,
@@ -90,7 +90,7 @@ class NotificationCubit extends Cubit<NotificationState> with HydratedMixin {
   }
 
   void toggleSKZ() async {
-    subscribe(state.skz, 'skz');
+    await subscribe(state.skz, 'skz');
     emit(NotificationState(
       enabled: state.enabled,
       kzt: state.kzt,
@@ -102,7 +102,7 @@ class NotificationCubit extends Cubit<NotificationState> with HydratedMixin {
   }
 
   void toggleVNL() async {
-    subscribe(state.vnl, 'vnl');
+    await subscribe(state.vnl, 'vnl');
     emit(NotificationState(
       enabled: state.enabled,
       kzt: state.kzt,
@@ -114,9 +114,7 @@ class NotificationCubit extends Cubit<NotificationState> with HydratedMixin {
   }
 
   void toggleNUB() async {
-    !state.nub
-        ? await messaging.subscribeToTopic('nub')
-        : await messaging.unsubscribeFromTopic('nub');
+    await subscribe(state.nub, 'nub');
     emit(NotificationState(
       enabled: state.enabled,
       kzt: state.kzt,
@@ -127,7 +125,13 @@ class NotificationCubit extends Cubit<NotificationState> with HydratedMixin {
     print(state);
   }
 
-  void subscribe(bool prev, String topic) async {
+  void subscribeV(bool prev, String topic) async {
+    !prev
+        ? await messaging.subscribeToTopic(topic)
+        : await messaging.unsubscribeFromTopic(topic);
+  }
+
+  Future subscribe(bool prev, String topic) async {
     !prev
         ? await messaging.subscribeToTopic(topic)
         : await messaging.unsubscribeFromTopic(topic);
