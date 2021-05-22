@@ -20,40 +20,34 @@ class _HomepageDrawerState extends State<HomepageDrawer> {
     Size size = MediaQuery.of(context).size;
     final UserState userState = context.watch<UserCubit>().state;
     return Drawer(
-      child: SingleChildScrollView(
-        child: Container(
-          color: primarythemeBlue(),
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: <Widget>[
-              Expanded(flex: 1, child: Container()),
-              userState.info.avatarUrl == '' && userState.info.steam32 == ''
-                  ? clickToLogin(context)
-                  : userHeader(size, userState),
-              SizedBox(height: 15),
-              Divider(color: Colors.white),
-              buildItem(context,
-                  text: 'Homepage',
-                  icon: Icons.ac_unit,
-                  routeName: '/homepage'),
-              buildItem(context,
-                  text: 'Leaderboard',
-                  icon: Icons.person_pin,
-                  routeName: '/leaderboard'),
-              buildItem(context,
-                  text: 'Maps', icon: Icons.map_sharp, routeName: '/maps'),
-              buildItem(context,
-                  text: 'Bans', icon: Icons.not_interested, routeName: '/bans'),
-              Divider(color: Colors.white),
-              buildItem(context,
-                  text: 'Settings',
-                  icon: EvilIcons.gear,
-                  routeName: '/settings'),
-              buildItem(context,
-                  text: 'About', icon: EvilIcons.question, routeName: '/about'),
-              Expanded(flex: 2, child: Container()),
-            ],
-          ),
+      child: Container(
+        color: primarythemeBlue(),
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: <Widget>[
+            Expanded(flex: 1, child: Container()),
+            userState.info.avatarUrl == '' && userState.info.steam32 == ''
+                ? clickToLogin(context)
+                : userHeader(size, userState),
+            SizedBox(height: 15),
+            Divider(color: Colors.white),
+            buildItem(context,
+                text: 'Homepage', icon: Icons.ac_unit, routeName: '/homepage'),
+            buildItem(context,
+                text: 'Leaderboard',
+                icon: Icons.person_pin,
+                routeName: '/leaderboard'),
+            buildItem(context,
+                text: 'Maps', icon: Icons.map_sharp, routeName: '/maps'),
+            buildItem(context,
+                text: 'Bans', icon: Icons.not_interested, routeName: '/bans'),
+            Divider(color: Colors.white),
+            buildItem(context,
+                text: 'Settings', icon: EvilIcons.gear, routeName: '/settings'),
+            buildItem(context,
+                text: 'About', icon: EvilIcons.question, routeName: '/about'),
+            Expanded(flex: 2, child: Container()),
+          ],
         ),
       ),
     );

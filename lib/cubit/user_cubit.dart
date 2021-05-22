@@ -9,8 +9,10 @@ class UserState {
 
   Map<String, dynamic> toMap() => {'info': info.toJson(), 'loading': loading};
 
-  factory UserState.fromMap(Map<String, dynamic> map) =>
-      UserState(info: UserInfo.fromJson(map['info']), loading: map['loading']);
+  factory UserState.fromMap(Map<String, dynamic> map) => UserState(
+        info: UserInfo.fromJson(map['info']),
+        loading: map['loading'],
+      );
 }
 
 class UserCubit extends Cubit<UserState> with HydratedMixin {

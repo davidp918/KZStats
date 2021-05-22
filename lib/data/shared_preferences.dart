@@ -16,19 +16,19 @@ class UserSharedPreferences {
   static const _playerHistory = 'playerHistory';
   static const _tierMap = 'tierMapping';
   static const _tierCount = 'tierCount';
-  static const _enableNotification = 'enableNotification';
+  static const _firstStart = 'firstStart';
 
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
     updateMapData();
   }
 
-  static Future toggleNotification() async {
-    await _preferences.setBool(_enableNotification, !getNotification());
+  static Future setStarted() async {
+    await _preferences.setBool(_firstStart, false);
   }
 
-  static bool getNotification() {
-    return _preferences.getBool(_enableNotification) ?? false;
+  static bool getFirstStart() {
+    return _preferences.getBool(_firstStart) ?? true;
   }
 
   // User settings

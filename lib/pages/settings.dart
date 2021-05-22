@@ -2,8 +2,10 @@ import 'dart:ui';
 
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
+import 'package:kzstats/cubit/notification_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 
 import 'package:kzstats/global/userInfo_class.dart';
@@ -22,7 +24,6 @@ class _SettingsState extends State<Settings> {
   void initState() {
     super.initState();
     user = UserSharedPreferences.getUserInfo();
-    enabled = UserSharedPreferences.getNotification();
   }
 
   @override
@@ -135,6 +136,18 @@ class _SettingsState extends State<Settings> {
                 color: Colors.white,
               ),
             ),
+            notificationArea(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget notificationArea() {
+    return BlocBuilder<NotificationCubit, NotificationState>(
+      builder: (context, state) {
+        return Column(
+          children: [
             SwitchListTile(
               title: Text(
                 'Enable Notification',
@@ -149,26 +162,46 @@ class _SettingsState extends State<Settings> {
               ),
               activeColor: Colors.white70,
               contentPadding: EdgeInsets.all(0),
-              value: this.enabled,
+              value: state.enabled,
               onChanged: (val) {
-                UserSharedPreferences.toggleNotification();
-                setState(() {
-                  this.enabled = val;
-                });
+                BlocProvider.of<NotificationCubit>(context).toggleEnabled();
               },
             ),
-            ...notificationArea(),
+            !state.enabled
+                ? Text('disabled')
+                : Column(
+                    children: [
+                      ToggleButtons(
+                        renderBorder: false,
+                        children: [
+                          Text('KZT', style: TextStyle(color: Colors.white)),
+                          Text('SKZ', style: TextStyle(color: Colors.white)),
+                          Text('VNL', style: TextStyle(color: Colors.white)),
+                        ],
+                        isSelected: [
+                          state.kzt,
+                          state.skz,
+                          state.vnl,
+                        ],
+                        onPressed: (index) {
+                          if (index == 0) {
+                            BlocProvider.of<NotificationCubit>(context)
+                                .toggleKZT();
+                          } else if (index == 1) {
+                            BlocProvider.of<NotificationCubit>(context)
+                                .toggleSKZ();
+                          } else if (index == 2) {
+                            BlocProvider.of<NotificationCubit>(context)
+                                .toggleVNL();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
           ],
-        ),
-      ),
+        );
+      },
     );
-  }
-
-  List<Widget> notificationArea() {
-    if (!this.enabled) return [Container()];
-    return [
-      Text(''),
-    ];
   }
 
   Container _buildDivider() {
