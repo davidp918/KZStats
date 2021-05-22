@@ -52,10 +52,21 @@ class NotificationCubit extends Cubit<NotificationState> with HydratedMixin {
         ));
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
+  void init(bool enable) {
+    emit(NotificationState(
+      enabled: enable,
+      kzt: true,
+      skz: false,
+      vnl: false,
+      nub: false,
+    ));
+    if (enable) subscribe(false, 'enabled');
+    subscribe(false, 'kzt');
+    print(state);
+  }
+
   void toggleEnabled() async {
-    !state.enabled
-        ? await messaging.subscribeToTopic('enabled')
-        : await messaging.unsubscribeFromTopic('enabled');
+    subscribe(state.enabled, 'enabled');
     emit(NotificationState(
       enabled: !state.enabled,
       kzt: state.kzt,
@@ -67,11 +78,9 @@ class NotificationCubit extends Cubit<NotificationState> with HydratedMixin {
   }
 
   void toggleKZT() async {
-    !state.kzt
-        ? await messaging.subscribeToTopic('kzt')
-        : await messaging.unsubscribeFromTopic('kzt');
+    subscribe(state.kzt, 'kzt');
     emit(NotificationState(
-      enabled: !state.enabled,
+      enabled: state.enabled,
       kzt: !state.kzt,
       skz: state.skz,
       vnl: state.vnl,
@@ -81,11 +90,9 @@ class NotificationCubit extends Cubit<NotificationState> with HydratedMixin {
   }
 
   void toggleSKZ() async {
-    !state.skz
-        ? await messaging.subscribeToTopic('skz')
-        : await messaging.unsubscribeFromTopic('skz');
+    subscribe(state.skz, 'skz');
     emit(NotificationState(
-      enabled: !state.enabled,
+      enabled: state.enabled,
       kzt: state.kzt,
       skz: !state.skz,
       vnl: state.vnl,
@@ -95,11 +102,9 @@ class NotificationCubit extends Cubit<NotificationState> with HydratedMixin {
   }
 
   void toggleVNL() async {
-    !state.vnl
-        ? await messaging.subscribeToTopic('vnl')
-        : await messaging.unsubscribeFromTopic('vnl');
+    subscribe(state.vnl, 'vnl');
     emit(NotificationState(
-      enabled: !state.enabled,
+      enabled: state.enabled,
       kzt: state.kzt,
       skz: state.skz,
       vnl: !state.vnl,
@@ -113,13 +118,19 @@ class NotificationCubit extends Cubit<NotificationState> with HydratedMixin {
         ? await messaging.subscribeToTopic('nub')
         : await messaging.unsubscribeFromTopic('nub');
     emit(NotificationState(
-      enabled: !state.enabled,
+      enabled: state.enabled,
       kzt: state.kzt,
       skz: state.skz,
       vnl: state.vnl,
       nub: !state.nub,
     ));
     print(state);
+  }
+
+  void subscribe(bool prev, String topic) async {
+    !prev
+        ? await messaging.subscribeToTopic(topic)
+        : await messaging.unsubscribeFromTopic(topic);
   }
 
   @override

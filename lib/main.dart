@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -116,7 +115,6 @@ Future firstStart(BuildContext context) async {
     provisional: false,
     sound: true,
   );
-  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    BlocProvider.of<NotificationCubit>(context).toggleEnabled();
-  }
+  BlocProvider.of<NotificationCubit>(context)
+      .init(settings.authorizationStatus == AuthorizationStatus.authorized);
 }

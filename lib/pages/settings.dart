@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
+import 'package:kzstats/common/widgets/toggleButton.dart';
 import 'package:kzstats/cubit/notification_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 
@@ -168,33 +169,110 @@ class _SettingsState extends State<Settings> {
               },
             ),
             !state.enabled
-                ? Text('disabled')
+                ? Container()
                 : Column(
                     children: [
-                      ToggleButtons(
-                        renderBorder: false,
+                      Row(
                         children: [
-                          Text('KZT', style: TextStyle(color: Colors.white)),
-                          Text('SKZ', style: TextStyle(color: Colors.white)),
-                          Text('VNL', style: TextStyle(color: Colors.white)),
+                          Expanded(
+                            child: Text(
+                              'Mode selections:',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                          ToggleButtons(
+                            renderBorder: false,
+                            children: [
+                              Text('KZT',
+                                  style: TextStyle(color: Colors.white)),
+                              Text('SKZ',
+                                  style: TextStyle(color: Colors.white)),
+                              Text('VNL',
+                                  style: TextStyle(color: Colors.white)),
+                            ],
+                            isSelected: [
+                              state.kzt,
+                              state.skz,
+                              state.vnl,
+                            ],
+                            onPressed: (index) {
+                              if (index == 0) {
+                                BlocProvider.of<NotificationCubit>(context)
+                                    .toggleKZT();
+                              } else if (index == 1) {
+                                BlocProvider.of<NotificationCubit>(context)
+                                    .toggleSKZ();
+                              } else if (index == 2) {
+                                BlocProvider.of<NotificationCubit>(context)
+                                    .toggleVNL();
+                              }
+                            },
+                          ),
                         ],
-                        isSelected: [
-                          state.kzt,
-                          state.skz,
-                          state.vnl,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'NUB / PRO:',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                          ToggleButtons(
+                            renderBorder: false,
+                            children: [
+                              Text('PRO',
+                                  style: TextStyle(color: Colors.white)),
+                              Text('NUB',
+                                  style: TextStyle(color: Colors.white)),
+                            ],
+                            isSelected: [
+                              !state.nub,
+                              state.nub,
+                            ],
+                            onPressed: (index) {
+                              if (index == 0) {
+                                BlocProvider.of<NotificationCubit>(context)
+                                    .toggleNUB();
+                              } else if (index == 1) {
+                                BlocProvider.of<NotificationCubit>(context)
+                                    .toggleNUB();
+                              }
+                            },
+                          ),
                         ],
-                        onPressed: (index) {
-                          if (index == 0) {
-                            BlocProvider.of<NotificationCubit>(context)
-                                .toggleKZT();
-                          } else if (index == 1) {
-                            BlocProvider.of<NotificationCubit>(context)
-                                .toggleSKZ();
-                          } else if (index == 2) {
-                            BlocProvider.of<NotificationCubit>(context)
-                                .toggleVNL();
-                          }
-                        },
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Frequency:',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                          ToggleButtons(
+                            renderBorder: false,
+                            children: [
+                              Text('    Always    ',
+                                  style: TextStyle(color: Colors.white)),
+                              Text('    Usually    ',
+                                  style: TextStyle(color: Colors.white)),
+                            ],
+                            isSelected: [true, false],
+                            onPressed: (index) {
+                              // TODO: implement last notify time condition
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
