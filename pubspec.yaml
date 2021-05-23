@@ -45,7 +45,6 @@ dependencies:
   percent_indicator: ^3.0.1
   steam_login: ^1.1.0
   webview_flutter: ^2.0.7
-  notification_permissions: ^0.5.0
 
   firebase_messaging: ^10.0.0
   firebase_analytics: ^8.1.0

@@ -359,13 +359,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.0"
-  notification_permissions:
-    dependency: "direct main"
-    description:
-      name: notification_permissions
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.5.0"
   path:
     dependency: transitive
     description:
