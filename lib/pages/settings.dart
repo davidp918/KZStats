@@ -1,34 +1,19 @@
-import 'dart:ui';
-
 import 'package:community_material_icon/community_material_icon.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
-import 'package:kzstats/common/widgets/toggleButton.dart';
 import 'package:kzstats/cubit/notification_cubit.dart';
-import 'package:kzstats/data/shared_preferences.dart';
-
-import 'package:kzstats/global/userInfo_class.dart';
+import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/theme/colors.dart';
 
-class Settings extends StatefulWidget {
-  @override
-  _SettingsState createState() => _SettingsState();
-}
-
-class _SettingsState extends State<Settings> {
-  late UserInfo user;
-  late bool enabled;
-
-  @override
-  void initState() {
-    super.initState();
-    user = UserSharedPreferences.getUserInfo();
-  }
-
+class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    UserState state = BlocProvider.of<UserCubit>(context).state;
+    String steamid64 = state.info.steam64;
+    String name = state.info.name;
     return Scaffold(
       appBar: HomepageAppBar('Settings'),
       drawer: HomepageDrawer(),
@@ -45,7 +30,7 @@ class _SettingsState extends State<Settings> {
               child: ListTile(
                 onTap: () async => Navigator.pushNamed(context, '/login'),
                 title: Text(
-                  user.name == '' ? 'Click to Login' : '${user.name}',
+                  steamid64 == '' ? 'Click to Login' : '$name',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -134,14 +119,21 @@ class _SettingsState extends State<Settings> {
             ),
             notificationArea(),
             Align(
-              alignment: Alignment.bottomRight,
-              child: Text(
-                'Internet connection required',
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: 12,
-                  fontStyle: FontStyle.italic,
-                ),
+              alignment: Alignment.topRight,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  permissionText(),
+                  Text(
+                    'Note that: Internet is required',
+                    style: TextStyle(
+                      color: Colors.white54,
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -254,7 +246,7 @@ class _SettingsState extends State<Settings> {
                           ),
                         ],
                       ),
-                      Row(
+                      /* Row(
                         children: [
                           Expanded(
                             child: Text(
@@ -279,7 +271,8 @@ class _SettingsState extends State<Settings> {
                             },
                           ),
                         ],
-                      ),
+                      ), */
+                      SizedBox(height: 5),
                     ],
                   ),
           ],
@@ -294,6 +287,33 @@ class _SettingsState extends State<Settings> {
       width: double.infinity,
       height: 1.0,
       color: Colors.white30,
+    );
+  }
+
+  Widget permissionText() {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    return FutureBuilder(
+      future: messaging.getNotificationSettings(),
+      builder:
+          (BuildContext context, AsyncSnapshot<NotificationSettings> snapshot) {
+        String txt = 'Detecting...';
+        if (snapshot.hasData) {
+          if (snapshot.data?.authorizationStatus ==
+              AuthorizationStatus.authorized) {
+            txt = 'Allowed';
+          } else {
+            txt = 'Denied';
+          }
+        }
+        return Text(
+          'System notification settings: $txt',
+          style: TextStyle(
+            color: Colors.white54,
+            fontSize: 12,
+            fontStyle: FontStyle.italic,
+          ),
+        );
+      },
     );
   }
 }

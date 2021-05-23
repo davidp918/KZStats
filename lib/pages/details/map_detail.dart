@@ -108,7 +108,6 @@ class _MapDetailState extends State<MapDetail> {
     Size size = MediaQuery.of(context).size;
     double ratio = 113 / 200;
     double imageWidth = 200;
-    double crossWidth = min((size.width / 2) * 33 / 41, imageWidth);
     double crossHeight = min((size.height - 56) / 6.4, imageWidth * ratio);
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
