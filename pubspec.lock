@@ -241,7 +241,7 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_native_splash
-      url: "https://pub.flutter-io.cn"
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8+4"
   flutter_pagewise:
@@ -599,7 +599,7 @@ packages:
     dependency: transitive
     description:
       name: universal_io
-      url: "https://pub.flutter-io.cn"
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
   url_launcher:
@@ -655,7 +655,7 @@ packages:
     dependency: "direct main"
     description:
       name: webview_flutter
-      url: "https://pub.flutter-io.cn"
+      url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.7"
   win32:
