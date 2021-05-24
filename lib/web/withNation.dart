@@ -25,7 +25,6 @@ Future<List<RecordInfo>> getInfoWithNation(
   List<RecordInfo> res = [];
   for (int i = 0; i < n; i++) {
     Wr? wr = wrs![i];
-
     res.add(
       RecordInfo(
         mapName: wr?.mapName ?? '',

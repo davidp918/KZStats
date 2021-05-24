@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/cubit/notification_cubit.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -19,6 +20,7 @@ import 'package:kzstats/cubit/playerdisplay_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/global/router.dart';
 import 'package:kzstats/theme/colors.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -64,7 +66,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<NotificationCubit>(
             create: (context) => NotificationCubit()),
         BlocProvider<UserCubit>(create: (context) => UserCubit()),
-        BlocProvider<ModeCubit>(create: (context) => ModeCubit()),
+        BlocProvider<ModeCubit>(create: (context) => ModeCubit(), lazy: false),
         BlocProvider<TierCubit>(create: (context) => TierCubit()),
         BlocProvider<LeaderboardCubit>(create: (context) => LeaderboardCubit()),
         BlocProvider<PlayerdisplayCubit>(
@@ -74,20 +76,28 @@ class MyApp extends StatelessWidget {
       child: Builder(
         builder: (context) {
           firstStart(context);
-          return MaterialApp(
-            theme: ThemeData(
-              scaffoldBackgroundColor: backgroundColor(),
-              fontFamily: 'NotoSansHK',
-              textTheme: TextTheme(
-                bodyText1: TextStyle(),
-                bodyText2: TextStyle(),
-              ).apply(
-                bodyColor: Colors.white,
-                displayColor: Colors.white,
+          return RefreshConfiguration(
+            headerBuilder: () => LoadingGifHeader(),
+            footerBuilder: () => LoadingGifFooter(),
+            dragSpeedRatio: 0.9,
+            hideFooterWhenNotFull: true,
+            maxOverScrollExtent: 200,
+            bottomHitBoundary: 110,
+            child: MaterialApp(
+              theme: ThemeData(
+                scaffoldBackgroundColor: backgroundColor(),
+                fontFamily: 'NotoSansHK',
+                textTheme: TextTheme(
+                  bodyText1: TextStyle(),
+                  bodyText2: TextStyle(),
+                ).apply(
+                  bodyColor: Colors.white,
+                  displayColor: Colors.white,
+                ),
               ),
+              onGenerateRoute: _appRouter.onGenerateRoute,
+              debugShowCheckedModeBanner: false,
             ),
-            onGenerateRoute: _appRouter.onGenerateRoute,
-            debugShowCheckedModeBanner: false,
           );
         },
       ),

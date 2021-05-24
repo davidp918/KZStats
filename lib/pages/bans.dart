@@ -28,9 +28,7 @@ class BansListView extends StatelessWidget {
       itemBuilder: this._itemBuilder,
       pageFuture: (pageIndex) =>
           getBans(pageSize, pageSize * pageIndex!, banFromJson),
-      loadingBuilder: (context) {
-        return loadingFromApi();
-      },
+      loadingBuilder: (context) => loadingFromApi(),
     );
   }
 

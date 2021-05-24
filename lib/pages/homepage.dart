@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
+import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
@@ -15,39 +16,96 @@ import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/web/withNation.dart';
 import 'package:kzstats/global/recordInfo_class.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Homepage extends StatelessWidget {
   final int pageSize = 12;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HomepageAppBar('Latest'),
       drawer: HomepageDrawer(),
-      body: BlocConsumer<ModeCubit, ModeState>(
-        listener: (context, state) =>
-            Navigator.of(context).pushReplacementNamed('/homepage'),
-        builder: (context, state) {
-          return PagewiseListView<RecordInfo>(
-            pageSize: this.pageSize,
-            itemBuilder: this._itemBuilder,
-            loadingBuilder: (context) => loadingFromApi(),
-            pageFuture: (pageIndex) => getInfoWithNation(state.mode, state.nub,
-                this.pageSize, this.pageSize * pageIndex!),
-          );
-        },
+      body: HomepageBody(),
+    );
+  }
+}
+
+class HomepageBody extends StatefulWidget {
+  @override
+  _HomepageBodyState createState() => _HomepageBodyState();
+}
+
+class _HomepageBodyState extends State<HomepageBody> {
+  List<RecordInfo> items = [];
+  int pageSize = 12;
+
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh(state) async {
+    this.items =
+        await getInfoWithNation(state.mode, state.nub, this.pageSize, 0);
+    if (mounted) setState(() {});
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading(state) async {
+    // monitor network fetch
+    this.items += await getInfoWithNation(
+        state.mode, state.nub, this.pageSize, this.items.length);
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    // items.add((items.length + 1).toString());
+    if (mounted) setState(() {});
+    _refreshController.loadComplete();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<ModeCubit, ModeState>(
+      listener: (context, state) => _refreshController.requestRefresh(
+        duration: Duration(milliseconds: 100),
       ),
+      builder: (context, state) {
+        return FutureBuilder(
+          future: getInfoWithNation(state.mode, state.nub, this.pageSize, 0),
+          builder:
+              (BuildContext context, AsyncSnapshot<List<RecordInfo>> snapshot) {
+            if (snapshot.connectionState != ConnectionState.done)
+              return loadingFromApi();
+            if (!snapshot.hasData || snapshot.data == []) return errorScreen();
+            this.items = snapshot.data!;
+            return SmartRefresher(
+              enablePullDown: true,
+              enablePullUp: true,
+              controller: _refreshController,
+              onRefresh: () => _onRefresh(state),
+              onLoading: () => _onLoading(state),
+              child: ListView.builder(
+                itemBuilder: this._itemBuilder,
+                itemCount: this.items.length,
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
-  Widget _itemBuilder(BuildContext context, RecordInfo info, int index) {
+  Widget _itemBuilder(BuildContext context, int index) {
     Size size = MediaQuery.of(context).size;
     double ratio = 113 / 200;
     double imageWidth = 200;
     double crossWidth = min((size.width / 2) * 33 / 41, imageWidth);
     double crossHeight = min((size.height - 56) / 6.4, imageWidth * ratio);
     double padding = (size.width - 2 * crossWidth - 30) / 2;
+    RecordInfo info = this.items[index];
     return Column(
       children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          child: Divider(height: 4, color: dividerColor()),
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Row(
@@ -181,10 +239,6 @@ class Homepage extends StatelessWidget {
               ),
             ],
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: padding),
-          child: Divider(height: 4, color: dividerColor()),
         ),
       ],
     );

@@ -182,7 +182,8 @@ class Settings extends StatelessWidget {
                             ),
                           ),
                           ToggleButtons(
-                            renderBorder: false,
+                            fillColor: appbarColor().withOpacity(0.4),
+                            borderColor: appbarColor().withOpacity(0.35),
                             children: [
                               Text('KZT',
                                   style: TextStyle(color: Colors.white)),
@@ -223,7 +224,8 @@ class Settings extends StatelessWidget {
                             ),
                           ),
                           ToggleButtons(
-                            renderBorder: false,
+                            fillColor: appbarColor().withOpacity(0.4),
+                            borderColor: appbarColor().withOpacity(0.35),
                             children: [
                               Text('PRO',
                                   style: TextStyle(color: Colors.white)),

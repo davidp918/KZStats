@@ -45,6 +45,9 @@ dependencies:
   percent_indicator: ^3.0.1
   steam_login: ^1.1.0
   webview_flutter: ^2.0.7
+  pull_to_refresh: ^2.0.0
+  flutter_gifimage:
+    path: ../flutter_gifimage/
 
   firebase_messaging: ^10.0.0
   firebase_analytics: ^8.1.0
