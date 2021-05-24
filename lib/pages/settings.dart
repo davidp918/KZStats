@@ -126,7 +126,7 @@ class Settings extends StatelessWidget {
                 children: [
                   permissionText(),
                   Text(
-                    'Note that: Internet is required',
+                    'Note that: Internet required',
                     style: TextStyle(
                       color: Colors.white54,
                       fontSize: 12,
