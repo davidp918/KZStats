@@ -82,6 +82,7 @@ class MyApp extends StatelessWidget {
             dragSpeedRatio: 0.9,
             hideFooterWhenNotFull: true,
             maxOverScrollExtent: 200,
+            topHitBoundary: 90,
             bottomHitBoundary: 110,
             child: MaterialApp(
               theme: ThemeData(

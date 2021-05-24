@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/common/error.dart';
@@ -23,21 +22,35 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.read<ModeCubit>().state;
     return Scaffold(
       appBar: HomepageAppBar('Latest'),
       drawer: HomepageDrawer(),
-      body: HomepageBody(),
+      body: FutureBuilder(
+        future: getInfoWithNation(state.mode, state.nub, this.pageSize, 0),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<RecordInfo>> snapshot) {
+          if (snapshot.connectionState != ConnectionState.done)
+            return loadingFromApi();
+          if (!snapshot.hasData || snapshot.data == []) return errorScreen();
+          return HomepageBody(items: snapshot.data!);
+        },
+      ),
     );
   }
 }
 
 class HomepageBody extends StatefulWidget {
+  final List<RecordInfo> items;
+
+  const HomepageBody({Key? key, required this.items}) : super(key: key);
   @override
-  _HomepageBodyState createState() => _HomepageBodyState();
+  _HomepageBodyState createState() => _HomepageBodyState(items: items);
 }
 
 class _HomepageBodyState extends State<HomepageBody> {
-  List<RecordInfo> items = [];
+  List<RecordInfo> items;
+  _HomepageBodyState({required this.items});
   int pageSize = 12;
 
   RefreshController _refreshController =
@@ -67,26 +80,16 @@ class _HomepageBodyState extends State<HomepageBody> {
         duration: Duration(milliseconds: 100),
       ),
       builder: (context, state) {
-        return FutureBuilder(
-          future: getInfoWithNation(state.mode, state.nub, this.pageSize, 0),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<RecordInfo>> snapshot) {
-            if (snapshot.connectionState != ConnectionState.done)
-              return loadingFromApi();
-            if (!snapshot.hasData || snapshot.data == []) return errorScreen();
-            this.items = snapshot.data!;
-            return SmartRefresher(
-              enablePullDown: true,
-              enablePullUp: true,
-              controller: _refreshController,
-              onRefresh: () => _onRefresh(state),
-              onLoading: () => _onLoading(state),
-              child: ListView.builder(
-                itemBuilder: this._itemBuilder,
-                itemCount: this.items.length,
-              ),
-            );
-          },
+        return SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: true,
+          controller: _refreshController,
+          onRefresh: () => _onRefresh(state),
+          onLoading: () => _onLoading(state),
+          child: ListView.builder(
+            itemBuilder: this._itemBuilder,
+            itemCount: this.items.length,
+          ),
         );
       },
     );
