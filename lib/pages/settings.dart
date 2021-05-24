@@ -310,7 +310,7 @@ class Settings extends StatelessWidget {
         return Text(
           'System notification settings: $txt',
           style: TextStyle(
-            color: Colors.white54,
+            color: txt == 'Denied' ? Colors.red.shade200 : Colors.white54,
             fontSize: 12,
             fontStyle: FontStyle.italic,
           ),
