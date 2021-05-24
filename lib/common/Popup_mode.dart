@@ -2,29 +2,39 @@ import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
+import 'package:kzstats/utils/getModeId.dart';
 
 class PopUpModeSelect extends StatelessWidget {
   static const modes = <String>['Kztimer', 'SimpleKZ', 'Vanilla', 'Pro', 'Nub'];
 
-  final List<PopupMenuItem<String>> _selections = modes
-      .map((String value) => PopupMenuItem<String>(
+  List<PopupMenuItem<String>> _selections(ModeState state) {
+    return modes
+        .map(
+          (String value) => PopupMenuItem<String>(
             value: value,
             child: Text(
               value,
               style: TextStyle(
                 color: Colors.white,
+                decoration: stateConvert(value) == state.mode ||
+                        stateConvert(value) == state.nub.toString()
+                    ? TextDecoration.underline
+                    : null,
               ),
             ),
-          ))
-      .toList();
+          ),
+        )
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final ModeState state = context.watch<ModeCubit>().state;
     return PopupMenuButton(
       color: Color(0xff4a5568),
       icon: Icon(EvilIcons.chevron_down),
       //offset: Offset(20, 26),
-      itemBuilder: (BuildContext context) => _selections,
+      itemBuilder: (BuildContext context) => _selections(state),
       onSelected: (String result) {
         switch (result) {
           case 'Kztimer':

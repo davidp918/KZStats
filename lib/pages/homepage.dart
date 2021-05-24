@@ -76,9 +76,10 @@ class _HomepageBodyState extends State<HomepageBody> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ModeCubit, ModeState>(
-      listener: (context, state) => _refreshController.requestRefresh(
-        duration: Duration(milliseconds: 100),
-      ),
+      listener: (context, state) {
+        _refreshController.requestRefresh(
+            duration: Duration(milliseconds: 100));
+      },
       builder: (context, state) {
         return SmartRefresher(
           enablePullDown: true,
