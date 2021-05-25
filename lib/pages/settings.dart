@@ -50,7 +50,7 @@ class Settings extends StatelessWidget {
             Card(
               color: primarythemeBlue(),
               elevation: 4.0,
-              margin: const EdgeInsets.fromLTRB(32, 8, 32, 6),
+              margin: const EdgeInsets.fromLTRB(32, 6, 32, 20),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               child: Column(
@@ -91,20 +91,6 @@ class Settings extends StatelessWidget {
                     },
                   ),
                 ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(32, 0, 32, 6),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Text(
-                  'coming soon...',
-                  style: TextStyle(
-                    color: colorLight(),
-                    fontSize: 14,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
               ),
             ),
             _buildDivider(),
@@ -248,32 +234,6 @@ class Settings extends StatelessWidget {
                           ),
                         ],
                       ),
-                      /* Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'Frequency:',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                          ToggleButtons(
-                            renderBorder: false,
-                            children: [
-                              Text('    Always    ',
-                                  style: TextStyle(color: Colors.white)),
-                              Text('    Usually    ',
-                                  style: TextStyle(color: Colors.white)),
-                            ],
-                            isSelected: [true, false],
-                            onPressed: (index) {
-                              // TODO: implement last notify time condition
-                            },
-                          ),
-                        ],
-                      ), */
                       SizedBox(height: 5),
                     ],
                   ),

@@ -199,7 +199,7 @@ class Floater extends StatefulWidget {
 
 class _FloaterState extends State<Floater> with SingleTickerProviderStateMixin {
   late AnimationController animationController;
-  late Animation oneAnimation, twoAnimation, threeAnimation, rotationAnimation;
+  late Animation oneAnimation, twoAnimation, rotationAnimation;
   @override
   void initState() {
     super.initState();
@@ -207,17 +207,11 @@ class _FloaterState extends State<Floater> with SingleTickerProviderStateMixin {
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
     this.oneAnimation = TweenSequence([
       TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.2), weight: 75.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.2, end: 1.0), weight: 25.0),
-    ]).animate(animationController);
-    this.twoAnimation = TweenSequence([
-      TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0.0, end: 1.4), weight: 55.0),
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.4, end: 1.0), weight: 45.0),
     ]).animate(animationController);
-    this.threeAnimation = TweenSequence([
+    this.twoAnimation = TweenSequence([
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0.0, end: 1.75), weight: 35.0),
       TweenSequenceItem<double>(
@@ -273,12 +267,10 @@ class _FloaterState extends State<Floater> with SingleTickerProviderStateMixin {
 
   List<Transform> subFloaters() {
     return [
-      subFloater(265, threeAnimation, 100, Colors.white70,
+      subFloater(250, twoAnimation, 100, Colors.white70,
           Icon(CommunityMaterialIcons.format_list_bulleted), 'records'),
-      subFloater(225, twoAnimation, 100, Colors.white70,
+      subFloater(200, oneAnimation, 100, Colors.white70,
           Icon(CommunityMaterialIcons.graphql), 'stats'),
-      subFloater(185, oneAnimation, 100, Colors.white70,
-          Icon(CommunityMaterialIcons.map_marker_distance), 'jumpstats'),
     ];
   }
 
@@ -329,10 +321,6 @@ class MainBody extends StatelessWidget {
       return PlayerDetailTable(records: records!);
     } else if (playerDisplayState.playerDisplay == 'stats') {
       return PlayerDetailStats(records: records!);
-    } else if (playerDisplayState.playerDisplay == 'jumpstats') {
-      return Align(
-          alignment: Alignment.center,
-          child: Text('JumpStats page coming soon ~'));
     }
     // minus 395 to make the loading icon center
     return Container(height: size.height - 395, child: loadingFromApi());

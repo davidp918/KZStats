@@ -40,7 +40,6 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
   HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory: await getApplicationDocumentsDirectory());
   await UserSharedPreferences.init();
@@ -75,7 +74,8 @@ class MyApp extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
-          firstStart(context);
+          refresh(context);
+          //FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
           return RefreshConfiguration(
             headerBuilder: () => LoadingGifHeader(),
             footerBuilder: () => LoadingGifFooter(),
@@ -106,13 +106,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Future<String?> getToken() async {
-  String? token = await FirebaseMessaging.instance.getToken();
-  print(token);
-  return token;
-}
-
-void firstStart(BuildContext context) async {
+void refresh(BuildContext context) async {
   if (!UserSharedPreferences.getFirstStart()) return;
   print('first');
   await UserSharedPreferences.setStarted();
