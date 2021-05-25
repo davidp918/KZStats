@@ -101,7 +101,8 @@ class _HomepageBodyState extends State<HomepageBody> {
     double ratio = 113 / 200;
     double imageWidth = 200;
     double crossWidth = min((size.width / 2) * 33 / 41, imageWidth);
-    double crossHeight = min((size.height - 56) / 6.4, imageWidth * ratio);
+    double crossHeight = imageWidth *
+        ratio; // min((size.height - 56) / 6.4, imageWidth * ratio);
     double padding = (size.width - 2 * crossWidth - 30) / 2;
     RecordInfo info = this.items[index];
     return Column(

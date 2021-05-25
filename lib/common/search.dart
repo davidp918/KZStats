@@ -61,6 +61,7 @@ class SearchMapBody extends StatelessWidget {
 
     return Consumer<SearchMapProvider>(
       builder: (context, provider, _) => FloatingSearchBar(
+        hint: 'Search maps...',
         actions: actions(context),
         automaticallyImplyBackButton: true,
         iconColor: Colors.white,
@@ -135,9 +136,9 @@ class SearchMapBody extends StatelessWidget {
               ],
             ),
             Divider(color: dividerColor()),
-            Text('Explore', style: TextStyle(fontSize: 24)),
+            /* Text('Explore', style: TextStyle(fontSize: 24)),
             SizedBox(height: 4),
-            Divider(color: dividerColor()),
+            Divider(color: dividerColor()), */
           ],
         ),
       ),
@@ -301,6 +302,7 @@ class SearchPlayerBody extends StatelessWidget {
 
     return Consumer<SearchPlayerProvider>(
       builder: (context, provider, _) => FloatingSearchBar(
+        hint: 'Search players...',
         actions: actions(context),
         automaticallyImplyBackButton: true,
         iconColor: Colors.white,
@@ -375,9 +377,9 @@ class SearchPlayerBody extends StatelessWidget {
               ],
             ),
             Divider(color: dividerColor()),
-            Text('Explore', style: TextStyle(fontSize: 24)),
+            /* Text('Explore', style: TextStyle(fontSize: 24)),
             SizedBox(height: 4),
-            Divider(color: dividerColor()),
+            Divider(color: dividerColor()), */
             Align(
               alignment: Alignment.topRight,
               child: Text(

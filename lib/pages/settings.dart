@@ -47,7 +47,7 @@ class Settings extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            Card(
+            /*   Card(
               color: primarythemeBlue(),
               elevation: 4.0,
               margin: const EdgeInsets.fromLTRB(32, 6, 32, 20),
@@ -93,7 +93,7 @@ class Settings extends StatelessWidget {
                 ],
               ),
             ),
-            _buildDivider(),
+            _buildDivider(), */
             SizedBox(height: 16),
             Text(
               "Notification Settings",
