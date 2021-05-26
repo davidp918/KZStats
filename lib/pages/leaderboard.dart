@@ -14,6 +14,7 @@ import 'package:kzstats/utils/convertDegreeRad.dart';
 import 'package:kzstats/global/floater.dart';
 import 'package:kzstats/cubit/leaderboard_cubit.dart';
 import 'package:kzstats/common/datatables/leaderboard_records_datatable.dart';
+import 'package:async/async.dart';
 
 class Leaderboard extends StatefulWidget {
   @override
@@ -22,31 +23,33 @@ class Leaderboard extends StatefulWidget {
 
 class _LeaderboardState extends State<Leaderboard>
     with SingleTickerProviderStateMixin {
-  @override
+  AsyncMemoizer _memoizer = AsyncMemoizer();
   Widget build(BuildContext context) {
     final modeState = context.watch<ModeCubit>().state;
     final typeState = context.watch<LeaderboardCubit>().state;
-    return Scaffold(
-      appBar: HomepageAppBar('Leaderboard'),
-      drawer: HomepageDrawer(),
-      body: FutureBuilder(
-        future: typeState.type == 'points'
-            ? getRequest(
+    _future() {
+      return this._memoizer.runOnce(() async {
+        return typeState.type == 'points'
+            ? await getRequest(
                 globalApiLeaderboardPoints(modeState.mode, modeState.nub, 100),
                 leaderboardPointsFromJson,
               )
-            : getRequest(
+            : await getRequest(
                 globalApiLeaderboardRecords(modeState.mode, modeState.nub, 100),
                 leaderboardRecordsFromJson,
-              ),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          return transition(snapshot, typeState.type);
-        },
-      ),
+              );
+      });
+    }
+
+    return FutureBuilder(
+      future: _future(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return transition(snapshot, typeState.type);
+      },
     );
   }
 
-  Widget transition(AsyncSnapshot<dynamic> snapshot, String type) {
+  Widget transition(AsyncSnapshot snapshot, String type) {
     return snapshot.connectionState == ConnectionState.done
         ? snapshot.hasData && snapshot.data != null
             ? mainBody(
@@ -57,10 +60,7 @@ class _LeaderboardState extends State<Leaderboard>
         : loadingFromApi();
   }
 
-  Widget mainBody(
-    List<dynamic> data,
-    String type,
-  ) {
+  Widget mainBody(List<dynamic> data, String type) {
     Size constraints = MediaQuery.of(context).size;
     return Container(
       width: constraints.width,

@@ -114,7 +114,7 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
     rowCount = size.width ~/ crossWidth;
     pageSize = rowCount * 10;
     return Scaffold(
-      appBar: HomepageAppBar('Maps'),
+      appBar: BaseAppBar('Maps'),
       drawer: HomepageDrawer(),
       body: BlocBuilder<TierCubit, TierState>(
         builder: (context, state) {

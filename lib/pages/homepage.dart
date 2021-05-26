@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/AppBar.dart';
@@ -19,23 +19,25 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Homepage extends StatelessWidget {
   final int pageSize = 12;
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
 
   @override
   Widget build(BuildContext context) {
     final state = context.read<ModeCubit>().state;
-    return Scaffold(
-      appBar: HomepageAppBar('Latest'),
-      drawer: HomepageDrawer(),
-      body: FutureBuilder(
-        future: getInfoWithNation(state.mode, state.nub, this.pageSize, 0),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<RecordInfo>> snapshot) {
-          if (snapshot.connectionState != ConnectionState.done)
-            return loadingFromApi();
-          if (!snapshot.hasData || snapshot.data == []) return errorScreen();
-          return HomepageBody(items: snapshot.data!);
-        },
-      ),
+    _future() {
+      return this._memoizer.runOnce(() async {
+        return await getInfoWithNation(state.mode, state.nub, this.pageSize, 0);
+      });
+    }
+
+    return FutureBuilder(
+      future: _future(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState != ConnectionState.done)
+          return loadingFromApi();
+        if (!snapshot.hasData || snapshot.data == []) return errorScreen();
+        return HomepageBody(items: snapshot.data!);
+      },
     );
   }
 }
@@ -45,7 +47,9 @@ class HomepageBody extends StatefulWidget {
 
   const HomepageBody({Key? key, required this.items}) : super(key: key);
   @override
-  _HomepageBodyState createState() => _HomepageBodyState(items: items);
+  _HomepageBodyState createState() {
+    return _HomepageBodyState(items: items);
+  }
 }
 
 class _HomepageBodyState extends State<HomepageBody> {

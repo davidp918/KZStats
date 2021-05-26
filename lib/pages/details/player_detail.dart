@@ -41,7 +41,7 @@ class _MapDetailState extends State<PlayerDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomepageAppBar(playerName),
+      appBar: BaseAppBar(playerName),
       body: BlocBuilder<ModeCubit, ModeState>(
         builder: (context, modeState) => FutureBuilder<dynamic>(
           future: Future.wait(

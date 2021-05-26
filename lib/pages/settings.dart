@@ -15,7 +15,7 @@ class Settings extends StatelessWidget {
     String steamid64 = state.info.steam64;
     String name = state.info.name;
     return Scaffold(
-      appBar: HomepageAppBar('Settings'),
+      appBar: BaseAppBar('Settings'),
       drawer: HomepageDrawer(),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(30),

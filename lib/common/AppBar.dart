@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:kzstats/common/Popup_mode.dart';
 import 'package:kzstats/theme/colors.dart';
 
-class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
+class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String currentPage;
-  HomepageAppBar(this.currentPage);
+  BaseAppBar(this.currentPage);
 
   @override
   Widget build(BuildContext context) {

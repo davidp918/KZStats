@@ -11,7 +11,7 @@ class Bans extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomepageAppBar('Bans'),
+      appBar: BaseAppBar('Bans'),
       drawer: HomepageDrawer(),
       body: BansListView(),
     );

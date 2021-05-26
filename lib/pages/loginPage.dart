@@ -26,7 +26,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final UserState userState = context.watch<UserCubit>().state;
     return Scaffold(
-      appBar: HomepageAppBar('Login'),
+      appBar: BaseAppBar('Login'),
       body: Padding(
         padding: const EdgeInsets.all(30),
         child: Column(
