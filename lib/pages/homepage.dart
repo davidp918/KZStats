@@ -48,6 +48,7 @@ class _HomepageState extends State<Homepage>
   void _onRefresh(state) async {
     this.items =
         await getInfoWithNation(state.mode, state.nub, this.pageSize, 0);
+
     if (mounted) setState(() {});
     _refreshController.refreshCompleted();
   }
@@ -55,13 +56,13 @@ class _HomepageState extends State<Homepage>
   void _onLoading(state) async {
     this.items += await getInfoWithNation(
         state.mode, state.nub, this.pageSize, this.items.length);
-    setState(() {});
+    if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
 
   @override
   void dispose() {
-    //this._refreshController.dispose();
+    this._refreshController.dispose();
     super.dispose();
   }
 
@@ -240,5 +241,19 @@ class _HomepageState extends State<Homepage>
         ),
       ],
     );
+  }
+}
+
+class HomepageBody extends StatefulWidget {
+  HomepageBody({Key? key}) : super(key: key);
+
+  @override
+  _HomepageBodyState createState() => _HomepageBodyState();
+}
+
+class _HomepageBodyState extends State<HomepageBody> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
