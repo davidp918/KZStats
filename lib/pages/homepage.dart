@@ -1,9 +1,6 @@
 import 'dart:math';
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
@@ -17,48 +14,36 @@ import 'package:kzstats/web/withNation.dart';
 import 'package:kzstats/global/recordInfo_class.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class Homepage extends StatelessWidget {
-  final int pageSize = 12;
-  final AsyncMemoizer _memoizer = AsyncMemoizer();
-
+class Homepage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    final state = context.read<ModeCubit>().state;
-    _future() {
-      return this._memoizer.runOnce(() async {
-        return await getInfoWithNation(state.mode, state.nub, this.pageSize, 0);
-      });
-    }
-
-    return FutureBuilder(
-      future: _future(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState != ConnectionState.done)
-          return loadingFromApi();
-        if (!snapshot.hasData || snapshot.data == []) return errorScreen();
-        return HomepageBody(items: snapshot.data!);
-      },
-    );
-  }
+  _HomepageState createState() => _HomepageState();
 }
 
-class HomepageBody extends StatefulWidget {
-  final List<RecordInfo> items;
+class _HomepageState extends State<Homepage>
+    with AutomaticKeepAliveClientMixin<Homepage> {
+  late int pageSize;
+  late Future _future;
+  late List<RecordInfo> items;
+  late ModeState state;
+  late RefreshController _refreshController;
 
-  const HomepageBody({Key? key, required this.items}) : super(key: key);
   @override
-  _HomepageBodyState createState() {
-    return _HomepageBodyState(items: items);
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    pageSize = 12;
+    _refreshController = RefreshController(initialRefresh: false);
+    items = [];
   }
-}
 
-class _HomepageBodyState extends State<HomepageBody> {
-  List<RecordInfo> items;
-  _HomepageBodyState({required this.items});
-  int pageSize = 12;
-
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    state = context.read<ModeCubit>().state;
+    this._future = getInfoWithNation(state.mode, state.nub, this.pageSize, 0);
+  }
 
   void _onRefresh(state) async {
     this.items =
@@ -79,23 +64,33 @@ class _HomepageBodyState extends State<HomepageBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ModeCubit, ModeState>(
-      listener: (context, state) {
-        _refreshController.requestRefresh(
-            duration: Duration(milliseconds: 100));
-        this.items = [];
-      },
-      builder: (context, state) {
-        return SmartRefresher(
-          enablePullDown: true,
-          enablePullUp: true,
-          controller: _refreshController,
-          onRefresh: () => _onRefresh(state),
-          onLoading: () => _onLoading(state),
-          child: ListView.builder(
-            itemBuilder: this._itemBuilder,
-            itemCount: this.items.length,
-          ),
+    super.build(context);
+    return FutureBuilder(
+      future: _future,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState != ConnectionState.done)
+          return loadingFromApi();
+        if (!snapshot.hasData || snapshot.data == []) return errorScreen();
+        this.items = snapshot.data!;
+        return BlocConsumer<ModeCubit, ModeState>(
+          listener: (context, state) {
+            _refreshController.requestRefresh(
+                duration: Duration(milliseconds: 100));
+            this.items = [];
+          },
+          builder: (context, state) {
+            return SmartRefresher(
+              enablePullDown: true,
+              enablePullUp: true,
+              controller: _refreshController,
+              onRefresh: () => _onRefresh(state),
+              onLoading: () => _onLoading(state),
+              child: ListView.builder(
+                itemBuilder: this._itemBuilder,
+                itemCount: this.items.length,
+              ),
+            );
+          },
         );
       },
     );

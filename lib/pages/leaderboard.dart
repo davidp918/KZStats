@@ -22,27 +22,36 @@ class Leaderboard extends StatefulWidget {
 }
 
 class _LeaderboardState extends State<Leaderboard>
-    with SingleTickerProviderStateMixin {
-  AsyncMemoizer _memoizer = AsyncMemoizer();
-  Widget build(BuildContext context) {
-    final modeState = context.watch<ModeCubit>().state;
-    final typeState = context.watch<LeaderboardCubit>().state;
-    _future() {
-      return this._memoizer.runOnce(() async {
-        return typeState.type == 'points'
-            ? await getRequest(
-                globalApiLeaderboardPoints(modeState.mode, modeState.nub, 100),
-                leaderboardPointsFromJson,
-              )
-            : await getRequest(
-                globalApiLeaderboardRecords(modeState.mode, modeState.nub, 100),
-                leaderboardRecordsFromJson,
-              );
-      });
-    }
+    with
+        SingleTickerProviderStateMixin,
+        AutomaticKeepAliveClientMixin<Leaderboard> {
+  late ModeState modeState;
+  late LeaderboardState typeState;
+  late Future _future;
 
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    modeState = context.watch<ModeCubit>().state;
+    typeState = context.watch<LeaderboardCubit>().state;
+    this._future = typeState.type == 'points'
+        ? getRequest(
+            globalApiLeaderboardPoints(modeState.mode, modeState.nub, 100),
+            leaderboardPointsFromJson,
+          )
+        : getRequest(
+            globalApiLeaderboardRecords(modeState.mode, modeState.nub, 100),
+            leaderboardRecordsFromJson,
+          );
+  }
+
+  Widget build(BuildContext context) {
+    super.build(context);
     return FutureBuilder(
-      future: _future(),
+      future: _future,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return transition(snapshot, typeState.type);
       },

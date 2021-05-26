@@ -13,16 +13,34 @@ class Base extends StatefulWidget {
 }
 
 class _BaseState extends State<Base> {
-  int curIndex = 0;
-  final pages = [
-    Homepage(),
-    Leaderboard(),
-  ];
+  late int curIndex;
+  late List<Widget> pages;
+  late PageController _pageController;
+  @override
+  void initState() {
+    super.initState();
+    this.curIndex = 0;
+    this.pages = [Homepage(), Leaderboard()];
+    this._pageController = PageController();
+  }
+
+  void onTap(int index) {
+    this._pageController.jumpToPage(index);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BaseAppBar('currentPage'),
-      body: pages[this.curIndex],
+      body: PageView(
+        controller: this._pageController,
+        children: pages,
+        onPageChanged: (page) {
+          setState(() {
+            this.curIndex = page;
+          });
+        },
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: appbarColor().withOpacity(0.9),
         currentIndex: this.curIndex,
@@ -40,11 +58,7 @@ class _BaseState extends State<Base> {
             label: 'Leaderboard',
           ),
         ],
-        onTap: (index) {
-          setState(() {
-            this.curIndex = index;
-          });
-        },
+        onTap: onTap,
       ),
     );
   }
