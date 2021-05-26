@@ -29,7 +29,7 @@ class _MapDetailState extends State<MapDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar('${widget.mapInfo.mapName}'),
+      appBar: BaseAppBar('${widget.mapInfo.mapName}', false),
       body: BlocBuilder<ModeCubit, ModeState>(
         builder: (context, state) => FutureBuilder<List<dynamic>>(
           future: Future.wait(

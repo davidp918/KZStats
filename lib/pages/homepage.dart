@@ -41,7 +41,7 @@ class _HomepageState extends State<Homepage>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    state = context.read<ModeCubit>().state;
+    state = context.watch<ModeCubit>().state;
     this._future = getInfoWithNation(state.mode, state.nub, this.pageSize, 0);
   }
 
@@ -53,13 +53,16 @@ class _HomepageState extends State<Homepage>
   }
 
   void _onLoading(state) async {
-    // monitor network fetch
     this.items += await getInfoWithNation(
         state.mode, state.nub, this.pageSize, this.items.length);
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // items.add((items.length + 1).toString());
     if (mounted) setState(() {});
     _refreshController.loadComplete();
+  }
+
+  @override
+  void dispose() {
+    this._refreshController.dispose();
+    super.dispose();
   }
 
   @override

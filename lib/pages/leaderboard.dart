@@ -1,8 +1,6 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/common/datatables/leaderboard_points_datatable.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
@@ -14,7 +12,6 @@ import 'package:kzstats/utils/convertDegreeRad.dart';
 import 'package:kzstats/global/floater.dart';
 import 'package:kzstats/cubit/leaderboard_cubit.dart';
 import 'package:kzstats/common/datatables/leaderboard_records_datatable.dart';
-import 'package:async/async.dart';
 
 class Leaderboard extends StatefulWidget {
   @override

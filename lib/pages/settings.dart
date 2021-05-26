@@ -1,9 +1,7 @@
-import 'package:community_material_icon/community_material_icon.dart';
+import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/cubit/notification_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/theme/colors.dart';
@@ -14,116 +12,112 @@ class Settings extends StatelessWidget {
     UserState state = BlocProvider.of<UserCubit>(context).state;
     String steamid64 = state.info.steam64;
     String name = state.info.name;
-    return Scaffold(
-      appBar: BaseAppBar('Settings'),
-      drawer: HomepageDrawer(),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Card(
-              elevation: 2.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              color: primarythemeBlue(),
-              child: ListTile(
-                onTap: () async => Navigator.pushNamed(context, '/login'),
-                title: Text(
-                  steamid64 == '' ? 'Click to Login' : '$name',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                leading: Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle),
-                  child: Icon(Icons.person, color: Colors.white),
-                ),
-                trailing: Icon(
-                  Icons.edit,
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Card(
+            elevation: 2.0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            color: primarythemeBlue(),
+            child: ListTile(
+              onTap: () => Navigator.pushNamed(context, '/login'),
+              title: Text(
+                steamid64 == '' ? 'Click to Login' : '$name',
+                style: TextStyle(
                   color: Colors.white,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
-            ),
-            SizedBox(height: 10),
-            /*   Card(
-              color: primarythemeBlue(),
-              elevation: 4.0,
-              margin: const EdgeInsets.fromLTRB(32, 6, 32, 20),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(
-                      CommunityMaterialIcons.table,
-                      color: Colors.white,
-                    ),
-                    title: Text(
-                      'Change Table Layout',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    trailing: Icon(
-                      Icons.keyboard_arrow_right,
-                      color: Colors.white,
-                    ),
-                    onTap: () {
-                      //Navigator.pushNamed(context, '/table_layout');
-                    },
-                  ),
-                  _buildDivider(),
-                  ListTile(
-                    leading: Icon(
-                      Icons.brightness_6_outlined,
-                      color: Colors.white,
-                    ),
-                    title: Text(
-                      'Change Theme',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    trailing: Icon(
-                      Icons.keyboard_arrow_right,
-                      color: Colors.white,
-                    ),
-                    onTap: () {
-                      //open change password
-                    },
-                  ),
-                ],
+              leading: Container(
+                decoration: BoxDecoration(shape: BoxShape.circle),
+                child: Icon(Icons.person, color: Colors.white),
               ),
-            ),
-            _buildDivider(), */
-            SizedBox(height: 16),
-            Text(
-              "Notification Settings",
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.w400,
+              trailing: Icon(
+                Icons.edit,
                 color: Colors.white,
               ),
             ),
-            notificationArea(),
-            Align(
-              alignment: Alignment.topRight,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  permissionText(),
-                  Text(
-                    'Note that: Internet required',
-                    style: TextStyle(
-                      color: Colors.white54,
-                      fontSize: 12,
-                      fontStyle: FontStyle.italic,
-                    ),
+          ),
+          SizedBox(height: 10),
+          Card(
+            color: primarythemeBlue(),
+            elevation: 4.0,
+            margin: const EdgeInsets.fromLTRB(32, 6, 32, 20),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(
+                    Icons.brightness_6_outlined,
+                    color: Colors.white,
                   ),
-                ],
-              ),
+                  title: Text(
+                    'Change Theme',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  trailing: Icon(
+                    Icons.keyboard_arrow_right,
+                    color: Colors.white,
+                  ),
+                  onTap: () {
+                    //open change password
+                  },
+                ),
+                _buildDivider(),
+                ListTile(
+                  leading: Icon(
+                    EvilIcons.question,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'About',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  trailing: Icon(
+                    Icons.keyboard_arrow_right,
+                    color: Colors.white,
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/about');
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          _buildDivider(),
+          SizedBox(height: 16),
+          Text(
+            "Notification Settings",
+            style: TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+            ),
+          ),
+          notificationArea(),
+          Align(
+            alignment: Alignment.topRight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                permissionText(),
+                Text(
+                  'Note that: Internet required',
+                  style: TextStyle(
+                    color: Colors.white54,
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

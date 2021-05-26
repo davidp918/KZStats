@@ -10,8 +10,7 @@ class About extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: BaseAppBar('About'),
-      drawer: HomepageDrawer(),
+      appBar: BaseAppBar('About', false),
       body: SafeArea(
         child: Column(
           children: <Widget>[

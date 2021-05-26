@@ -3,8 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/tier_cubit.dart';
@@ -22,7 +20,8 @@ class Maps extends StatefulWidget {
   _MapsState createState() => _MapsState();
 }
 
-class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
+class _MapsState extends State<Maps>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin<Maps> {
   late Size size;
   late double ratio, imageWidth, crossWidth, crossHeight;
   late int pageSize, rowCount;
@@ -36,6 +35,9 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
       sevenAnimation,
       zeroAnimation,
       rotationAnimation;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void dispose() {
@@ -107,29 +109,26 @@ class _MapsState extends State<Maps> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     size = MediaQuery.of(context).size;
     ratio = 113 / 200;
     imageWidth = 200;
     crossWidth = min((size.width / 2), imageWidth);
     rowCount = size.width ~/ crossWidth;
     pageSize = rowCount * 10;
-    return Scaffold(
-      appBar: BaseAppBar('Maps'),
-      drawer: HomepageDrawer(),
-      body: BlocBuilder<TierCubit, TierState>(
-        builder: (context, state) {
-          return Container(
-            width: size.width,
-            height: size.height,
-            child: Stack(
-              children: <Widget>[
-                mapsGridView(state.tier),
-                floater(state.tier),
-              ],
-            ),
-          );
-        },
-      ),
+    return BlocBuilder<TierCubit, TierState>(
+      builder: (context, state) {
+        return Container(
+          width: size.width,
+          height: size.height,
+          child: Stack(
+            children: <Widget>[
+              mapsGridView(state.tier),
+              floater(state.tier),
+            ],
+          ),
+        );
+      },
     );
   }
 
