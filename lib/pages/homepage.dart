@@ -55,13 +55,13 @@ class _HomepageState extends State<Homepage>
   void _onLoading(state) async {
     this.items += await getInfoWithNation(
         state.mode, state.nub, this.pageSize, this.items.length);
-    if (mounted) setState(() {});
+    setState(() {});
     _refreshController.loadComplete();
   }
 
   @override
   void dispose() {
-    this._refreshController.dispose();
+    //this._refreshController.dispose();
     super.dispose();
   }
 
@@ -75,25 +75,17 @@ class _HomepageState extends State<Homepage>
           return loadingFromApi();
         if (!snapshot.hasData || snapshot.data == []) return errorScreen();
         this.items = snapshot.data!;
-        return BlocConsumer<ModeCubit, ModeState>(
-          listener: (context, state) {
-            _refreshController.requestRefresh(
-                duration: Duration(milliseconds: 100));
-            this.items = [];
-          },
-          builder: (context, state) {
-            return SmartRefresher(
-              enablePullDown: true,
-              enablePullUp: true,
-              controller: _refreshController,
-              onRefresh: () => _onRefresh(state),
-              onLoading: () => _onLoading(state),
-              child: ListView.builder(
-                itemBuilder: this._itemBuilder,
-                itemCount: this.items.length,
-              ),
-            );
-          },
+        return SmartRefresher(
+          physics: ClampingScrollPhysics(),
+          enablePullDown: true,
+          enablePullUp: true,
+          controller: _refreshController,
+          onRefresh: () => _onRefresh(state),
+          onLoading: () => _onLoading(state),
+          child: ListView.builder(
+            itemBuilder: this._itemBuilder,
+            itemCount: this.items.length,
+          ),
         );
       },
     );

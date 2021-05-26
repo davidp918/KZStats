@@ -64,7 +64,6 @@ class _LeaderboardState extends State<Leaderboard>
   }
 
   Widget mainBody(List<dynamic> data, String type) {
-    Size constraints = MediaQuery.of(context).size;
     return Stack(
       children: [
         ListView(
