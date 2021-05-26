@@ -69,7 +69,7 @@ class _BaseState extends State<Base> {
         iconSize: 22,
         selectedFontSize: 10,
         unselectedFontSize: 10,
-        backgroundColor: bottomColor(),
+        backgroundColor: appbarColor(),
         currentIndex: this.curIndex,
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.grey.shade500,

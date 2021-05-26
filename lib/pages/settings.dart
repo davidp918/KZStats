@@ -1,3 +1,4 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import 'package:kzstats/theme/colors.dart';
 class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    UserState state = BlocProvider.of<UserCubit>(context).state;
+    UserState state = context.watch<UserCubit>().state;
     String steamid64 = state.info.steam64;
     String name = state.info.name;
     return SingleChildScrollView(
@@ -50,7 +51,7 @@ class Settings extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: Column(
               children: <Widget>[
-                ListTile(
+                /*      ListTile(
                   leading: Icon(
                     Icons.brightness_6_outlined,
                     color: Colors.white,
@@ -60,14 +61,14 @@ class Settings extends StatelessWidget {
                     style: TextStyle(color: Colors.white),
                   ),
                   trailing: Icon(
-                    Icons.keyboard_arrow_right,
+                    EvaIcons.moonOutline,
                     color: Colors.white,
                   ),
                   onTap: () {
                     //open change password
                   },
                 ),
-                _buildDivider(),
+                _buildDivider(), */
                 ListTile(
                   leading: Icon(
                     EvilIcons.question,
@@ -88,8 +89,6 @@ class Settings extends StatelessWidget {
               ],
             ),
           ),
-          _buildDivider(),
-          SizedBox(height: 16),
           Text(
             "Notification Settings",
             style: TextStyle(

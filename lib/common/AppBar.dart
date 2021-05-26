@@ -17,6 +17,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       floating: true,
+      pinned: false,
+      snap: false,
       backgroundColor: appbarColor(),
       leading: leadingIcon(context),
       title: Text(currentPage),

@@ -92,6 +92,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.2"
+  eva_icons_flutter:
+    dependency: "direct main"
+    description:
+      name: eva_icons_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.0"
   evil_icons_flutter:
     dependency: "direct main"
     description:

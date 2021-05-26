@@ -21,51 +21,17 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage>
     with AutomaticKeepAliveClientMixin<Homepage> {
-  late int pageSize;
-  late Future _future;
-  late List<RecordInfo> items;
   late ModeState state;
-  late RefreshController _refreshController;
+  late Future _future;
 
   @override
   bool get wantKeepAlive => true;
 
   @override
-  void initState() {
-    super.initState();
-    pageSize = 12;
-    _refreshController = RefreshController(initialRefresh: false);
-    items = [];
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     state = context.watch<ModeCubit>().state;
-    this._future = getInfoWithNation(state.mode, state.nub, this.pageSize, 0);
-  }
-
-  void _onRefresh(state) async {
-    this.items =
-        await getInfoWithNation(state.mode, state.nub, this.pageSize, 0);
-    if (mounted) setState(() {});
-    _refreshController.refreshCompleted();
-  }
-
-  void _onLoading(state) async {
-    // monitor network fetch
-    this.items += await getInfoWithNation(
-        state.mode, state.nub, this.pageSize, this.items.length);
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // items.add((items.length + 1).toString());
-    if (mounted) setState(() {});
-    _refreshController.loadComplete();
-  }
-
-  @override
-  void dispose() {
-    this._refreshController.dispose();
-    super.dispose();
+    this._future = getInfoWithNation(state.mode, state.nub, 12, 0);
   }
 
   @override
@@ -77,20 +43,58 @@ class _HomepageState extends State<Homepage>
         if (snapshot.connectionState != ConnectionState.done)
           return loadingFromApi();
         if (!snapshot.hasData || snapshot.data == []) return errorScreen();
-        this.items = snapshot.data!;
-        return SmartRefresher(
-          physics: ClampingScrollPhysics(),
-          enablePullDown: true,
-          enablePullUp: true,
-          controller: _refreshController,
-          onRefresh: () => _onRefresh(state),
-          onLoading: () => _onLoading(state),
-          child: ListView.builder(
-            itemBuilder: this._itemBuilder,
-            itemCount: this.items.length,
-          ),
-        );
+        return HomepageBody(items: snapshot.data!, state: state);
       },
+    );
+  }
+}
+
+class HomepageBody extends StatefulWidget {
+  final List<RecordInfo> items;
+  final ModeState state;
+
+  const HomepageBody({
+    Key? key,
+    required this.items,
+    required this.state,
+  }) : super(key: key);
+  @override
+  _HomepageBodyState createState() => _HomepageBodyState(items: items);
+}
+
+class _HomepageBodyState extends State<HomepageBody> {
+  List<RecordInfo> items;
+  _HomepageBodyState({required this.items});
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+  int pageSize = 12;
+
+  void _onRefresh(state) async {
+    this.items =
+        await getInfoWithNation(state.mode, state.nub, this.pageSize, 0);
+    if (mounted) setState(() {});
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading(state) async {
+    this.items += await getInfoWithNation(
+        state.mode, state.nub, this.pageSize, this.items.length);
+    if (mounted) setState(() {});
+    _refreshController.loadComplete();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SmartRefresher(
+      enablePullDown: true,
+      enablePullUp: true,
+      controller: _refreshController,
+      onRefresh: () => _onRefresh(widget.state),
+      onLoading: () => _onLoading(widget.state),
+      child: ListView.builder(
+        itemBuilder: this._itemBuilder,
+        itemCount: this.items.length,
+      ),
     );
   }
 
@@ -243,19 +247,5 @@ class _HomepageState extends State<Homepage>
         ),
       ],
     );
-  }
-}
-
-class HomepageBody extends StatefulWidget {
-  HomepageBody({Key? key}) : super(key: key);
-
-  @override
-  _HomepageBodyState createState() => _HomepageBodyState();
-}
-
-class _HomepageBodyState extends State<HomepageBody> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
