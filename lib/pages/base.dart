@@ -21,6 +21,7 @@ class _BaseState extends State<Base> {
   late String title;
   late List<Widget> pages;
   late PageController _pageController;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
@@ -29,6 +30,7 @@ class _BaseState extends State<Base> {
     this.title = 'Latest';
     this.pages = [Homepage(), Leaderboard(), Maps(), Bans(), Settings()];
     this._pageController = PageController();
+    this._scrollController = ScrollController();
   }
 
   void onTap(int index) {
@@ -45,11 +47,16 @@ class _BaseState extends State<Base> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BaseAppBar(this.title, true),
-      body: PageView(
-        controller: this._pageController,
-        children: pages,
-        onPageChanged: (page) => setState(() => this.curIndex = page),
+      body: NestedScrollView(
+        controller: this._scrollController,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[BaseAppBar(this.title, true)];
+        },
+        body: PageView(
+          controller: this._pageController,
+          children: pages,
+          onPageChanged: (page) => setState(() => this.curIndex = page),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 22,

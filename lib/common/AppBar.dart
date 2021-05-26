@@ -16,9 +16,10 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      floating: true,
+      floating: false,
       backgroundColor: appbarColor(),
       leading: leadingIcon(context),
+      expandedHeight: kToolbarHeight,
       title: Text(currentPage),
       centerTitle: true,
       brightness: Brightness.dark,
