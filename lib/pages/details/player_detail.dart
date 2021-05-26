@@ -3,9 +3,8 @@ import 'dart:math';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kzstats/global/detailed_pages.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
@@ -37,23 +36,33 @@ class PlayerDetail extends StatefulWidget {
 class _MapDetailState extends State<PlayerDetail> {
   final String steamId64;
   final String playerName;
+  late Future _future;
+  late ModeState modeState;
   _MapDetailState(this.steamId64, this.playerName);
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    this.modeState = context.watch<ModeCubit>().state;
+    this._future = Future.wait(
+      [
+        getRequest(
+            kzstatsApiPlayerInfoUrl(steamId64), kzstatsApiPlayerFromJson),
+        getRequest(
+            globalApiPlayerRecordsUrl(
+                modeState.mode, modeState.nub, 99999, steamId64),
+            recordFromJson),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BaseAppBar(playerName, false),
-      body: BlocBuilder<ModeCubit, ModeState>(
-        builder: (context, modeState) => FutureBuilder<dynamic>(
-          future: Future.wait(
-            [
-              getRequest(
-                  kzstatsApiPlayerInfoUrl(steamId64), kzstatsApiPlayerFromJson),
-              getRequest(
-                  globalApiPlayerRecordsUrl(
-                      modeState.mode, modeState.nub, 99999, steamId64),
-                  recordFromJson),
-            ],
-          ),
+    return DetailedPage(
+      title: this.playerName,
+      builder: (BuildContext context) {
+        return FutureBuilder<dynamic>(
+          future: this._future,
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             return snapshot.connectionState == ConnectionState.done
                 ? snapshot.hasData && snapshot.data[0] != null
@@ -62,8 +71,8 @@ class _MapDetailState extends State<PlayerDetail> {
                     : errorScreen()
                 : loadingFromApi();
           },
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -73,10 +82,11 @@ class _MapDetailState extends State<PlayerDetail> {
     return Container(
       width: size.width,
       height: size.height,
-      padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
       child: Stack(
         children: [
           ListView(
+            padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
+            shrinkWrap: true,
             children: [
               playerHeader(kzstatsPlayerInfo, totalPoints),
               MainBody(steamId64: this.steamId64, records: records),
