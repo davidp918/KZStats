@@ -36,12 +36,16 @@ class _BaseState extends State<Base> {
   void onTap(int index) {
     this._pageController.jumpToPage(index);
     setState(() {
-      if (index == 0) this.title = 'Latest';
-      if (index == 1) this.title = 'Leaderboard';
-      if (index == 2) this.title = 'Maps';
-      if (index == 3) this.title = 'Bans';
-      if (index == 4) this.title = 'Settings';
+      changeTitle(index);
     });
+  }
+
+  void changeTitle(int index) {
+    if (index == 0) this.title = 'Latest';
+    if (index == 1) this.title = 'Leaderboard';
+    if (index == 2) this.title = 'Maps';
+    if (index == 3) this.title = 'Bans';
+    if (index == 4) this.title = 'Settings';
   }
 
   @override
@@ -55,7 +59,10 @@ class _BaseState extends State<Base> {
         body: PageView(
           controller: this._pageController,
           children: pages,
-          onPageChanged: (page) => setState(() => this.curIndex = page),
+          onPageChanged: (page) => setState(() {
+            this.curIndex = page;
+            changeTitle(page);
+          }),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

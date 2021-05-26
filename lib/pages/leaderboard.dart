@@ -47,58 +47,50 @@ class _LeaderboardState extends State<Leaderboard>
 
   Widget build(BuildContext context) {
     super.build(context);
+
     return FutureBuilder(
       future: _future,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return transition(snapshot, typeState.type);
+        return snapshot.connectionState == ConnectionState.done
+            ? snapshot.hasData && snapshot.data != null
+                ? mainBody(
+                    snapshot.data,
+                    typeState.type,
+                  )
+                : errorScreen()
+            : loadingFromApi();
       },
     );
   }
 
-  Widget transition(AsyncSnapshot snapshot, String type) {
-    return snapshot.connectionState == ConnectionState.done
-        ? snapshot.hasData && snapshot.data != null
-            ? mainBody(
-                snapshot.data,
-                type,
-              )
-            : errorScreen()
-        : loadingFromApi();
-  }
-
   Widget mainBody(List<dynamic> data, String type) {
     Size constraints = MediaQuery.of(context).size;
-    return Container(
-      width: constraints.width,
-      height: constraints.height,
-      child: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: ListView(
-              children: [
-                SizedBox(height: 12),
-                Center(
-                  child: Text(
-                    'Top - $type',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
+    return Stack(
+      children: [
+        ListView(
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
+          children: [
+            SizedBox(height: 12),
+            Center(
+              child: Text(
+                'Top - $type',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
                 ),
-                SizedBox(height: 8),
-                type == 'points'
-                    ? LeaderboardPointsTable(
-                        data: data as List<LeaderboardPoints>)
-                    : LeaderboardRecordsTable(
-                        data: data as List<LeaderboardRecords>),
-              ],
+              ),
             ),
-          ),
-          LeaderboardFloater(),
-        ],
-      ),
+            SizedBox(height: 8),
+            type == 'points'
+                ? LeaderboardPointsTable(data: data as List<LeaderboardPoints>)
+                : LeaderboardRecordsTable(
+                    data: data as List<LeaderboardRecords>),
+          ],
+        ),
+        LeaderboardFloater(),
+      ],
     );
   }
 }

@@ -20,6 +20,8 @@ class _BansState extends State<Bans> with AutomaticKeepAliveClientMixin<Bans> {
   Widget build(BuildContext context) {
     super.build(context);
     return PagewiseListView<Ban>(
+      padding: EdgeInsets.symmetric(horizontal: 12),
+      shrinkWrap: true,
       pageSize: Bans.pageSize,
       itemBuilder: this._itemBuilder,
       pageFuture: (pageIndex) =>
