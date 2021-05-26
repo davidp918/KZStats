@@ -30,6 +30,11 @@ class _GetNetworkImageState extends State<GetNetworkImage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   _loadImage() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = documentDirectory.path;

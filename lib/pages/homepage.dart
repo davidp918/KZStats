@@ -79,6 +79,7 @@ class _HomepageBodyState extends State<HomepageBody> {
       listener: (context, state) {
         _refreshController.requestRefresh(
             duration: Duration(milliseconds: 100));
+        this.items = [];
       },
       builder: (context, state) {
         return SmartRefresher(
@@ -108,10 +109,6 @@ class _HomepageBodyState extends State<HomepageBody> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: padding),
-          child: Divider(height: 4, color: dividerColor()),
-        ),
-        Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Row(
             children: [
@@ -122,12 +119,10 @@ class _HomepageBodyState extends State<HomepageBody> {
                     width: crossWidth,
                     height: crossHeight,
                     child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                          '/map_detail',
-                          arguments: info,
-                        );
-                      },
+                      onTap: () => Navigator.of(context).pushNamed(
+                        '/map_detail',
+                        arguments: info,
+                      ),
                       child: GetNetworkImage(
                         fileName: info.mapName,
                         url: '$imageBaseURL${info.mapName}.webp',
@@ -244,6 +239,10 @@ class _HomepageBodyState extends State<HomepageBody> {
               ),
             ],
           ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          child: Divider(height: 4, color: dividerColor()),
         ),
       ],
     );
