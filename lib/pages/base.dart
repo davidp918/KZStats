@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/pages/bans.dart';
 import 'package:kzstats/pages/homepage.dart';
+import 'package:kzstats/pages/latest.dart';
 import 'package:kzstats/pages/maps.dart';
 import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/theme/colors.dart';
@@ -16,7 +17,7 @@ class Base extends StatefulWidget {
   _BaseState createState() => _BaseState();
 }
 
-class _BaseState extends State<Base> {
+class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
   late int curIndex;
   late String title;
   late List<Widget> pages;
@@ -24,81 +25,65 @@ class _BaseState extends State<Base> {
   late ScrollController _scrollController;
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void initState() {
     super.initState();
     this.curIndex = 0;
-    this.title = 'Latest';
-    this.pages = [Homepage(), Leaderboard(), Maps(), Bans(), Settings()];
+    this.title = 'Homepage';
+    this.pages = [Homepage(), Settings()];
     this._pageController = PageController();
     this._scrollController = ScrollController();
   }
 
   void onTap(int index) {
-    this._pageController.jumpToPage(index);
     setState(() {
+      this.curIndex = index;
       changeTitle(index);
     });
   }
 
   void changeTitle(int index) {
-    if (index == 0) this.title = 'Latest';
-    if (index == 1) this.title = 'Leaderboard';
-    if (index == 2) this.title = 'Maps';
-    if (index == 3) this.title = 'Bans';
-    if (index == 4) this.title = 'Settings';
+    if (index == 0) this.title = 'KZStats';
+    if (index == 1) this.title = 'Settings';
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: NestedScrollView(
-        controller: this._scrollController,
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            BaseAppBar(this.title, true),
-          ];
-        },
-        body: PageView(
-          controller: this._pageController,
-          children: pages,
-          onPageChanged: (page) => setState(() {
-            this.curIndex = page;
-            changeTitle(page);
-          }),
+    super.build(context);
+    return SafeArea(
+      child: Scaffold(
+        body: NestedScrollView(
+          controller: this._scrollController,
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              BaseAppBar(this.title, true),
+            ];
+          },
+          body: IndexedStack(children: this.pages, index: this.curIndex),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        iconSize: 22,
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
-        backgroundColor: appbarColor(),
-        currentIndex: this.curIndex,
-        type: BottomNavigationBarType.fixed,
-        unselectedItemColor: Colors.grey.shade500,
-        fixedColor: Colors.white,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Latest',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.leaderboard),
-            label: 'Leaderboard',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map_sharp),
-            label: 'Maps',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.not_interested),
-            label: 'Bans',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(EvilIcons.gear),
-            label: 'Settings',
-          ),
-        ],
-        onTap: onTap,
+        bottomNavigationBar: BottomNavigationBar(
+          iconSize: 22,
+          selectedFontSize: 10,
+          unselectedFontSize: 10,
+          backgroundColor: appbarColor(),
+          currentIndex: this.curIndex,
+          type: BottomNavigationBarType.fixed,
+          unselectedItemColor: Colors.grey.shade500,
+          fixedColor: Colors.white,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Homepage',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(EvilIcons.gear),
+              label: 'Settings',
+            ),
+          ],
+          onTap: onTap,
+        ),
       ),
     );
   }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/Popup_mode.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
-import 'package:kzstats/theme/colors.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String currentPage;
@@ -11,15 +10,15 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   BaseAppBar(this.currentPage, this.leading);
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight * 0.8);
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       floating: true,
       pinned: false,
+      toolbarHeight: kToolbarHeight * 0.8,
       snap: false,
-      backgroundColor: appbarColor(),
       leading: leadingIcon(context),
       title: Text(currentPage),
       centerTitle: true,

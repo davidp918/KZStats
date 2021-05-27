@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kzstats/pages/bans.dart';
 import 'package:kzstats/pages/base.dart';
-import 'package:kzstats/pages/homepage.dart';
+import 'package:kzstats/pages/latest.dart';
 import 'package:kzstats/pages/maps.dart';
 import 'package:kzstats/pages/leaderboard.dart';
 import 'package:kzstats/pages/settings.dart';
@@ -19,8 +19,8 @@ class AppRouter {
       case '/':
         return MaterialPageRoute(builder: (context) => Base());
 
-      case '/homepage':
-        return MaterialPageRoute(builder: (context) => Homepage());
+      case '/latest':
+        return MaterialPageRoute(builder: (context) => Latest());
 
       case '/leaderboard':
         return MaterialPageRoute(builder: (context) => Leaderboard());

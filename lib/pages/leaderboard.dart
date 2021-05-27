@@ -47,7 +47,6 @@ class _LeaderboardState extends State<Leaderboard>
 
   Widget build(BuildContext context) {
     super.build(context);
-
     return FutureBuilder(
       future: _future,
       builder: (BuildContext context, AsyncSnapshot snapshot) {

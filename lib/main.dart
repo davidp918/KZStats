@@ -88,6 +88,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 scaffoldBackgroundColor: backgroundColor(),
                 fontFamily: 'NotoSansHK',
+                primaryColor: appbarColor(),
                 textTheme: TextTheme(
                   bodyText1: TextStyle(),
                   bodyText2: TextStyle(),
