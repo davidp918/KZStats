@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kzstats/pages/tabs/bans.dart';
-import 'package:kzstats/pages/inner/latest.dart';
-import 'package:kzstats/pages/inner/leaderboard.dart';
+import 'package:kzstats/pages/tabs/latest.dart';
+import 'package:kzstats/pages/tabs/leaderboard.dart';
 import 'package:kzstats/pages/tabs/maps.dart';
 import 'package:kzstats/theme/colors.dart';
 
