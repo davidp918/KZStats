@@ -15,7 +15,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin<Homepage> {
   late TabController _tabController;
-  late List tabs;
+  late List<Widget> tabs;
   late int curIndex;
 
   @override
@@ -44,25 +44,26 @@ class _HomepageState extends State<Homepage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width,
-          color: appbarColor(),
-          child: Center(
-            child: TabBar(
-              onTap: onTap,
-              tabs: tabsTitle(),
-              controller: _tabController,
-              isScrollable: true,
-              indicatorColor: colorLight(),
-              indicatorWeight: 1.8,
-              indicatorSize: TabBarIndicatorSize.label,
+    return DefaultTabController(
+      length: 4,
+      child: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            color: appbarColor(),
+            child: Center(
+              child: TabBar(
+                tabs: tabsTitle(),
+                isScrollable: true,
+                indicatorColor: Colors.white,
+                indicatorWeight: 1.8,
+                indicatorSize: TabBarIndicatorSize.label,
+              ),
             ),
           ),
-        ),
-        Expanded(child: this.tabs[curIndex]),
-      ],
+          Expanded(child: TabBarView(children: this.tabs)),
+        ],
+      ),
     );
   }
 
