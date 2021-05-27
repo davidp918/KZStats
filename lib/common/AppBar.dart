@@ -6,22 +6,28 @@ import 'package:kzstats/cubit/user_cubit.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String currentPage;
-  final bool leading;
-  BaseAppBar(this.currentPage, this.leading);
+  final bool showProfile;
+  BaseAppBar(
+    this.currentPage,
+    this.showProfile,
+  );
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight * 0.8);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       floating: true,
       pinned: false,
-      toolbarHeight: kToolbarHeight * 0.8,
+      toolbarHeight: kToolbarHeight,
       snap: false,
+      centerTitle: !this.showProfile,
       leading: leadingIcon(context),
-      title: Text(currentPage),
-      centerTitle: true,
+      title: Text(
+        '$currentPage',
+        style: TextStyle(fontWeight: FontWeight.w500),
+      ),
       brightness: Brightness.dark,
       actions: <Widget>[
         IconButton(
@@ -33,7 +39,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget? leadingIcon(BuildContext context) => this.leading
+  Widget? leadingIcon(BuildContext context) => this.showProfile
       ? BlocBuilder<UserCubit, UserState>(
           builder: (context, userState) {
             return IconButton(

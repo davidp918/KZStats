@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kzstats/pages/tabs/bans.dart';
+import 'package:kzstats/pages/tabs/jumpstats.dart';
 import 'package:kzstats/pages/tabs/latest.dart';
 import 'package:kzstats/pages/tabs/leaderboard.dart';
 import 'package:kzstats/pages/tabs/maps.dart';
@@ -15,7 +16,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin<Homepage> {
   late TabController _tabController;
-  late List<Widget> tabs;
+  late List<Widget> tabs, tabsTitle;
   late int curIndex;
 
   @override
@@ -24,28 +25,24 @@ class _HomepageState extends State<Homepage>
   @override
   void initState() {
     super.initState();
-    this._tabController = TabController(length: 4, vsync: this);
-    this.tabs = [Latest(), Leaderboard(), Maps(), Bans()];
+    this._tabController = TabController(length: 5, vsync: this);
+    this.tabs = [Latest(), Leaderboard(), Maps(), Bans(), Jumpstats()];
+    this.tabsTitle = ['Latest', 'Leaderboard', 'Maps', 'Bans', 'Jumpstats']
+        .map((data) => Text(data,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 15,
+              fontWeight: FontWeight.w300,
+            )))
+        .toList();
     this.curIndex = 0;
-  }
-
-  @override
-  void dispose() {
-    this._tabController.dispose();
-    super.dispose();
-  }
-
-  void onTap(int index) {
-    setState(() {
-      this.curIndex = index;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: Column(
         children: [
           Container(
@@ -53,7 +50,7 @@ class _HomepageState extends State<Homepage>
             color: appbarColor(),
             child: Center(
               child: TabBar(
-                tabs: tabsTitle(),
+                tabs: this.tabsTitle,
                 isScrollable: true,
                 indicatorColor: Colors.white,
                 indicatorWeight: 1.8,
@@ -67,23 +64,9 @@ class _HomepageState extends State<Homepage>
     );
   }
 
-  List<Widget> tabsTitle() {
-    List<List<dynamic>> titles = [
-      ['Latest', 60.0],
-      ['Leaderboard', 100.0],
-      ['Maps', 40.0],
-      ['Bans', 40.0],
-    ];
-    return titles
-        .map(
-          (data) => Text(
-            '${data[0]}',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-            ),
-          ),
-        )
-        .toList();
+  @override
+  void dispose() {
+    this._tabController.dispose();
+    super.dispose();
   }
 }

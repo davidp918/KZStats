@@ -1,6 +1,8 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/AppBar.dart';
+import 'package:kzstats/pages/Favourites.dart';
 import 'package:kzstats/pages/homepage.dart';
 import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/theme/colors.dart';
@@ -25,8 +27,8 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
   void initState() {
     super.initState();
     this.curIndex = 0;
-    this.title = 'Homepage';
-    this.pages = [Homepage(), Settings()];
+    this.title = 'KZStats';
+    this.pages = [Homepage(), Favourites(), Settings()];
     this._scrollController = ScrollController();
   }
 
@@ -39,7 +41,8 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
 
   void changeTitle(int index) {
     if (index == 0) this.title = 'KZStats';
-    if (index == 1) this.title = 'Settings';
+    if (index == 1) this.title = 'Favourites';
+    if (index == 2) this.title = 'Settings';
   }
 
   @override
@@ -56,26 +59,25 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
           },
           body: IndexedStack(children: this.pages, index: this.curIndex),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          iconSize: 22,
-          selectedFontSize: 10,
-          unselectedFontSize: 10,
+        bottomNavigationBar: ConvexAppBar(
           backgroundColor: appbarColor(),
-          currentIndex: this.curIndex,
-          type: BottomNavigationBarType.fixed,
-          unselectedItemColor: Colors.grey.shade500,
-          fixedColor: Colors.white,
+          style: TabStyle.react,
+          activeColor: Colors.white,
+          onTap: onTap,
           items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Homepage',
+            TabItem(
+              icon: Icon(Icons.home, color: Colors.white),
+              title: 'Homepage',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(EvilIcons.gear),
-              label: 'Settings',
+            TabItem(
+              icon: Icon(Icons.favorite_border_rounded, color: Colors.white),
+              title: 'Favourites',
+            ),
+            TabItem(
+              icon: Icon(EvilIcons.gear, color: Colors.white),
+              title: 'Settings',
             ),
           ],
-          onTap: onTap,
         ),
       ),
     );
