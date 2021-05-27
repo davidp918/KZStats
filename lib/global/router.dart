@@ -14,25 +14,10 @@ import 'package:kzstats/common/search.dart';
 import 'package:kzstats/pages/steamLogin.dart';
 
 class AppRouter {
-  Route? onGenerateRoute(RouteSettings settings) {
+  Route onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (context) => Base());
-
-      case '/latest':
-        return MaterialPageRoute(builder: (context) => Latest());
-
-      case '/leaderboard':
-        return MaterialPageRoute(builder: (context) => Leaderboard());
-
-      case '/maps':
-        return MaterialPageRoute(builder: (context) => Maps());
-
-      case '/bans':
-        return MaterialPageRoute(builder: (context) => Bans());
-
-      case '/settings':
-        return MaterialPageRoute(builder: (context) => Settings());
 
       case '/login':
         return MaterialPageRoute(builder: (context) => Login());
@@ -53,14 +38,11 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => PlayerDetail(playerInfo: playerInfo));
 
-      case '/table_layout':
-        return MaterialPageRoute(builder: (_) => SettingsTableLayout());
-
       case '/search':
         return MaterialPageRoute(builder: (_) => Search());
 
       default:
-        return null;
+        return MaterialPageRoute(builder: (context) => Base());
     }
   }
 }
