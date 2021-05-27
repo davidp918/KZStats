@@ -54,7 +54,9 @@ class _BaseState extends State<Base> {
       body: NestedScrollView(
         controller: this._scrollController,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[BaseAppBar(this.title, true)];
+          return <Widget>[
+            BaseAppBar(this.title, true),
+          ];
         },
         body: PageView(
           controller: this._pageController,

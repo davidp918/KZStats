@@ -92,6 +92,7 @@ class _HomepageBodyState extends State<HomepageBody> {
       onRefresh: () => _onRefresh(widget.state),
       onLoading: () => _onLoading(widget.state),
       child: ListView.builder(
+        physics: ClampingScrollPhysics(),
         itemBuilder: this._itemBuilder,
         itemCount: this.items.length,
       ),
