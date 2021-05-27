@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kzstats/pages/bans.dart';
 import 'package:kzstats/pages/base.dart';
-import 'package:kzstats/pages/latest.dart';
-import 'package:kzstats/pages/maps.dart';
-import 'package:kzstats/pages/leaderboard.dart';
-import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
 import 'package:kzstats/pages/details/player_detail.dart';
-import 'package:kzstats/pages/loginPage.dart';
-import 'package:kzstats/pages/about.dart';
-import 'package:kzstats/pages/settings/tablelayout.dart';
+import 'package:kzstats/pages/details/loginPage.dart';
+import 'package:kzstats/pages/details/about.dart';
 import 'package:kzstats/common/search.dart';
-import 'package:kzstats/pages/steamLogin.dart';
+import 'package:kzstats/pages/details/steamLogin.dart';
 
 class AppRouter {
   Route onGenerateRoute(RouteSettings settings) {

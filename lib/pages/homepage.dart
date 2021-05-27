@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kzstats/pages/bans.dart';
-import 'package:kzstats/pages/latest.dart';
-import 'package:kzstats/pages/leaderboard.dart';
-import 'package:kzstats/pages/maps.dart';
+import 'package:kzstats/pages/tabs/bans.dart';
+import 'package:kzstats/pages/inner/latest.dart';
+import 'package:kzstats/pages/inner/leaderboard.dart';
+import 'package:kzstats/pages/tabs/maps.dart';
 import 'package:kzstats/theme/colors.dart';
 
 class Homepage extends StatefulWidget {

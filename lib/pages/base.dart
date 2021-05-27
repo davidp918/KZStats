@@ -1,14 +1,9 @@
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/pages/bans.dart';
 import 'package:kzstats/pages/homepage.dart';
-import 'package:kzstats/pages/latest.dart';
-import 'package:kzstats/pages/maps.dart';
 import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/theme/colors.dart';
-
-import 'leaderboard.dart';
 
 class Base extends StatefulWidget {
   Base({Key? key}) : super(key: key);
@@ -21,7 +16,6 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
   late int curIndex;
   late String title;
   late List<Widget> pages;
-  late PageController _pageController;
   late ScrollController _scrollController;
 
   @override
@@ -33,7 +27,6 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
     this.curIndex = 0;
     this.title = 'Homepage';
     this.pages = [Homepage(), Settings()];
-    this._pageController = PageController();
     this._scrollController = ScrollController();
   }
 

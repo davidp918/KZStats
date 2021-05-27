@@ -1,4 +1,3 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -233,15 +232,6 @@ class Settings extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-
-  Container _buildDivider() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8.0),
-      width: double.infinity,
-      height: 1.0,
-      color: Colors.white30,
     );
   }
 
