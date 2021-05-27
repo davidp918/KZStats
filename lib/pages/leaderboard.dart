@@ -1,8 +1,6 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/common/datatables/leaderboard_points_datatable.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
@@ -21,78 +19,77 @@ class Leaderboard extends StatefulWidget {
 }
 
 class _LeaderboardState extends State<Leaderboard>
-    with SingleTickerProviderStateMixin {
+    with
+        SingleTickerProviderStateMixin,
+        AutomaticKeepAliveClientMixin<Leaderboard> {
+  late ModeState modeState;
+  late LeaderboardState typeState;
+  late Future _future;
+
   @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    modeState = context.watch<ModeCubit>().state;
+    typeState = context.watch<LeaderboardCubit>().state;
+    this._future = typeState.type == 'points'
+        ? getRequest(
+            globalApiLeaderboardPoints(modeState.mode, modeState.nub, 100),
+            leaderboardPointsFromJson,
+          )
+        : getRequest(
+            globalApiLeaderboardRecords(modeState.mode, modeState.nub, 100),
+            leaderboardRecordsFromJson,
+          );
+  }
+
   Widget build(BuildContext context) {
-    final modeState = context.watch<ModeCubit>().state;
-    final typeState = context.watch<LeaderboardCubit>().state;
-    return Scaffold(
-      appBar: HomepageAppBar('Leaderboard'),
-      drawer: HomepageDrawer(),
-      body: FutureBuilder(
-        future: typeState.type == 'points'
-            ? getRequest(
-                globalApiLeaderboardPoints(modeState.mode, modeState.nub, 100),
-                leaderboardPointsFromJson,
-              )
-            : getRequest(
-                globalApiLeaderboardRecords(modeState.mode, modeState.nub, 100),
-                leaderboardRecordsFromJson,
-              ),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          return transition(snapshot, typeState.type);
-        },
-      ),
+    super.build(context);
+
+    return FutureBuilder(
+      future: _future,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        return snapshot.connectionState == ConnectionState.done
+            ? snapshot.hasData && snapshot.data != null
+                ? mainBody(
+                    snapshot.data,
+                    typeState.type,
+                  )
+                : errorScreen()
+            : loadingFromApi();
+      },
     );
   }
 
-  Widget transition(AsyncSnapshot<dynamic> snapshot, String type) {
-    return snapshot.connectionState == ConnectionState.done
-        ? snapshot.hasData && snapshot.data != null
-            ? mainBody(
-                snapshot.data,
-                type,
-              )
-            : errorScreen()
-        : loadingFromApi();
-  }
-
-  Widget mainBody(
-    List<dynamic> data,
-    String type,
-  ) {
-    Size constraints = MediaQuery.of(context).size;
-    return Container(
-      width: constraints.width,
-      height: constraints.height,
-      child: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: ListView(
-              children: [
-                SizedBox(height: 12),
-                Center(
-                  child: Text(
-                    'Top - $type',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
+  Widget mainBody(List<dynamic> data, String type) {
+    return Stack(
+      children: [
+        ListView(
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
+          children: [
+            SizedBox(height: 12),
+            Center(
+              child: Text(
+                'Top - $type',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
                 ),
-                SizedBox(height: 8),
-                type == 'points'
-                    ? LeaderboardPointsTable(
-                        data: data as List<LeaderboardPoints>)
-                    : LeaderboardRecordsTable(
-                        data: data as List<LeaderboardRecords>),
-              ],
+              ),
             ),
-          ),
-          LeaderboardFloater(),
-        ],
-      ),
+            SizedBox(height: 8),
+            type == 'points'
+                ? LeaderboardPointsTable(data: data as List<LeaderboardPoints>)
+                : LeaderboardRecordsTable(
+                    data: data as List<LeaderboardRecords>),
+          ],
+        ),
+        LeaderboardFloater(),
+      ],
     );
   }
 }

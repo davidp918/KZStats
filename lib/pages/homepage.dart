@@ -1,9 +1,6 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
@@ -17,33 +14,50 @@ import 'package:kzstats/web/withNation.dart';
 import 'package:kzstats/global/recordInfo_class.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class Homepage extends StatelessWidget {
-  final int pageSize = 12;
+class Homepage extends StatefulWidget {
+  @override
+  _HomepageState createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage>
+    with AutomaticKeepAliveClientMixin<Homepage> {
+  late ModeState state;
+  late Future _future;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    state = context.watch<ModeCubit>().state;
+    this._future = getInfoWithNation(state.mode, state.nub, 12, 0);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final state = context.read<ModeCubit>().state;
-    return Scaffold(
-      appBar: HomepageAppBar('Latest'),
-      drawer: HomepageDrawer(),
-      body: FutureBuilder(
-        future: getInfoWithNation(state.mode, state.nub, this.pageSize, 0),
-        builder:
-            (BuildContext context, AsyncSnapshot<List<RecordInfo>> snapshot) {
-          if (snapshot.connectionState != ConnectionState.done)
-            return loadingFromApi();
-          if (!snapshot.hasData || snapshot.data == []) return errorScreen();
-          return HomepageBody(items: snapshot.data!);
-        },
-      ),
+    super.build(context);
+    return FutureBuilder(
+      future: _future,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState != ConnectionState.done)
+          return loadingFromApi();
+        if (!snapshot.hasData || snapshot.data == []) return errorScreen();
+        return HomepageBody(items: snapshot.data!, state: state);
+      },
     );
   }
 }
 
 class HomepageBody extends StatefulWidget {
   final List<RecordInfo> items;
+  final ModeState state;
 
-  const HomepageBody({Key? key, required this.items}) : super(key: key);
+  const HomepageBody({
+    Key? key,
+    required this.items,
+    required this.state,
+  }) : super(key: key);
   @override
   _HomepageBodyState createState() => _HomepageBodyState(items: items);
 }
@@ -51,10 +65,9 @@ class HomepageBody extends StatefulWidget {
 class _HomepageBodyState extends State<HomepageBody> {
   List<RecordInfo> items;
   _HomepageBodyState({required this.items});
-  int pageSize = 12;
-
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+  int pageSize = 12;
 
   void _onRefresh(state) async {
     this.items =
@@ -64,36 +77,24 @@ class _HomepageBodyState extends State<HomepageBody> {
   }
 
   void _onLoading(state) async {
-    // monitor network fetch
     this.items += await getInfoWithNation(
         state.mode, state.nub, this.pageSize, this.items.length);
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    // items.add((items.length + 1).toString());
     if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ModeCubit, ModeState>(
-      listener: (context, state) {
-        _refreshController.requestRefresh(
-            duration: Duration(milliseconds: 100));
-        this.items = [];
-      },
-      builder: (context, state) {
-        return SmartRefresher(
-          enablePullDown: true,
-          enablePullUp: true,
-          controller: _refreshController,
-          onRefresh: () => _onRefresh(state),
-          onLoading: () => _onLoading(state),
-          child: ListView.builder(
-            itemBuilder: this._itemBuilder,
-            itemCount: this.items.length,
-          ),
-        );
-      },
+    return SmartRefresher(
+      enablePullDown: true,
+      enablePullUp: true,
+      controller: _refreshController,
+      onRefresh: () => _onRefresh(widget.state),
+      onLoading: () => _onLoading(widget.state),
+      child: ListView.builder(
+        itemBuilder: this._itemBuilder,
+        itemCount: this.items.length,
+      ),
     );
   }
 

@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:kzstats/common/AppBar.dart';
+import 'package:kzstats/global/detailed_pages.dart';
 import 'package:kzstats/pages/details/shown/map_detail_datatable.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
@@ -26,58 +26,65 @@ class MapDetail extends StatefulWidget {
 }
 
 class _MapDetailState extends State<MapDetail> {
+  late Future<List<dynamic>> _future;
+  late ModeState state;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    this.state = context.watch<ModeCubit>().state;
+    this._future = Future.wait(
+      [
+        getRequest(
+          globalApiMaptopRecordsUrl(
+            widget.mapInfo!.mapId,
+            state.mode,
+            state.nub,
+            100,
+          ),
+          recordFromJson,
+        ),
+        getRequest(
+          globalApiMaptopRecordsUrl(
+            widget.mapInfo!.mapId,
+            state.mode,
+            true,
+            1,
+          ),
+          recordFromJson,
+        ),
+        getRequest(
+          globalApiMaptopRecordsUrl(
+            widget.mapInfo!.mapId,
+            state.mode,
+            false,
+            1,
+          ),
+          recordFromJson,
+        ),
+        getRequest(
+          globalApiMapInfoUrl(widget.mapInfo!.mapId.toString()),
+          mapInfoFromJson,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: HomepageAppBar('${widget.mapInfo.mapName}'),
-      body: BlocBuilder<ModeCubit, ModeState>(
-        builder: (context, state) => FutureBuilder<List<dynamic>>(
-          future: Future.wait(
-            [
-              getRequest(
-                globalApiMaptopRecordsUrl(
-                  widget.mapInfo!.mapId,
-                  state.mode,
-                  state.nub,
-                  100,
-                ),
-                recordFromJson,
-              ),
-              getRequest(
-                globalApiMaptopRecordsUrl(
-                  widget.mapInfo!.mapId,
-                  state.mode,
-                  true,
-                  1,
-                ),
-                recordFromJson,
-              ),
-              getRequest(
-                globalApiMaptopRecordsUrl(
-                  widget.mapInfo!.mapId,
-                  state.mode,
-                  false,
-                  1,
-                ),
-                recordFromJson,
-              ),
-              getRequest(
-                globalApiMapInfoUrl(widget.mapInfo!.mapId.toString()),
-                mapInfoFromJson,
-              ),
-            ],
+    return DetailedPage(
+      title: widget.mapInfo.mapName,
+      builder: (BuildContext context) {
+        return FutureBuilder<List<dynamic>>(
+          future: this._future,
+          builder:
+              (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) =>
+                  transition(
+            context,
+            snapshot,
           ),
-          builder: (
-            BuildContext context,
-            AsyncSnapshot<List<dynamic>> snapshot,
-          ) {
-            return transition(
-              context,
-              snapshot,
-            );
-          },
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -136,9 +143,6 @@ class _MapDetailState extends State<MapDetail> {
                       fontSize: 18,
                     ),
                   ),
-            SizedBox(
-              height: 4,
-            ),
             ...recordSection(proWr, nubWr, maptop),
           ],
         ),

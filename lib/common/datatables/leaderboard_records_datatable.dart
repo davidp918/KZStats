@@ -101,33 +101,30 @@ class _LeaderboardRecordsTableState extends State<LeaderboardRecordsTable> {
     BuildContext context,
     List<LeaderboardRecords> records,
   ) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: PaginatedDataTable(
-        dragStartBehavior: DragStartBehavior.down,
-        headingRowHeight: 46,
-        dataRowHeight: 42,
-        horizontalMargin: 12,
-        columnSpacing: 15,
-        columns: getColumns(columns),
-        source: RecordsSource(context, records),
-        sortColumnIndex: _sortColumnIndex,
-        sortAscending: _isAscending,
-        rowsPerPage: this._curRowsPerPage,
-        onPageChanged: (index) {
-          // change rowsPerPage when the page changes
-          // on responding to the index
-          if (index + this._rowsPerPage > records.length) {
-            setState(() {
-              this._curRowsPerPage = records.length - index;
-            });
-          } else {
-            setState(() {
-              this._curRowsPerPage = _rowsPerPage;
-            });
-          }
-        },
-      ),
+    return PaginatedDataTable(
+      dragStartBehavior: DragStartBehavior.down,
+      headingRowHeight: 46,
+      dataRowHeight: 42,
+      horizontalMargin: 12,
+      columnSpacing: 15,
+      columns: getColumns(columns),
+      source: RecordsSource(context, records),
+      sortColumnIndex: _sortColumnIndex,
+      sortAscending: _isAscending,
+      rowsPerPage: this._curRowsPerPage,
+      onPageChanged: (index) {
+        // change rowsPerPage when the page changes
+        // on responding to the index
+        if (index + this._rowsPerPage > records.length) {
+          setState(() {
+            this._curRowsPerPage = records.length - index;
+          });
+        } else {
+          setState(() {
+            this._curRowsPerPage = _rowsPerPage;
+          });
+        }
+      },
     );
   }
 }

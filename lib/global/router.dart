@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kzstats/pages/bans.dart';
+import 'package:kzstats/pages/base.dart';
 import 'package:kzstats/pages/homepage.dart';
 import 'package:kzstats/pages/maps.dart';
 import 'package:kzstats/pages/leaderboard.dart';
@@ -16,7 +17,7 @@ class AppRouter {
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (context) => Homepage());
+        return MaterialPageRoute(builder: (context) => Base());
 
       case '/homepage':
         return MaterialPageRoute(builder: (context) => Homepage());

@@ -21,7 +21,7 @@ class _SettingsTableLayoutState extends State<SettingsTableLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomepageAppBar('Datatable'),
+      appBar: BaseAppBar('Datatable', false),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(30),
         child: Column(

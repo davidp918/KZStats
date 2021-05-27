@@ -1,33 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pagewise/flutter_pagewise.dart';
-import 'package:kzstats/common/AppBar.dart';
-import 'package:kzstats/common/Drawer.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json.dart';
 
-class Bans extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: HomepageAppBar('Bans'),
-      drawer: HomepageDrawer(),
-      body: BansListView(),
-    );
-  }
-}
-
-class BansListView extends StatelessWidget {
+class Bans extends StatefulWidget {
   static const int pageSize = 10;
 
   @override
+  _BansState createState() => _BansState();
+}
+
+class _BansState extends State<Bans> with AutomaticKeepAliveClientMixin<Bans> {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return PagewiseListView<Ban>(
-      pageSize: pageSize,
+      padding: EdgeInsets.symmetric(horizontal: 12),
+      shrinkWrap: true,
+      pageSize: Bans.pageSize,
       itemBuilder: this._itemBuilder,
       pageFuture: (pageIndex) =>
-          getBans(pageSize, pageSize * pageIndex!, banFromJson),
+          getBans(Bans.pageSize, Bans.pageSize * pageIndex!, banFromJson),
       loadingBuilder: (context) => loadingFromApi(),
     );
   }
