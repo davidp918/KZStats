@@ -25,7 +25,7 @@ class PlayerDetail extends StatefulWidget {
   const PlayerDetail({Key? key, required this.playerInfo}) : super(key: key);
 
   @override
-  _MapDetailState createState() => _MapDetailState(
+  _PlayerDetailState createState() => _PlayerDetailState(
         // need further test about: if a player does not have any records,
         // will this null checks break as it's a list of null
         playerInfo[0],
@@ -33,12 +33,12 @@ class PlayerDetail extends StatefulWidget {
       );
 }
 
-class _MapDetailState extends State<PlayerDetail> {
+class _PlayerDetailState extends State<PlayerDetail> {
   final String steamId64;
   final String playerName;
   late Future _future;
   late ModeState modeState;
-  _MapDetailState(this.steamId64, this.playerName);
+  _PlayerDetailState(this.steamId64, this.playerName);
 
   @override
   void didChangeDependencies() {

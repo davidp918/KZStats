@@ -88,7 +88,7 @@ class PlayerDetailStats extends StatelessWidget {
             end: Alignment.centerRight,
             colors: [
               color.withOpacity(1),
-              color.withOpacity(0.6 * sin(_percent) + 0.5)
+              color.withOpacity(min(0.6 * sin(_percent) + 0.5, 1))
             ],
           ),
           animation: true,
