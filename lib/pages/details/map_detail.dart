@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kzstats/common/datatable.dart';
 
 import 'package:kzstats/global/detailed_pages.dart';
-import 'package:kzstats/pages/details/shown/map_detail_datatable.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
@@ -173,7 +173,21 @@ class _MapDetailState extends State<MapDetail> {
             worldRecordRow('Pro', proWr),
             worldRecordRow('Nub', nubWr),
             SizedBox(height: 4),
-            MapDetailTable(records: mapTop),
+            CustomDataTable(
+              data: mapTop,
+              columns: [
+                '#',
+                'Player',
+                'Time',
+                'Points',
+                'TPs',
+                'Date',
+                'Server'
+              ],
+              defaultSortKey: 'Time',
+              initialSortedColumnIndex: 2,
+              initialAscending: true,
+            ),
           ];
   }
 

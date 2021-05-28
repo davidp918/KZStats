@@ -15,39 +15,16 @@ DataCell averageDataCell(double? average) {
 int compareString(bool ascending, dynamic value1, dynamic value2) =>
     ascending ? value1.compareTo(value2) : value2.compareTo(value1);
 
-DataCell vanillaDataCell(String? str) {
-  late Characters re;
-  str == null ? re = Characters('<Unknown>') : re = Characters(str);
-  return DataCell(
-    Text(
-      '$re',
-      style: TextStyle(
-        color: Colors.white,
-      ),
-    ),
-  );
-}
+DataCell vanillaDataCell(dynamic data) => DataCell(
+    Text('${data == null ? '<Unknown>' : Characters(data.toString())}'));
 
-DataCell buttonDataCell(
-  BuildContext context,
-  String? str,
-  String destination,
-  dynamic parameter,
-) {
-  late Characters re;
-  str == null ? re = Characters('<Unknown>') : re = Characters(str);
-  return DataCell(
-    InkWell(
-      onTap: () => Navigator.of(context).pushNamed(
-        destination,
-        arguments: parameter,
+DataCell buttonDataCell(BuildContext context, dynamic data, String destination,
+        dynamic parameter) =>
+    DataCell(
+      InkWell(
+        onTap: () =>
+            Navigator.of(context).pushNamed(destination, arguments: parameter),
+        child:
+            Text('${data == null ? '<Unknown>' : Characters(data.toString())}'),
       ),
-      child: Text(
-        '$re',
-        style: TextStyle(
-          color: inkWellBlue(),
-        ),
-      ),
-    ),
-  );
-}
+    );

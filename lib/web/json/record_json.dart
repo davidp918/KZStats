@@ -71,4 +71,25 @@ class Record {
         points: json["points"],
         replayId: json["replay_id"],
       );
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "steamid64": steamid64,
+        "playerName": playerName,
+        "steamId": steamId,
+        "serverId": serverId,
+        "mapId": mapId,
+        "stage": stage,
+        "mode": mode,
+        "tickrate": tickrate,
+        "time": time,
+        "teleports": teleports,
+        "createdOn": createdOn?.toIso8601String(),
+        "updatedOn": updatedOn?.toIso8601String(),
+        "updatedby": updatedBy,
+        "recordFilterId": recordFilterId,
+        "serverMame": serverName,
+        "mapName": mapName,
+        "points": points,
+        "replayId": replayId,
+      };
 }

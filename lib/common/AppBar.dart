@@ -24,9 +24,11 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       snap: false,
       centerTitle: !this.showProfile,
       leading: leadingIcon(context),
-      title: Text(
-        '$currentPage',
-        style: TextStyle(fontWeight: FontWeight.w500),
+      title: Center(
+        child: Text(
+          '$currentPage',
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
       ),
       brightness: Brightness.dark,
       actions: <Widget>[

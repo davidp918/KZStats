@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kzstats/common/datatable.dart';
 import 'package:kzstats/global/detailed_pages.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:kzstats/common/error.dart';
@@ -11,7 +12,6 @@ import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/cubit/playerdisplay_cubit.dart';
 import 'package:kzstats/global/floater.dart';
-import 'package:kzstats/pages/details/shown/player_detail_datatable.dart';
 import 'package:kzstats/pages/details/shown/player_detail_stats.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/utils/convertDegreeRad.dart';
@@ -311,6 +311,7 @@ class _FloaterState extends State<Floater> with SingleTickerProviderStateMixin {
 class MainBody extends StatelessWidget {
   final String steamId64;
   final List<Record>? records;
+
   const MainBody({
     Key? key,
     required this.steamId64,
@@ -328,7 +329,13 @@ class MainBody extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final playerDisplayState = context.watch<PlayerdisplayCubit>().state;
     if (playerDisplayState.playerDisplay == 'records') {
-      return PlayerDetailTable(records: records!);
+      return CustomDataTable(
+        data: records!,
+        columns: ['Map', 'Time', 'Points', 'TPs', 'Date', 'Server'],
+        defaultSortKey: 'Date',
+        initialSortedColumnIndex: 4,
+        initialAscending: false,
+      );
     } else if (playerDisplayState.playerDisplay == 'stats') {
       return PlayerDetailStats(records: records!);
     }

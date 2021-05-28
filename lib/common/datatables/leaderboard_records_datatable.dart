@@ -113,8 +113,6 @@ class _LeaderboardRecordsTableState extends State<LeaderboardRecordsTable> {
       sortAscending: _isAscending,
       rowsPerPage: this._curRowsPerPage,
       onPageChanged: (index) {
-        // change rowsPerPage when the page changes
-        // on responding to the index
         if (index + this._rowsPerPage > records.length) {
           setState(() {
             this._curRowsPerPage = records.length - index;
