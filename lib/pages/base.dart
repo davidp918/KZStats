@@ -2,7 +2,7 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:kzstats/common/AppBar.dart';
+import 'package:kzstats/common/appbars/baseAppBar.dart';
 import 'package:kzstats/pages/Favourites.dart';
 import 'package:kzstats/pages/details/explore.dart';
 import 'package:kzstats/pages/homepage.dart';
@@ -62,31 +62,40 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
           },
           body: IndexedStack(children: this.pages, index: this.curIndex),
         ),
-        bottomNavigationBar: ConvexAppBar(
-          backgroundColor: appbarColor(),
-          style: TabStyle.react,
-          activeColor: Colors.white,
-          onTap: onTap,
+        bottomNavigationBar: SizedBox(
           height: kToolbarHeight,
-          items: [
-            TabItem(
-              icon: Icon(CommunityMaterialIcons.home_outline,
-                  color: Colors.white),
-              title: 'Homepage',
-            ),
-            TabItem(
-              icon: Icon(Icons.favorite_border_rounded, color: Colors.white),
-              title: 'Explore',
-            ),
-            TabItem(
-              icon: Icon(Icons.favorite_border_rounded, color: Colors.white),
-              title: 'Favourites',
-            ),
-            TabItem(
-              icon: Icon(EvilIcons.gear, color: Colors.white),
-              title: 'Settings',
-            ),
-          ],
+          child: BottomNavigationBar(
+            backgroundColor: appbarColor(),
+            currentIndex: this.curIndex,
+            onTap: onTap,
+            type: BottomNavigationBarType.fixed,
+            unselectedItemColor: Colors.grey.shade300,
+            selectedIconTheme: IconThemeData(color: Colors.white),
+            iconSize: 22,
+            selectedFontSize: 12,
+            selectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
+            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w300),
+            unselectedFontSize: 12,
+            selectedItemColor: Colors.white,
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(CommunityMaterialIcons.home_outline),
+                label: 'Homepage',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite_border_rounded),
+                label: 'Explore',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.map_sharp),
+                label: 'Maps',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(EvilIcons.gear),
+                label: 'Settings',
+              ),
+            ],
+          ),
         ),
       ),
     );

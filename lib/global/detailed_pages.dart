@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kzstats/common/AppBar.dart';
+import 'package:kzstats/common/appbars/baseAppBar.dart';
 
 class DetailedPage extends StatefulWidget {
   const DetailedPage({
