@@ -10,7 +10,6 @@ class UserSharedPreferences {
   static late SharedPreferences _preferences;
 
   static const _userInfo = 'userInfo';
-  static const _rowsPerPage = 'rowsPerPage';
   static const _mapData = 'mapData';
   static const _mapHistory = 'mapHistory';
   static const _playerHistory = 'playerHistory';
@@ -42,16 +41,6 @@ class UserSharedPreferences {
       return UserInfo(steam32: '', steam64: '', avatarUrl: '', name: '');
     }
     return UserInfo.fromJson(jsonDecode(data));
-  }
-
-  // DataTable row settigns
-  static Future setRowsPerPage(int rowsPerPage) async {
-    await _preferences.setInt(_rowsPerPage, rowsPerPage);
-  }
-
-  static int getRowsPerPage() {
-    dynamic data = _preferences.getInt(_rowsPerPage);
-    return data == null ? 20 : data;
   }
 
   // Maps Data

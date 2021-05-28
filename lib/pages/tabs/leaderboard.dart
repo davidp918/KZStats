@@ -8,7 +8,6 @@ import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
-import 'package:kzstats/cubit/leaderboard_cubit.dart';
 
 class Leaderboard extends StatefulWidget {
   final String type;

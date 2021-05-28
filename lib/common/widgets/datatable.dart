@@ -23,7 +23,7 @@ class CustomDataTable extends StatefulWidget {
 
 class _CustomDataTableState extends State<CustomDataTable> {
   List<Map<String, dynamic>> data = [];
-  late int _rowsPerPage, _curRowsPerPage, _sortColumnIndex;
+  late int _sortColumnIndex;
   late Map<String, String> identifyAttr;
   late bool _isAscending;
 
@@ -45,7 +45,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
       'Server': 'serverName',
       'Points in total': 'totalPoints',
     };
-    this._rowsPerPage = UserSharedPreferences.getRowsPerPage();
     this._sortColumnIndex = widget.initialSortedColumnIndex;
     this._isAscending = widget.initialAscending;
     for (int i = 0; i < widget.data.length; i++) {
@@ -56,7 +55,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
     this.data.sort((a, b) => compareString(
         this._isAscending, a, b, widget.initialSortedColumnIndex));
     for (int i = 0; i < this.data.length; i++) this.data[i]['index'] = i + 1;
-    this.setCurRowsPerPage(0);
   }
 
   List<DataColumn> _columns() => widget.columns
@@ -89,68 +87,43 @@ class _CustomDataTableState extends State<CustomDataTable> {
           : b[identifyAttr[widget.columns[index]]]
               .compareTo(a[identifyAttr[widget.columns[index]]]);
 
-  void setCurRowsPerPage(int offset) =>
-      offset + this._rowsPerPage > this.data.length
-          ? this._curRowsPerPage = this.data.length
-          : this._curRowsPerPage = this._rowsPerPage;
-
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: Theme.of(context).copyWith(
-        dividerColor: dividerColor(),
-        cardTheme: CardTheme(
-          color: Color(0xff1D202C),
+      data: Theme.of(context)
+          .copyWith(iconTheme: IconThemeData(color: Colors.white)),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: DataTable(
+          headingRowColor:
+              MaterialStateColor.resolveWith((states) => Color(0xff1D202C)),
+          headingRowHeight: 46,
+          dataRowHeight: 42,
+          horizontalMargin: 12,
+          columnSpacing: 15,
+          columns: _columns(),
+          sortColumnIndex: _sortColumnIndex,
+          sortAscending: _isAscending,
+          rows: List<int>.generate(this.data.length, (i) => i)
+              .map((i) => getRow(i))
+              .toList(),
         ),
-      ),
-      child: PaginatedDataTable(
-        checkboxHorizontalMargin: 0,
-        headingRowHeight: 46,
-        dataRowHeight: 42,
-        horizontalMargin: 12,
-        columnSpacing: 15,
-        columns: _columns(),
-        source: CustomDataTableSource(
-            context, this.data, widget.data, widget.columns),
-        sortColumnIndex: _sortColumnIndex,
-        sortAscending: _isAscending,
-        rowsPerPage: this._curRowsPerPage,
-        onPageChanged: (index) => setState(() => this.setCurRowsPerPage(index)),
       ),
     );
   }
-}
-
-class CustomDataTableSource extends DataTableSource {
-  BuildContext context;
-  final List<Map<String, dynamic>> data;
-  final List<dynamic> rawData;
-  final List<String> columns;
-
-  CustomDataTableSource(
-    this.context,
-    this.data,
-    this.rawData,
-    this.columns,
-  );
 
   DataCell vanillaDataCell(dynamic data) => DataCell(
       Text('${data == null ? '<Unknown>' : Characters(data.toString())}'));
 
   DataCell buttonDataCell(BuildContext context, dynamic data,
           String destination, dynamic parameter) =>
-      DataCell(
-        InkWell(
+      DataCell(InkWell(
           onTap: () => Navigator.of(context)
               .pushNamed(destination, arguments: parameter),
           child: Text(
             '${data == null ? '<Unknown>' : Characters(data.toString())}',
-            style: TextStyle(
-              color: inkWellBlue(),
-            ),
-          ),
-        ),
-      );
+            style: TextStyle(color: inkWellBlue()),
+          )));
 
   DataCell getCell(String column, dynamic data, int index) {
     switch (column) {
@@ -171,7 +144,7 @@ class CustomDataTableSource extends DataTableSource {
         return vanillaDataCell(data?['finishes']);
       case 'Map':
         return buttonDataCell(
-            context, data?['mapName'], '/map_detail', rawData[index]);
+            context, data?['mapName'], '/map_detail', widget.data[index]);
       case 'Time':
         return vanillaDataCell(toMinSec(data?['time']));
       case 'TPs':
@@ -187,23 +160,13 @@ class CustomDataTableSource extends DataTableSource {
     }
   }
 
-  @override
   DataRow getRow(int index) => DataRow.byIndex(
         index: index,
         color: MaterialStateColor.resolveWith(
             (_) => index % 2 == 0 ? primarythemeBlue() : secondarythemeBlue()),
         cells: [
-          for (String column in this.columns)
+          for (String column in widget.columns)
             this.getCell(column, this.data[index], index)
         ],
       );
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get rowCount => data.length;
-
-  @override
-  int get selectedRowCount => 0;
 }

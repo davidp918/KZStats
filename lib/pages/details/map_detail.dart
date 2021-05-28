@@ -107,88 +107,74 @@ class _MapDetailState extends State<MapDetail> {
   }
 
   Widget mainBody(
-    dynamic maptop,
-    dynamic nubWr,
-    dynamic proWr,
-    MapInfo? mapInfo,
-  ) {
+      dynamic maptop, dynamic nubWr, dynamic proWr, MapInfo? mapInfo) {
     Size size = MediaQuery.of(context).size;
     double ratio = 113 / 200;
     double imageWidth = 200;
     double crossHeight = min((size.height - 56) / 6.4, imageWidth * ratio);
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
-      child: Container(
-        padding: EdgeInsets.fromLTRB(5, 14, 5, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              height: crossHeight,
-              child: GetNetworkImage(
-                fileName: '${widget.mapInfo.mapName}',
-                url: '$imageBaseURL${widget.mapInfo!.mapName}.webp',
-                errorImage: AssetImage('assets/icon/noimage.png'),
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(height: 14),
+          Container(
+            height: crossHeight,
+            child: GetNetworkImage(
+              fileName: '${widget.mapInfo.mapName}',
+              url: '$imageBaseURL${widget.mapInfo!.mapName}.webp',
+              errorImage: AssetImage('assets/icon/noimage.png'),
             ),
-            SizedBox(
-              height: 4,
-            ),
-            mapInfo == null
-                ? Container()
-                : Text(
-                    'Tier: ${identifyTier(mapInfo.difficulty)}',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
+          ),
+          mapInfo == null
+              ? Container()
+              : Text(
+                  'Tier: ${identifyTier(mapInfo.difficulty)}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
                   ),
-            ...recordSection(proWr, nubWr, maptop),
-          ],
-        ),
+                ),
+          ...recordSection(proWr, nubWr, maptop),
+        ],
       ),
     );
   }
 
-  dynamic recordSection(
-    dynamic proWr,
-    dynamic nubWr,
-    dynamic mapTop,
-  ) {
-    return proWr == null && nubWr == null
-        ? <Widget>[
-            Center(
-              child: Text(
-                'No one has beaten this map yet!',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w300,
-                  fontStyle: FontStyle.italic,
+  dynamic recordSection(dynamic proWr, dynamic nubWr, dynamic maptop) =>
+      proWr == null && nubWr == null
+          ? <Widget>[
+              Center(
+                child: Text(
+                  'No one has beaten this map yet!',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
               ),
-            ),
-          ]
-        : <Widget>[
-            worldRecordRow('Pro', proWr),
-            worldRecordRow('Nub', nubWr),
-            SizedBox(height: 4),
-            CustomDataTable(
-              data: mapTop,
-              columns: [
-                '#',
-                'Player',
-                'Time',
-                'Points',
-                'TPs',
-                'Date',
-                'Server'
-              ],
-              initialSortedColumnIndex: 2,
-              initialAscending: true,
-            ),
-          ];
-  }
+            ]
+          : <Widget>[
+              worldRecordRow('Pro', proWr),
+              worldRecordRow('Nub', nubWr),
+              SizedBox(height: 4),
+              CustomDataTable(
+                data: maptop,
+                columns: [
+                  '#',
+                  'Player',
+                  'Time',
+                  'Points',
+                  'TPs',
+                  'Date',
+                  'Server'
+                ],
+                initialSortedColumnIndex: 2,
+                initialAscending: true,
+              ),
+            ];
 
   Widget worldRecordRow(String prefix, dynamic wr) {
     return wr == null
