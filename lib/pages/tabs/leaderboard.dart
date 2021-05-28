@@ -2,7 +2,6 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/datatable.dart';
-import 'package:kzstats/common/datatables/leaderboard_points_datatable.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
@@ -12,7 +11,6 @@ import 'package:kzstats/web/urls.dart';
 import 'package:kzstats/utils/convertDegreeRad.dart';
 import 'package:kzstats/global/floater.dart';
 import 'package:kzstats/cubit/leaderboard_cubit.dart';
-import 'package:kzstats/common/datatables/leaderboard_records_datatable.dart';
 
 class Leaderboard extends StatefulWidget {
   @override
@@ -67,7 +65,7 @@ class _LeaderboardState extends State<Leaderboard>
     return Stack(
       children: [
         ListView(
-          padding: EdgeInsets.symmetric(horizontal: 12),
+          padding: EdgeInsets.symmetric(horizontal: 8),
           shrinkWrap: true,
           physics: ClampingScrollPhysics(),
           children: [
@@ -83,9 +81,26 @@ class _LeaderboardState extends State<Leaderboard>
             ),
             SizedBox(height: 8),
             type == 'points'
-                ? LeaderboardPointsTable(data: data as List<LeaderboardPoints>)
-                : LeaderboardRecordsTable(
-                    data: data as List<LeaderboardRecords>),
+                ? CustomDataTable(
+                    data: data,
+                    columns: [
+                      '#',
+                      'Player',
+                      'Average',
+                      'Rating',
+                      'Finishes',
+                      'Points in total'
+                    ],
+                    initialSortedColumnIndex: 3,
+                    initialAscending: false,
+                  )
+                : CustomDataTable(
+                    data: data,
+                    columns: ['#', 'Player', 'Count'],
+                    initialSortedColumnIndex: 2,
+                    initialAscending: false,
+                  ),
+            Container(height: 100),
           ],
         ),
         LeaderboardFloater(),

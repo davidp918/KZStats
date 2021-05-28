@@ -7,14 +7,12 @@ import 'package:kzstats/utils/timeConversion.dart';
 class CustomDataTable extends StatefulWidget {
   final List<dynamic> data;
   final List<String> columns;
-  final String defaultSortKey;
   final int initialSortedColumnIndex;
   final bool initialAscending;
   CustomDataTable({
     Key? key,
     required this.data,
     required this.columns,
-    required this.defaultSortKey,
     required this.initialSortedColumnIndex,
     required this.initialAscending,
   }) : super(key: key);
@@ -45,12 +43,11 @@ class _CustomDataTableState extends State<CustomDataTable> {
       'TPs': 'teleports',
       'Date': 'createdOn',
       'Server': 'serverName',
+      'Points in total': 'totalPoints',
     };
     this._rowsPerPage = UserSharedPreferences.getRowsPerPage();
-
     this._sortColumnIndex = widget.initialSortedColumnIndex;
     this._isAscending = widget.initialAscending;
-
     for (int i = 0; i < widget.data.length; i++) {
       Map<String, dynamic> cur = widget.data[i].toJson();
       cur['index'] = i + 1;
@@ -58,10 +55,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
     }
     this.data.sort((a, b) => compareString(
         this._isAscending, a, b, widget.initialSortedColumnIndex));
-
-    for (int i = 0; i < this.data.length; i++) {
-      this.data[i]['index'] = i + 1;
-    }
+    for (int i = 0; i < this.data.length; i++) this.data[i]['index'] = i + 1;
     this.setCurRowsPerPage(0);
   }
 
@@ -160,14 +154,14 @@ class CustomDataTableSource extends DataTableSource {
   DataCell getCell(String column, dynamic data, int index) {
     switch (column) {
       case '#':
-        return vanillaDataCell('#${[index, 1].reduce((a, b) => a + b)}');
+        return vanillaDataCell(data?['index']);
       case 'Player':
         return buttonDataCell(context, data?['playerName'], '/player_detail',
             [data?['steamid64'], data?['playerName']]);
       case 'Count':
         return vanillaDataCell(data?['count']);
       case 'Average':
-        return buttonDataCell(context, data?['mapName'], '/map_detail', data);
+        return vanillaDataCell(data?['average']);
       case 'Points':
         return DataCell(classifyPoints(data?['points']));
       case 'Rating':
@@ -185,6 +179,8 @@ class CustomDataTableSource extends DataTableSource {
         return vanillaDataCell(data?['createdOn'].toString().substring(0, 19));
       case 'Server':
         return vanillaDataCell(data?['serverName']);
+      case 'Points in total':
+        return vanillaDataCell(data?['totalPoints']);
       default:
         return vanillaDataCell('error');
     }

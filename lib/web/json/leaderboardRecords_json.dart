@@ -34,8 +34,8 @@ class LeaderboardRecords {
 
   Map<String, dynamic> toJson() => {
         "steamid64": steamid64,
-        "steam_id": steamId,
+        "steamId": steamId,
         "count": count,
-        "player_name": playerName,
+        "playerName": playerName,
       };
 }

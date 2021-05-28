@@ -13,7 +13,7 @@ String leaderboardPointsToJson(List<LeaderboardPoints> data) =>
 
 class LeaderboardPoints {
   LeaderboardPoints({
-    this.points,
+    this.totalPoints,
     this.average,
     this.rating,
     this.finishes,
@@ -22,7 +22,7 @@ class LeaderboardPoints {
     this.playerName,
   });
 
-  int? points;
+  int? totalPoints;
   double? average;
   double? rating;
   int? finishes;
@@ -32,7 +32,7 @@ class LeaderboardPoints {
 
   factory LeaderboardPoints.fromJson(Map<String, dynamic> json) =>
       LeaderboardPoints(
-        points: json["points"],
+        totalPoints: json["points"],
         average: json["average"].toDouble(),
         rating: json["rating"].toDouble(),
         finishes: json["finishes"],
@@ -42,12 +42,12 @@ class LeaderboardPoints {
       );
 
   Map<String, dynamic> toJson() => {
-        "points": points,
+        "totalPoints": totalPoints,
         "average": average,
         "rating": rating,
         "finishes": finishes,
         "steamid64": steamid64,
         "steamid": steamid,
-        "player_name": playerName,
+        "playerName": playerName,
       };
 }

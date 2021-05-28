@@ -53,7 +53,7 @@ class _HomepageState extends State<Homepage>
                 tabs: this.tabsTitle,
                 isScrollable: true,
                 indicatorColor: Colors.white,
-                indicatorWeight: 1.8,
+                indicatorWeight: 1.4,
                 indicatorSize: TabBarIndicatorSize.label,
               ),
             ),

@@ -64,6 +64,7 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
           style: TabStyle.react,
           activeColor: Colors.white,
           onTap: onTap,
+          height: kToolbarHeight,
           items: [
             TabItem(
               icon: Icon(Icons.home, color: Colors.white),

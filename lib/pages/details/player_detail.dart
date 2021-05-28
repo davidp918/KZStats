@@ -332,7 +332,6 @@ class MainBody extends StatelessWidget {
       return CustomDataTable(
         data: records!,
         columns: ['Map', 'Time', 'Points', 'TPs', 'Date', 'Server'],
-        defaultSortKey: 'Date',
         initialSortedColumnIndex: 4,
         initialAscending: false,
       );
