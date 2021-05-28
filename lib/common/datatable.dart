@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kzstats/common/widgets/dataCells.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/utils/pointsClassification.dart';
@@ -25,18 +24,14 @@ class CustomDataTable extends StatefulWidget {
 }
 
 class _CustomDataTableState extends State<CustomDataTable> {
+  List<Map<String, dynamic>> data = [];
   late int _rowsPerPage, _curRowsPerPage, _sortColumnIndex;
   late Map<String, String> identifyAttr;
-  List<Map<String, dynamic>> data = [];
   late bool _isAscending;
+
   @override
   void initState() {
     super.initState();
-    for (dynamic each in widget.data) this.data.add(each.toJson());
-    this._rowsPerPage = UserSharedPreferences.getRowsPerPage();
-    this.setCurRowsPerPage(0);
-    this._sortColumnIndex = widget.initialSortedColumnIndex;
-    this._isAscending = widget.initialAscending;
     this.identifyAttr = {
       '#': widget.columns[widget.initialSortedColumnIndex],
       'Player': 'playerName',
@@ -51,7 +46,23 @@ class _CustomDataTableState extends State<CustomDataTable> {
       'Date': 'createdOn',
       'Server': 'serverName',
     };
-    this._onSort(widget.initialSortedColumnIndex, widget.initialAscending);
+    this._rowsPerPage = UserSharedPreferences.getRowsPerPage();
+
+    this._sortColumnIndex = widget.initialSortedColumnIndex;
+    this._isAscending = widget.initialAscending;
+
+    for (int i = 0; i < widget.data.length; i++) {
+      Map<String, dynamic> cur = widget.data[i].toJson();
+      cur['index'] = i + 1;
+      this.data.add(cur);
+    }
+    this.data.sort((a, b) => compareString(
+        this._isAscending, a, b, widget.initialSortedColumnIndex));
+
+    for (int i = 0; i < this.data.length; i++) {
+      this.data[i]['index'] = i + 1;
+    }
+    this.setCurRowsPerPage(0);
   }
 
   List<DataColumn> _columns() => widget.columns
@@ -67,11 +78,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
   void _onSort(int index, bool isAscending) {
     for (int i = 0; i < this.data.length; i++) {
       if (index != i) continue;
-      this.data.sort((a, b) => compareString(
-            this._isAscending,
-            a[identifyAttr[widget.columns[index]]],
-            b[identifyAttr[widget.columns[index]]],
-          ));
+      this.data.sort((a, b) => compareString(this._isAscending, a, b, index));
       setState(() {
         this._sortColumnIndex = i;
         this._isAscending = isAscending;
@@ -80,10 +87,13 @@ class _CustomDataTableState extends State<CustomDataTable> {
     }
   }
 
-  dynamic getAttr(dynamic cls, String? attr) => 'af';
-
-  int compareString(bool ascending, dynamic value1, dynamic value2) =>
-      ascending ? value1.compareTo(value2) : value2.compareTo(value1);
+  int compareString(bool ascending, Map<String, dynamic> a,
+          Map<String, dynamic> b, int index) =>
+      ascending
+          ? a[identifyAttr[widget.columns[index]]]
+              .compareTo(b[identifyAttr[widget.columns[index]]])
+          : b[identifyAttr[widget.columns[index]]]
+              .compareTo(a[identifyAttr[widget.columns[index]]]);
 
   void setCurRowsPerPage(int offset) =>
       offset + this._rowsPerPage > this.data.length
@@ -105,7 +115,8 @@ class _CustomDataTableState extends State<CustomDataTable> {
         horizontalMargin: 12,
         columnSpacing: 15,
         columns: _columns(),
-        source: CustomDataTableSource(context, this.data, widget.columns),
+        source: CustomDataTableSource(
+            context, this.data, widget.data, widget.columns),
         sortColumnIndex: _sortColumnIndex,
         sortAscending: _isAscending,
         rowsPerPage: this._curRowsPerPage,
@@ -118,11 +129,13 @@ class _CustomDataTableState extends State<CustomDataTable> {
 class CustomDataTableSource extends DataTableSource {
   BuildContext context;
   final List<Map<String, dynamic>> data;
+  final List<dynamic> rawData;
   final List<String> columns;
 
   CustomDataTableSource(
     this.context,
     this.data,
+    this.rawData,
     this.columns,
   );
 
@@ -136,7 +149,11 @@ class CustomDataTableSource extends DataTableSource {
           onTap: () => Navigator.of(context)
               .pushNamed(destination, arguments: parameter),
           child: Text(
-              '${data == null ? '<Unknown>' : Characters(data.toString())}'),
+            '${data == null ? '<Unknown>' : Characters(data.toString())}',
+            style: TextStyle(
+              color: inkWellBlue(),
+            ),
+          ),
         ),
       );
 
@@ -158,7 +175,8 @@ class CustomDataTableSource extends DataTableSource {
       case 'Finishes':
         return vanillaDataCell(data?['finishes']);
       case 'Map':
-        return buttonDataCell(context, data?['mapName'], '/map_detail', data);
+        return buttonDataCell(
+            context, data?['mapName'], '/map_detail', rawData[index]);
       case 'Time':
         return vanillaDataCell(toMinSec(data?['time']));
       case 'TPs':

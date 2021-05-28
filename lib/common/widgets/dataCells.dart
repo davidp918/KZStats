@@ -18,13 +18,22 @@ int compareString(bool ascending, dynamic value1, dynamic value2) =>
 DataCell vanillaDataCell(dynamic data) => DataCell(
     Text('${data == null ? '<Unknown>' : Characters(data.toString())}'));
 
-DataCell buttonDataCell(BuildContext context, dynamic data, String destination,
-        dynamic parameter) =>
-    DataCell(
-      InkWell(
-        onTap: () =>
-            Navigator.of(context).pushNamed(destination, arguments: parameter),
-        child:
-            Text('${data == null ? '<Unknown>' : Characters(data.toString())}'),
+DataCell buttonDataCell(
+    BuildContext context, dynamic str, String destination, dynamic parameter) {
+  late Characters re;
+  str == null ? re = Characters('<Unknown>') : re = Characters(str.toString());
+  return DataCell(
+    InkWell(
+      onTap: () => Navigator.of(context).pushNamed(
+        destination,
+        arguments: parameter,
       ),
-    );
+      child: Text(
+        '$re',
+        style: TextStyle(
+          color: inkWellBlue(),
+        ),
+      ),
+    ),
+  );
+}

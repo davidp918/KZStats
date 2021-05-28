@@ -87,7 +87,7 @@ class Record {
         "updatedOn": updatedOn?.toIso8601String(),
         "updatedby": updatedBy,
         "recordFilterId": recordFilterId,
-        "serverMame": serverName,
+        "serverName": serverName,
         "mapName": mapName,
         "points": points,
         "replayId": replayId,
