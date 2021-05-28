@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:kzstats/theme/colors.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_gifimage/flutter_gifimage.dart';
 import 'package:flutter/material.dart'
@@ -71,10 +72,18 @@ class LoadingGifHeaderState extends RefreshIndicatorState<LoadingGifHeader>
 
   @override
   Widget buildContent(BuildContext context, RefreshStatus mode) {
-    return GifImage(
-      image: AssetImage("assets/icon/loading.gif"),
-      controller: _gifController,
-      height: 100.0,
+    return Column(
+      children: [
+        GifImage(
+          image: AssetImage("assets/icon/loading.gif"),
+          controller: _gifController,
+          height: 100.0,
+        ),
+        Container(
+          width: 100,
+          child: Divider(height: 4, color: dividerColor()),
+        ),
+      ],
     );
   }
 
