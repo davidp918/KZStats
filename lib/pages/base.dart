@@ -4,6 +4,7 @@ import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/AppBar.dart';
 import 'package:kzstats/pages/Favourites.dart';
+import 'package:kzstats/pages/details/explore.dart';
 import 'package:kzstats/pages/homepage.dart';
 import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/theme/colors.dart';
@@ -29,7 +30,7 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
     super.initState();
     this.curIndex = 0;
     this.title = 'KZStats';
-    this.pages = [Homepage(), Favourites(), Settings()];
+    this.pages = [Homepage(), Explore(), Favourites(), Settings()];
     this._scrollController = ScrollController();
   }
 
@@ -42,8 +43,9 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
 
   void changeTitle(int index) {
     if (index == 0) this.title = 'KZStats';
-    if (index == 1) this.title = 'Favourites';
-    if (index == 2) this.title = 'Settings';
+    if (index == 1) this.title = 'Explore';
+    if (index == 2) this.title = 'Favourites';
+    if (index == 3) this.title = 'Settings';
   }
 
   @override
@@ -71,6 +73,10 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
               icon: Icon(CommunityMaterialIcons.home_outline,
                   color: Colors.white),
               title: 'Homepage',
+            ),
+            TabItem(
+              icon: Icon(Icons.favorite_border_rounded, color: Colors.white),
+              title: 'Explore',
             ),
             TabItem(
               icon: Icon(Icons.favorite_border_rounded, color: Colors.white),
