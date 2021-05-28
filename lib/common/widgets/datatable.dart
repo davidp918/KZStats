@@ -104,6 +104,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
         ),
       ),
       child: PaginatedDataTable(
+        checkboxHorizontalMargin: 0,
         headingRowHeight: 46,
         dataRowHeight: 42,
         horizontalMargin: 12,

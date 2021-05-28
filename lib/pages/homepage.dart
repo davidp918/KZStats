@@ -26,8 +26,20 @@ class _HomepageState extends State<Homepage>
   void initState() {
     super.initState();
     this._tabController = TabController(length: 5, vsync: this);
-    this.tabs = [Latest(), Leaderboard(), Maps(), Bans(), Jumpstats()];
-    this.tabsTitle = ['Latest', 'Leaderboard', 'Maps', 'Bans', 'Jumpstats']
+    this.tabs = [
+      Latest(),
+      Leaderboard(type: 'Points'),
+      Leaderboard(type: 'Records'),
+      Bans(),
+      Jumpstats(),
+    ];
+    this.tabsTitle = [
+      'Latest',
+      'Points',
+      'Records',
+      'Bans',
+      'Jumpstats',
+    ]
         .map((data) => Text(data,
             style: TextStyle(
               color: Colors.white,
