@@ -1,9 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/utils/modifyDate.dart';
 import 'package:kzstats/utils/pointsClassification.dart';
 import 'package:kzstats/utils/timeConversion.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class CustomDataTable extends StatefulWidget {
@@ -29,6 +29,22 @@ class _CustomDataTableState extends State<CustomDataTable> {
   late Map<String, String> identifyAttr;
   late bool _isAscending;
   late List<GridTextColumn> _columns;
+  late TableDataSource _tableDataSource;
+  final Map<String, double> _width = {
+    '#': 50,
+    'Player': 130,
+    'Count': 40,
+    'Average': 60,
+    'Points': 80,
+    'Rating': 80,
+    'Finishes': 80,
+    'Map': 120,
+    'Time': 80,
+    'TPs': 70,
+    'Date': 100,
+    'Server': 200,
+    'Points in total': 80,
+  };
 
   @override
   void initState() {
@@ -51,13 +67,20 @@ class _CustomDataTableState extends State<CustomDataTable> {
     this._columns = widget.columns
         .map(
           (String column) => GridTextColumn(
+              width: this._width[column] ?? double.nan,
               columnName: column,
-              label: Text('$column',
+              label: Container(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                color: appbarColor(),
+                child: Text(
+                  '$column',
                   style: TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
                     fontSize: 16,
-                  )),
+                  ),
+                ),
+              ),
               allowSorting: true),
         )
         .toList();
@@ -71,6 +94,12 @@ class _CustomDataTableState extends State<CustomDataTable> {
     this.data.sort((a, b) => compareString(
         this._isAscending, a, b, widget.initialSortedColumnIndex));
     for (int i = 0; i < this.data.length; i++) this.data[i]['index'] = i + 1;
+    this._tableDataSource = TableDataSource(
+      data: this.data,
+      columns: widget.columns,
+      context: context,
+      identifyAttr: this.identifyAttr,
+    );
   }
 
   void _onSort(int index, bool isAscending) {
@@ -95,31 +124,38 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context)
-          .copyWith(iconTheme: IconThemeData(color: Colors.white)),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: SfDataGrid(
-            columns: this._columns, columnWidthMode: ColumnWidthMode.fill),
+    return SfDataGridTheme(
+      data: SfDataGridThemeData(),
+      child: SfDataGrid(
+        columnWidthMode: ColumnWidthMode.lastColumnFill,
+        columns: this._columns,
+        source: this._tableDataSource,
       ),
     );
   }
-
-  DataRow getRow(int index) => DataRow.byIndex(
-        index: index,
-        color: MaterialStateColor.resolveWith(
-            (_) => index % 2 == 0 ? primarythemeBlue() : secondarythemeBlue()),
-        cells: [
-          for (String column in widget.columns)
-            this.getCell(column, this.data[index], index)
-        ],
-      );
 }
 
 class TableDataSource extends DataGridSource {
-  /// Creates the employee data source class with required details.
-  TableDataSource({required List<dynamic> data}) {}
+  late BuildContext context;
+  TableDataSource({
+    required List<dynamic> data,
+    required List<String> columns,
+    required BuildContext context,
+    required Map<String, String> identifyAttr,
+  }) {
+    this.context = context;
+    this._rows = data
+        .map<DataGridRow>((dynamic each) => DataGridRow(
+              cells: [
+                for (String column in columns)
+                  DataGridCell(
+                    columnName: column,
+                    value: each,
+                  )
+              ],
+            ))
+        .toList();
+  }
 
   List<DataGridRow> _rows = [];
 
@@ -128,18 +164,38 @@ class TableDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
+    Color getBackgroundColor() {
+      int index = this._rows.indexOf(row) + 1;
+      return backgroundColor();
+    }
+
     return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((e) {
-      return Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(8.0),
-        child: Text(e.value.toString()),
-      );
-    }).toList());
+      color: getBackgroundColor(),
+      cells: row.getCells().map<Widget>((each) {
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          alignment: each.columnName == '#' || each.columnName == 'Points'
+              ? Alignment.center
+              : Alignment.centerLeft,
+          child: getCell(
+            each.columnName,
+            each.value,
+          ),
+        );
+      }).toList(),
+    );
   }
 
-  Widget vanillaDataCell(dynamic data) =>
-      Text('${data == null ? '<Unknown>' : Characters(data.toString())}');
+  @override
+  bool shouldRecalculateColumnWidths() {
+    return true;
+  }
+
+  Widget vanillaDataCell(dynamic data) => Text(
+        '${data == null ? '<Unknown>' : Characters(data.toString())}',
+        style: TextStyle(color: Colors.white),
+        overflow: TextOverflow.ellipsis,
+      );
 
   Widget buttonDataCell(BuildContext context, dynamic data, String destination,
           dynamic parameter) =>
@@ -149,9 +205,10 @@ class TableDataSource extends DataGridSource {
           child: Text(
             '${data == null ? '<Unknown>' : Characters(data.toString())}',
             style: TextStyle(color: inkWellBlue()),
+            overflow: TextOverflow.ellipsis,
           ));
 
-  Widget getCell(String column, dynamic data, int index) {
+  Widget getCell(String column, dynamic data) {
     switch (column) {
       case '#':
         return vanillaDataCell(data?['index']);
@@ -169,14 +226,13 @@ class TableDataSource extends DataGridSource {
       case 'Finishes':
         return vanillaDataCell(data?['finishes']);
       case 'Map':
-        return buttonDataCell(
-            context, data?['mapName'], '/map_detail', widget.data[index]);
+        return buttonDataCell(context, data?['mapName'], '/map_detail', data);
       case 'Time':
         return vanillaDataCell(toMinSec(data?['time']));
       case 'TPs':
         return vanillaDataCell(data?['teleports']);
       case 'Date':
-        return vanillaDataCell(data?['createdOn'].toString().substring(0, 19));
+        return vanillaDataCell(modifyDate(data?['createdOn'].toString()));
       case 'Server':
         return vanillaDataCell(data?['serverName']);
       case 'Points in total':
