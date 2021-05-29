@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/utils/pointsClassification.dart';
 import 'package:kzstats/utils/timeConversion.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class CustomDataTable extends StatefulWidget {
   final List<dynamic> data;
@@ -27,6 +28,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
   late int _sortColumnIndex;
   late Map<String, String> identifyAttr;
   late bool _isAscending;
+  late List<GridTextColumn> _columns;
 
   @override
   void initState() {
@@ -46,6 +48,19 @@ class _CustomDataTableState extends State<CustomDataTable> {
       'Server': 'serverName',
       'Points in total': 'totalPoints',
     };
+    this._columns = widget.columns
+        .map(
+          (String column) => GridTextColumn(
+              columnName: column,
+              label: Text('$column',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  )),
+              allowSorting: true),
+        )
+        .toList();
     this._sortColumnIndex = widget.initialSortedColumnIndex;
     this._isAscending = widget.initialAscending;
     for (int i = 0; i < widget.data.length; i++) {
@@ -57,16 +72,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
         this._isAscending, a, b, widget.initialSortedColumnIndex));
     for (int i = 0; i < this.data.length; i++) this.data[i]['index'] = i + 1;
   }
-
-  List<DataColumn> _columns() => widget.columns
-      .map((String column) => DataColumn(
-          label: Text('$column',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16)),
-          onSort: _onSort))
-      .toList();
 
   void _onSort(int index, bool isAscending) {
     for (int i = 0; i < this.data.length; i++) {
@@ -95,38 +100,58 @@ class _CustomDataTableState extends State<CustomDataTable> {
           .copyWith(iconTheme: IconThemeData(color: Colors.white)),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: DataTable(
-          headingRowColor:
-              MaterialStateColor.resolveWith((states) => Color(0xff1D202C)),
-          headingRowHeight: 46,
-          dataRowHeight: 42,
-          horizontalMargin: 12,
-          columnSpacing: 15,
-          columns: _columns(),
-          sortColumnIndex: _sortColumnIndex,
-          sortAscending: _isAscending,
-          rows: List<int>.generate(this.data.length, (i) => i)
-              .map((i) => getRow(i))
-              .toList(),
-        ),
+        child: SfDataGrid(
+            columns: this._columns, columnWidthMode: ColumnWidthMode.fill),
       ),
     );
   }
 
-  DataCell vanillaDataCell(dynamic data) => DataCell(
-      Text('${data == null ? '<Unknown>' : Characters(data.toString())}'));
+  DataRow getRow(int index) => DataRow.byIndex(
+        index: index,
+        color: MaterialStateColor.resolveWith(
+            (_) => index % 2 == 0 ? primarythemeBlue() : secondarythemeBlue()),
+        cells: [
+          for (String column in widget.columns)
+            this.getCell(column, this.data[index], index)
+        ],
+      );
+}
 
-  DataCell buttonDataCell(BuildContext context, dynamic data,
-          String destination, dynamic parameter) =>
-      DataCell(InkWell(
+class TableDataSource extends DataGridSource {
+  /// Creates the employee data source class with required details.
+  TableDataSource({required List<dynamic> data}) {}
+
+  List<DataGridRow> _rows = [];
+
+  @override
+  List<DataGridRow> get rows => _rows;
+
+  @override
+  DataGridRowAdapter buildRow(DataGridRow row) {
+    return DataGridRowAdapter(
+        cells: row.getCells().map<Widget>((e) {
+      return Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(8.0),
+        child: Text(e.value.toString()),
+      );
+    }).toList());
+  }
+
+  Widget vanillaDataCell(dynamic data) =>
+      Text('${data == null ? '<Unknown>' : Characters(data.toString())}');
+
+  Widget buttonDataCell(BuildContext context, dynamic data, String destination,
+          dynamic parameter) =>
+      InkWell(
           onTap: () => Navigator.of(context)
               .pushNamed(destination, arguments: parameter),
           child: Text(
             '${data == null ? '<Unknown>' : Characters(data.toString())}',
             style: TextStyle(color: inkWellBlue()),
-          )));
+          ));
 
-  DataCell getCell(String column, dynamic data, int index) {
+  Widget getCell(String column, dynamic data, int index) {
     switch (column) {
       case '#':
         return vanillaDataCell(data?['index']);
@@ -138,7 +163,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
       case 'Average':
         return vanillaDataCell(data?['average']);
       case 'Points':
-        return DataCell(classifyPoints(data?['points']));
+        return classifyPoints(data?['points']);
       case 'Rating':
         return vanillaDataCell(data?['rating']);
       case 'Finishes':
@@ -160,14 +185,4 @@ class _CustomDataTableState extends State<CustomDataTable> {
         return vanillaDataCell('error');
     }
   }
-
-  DataRow getRow(int index) => DataRow.byIndex(
-        index: index,
-        color: MaterialStateColor.resolveWith(
-            (_) => index % 2 == 0 ? primarythemeBlue() : secondarythemeBlue()),
-        cells: [
-          for (String column in widget.columns)
-            this.getCell(column, this.data[index], index)
-        ],
-      );
 }
