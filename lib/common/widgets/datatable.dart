@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kzstats/theme/colors.dart';
-import 'package:kzstats/utils/modifyDate.dart';
 import 'package:kzstats/utils/pointsClassification.dart';
 import 'package:kzstats/utils/timeConversion.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:collection/collection.dart';
 
 class CustomDataTable extends StatefulWidget {
   final List<dynamic> data;
@@ -33,24 +33,23 @@ class _CustomDataTableState extends State<CustomDataTable> {
   final Map<String, double> _width = {
     '#': 50,
     'Player': 130,
-    'Count': 40,
-    'Average': 60,
+    'Count': 100,
+    'Average': 100,
     'Points': 78,
     'Rating': 80,
-    'Finishes': 80,
+    'Finishes': 100,
     'Map': 160,
     'Time': 80,
     'TPs': 70,
     'Date': 180,
     'Server': 200,
-    'Points in total': 80,
+    'Points in total': 140,
   };
 
   @override
   void initState() {
     super.initState();
     this.identifyAttr = {
-      '#': widget.columns[widget.initialSortedColumnIndex],
       'Player': 'playerName',
       'Count': 'count',
       'Average': 'average',
@@ -96,7 +95,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
     for (int i = 0; i < this.data.length; i++) this.data[i]['index'] = i + 1;
     this._tableDataSource = TableDataSource(
       data: this.data,
-      rawData: widget.data,
       columns: widget.columns,
       context: context,
       identifyAttr: this.identifyAttr,
@@ -125,28 +123,84 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    final int rowsPerPage = 10;
+    final double dataPagerHeight = 60.0;
+    final double contentRowHeight = 49.0;
+    final double headerRowHeight = 56.0;
+    final double tableHeight = headerRowHeight + rowsPerPage * contentRowHeight;
     return SfDataGridTheme(
-      data: SfDataGridThemeData(),
-      child: SfDataGrid(
-        columnWidthMode: ColumnWidthMode.lastColumnFill,
-        columns: this._columns,
-        source: this._tableDataSource,
+      data: SfDataGridThemeData(gridLineStrokeWidth: 0),
+      child: Center(
+        child: Column(
+          children: [
+            SizedBox(
+              height: tableHeight,
+              width: size.width,
+              child: SfDataGrid(
+                allowSorting: true,
+                allowMultiColumnSorting: true,
+                allowTriStateSorting: true,
+                isScrollbarAlwaysShown: false,
+                columns: this._columns,
+                source: this._tableDataSource,
+                verticalScrollPhysics: NeverScrollableScrollPhysics(),
+              ),
+            ),
+            Container(
+              height: dataPagerHeight,
+              child: SfDataPagerTheme(
+                data: SfDataPagerThemeData(
+                  itemColor: Colors.white70,
+                  selectedItemColor: primarythemeBlue(),
+                  itemBorderRadius: BorderRadius.circular(5),
+                  backgroundColor: backgroundColor(),
+                  disabledItemColor: Colors.white30,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: SfDataPager(
+                    visibleItemsCount: 10,
+                    delegate: _tableDataSource,
+                    pageCount: this.data.length / rowsPerPage,
+                    direction: Axis.horizontal,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 }
 
 class TableDataSource extends DataGridSource {
+  List<DataGridRow> _rows = [];
+  final int rowsPerPage = 10;
   late BuildContext context;
+  late List<Map<String, dynamic>> paginated;
+  late List<Map<String, dynamic>> data;
+  late List<String> columns;
+  late Map<String, String> identifyAttr;
+
   TableDataSource({
     required List<Map<String, dynamic>> data,
-    required List<dynamic> rawData,
     required List<String> columns,
     required BuildContext context,
     required Map<String, String> identifyAttr,
   }) {
     this.context = context;
-    this._rows = data
+    this.data = data;
+    this.columns = columns;
+    this.identifyAttr = identifyAttr;
+    this.paginated = this.data.getRange(0, 9).toList(growable: false);
+    this.buildPaginatedDataGridRows();
+  }
+
+  void buildPaginatedDataGridRows() {
+    this._rows = this
+        .paginated
         .map<DataGridRow>((dynamic each) => DataGridRow(
               cells: [
                 for (String column in columns)
@@ -159,10 +213,20 @@ class TableDataSource extends DataGridSource {
         .toList();
   }
 
-  List<DataGridRow> _rows = [];
-
   @override
-  List<DataGridRow> get rows => _rows;
+  Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
+    int startIndex = newPageIndex * rowsPerPage;
+    int endIndex = startIndex + rowsPerPage;
+    if (startIndex < data.length && endIndex <= data.length) {
+      this.paginated =
+          this.data.getRange(startIndex, endIndex).toList(growable: false);
+      buildPaginatedDataGridRows();
+      notifyListeners();
+    } else {
+      this.paginated = [];
+    }
+    return true;
+  }
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
@@ -176,7 +240,13 @@ class TableDataSource extends DataGridSource {
         String name = each.columnName;
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 8.0),
-          alignment: name == '#' || name == 'Points' || name == 'TPs'
+          alignment: name == '#' ||
+                  name == 'Points' ||
+                  name == 'TPs' ||
+                  name == 'Average' ||
+                  name == 'Rating' ||
+                  name == 'Finishes' ||
+                  name == 'Points in total'
               ? Alignment.center
               : Alignment.centerLeft,
           child: getCell(
@@ -189,9 +259,35 @@ class TableDataSource extends DataGridSource {
   }
 
   @override
-  bool shouldRecalculateColumnWidths() {
-    return true;
+  int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
+    final dynamic value1 = a
+        ?.getCells()
+        .firstWhereOrNull((element) => element.columnName == sortColumn.name)
+        ?.value[identifyAttr[sortColumn.name]];
+    final dynamic value2 = b
+        ?.getCells()
+        .firstWhereOrNull((element) => element.columnName == sortColumn.name)
+        ?.value[identifyAttr[sortColumn.name]];
+
+    if (value1 == null || value2 == null) {
+      return 0;
+    }
+
+    if (value1.compareTo(value2) > 0) {
+      return sortColumn.sortDirection == DataGridSortDirection.ascending
+          ? 1
+          : -1;
+    } else if (value1.compareTo(value2) == -1) {
+      return sortColumn.sortDirection == DataGridSortDirection.ascending
+          ? -1
+          : 1;
+    } else {
+      return 0;
+    }
   }
+
+  @override
+  List<DataGridRow> get rows => _rows;
 
   Widget vanillaDataCell(dynamic data) => Text(
         '${data == null ? '<Unknown>' : Characters(data.toString())}',
@@ -224,7 +320,7 @@ class TableDataSource extends DataGridSource {
       case 'Points':
         return classifyPoints(data?['points']);
       case 'Rating':
-        return vanillaDataCell(data?['rating']);
+        return vanillaDataCell(data?['rating'].toString().substring(0, 6));
       case 'Finishes':
         return vanillaDataCell(data?['finishes']);
       case 'Map':
