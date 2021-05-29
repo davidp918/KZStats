@@ -35,13 +35,13 @@ class _CustomDataTableState extends State<CustomDataTable> {
     'Player': 130,
     'Count': 40,
     'Average': 60,
-    'Points': 80,
+    'Points': 78,
     'Rating': 80,
     'Finishes': 80,
-    'Map': 120,
+    'Map': 160,
     'Time': 80,
     'TPs': 70,
-    'Date': 100,
+    'Date': 180,
     'Server': 200,
     'Points in total': 80,
   };
@@ -96,6 +96,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
     for (int i = 0; i < this.data.length; i++) this.data[i]['index'] = i + 1;
     this._tableDataSource = TableDataSource(
       data: this.data,
+      rawData: widget.data,
       columns: widget.columns,
       context: context,
       identifyAttr: this.identifyAttr,
@@ -138,7 +139,8 @@ class _CustomDataTableState extends State<CustomDataTable> {
 class TableDataSource extends DataGridSource {
   late BuildContext context;
   TableDataSource({
-    required List<dynamic> data,
+    required List<Map<String, dynamic>> data,
+    required List<dynamic> rawData,
     required List<String> columns,
     required BuildContext context,
     required Map<String, String> identifyAttr,
@@ -164,17 +166,17 @@ class TableDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    Color getBackgroundColor() {
-      int index = this._rows.indexOf(row) + 1;
-      return backgroundColor();
-    }
+    Color getBackgroundColor() => (this._rows.indexOf(row) + 1) % 2 == 0
+        ? primarythemeBlue()
+        : secondarythemeBlue();
 
     return DataGridRowAdapter(
       color: getBackgroundColor(),
       cells: row.getCells().map<Widget>((each) {
+        String name = each.columnName;
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 8.0),
-          alignment: each.columnName == '#' || each.columnName == 'Points'
+          alignment: name == '#' || name == 'Points' || name == 'TPs'
               ? Alignment.center
               : Alignment.centerLeft,
           child: getCell(
@@ -226,13 +228,16 @@ class TableDataSource extends DataGridSource {
       case 'Finishes':
         return vanillaDataCell(data?['finishes']);
       case 'Map':
-        return buttonDataCell(context, data?['mapName'], '/map_detail', data);
+        return buttonDataCell(context, data?['mapName'], '/map_detail',
+            [data['mapId'], data['mapName']]);
       case 'Time':
         return vanillaDataCell(toMinSec(data?['time']));
       case 'TPs':
         return vanillaDataCell(data?['teleports']);
       case 'Date':
-        return vanillaDataCell(modifyDate(data?['createdOn'].toString()));
+        String? date = data?['createdOn'].toString();
+        return vanillaDataCell(
+            '${date?.substring(0, 11)} ${date?.substring(11, 19)}');
       case 'Server':
         return vanillaDataCell(data?['serverName']);
       case 'Points in total':

@@ -125,7 +125,7 @@ class _LatestBodyState extends State<LatestBody> {
                     child: InkWell(
                       onTap: () => Navigator.of(context).pushNamed(
                         '/map_detail',
-                        arguments: info,
+                        arguments: [info.mapId, info.mapName],
                       ),
                       child: GetNetworkImage(
                         fileName: info.mapName,
@@ -161,7 +161,7 @@ class _LatestBodyState extends State<LatestBody> {
                           onTap: () {
                             Navigator.of(context).pushNamed(
                               '/map_detail',
-                              arguments: info,
+                              arguments: [info.mapId, info.mapName],
                             );
                           },
                         ),

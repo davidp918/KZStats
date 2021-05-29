@@ -23,7 +23,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => About());
 
       case '/map_detail':
-        final dynamic mapInfo = settings.arguments as dynamic;
+        // [0]: mapId, [1]: mapName
+        final List<dynamic> mapInfo = settings.arguments as List<dynamic>;
         return MaterialPageRoute(builder: (_) => MapDetail(mapInfo: mapInfo));
 
       case '/player_detail':
