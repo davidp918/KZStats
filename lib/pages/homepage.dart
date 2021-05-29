@@ -3,7 +3,6 @@ import 'package:kzstats/pages/tabs/bans.dart';
 import 'package:kzstats/pages/tabs/jumpstats.dart';
 import 'package:kzstats/pages/tabs/latest.dart';
 import 'package:kzstats/pages/tabs/leaderboard.dart';
-import 'package:kzstats/pages/tabs/maps.dart';
 import 'package:kzstats/theme/colors.dart';
 
 class Homepage extends StatefulWidget {

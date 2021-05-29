@@ -71,13 +71,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "5.9.55"
-  convex_bottom_bar:
-    dependency: "direct main"
-    description:
-      name: convex_bottom_bar
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.0.0"
   crypto:
     dependency: "direct main"
     description:
@@ -92,13 +85,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.3"
-  equatable:
-    dependency: transitive
-    description:
-      name: equatable
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.2"
   eva_icons_flutter:
     dependency: "direct main"
     description:
@@ -204,13 +190,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.0"
-  fl_chart:
-    dependency: "direct main"
-    description:
-      name: fl_chart
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.36.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -574,6 +553,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.33"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "19.1.65"
+  syncfusion_flutter_datagrid:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_datagrid
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "19.1.65-beta"
   synchronized:
     dependency: transitive
     description:

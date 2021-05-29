@@ -1,5 +1,4 @@
 import 'package:community_material_icon/community_material_icon.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/appbars/baseAppBar.dart';
