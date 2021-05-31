@@ -50,7 +50,7 @@ class _MapsPageState extends State<MapsPage> {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight * 0.85),
+          preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
           child: Container(
             color: appbarColor(),
             alignment: Alignment.bottomCenter,
@@ -66,7 +66,6 @@ class _MapsPageState extends State<MapsPage> {
         body: CustomScrollView(
           controller: this._scrollController,
           slivers: <Widget>[
-            this.filterBar(),
             SliverPadding(
               padding: EdgeInsets.all(15.0),
               sliver: SliverGrid(
@@ -84,41 +83,6 @@ class _MapsPageState extends State<MapsPage> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget filterBar() {
-    List<String> filterName = ['Sorted by', 'Tier', 'Mapper'];
-    List<Function> onTaps = [];
-    return SliverAppBar(
-      floating: true,
-      toolbarHeight: kToolbarHeight * 0.6,
-      flexibleSpace: Container(
-        height: kToolbarHeight * 0.6,
-        color: primarythemeBlue(),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [for (int i = 0; i < filterName.length; i++) i]
-              .map(
-                (index) => Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${filterName[index]}',
-                        style: TextStyle(fontWeight: FontWeight.w300),
-                      ),
-                      SizedBox(width: 3),
-                      Icon(
-                        Icons.keyboard_arrow_down_sharp,
-                        color: Colors.white,
-                        size: 13,
-                      ),
-                    ]),
-              )
-              .toList(),
         ),
       ),
     );
