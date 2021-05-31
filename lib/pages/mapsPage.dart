@@ -28,14 +28,20 @@ class _MapsPageState extends State<MapsPage> {
     this._scrollController = ScrollController();
     this._tabs = [Maps(), Maps()];
     this._tabsTitle = ['All', 'Marked']
-        .map((data) => Text(data,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              fontWeight: FontWeight.w300,
-            )))
+        .map(
+          (data) => Align(
+            alignment: Alignment.center,
+            child: Text(
+              data,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+        )
         .toList();
-    this.mapInfo = this.mapInfo.take(10).toList();
   }
 
   @override
@@ -60,38 +66,7 @@ class _MapsPageState extends State<MapsPage> {
         body: CustomScrollView(
           controller: this._scrollController,
           slivers: <Widget>[
-            SliverAppBar(
-              floating: true,
-              toolbarHeight: kToolbarHeight * 0.6,
-              flexibleSpace: Container(
-                height: kToolbarHeight * 0.6,
-                color: primarythemeBlue(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: ['Sorted by', 'Tier', 'Mapper']
-                      .map((each) => InkWell(
-                            child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    '$each',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w300),
-                                  ),
-                                  SizedBox(width: 3),
-                                  Icon(
-                                    Icons.keyboard_arrow_down_sharp,
-                                    color: Colors.white,
-                                    size: 13,
-                                  ),
-                                ]),
-                            onTap: () {},
-                          ))
-                      .toList(),
-                ),
-              ),
-            ),
+            this.filterBar(),
             SliverPadding(
               padding: EdgeInsets.all(15.0),
               sliver: SliverGrid(
@@ -109,6 +84,42 @@ class _MapsPageState extends State<MapsPage> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget filterBar() {
+    List<String> filterName = ['Sorted by', 'Tier', 'Mapper'];
+    List<Function> onTaps = [];
+    return SliverAppBar(
+      floating: true,
+      toolbarHeight: kToolbarHeight * 0.6,
+      flexibleSpace: Container(
+        height: kToolbarHeight * 0.6,
+        color: primarythemeBlue(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [for (int i = 0; i < filterName.length; i++) i]
+              .map((index) => InkWell(
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${filterName[index]}',
+                            style: TextStyle(fontWeight: FontWeight.w300),
+                          ),
+                          SizedBox(width: 3),
+                          Icon(
+                            Icons.keyboard_arrow_down_sharp,
+                            color: Colors.white,
+                            size: 13,
+                          ),
+                        ]),
+                    onTap: () {}, // onTaps[index](),
+                  ))
+              .toList(),
         ),
       ),
     );
