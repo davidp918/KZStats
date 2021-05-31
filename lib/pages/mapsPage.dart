@@ -102,23 +102,22 @@ class _MapsPageState extends State<MapsPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [for (int i = 0; i < filterName.length; i++) i]
-              .map((index) => InkWell(
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${filterName[index]}',
-                            style: TextStyle(fontWeight: FontWeight.w300),
-                          ),
-                          SizedBox(width: 3),
-                          Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            color: Colors.white,
-                            size: 13,
-                          ),
-                        ]),
-                    onTap: () {}, // onTaps[index](),
-                  ))
+              .map(
+                (index) => Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${filterName[index]}',
+                        style: TextStyle(fontWeight: FontWeight.w300),
+                      ),
+                      SizedBox(width: 3),
+                      Icon(
+                        Icons.keyboard_arrow_down_sharp,
+                        color: Colors.white,
+                        size: 13,
+                      ),
+                    ]),
+              )
               .toList(),
         ),
       ),
