@@ -52,6 +52,7 @@ class _MapsState extends State<Maps> with AutomaticKeepAliveClientMixin<Maps> {
       mainAxisSpacing: 8.0,
       crossAxisSpacing: 8.0,
       childAspectRatio: 1,
+      // physics: NeverScrollableScrollPhysics(),
       padding: EdgeInsets.all(15.0),
       itemBuilder: _itemBuilder,
       pageFuture: (pageIndex) =>
