@@ -183,7 +183,8 @@ class SearchMapBody extends StatelessWidget {
       onPressed: () {
         UserSharedPreferences.updateMapHistory(each);
         provider.refresh();
-        Navigator.of(context).pushNamed('/map_detail', arguments: each);
+        Navigator.of(context)
+            .pushNamed('/map_detail', arguments: [each.mapId, each.mapName]);
       },
     );
   }
@@ -224,7 +225,8 @@ class SearchMapBody extends StatelessWidget {
         InkWell(
           onTap: () {
             UserSharedPreferences.updateMapHistory(each);
-            Navigator.of(context).pushNamed('/map_detail', arguments: each);
+            Navigator.of(context).pushNamed('/map_detail',
+                arguments: [each.mapId, each.mapName]);
           },
           child: Padding(
             padding: EdgeInsets.all(16),
@@ -431,7 +433,8 @@ class SearchPlayerBody extends StatelessWidget {
       onPressed: () {
         UserSharedPreferences.updatePlayerHistory(each);
         provider.refresh();
-        Navigator.of(context).pushNamed('/map_detail', arguments: each);
+        Navigator.of(context).pushNamed('/player_detail',
+            arguments: [each.steamid64, each.player_name]);
       },
     );
   }

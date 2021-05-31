@@ -18,8 +18,11 @@ import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
 
 class MapDetail extends StatefulWidget {
-  final dynamic mapInfo;
-  const MapDetail({Key? key, this.mapInfo}) : super(key: key);
+  final List<dynamic> mapInfo;
+  const MapDetail({
+    Key? key,
+    required this.mapInfo,
+  }) : super(key: key);
 
   @override
   _MapDetailState createState() => _MapDetailState();
@@ -28,16 +31,20 @@ class MapDetail extends StatefulWidget {
 class _MapDetailState extends State<MapDetail> {
   late Future<List<dynamic>> _future;
   late ModeState state;
+  late int mapId;
+  late String mapName;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    this.mapId = widget.mapInfo[0];
+    this.mapName = widget.mapInfo[1];
     this.state = context.watch<ModeCubit>().state;
     this._future = Future.wait(
       [
         getRequest(
           globalApiMaptopRecordsUrl(
-            widget.mapInfo!.mapId,
+            this.mapId,
             state.mode,
             state.nub,
             100,
@@ -46,7 +53,7 @@ class _MapDetailState extends State<MapDetail> {
         ),
         getRequest(
           globalApiMaptopRecordsUrl(
-            widget.mapInfo!.mapId,
+            this.mapId,
             state.mode,
             true,
             1,
@@ -55,7 +62,7 @@ class _MapDetailState extends State<MapDetail> {
         ),
         getRequest(
           globalApiMaptopRecordsUrl(
-            widget.mapInfo!.mapId,
+            this.mapId,
             state.mode,
             false,
             1,
@@ -63,7 +70,7 @@ class _MapDetailState extends State<MapDetail> {
           recordFromJson,
         ),
         getRequest(
-          globalApiMapInfoUrl(widget.mapInfo!.mapId.toString()),
+          globalApiMapInfoUrl(this.mapId.toString()),
           mapInfoFromJson,
         ),
       ],
@@ -73,7 +80,7 @@ class _MapDetailState extends State<MapDetail> {
   @override
   Widget build(BuildContext context) {
     return DetailedPage(
-      title: widget.mapInfo.mapName,
+      title: this.mapName,
       builder: (BuildContext context) {
         return FutureBuilder<List<dynamic>>(
           future: this._future,
@@ -121,8 +128,8 @@ class _MapDetailState extends State<MapDetail> {
           Container(
             height: crossHeight,
             child: GetNetworkImage(
-              fileName: '${widget.mapInfo.mapName}',
-              url: '$imageBaseURL${widget.mapInfo!.mapName}.webp',
+              fileName: '${this.mapName}',
+              url: '$imageBaseURL${this.mapName}.webp',
               errorImage: AssetImage('assets/icon/noimage.png'),
             ),
           ),

@@ -57,7 +57,6 @@ class _LeaderboardState extends State<Leaderboard>
 
   Widget mainBody(List<dynamic> data) {
     return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 8),
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
       children: [
