@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kzstats/common/appbars/baseAppbar.dart';
 import 'package:kzstats/pages/tabs/bans.dart';
 import 'package:kzstats/pages/tabs/jumpstats.dart';
 import 'package:kzstats/pages/tabs/latest.dart';
@@ -16,15 +17,18 @@ class _HomepageState extends State<Homepage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin<Homepage> {
   late TabController _tabController;
   late List<Widget> tabs, tabsTitle;
+  late Widget appbar;
   late int curIndex;
-
+  late ScrollController _scrollController;
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
     super.initState();
+    this._scrollController = ScrollController();
     this._tabController = TabController(length: 5, vsync: this);
+    this.appbar = BaseAppBar('KZStats', true);
     this.tabs = [
       Latest(),
       Leaderboard(type: 'Points'),
@@ -52,25 +56,29 @@ class _HomepageState extends State<Homepage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return DefaultTabController(
-      length: 5,
-      child: Column(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            color: appbarColor(),
-            child: Center(
-              child: TabBar(
-                tabs: this.tabsTitle,
-                isScrollable: true,
-                indicatorColor: Colors.white,
-                indicatorWeight: 1.4,
-                indicatorSize: TabBarIndicatorSize.label,
+    return NestedScrollView(
+      controller: this._scrollController,
+      headerSliverBuilder: (BuildContext context, _) => <Widget>[this.appbar],
+      body: DefaultTabController(
+        length: 5,
+        child: Column(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              color: appbarColor(),
+              child: Center(
+                child: TabBar(
+                  tabs: this.tabsTitle,
+                  isScrollable: true,
+                  indicatorColor: Colors.white,
+                  indicatorWeight: 1.4,
+                  indicatorSize: TabBarIndicatorSize.label,
+                ),
               ),
             ),
-          ),
-          Expanded(child: TabBarView(children: this.tabs)),
-        ],
+            Expanded(child: TabBarView(children: this.tabs)),
+          ],
+        ),
       ),
     );
   }
