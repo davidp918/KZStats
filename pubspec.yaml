@@ -49,7 +49,7 @@ dependencies:
   syncfusion_flutter_core: ^19.1.65
   syncfusion_flutter_datagrid: ^19.1.65-beta
   collection: ^1.15.0
-  expandable: ^5.0.1
+  smart_select: ^4.3.2
 
   firebase_messaging: ^10.0.0
   firebase_analytics: ^8.1.0

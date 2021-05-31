@@ -99,13 +99,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.5.0"
-  expandable:
-    dependency: "direct main"
-    description:
-      name: expandable
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "5.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -518,6 +511,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  smart_select:
+    dependency: "direct main"
+    description:
+      name: smart_select
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.3.2"
   source_span:
     dependency: transitive
     description:

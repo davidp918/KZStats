@@ -57,33 +57,29 @@ class _MapsPageState extends State<MapsPage> {
           child: AppBar(
             backgroundColor: appbarColor(),
             leading: BlocBuilder<UserCubit, UserState>(
-              builder: (context, userState) {
-                return IconButton(
-                  icon: Icon(Icons.person),
-                  onPressed: () {
-                    if (userState.info.avatarUrl == '' &&
-                        userState.info.steam32 == '') {
-                      Navigator.pushNamed(context, '/login');
-                    } else {
-                      Navigator.pushNamed(
+              builder: (context, userState) => IconButton(
+                icon: Icon(Icons.person),
+                onPressed: () => userState.info.avatarUrl == '' &&
+                        userState.info.steam32 == ''
+                    ? Navigator.pushNamed(context, '/login')
+                    : Navigator.pushNamed(
                         context,
                         '/player_detail',
                         arguments: [
                           userState.info.steam64,
                           userState.info.name
                         ],
-                      );
-                    }
-                  },
-                );
-              },
+                      ),
+              ),
             ),
             actions: <Widget>[
               Align(
                 alignment: Alignment.bottomCenter,
                 child: IconButton(
                   icon: Icon(CommunityMaterialIcons.filter_outline),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/filter');
+                  },
                 ),
               )
             ],
@@ -108,6 +104,7 @@ class _MapsPageState extends State<MapsPage> {
                   (context, index) =>
                       _itemBuilder(context, mapInfo[index], index),
                   childCount: this.mapInfo.length,
+                  addAutomaticKeepAlives: true,
                 ),
                 gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200.0,

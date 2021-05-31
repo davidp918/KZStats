@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kzstats/pages/base.dart';
+import 'package:kzstats/pages/details/filter.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
 import 'package:kzstats/pages/details/player_detail.dart';
 import 'package:kzstats/pages/details/loginPage.dart';
@@ -35,6 +36,9 @@ class AppRouter {
 
       case '/search':
         return MaterialPageRoute(builder: (_) => Search());
+
+      case '/filter':
+        return MaterialPageRoute(builder: (_) => MapsFilter());
 
       default:
         return MaterialPageRoute(builder: (context) => Base());
