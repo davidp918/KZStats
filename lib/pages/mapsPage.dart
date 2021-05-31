@@ -35,6 +35,7 @@ class _MapsPageState extends State<MapsPage> {
               fontWeight: FontWeight.w300,
             )))
         .toList();
+    this.mapInfo = this.mapInfo.take(10).toList();
   }
 
   @override
@@ -43,7 +44,7 @@ class _MapsPageState extends State<MapsPage> {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight * 0.8),
+          preferredSize: Size.fromHeight(kToolbarHeight * 0.85),
           child: Container(
             color: appbarColor(),
             alignment: Alignment.bottomCenter,
@@ -56,28 +57,58 @@ class _MapsPageState extends State<MapsPage> {
             ),
           ),
         ),
-        body: NestedScrollView(
+        body: CustomScrollView(
           controller: this._scrollController,
-          headerSliverBuilder: (BuildContext context, _) => <Widget>[
+          slivers: <Widget>[
             SliverAppBar(
               floating: true,
-              flexibleSpace: Container(color: Colors.green),
+              toolbarHeight: kToolbarHeight * 0.6,
+              flexibleSpace: Container(
+                height: kToolbarHeight * 0.6,
+                color: primarythemeBlue(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: ['Sorted by', 'Tier', 'Mapper']
+                      .map((each) => InkWell(
+                            child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '$each',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w300),
+                                  ),
+                                  SizedBox(width: 3),
+                                  Icon(
+                                    Icons.keyboard_arrow_down_sharp,
+                                    color: Colors.white,
+                                    size: 13,
+                                  ),
+                                ]),
+                            onTap: () {},
+                          ))
+                      .toList(),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.all(15.0),
+              sliver: SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) =>
+                      _itemBuilder(context, mapInfo[index], index),
+                  childCount: this.mapInfo.length,
+                ),
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200.0,
+                  mainAxisSpacing: 8.0,
+                  crossAxisSpacing: 8.0,
+                  childAspectRatio: 1.0,
+                ),
+              ),
             ),
           ],
-          body: SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return _itemBuilder(context, mapInfo[index], index);
-              },
-              childCount: this.mapInfo.length,
-            ),
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200.0,
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 8.0,
-              childAspectRatio: 1.0,
-            ),
-          ),
         ),
       ),
     );
@@ -109,7 +140,7 @@ class _MapsPageState extends State<MapsPage> {
                     onTap: () {
                       Navigator.of(context).pushNamed(
                         '/map_detail',
-                        arguments: entry,
+                        arguments: [entry.mapId, entry.mapName],
                       );
                     },
                     child: Text(
