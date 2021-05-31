@@ -1,7 +1,10 @@
 import 'dart:math';
 
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/networkImage.dart';
+import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/pages/tabs/maps.dart';
 import 'package:kzstats/theme/colors.dart';
@@ -51,15 +54,47 @@ class _MapsPageState extends State<MapsPage> {
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
-          child: Container(
-            color: appbarColor(),
-            alignment: Alignment.bottomCenter,
-            child: TabBar(
-              tabs: this._tabsTitle,
-              isScrollable: true,
-              indicatorColor: Colors.white,
-              indicatorWeight: 1.4,
-              indicatorSize: TabBarIndicatorSize.label,
+          child: AppBar(
+            backgroundColor: appbarColor(),
+            leading: BlocBuilder<UserCubit, UserState>(
+              builder: (context, userState) {
+                return IconButton(
+                  icon: Icon(Icons.person),
+                  onPressed: () {
+                    if (userState.info.avatarUrl == '' &&
+                        userState.info.steam32 == '') {
+                      Navigator.pushNamed(context, '/login');
+                    } else {
+                      Navigator.pushNamed(
+                        context,
+                        '/player_detail',
+                        arguments: [
+                          userState.info.steam64,
+                          userState.info.name
+                        ],
+                      );
+                    }
+                  },
+                );
+              },
+            ),
+            actions: <Widget>[
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: IconButton(
+                  icon: Icon(CommunityMaterialIcons.filter_outline),
+                  onPressed: () {},
+                ),
+              )
+            ],
+            flexibleSpace: Center(
+              child: TabBar(
+                tabs: this._tabsTitle,
+                isScrollable: true,
+                indicatorColor: Colors.white,
+                indicatorWeight: 1.4,
+                indicatorSize: TabBarIndicatorSize.label,
+              ),
             ),
           ),
         ),
