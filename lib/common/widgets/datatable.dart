@@ -25,9 +25,7 @@ class CustomDataTable extends StatefulWidget {
 
 class _CustomDataTableState extends State<CustomDataTable> {
   List<Map<String, dynamic>> data = [];
-  late int _sortColumnIndex;
   late Map<String, String> identifyAttr;
-  late bool _isAscending;
   late List<GridTextColumn> _columns;
   late TableDataSource _tableDataSource;
   final Map<String, double> _width = {
@@ -83,15 +81,13 @@ class _CustomDataTableState extends State<CustomDataTable> {
               allowSorting: true),
         )
         .toList();
-    this._sortColumnIndex = widget.initialSortedColumnIndex;
-    this._isAscending = widget.initialAscending;
     for (int i = 0; i < widget.data.length; i++) {
       Map<String, dynamic> cur = widget.data[i].toJson();
       cur['index'] = i + 1;
       this.data.add(cur);
     }
     this.data.sort((a, b) => compareString(
-        this._isAscending, a, b, widget.initialSortedColumnIndex));
+        widget.initialAscending, a, b, widget.initialSortedColumnIndex));
     for (int i = 0; i < this.data.length; i++) this.data[i]['index'] = i + 1;
     this._tableDataSource = TableDataSource(
       data: this.data,
@@ -99,18 +95,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
       context: context,
       identifyAttr: this.identifyAttr,
     );
-  }
-
-  void _onSort(int index, bool isAscending) {
-    for (int i = 0; i < this.data.length; i++) {
-      if (index != i) continue;
-      this.data.sort((a, b) => compareString(this._isAscending, a, b, index));
-      setState(() {
-        this._sortColumnIndex = i;
-        this._isAscending = isAscending;
-      });
-      break;
-    }
   }
 
   int compareString(bool ascending, Map<String, dynamic> a,
@@ -126,50 +110,52 @@ class _CustomDataTableState extends State<CustomDataTable> {
     Size size = MediaQuery.of(context).size;
     final int rowsPerPage = 10;
     final double dataPagerHeight = 60.0;
-    final double contentRowHeight = 49.0;
-    final double headerRowHeight = 56.0;
+    final double contentRowHeight = 44.0;
+    final double headerRowHeight = 49.0;
     final double tableHeight = headerRowHeight + rowsPerPage * contentRowHeight;
     return SfDataGridTheme(
-      data: SfDataGridThemeData(gridLineStrokeWidth: 0),
-      child: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: tableHeight,
-              width: size.width,
-              child: SfDataGrid(
-                allowSorting: true,
-                allowMultiColumnSorting: true,
-                allowTriStateSorting: true,
-                isScrollbarAlwaysShown: false,
-                columns: this._columns,
-                source: this._tableDataSource,
-                verticalScrollPhysics: NeverScrollableScrollPhysics(),
+      data: SfDataGridThemeData(
+        headerColor: appbarColor(),
+        gridLineStrokeWidth: 0,
+        sortIconColor: Colors.white,
+      ),
+      child: Column(
+        children: [
+          SizedBox(
+            height: tableHeight,
+            width: size.width,
+            child: SfDataGrid(
+              rowHeight: contentRowHeight,
+              headerRowHeight: headerRowHeight,
+              allowSorting: true,
+              allowMultiColumnSorting: true,
+              allowTriStateSorting: true,
+              showSortNumbers: true,
+              isScrollbarAlwaysShown: false,
+              columns: this._columns,
+              source: this._tableDataSource,
+              verticalScrollPhysics: NeverScrollableScrollPhysics(),
+            ),
+          ),
+          Container(
+            height: dataPagerHeight,
+            child: SfDataPagerTheme(
+              data: SfDataPagerThemeData(
+                itemColor: Colors.white70,
+                selectedItemColor: primarythemeBlue(),
+                itemBorderRadius: BorderRadius.circular(5),
+                backgroundColor: backgroundColor(),
+                disabledItemColor: Colors.white30,
+              ),
+              child: SfDataPager(
+                visibleItemsCount: 10,
+                delegate: _tableDataSource,
+                pageCount: this.data.length / rowsPerPage,
+                direction: Axis.horizontal,
               ),
             ),
-            Container(
-              height: dataPagerHeight,
-              child: SfDataPagerTheme(
-                data: SfDataPagerThemeData(
-                  itemColor: Colors.white70,
-                  selectedItemColor: primarythemeBlue(),
-                  itemBorderRadius: BorderRadius.circular(5),
-                  backgroundColor: backgroundColor(),
-                  disabledItemColor: Colors.white30,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30),
-                  child: SfDataPager(
-                    visibleItemsCount: 10,
-                    delegate: _tableDataSource,
-                    pageCount: this.data.length / rowsPerPage,
-                    direction: Axis.horizontal,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
@@ -230,9 +216,16 @@ class TableDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    Color getBackgroundColor() => (this._rows.indexOf(row) + 1) % 2 == 0
-        ? primarythemeBlue()
-        : secondarythemeBlue();
+    List<String> centeredColumns = [
+      '#',
+      'TPs',
+      'Points',
+      'Average',
+      'Rating',
+      'Finishes',
+      'Points in total'
+    ];
+    Color getBackgroundColor() => primarythemeBlue();
 
     return DataGridRowAdapter(
       color: getBackgroundColor(),
@@ -240,13 +233,7 @@ class TableDataSource extends DataGridSource {
         String name = each.columnName;
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 8.0),
-          alignment: name == '#' ||
-                  name == 'Points' ||
-                  name == 'TPs' ||
-                  name == 'Average' ||
-                  name == 'Rating' ||
-                  name == 'Finishes' ||
-                  name == 'Points in total'
+          alignment: centeredColumns.contains(name)
               ? Alignment.center
               : Alignment.centerLeft,
           child: getCell(
