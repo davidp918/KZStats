@@ -3,7 +3,10 @@ import 'dart:math';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kzstats/common/error.dart';
+import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
+import 'package:kzstats/cubit/tier_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/theme/colors.dart';
@@ -22,11 +25,13 @@ class _MapsPageState extends State<MapsPage> {
   late List<MapInfo> mapInfo;
   late List<Widget> _tabsTitle, _tabs;
   late ScrollController _scrollController;
+  late Future _loadMaps;
+  late FilterState filterState;
 
   @override
   void initState() {
     super.initState();
-    this.mapInfo = UserSharedPreferences.getMapData() ?? [];
+    this._loadMaps = UserSharedPreferences.updateMapData();
     this._scrollController = ScrollController();
     //this._tabs = [Maps(), Maps()];
     this._tabsTitle = ['All', 'Marked']
@@ -44,6 +49,19 @@ class _MapsPageState extends State<MapsPage> {
           ),
         )
         .toList();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    this.filterState = context.watch<FilterCubit>().state;
+  }
+
+  void filterMapData(List<MapInfo> data) {
+    List<MapInfo> newData = [];
+    for (MapInfo info in data) {
+      if (filterState.tier.contains(info.difficulty)) newData.add(info);
+    }
   }
 
   @override
@@ -93,27 +111,37 @@ class _MapsPageState extends State<MapsPage> {
             ),
           ),
         ),
-        body: CustomScrollView(
-          controller: this._scrollController,
-          slivers: <Widget>[
-            SliverPadding(
-              padding: EdgeInsets.all(15.0),
-              sliver: SliverGrid(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) =>
-                      _itemBuilder(context, mapInfo[index], index),
-                  childCount: this.mapInfo.length,
-                  addAutomaticKeepAlives: true,
+        body: FutureBuilder(
+          future: this._loadMaps,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState != ConnectionState.done)
+              return loadingFromApi();
+            List<MapInfo> data = UserSharedPreferences.getMapData();
+            if (data == []) return errorScreen();
+            this.mapInfo = data;
+            return CustomScrollView(
+              controller: this._scrollController,
+              slivers: <Widget>[
+                SliverPadding(
+                  padding: EdgeInsets.all(15.0),
+                  sliver: SliverGrid(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) =>
+                          _itemBuilder(context, mapInfo[index], index),
+                      childCount: this.mapInfo.length,
+                      addAutomaticKeepAlives: true,
+                    ),
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200.0,
+                      mainAxisSpacing: 8.0,
+                      crossAxisSpacing: 8.0,
+                      childAspectRatio: 1.0,
+                    ),
+                  ),
                 ),
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200.0,
-                  mainAxisSpacing: 8.0,
-                  crossAxisSpacing: 8.0,
-                  childAspectRatio: 1.0,
-                ),
-              ),
-            ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );

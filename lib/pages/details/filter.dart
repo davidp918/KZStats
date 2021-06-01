@@ -20,6 +20,15 @@ class MapsFilterState extends State<MapsFilter> {
     'Largest Map',
     'Smallest Map'
   ];
+  final List<String> tierOptions = [
+    'Very Easy',
+    'Easy',
+    'Medium',
+    'Hard',
+    'Very Hard',
+    'Extreme',
+    'Death'
+  ];
 
   @override
   void didChangeDependencies() {
@@ -31,8 +40,9 @@ class MapsFilterState extends State<MapsFilter> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: backgroundColor(),
+        backgroundColor: appbarColor(),
         centerTitle: true,
+        brightness: Brightness.dark,
         title: Text('Filter'),
       ),
       body: ListView(
@@ -56,6 +66,23 @@ class MapsFilterState extends State<MapsFilter> {
               choiceStyle: C2ChoiceStyle(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
               ),
+              wrapped: true,
+            ),
+          ),
+          OptionsChoice(
+            title: 'Tier',
+            child: ChipsChoice<dynamic>.multiple(
+              value: this.filterState.tier,
+              choiceItems: C2Choice.listFrom(
+                source: this.tierOptions,
+                value: (int i, String v) => i,
+                label: (int i, String v) => v,
+              ),
+              onChanged: (List<dynamic> val) {
+                val.forEach((n) => n + 1);
+                print(val);
+                BlocProvider.of<FilterCubit>(context).setTier(val);
+              },
               wrapped: true,
             ),
           ),
@@ -89,7 +116,7 @@ class _OptionsChoiceState extends State<OptionsChoice>
     super.build(context);
     return Card(
       elevation: 2,
-      margin: const EdgeInsets.all(5),
+      margin: const EdgeInsets.all(10),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

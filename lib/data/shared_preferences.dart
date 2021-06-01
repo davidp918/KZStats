@@ -19,7 +19,6 @@ class UserSharedPreferences {
 
   static Future init() async {
     _preferences = await SharedPreferences.getInstance();
-    updateMapData();
   }
 
   static Future setStarted() async {
@@ -44,31 +43,41 @@ class UserSharedPreferences {
   }
 
   // Maps Data
-  static void updateMapData() async {
+  static Future updateMapData() async {
+    print('updating local map data...');
     // first check if need to update by:
     // 1. local is null?
     // 2. if local is null then ofcourse write,
     // 3. if not, check if it is outdated by
     dynamic prev = getMapData();
     if (prev == null) {
-      updateAllMapData();
+      await updateAllMapData();
       return;
     }
     int prevLength = prev.length;
     List<MapInfo>? check =
         await getMaps(1, prevLength, multiMapInfoFromJson, 0);
-    if (check != null || check == []) updateAllMapData();
+    if (check != null || check != [])
+      await updateAllMapData();
+    else
+      print('No update available');
   }
 
-  static void updateAllMapData() async {
+  static Future updateAllMapData() async {
+    print('Downloading map data...');
     List<MapInfo>? allMaps = await getMaps(9999, 0, multiMapInfoFromJson, 0);
     if (allMaps == null) return;
-    setMapTierInfo(allMaps);
+    await setMapTierInfo(allMaps);
     allMaps.sort((a, b) => a.mapId!.compareTo(b.mapId!));
     await _preferences.setString(_mapData, multiMapInfoToJson(allMaps));
+    print('Download success');
   }
 
-  static void setMapTierInfo(List<MapInfo> data) async {
+  static Future deleteMapData() async {
+    await _preferences.remove(_mapData);
+  }
+
+  static Future setMapTierInfo(List<MapInfo> data) async {
     final Map<String, int> tierMap = {};
     final List<int> tierCountInt = [0, 0, 0, 0, 0, 0, 0];
     for (MapInfo each in data) {
@@ -99,10 +108,10 @@ class UserSharedPreferences {
     return _preferences.getString(_tierMap)!;
   }
 
-  static List<MapInfo>? getMapData() {
+  static List<MapInfo> getMapData() {
     // sort by mapId, starting from 200, ascending?
     dynamic data = _preferences.getString(_mapData);
-    if (data == null) return null;
+    if (data == null) return [];
     return multiMapInfoFromJson(data);
   }
 

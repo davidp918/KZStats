@@ -1,11 +1,12 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class FilterState {
   int sortBy;
-  // 0: A-Z, 1: Latest, 2:Oldest, 3: Map Size
-  Set<int> tier;
-  Set<String> mapper;
+  List<dynamic> tier;
+  List<dynamic> mapper;
   FilterState({
     required this.sortBy,
     required this.tier,
@@ -14,27 +15,28 @@ class FilterState {
 
   Map<String, dynamic> toMap() => {
         'sortBy': sortBy,
-        'tier': tier,
-        'mapper': mapper,
+        'tier': json.encode(tier),
+        'mapper': json.encode(mapper),
       };
 
   factory FilterState.fromMap(Map<String, dynamic> map) => FilterState(
         sortBy: map['sortBy'],
-        tier: map['tier'],
-        mapper: map['mapper'],
+        tier: json.decode(map['tier']) as List<dynamic>,
+        mapper: json.decode(map['mapper']) as List<dynamic>,
       );
 }
 
 class FilterCubit extends Cubit<FilterState> with HydratedMixin {
-  FilterCubit() : super(FilterState(sortBy: 0, tier: {0}, mapper: {}));
-
-  void setTier(Set<int> newTier) => emit(
-      FilterState(tier: newTier, sortBy: state.sortBy, mapper: state.mapper));
+  FilterCubit()
+      : super(FilterState(sortBy: 0, tier: [1, 2, 3, 4, 5, 6, 7], mapper: []));
 
   void setSortBy(int newSortBy) => emit(
       FilterState(sortBy: newSortBy, tier: state.tier, mapper: state.mapper));
 
-  void setMapper(Set<String> newMapper) => emit(
+  void setTier(List<dynamic> newTier) => emit(
+      FilterState(tier: newTier, sortBy: state.sortBy, mapper: state.mapper));
+
+  void setMapper(List<dynamic> newMapper) => emit(
       FilterState(sortBy: state.sortBy, tier: state.tier, mapper: newMapper));
 
   @override
