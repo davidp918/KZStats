@@ -68,7 +68,7 @@ class UserSharedPreferences {
     List<MapInfo>? allMaps = await getMaps(9999, 0, multiMapInfoFromJson, 0);
     if (allMaps == null) return;
     await setMapTierInfo(allMaps);
-    allMaps.sort((a, b) => a.mapId!.compareTo(b.mapId!));
+    allMaps.sort((a, b) => a.mapId.compareTo(b.mapId));
     await _preferences.setString(_mapData, multiMapInfoToJson(allMaps));
     print('Download success');
   }
@@ -81,7 +81,7 @@ class UserSharedPreferences {
     final Map<String, int> tierMap = {};
     final List<int> tierCountInt = [0, 0, 0, 0, 0, 0, 0];
     for (MapInfo each in data) {
-      tierMap[each.mapName!] = each.difficulty!;
+      tierMap[each.mapName] = each.difficulty!;
       tierCountInt[each.difficulty! - 1] += 1;
     }
     final List<String> tierCount =
@@ -119,7 +119,7 @@ class UserSharedPreferences {
   static Future updateMapHistory(MapInfo newHistory) async {
     var old = getSearchMapHistory();
     if (old.any((element) => element.mapName == newHistory.mapName))
-      old.removeWhere((element) => element.mapName! == newHistory.mapName!);
+      old.removeWhere((element) => element.mapName == newHistory.mapName);
     old.insert(0, newHistory);
     if (old.length > 20) old.removeAt(20);
     await _preferences.setString(_mapHistory, multiMapInfoToJson(old));

@@ -51,6 +51,7 @@ dependencies:
   collection: ^1.15.0
   chips_choice:
     path: ../flutter_chips_choice/
+  sorted: ^2.0.0
 
   firebase_messaging: ^10.0.0
   firebase_analytics: ^8.1.0

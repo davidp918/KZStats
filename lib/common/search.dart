@@ -172,7 +172,7 @@ class SearchMapBody extends StatelessWidget {
         backgroundColor: primarythemeBlue().withOpacity(0.8),
       ),
       label: Text(
-        ' ${each.mapName!} ',
+        ' ${each.mapName} ',
         style: TextStyle(fontSize: 16),
       ),
       labelStyle: TextStyle(
@@ -251,7 +251,7 @@ class SearchMapBody extends StatelessWidget {
                       Directionality(
                         textDirection: TextDirection.ltr,
                         child: SubstringHighlight(
-                          text: each.mapName!,
+                          text: each.mapName,
                           term: provider.query,
                           textStyle:
                               TextStyle(color: Colors.white, fontSize: 18),

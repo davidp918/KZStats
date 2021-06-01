@@ -44,12 +44,12 @@ class SearchMapProvider extends ChangeNotifier {
     } else {
       List<MapInfo> back = [];
       for (MapInfo each in allMapData!) {
-        if (each.mapName!.contains(query)) {
+        if (each.mapName.contains(query)) {
           back.add(each);
         }
       }
       back.sort((a, b) =>
-          a.mapName!.indexOf(query).compareTo(b.mapName!.indexOf(query)));
+          a.mapName.indexOf(query).compareTo(b.mapName.indexOf(query)));
       _suggestions = back;
     }
 

@@ -14,11 +14,12 @@ class MapsFilter extends StatefulWidget {
 class MapsFilterState extends State<MapsFilter> {
   late FilterState filterState;
   final List<String> sortByOptions = [
-    'Alphabetical Order',
+    'Alphabetical Order - Ascending',
+    'Alphabetical Order - Descending',
     'Latest Release',
     'Oldest Release',
-    'Largest Map',
-    'Smallest Map'
+    'Largest Map in size',
+    'Smallest Map in size'
   ];
   final List<String> tierOptions = [
     'Very Easy',
@@ -79,8 +80,6 @@ class MapsFilterState extends State<MapsFilter> {
                 label: (int i, String v) => v,
               ),
               onChanged: (List<dynamic> val) {
-                val.forEach((n) => n + 1);
-                print(val);
                 BlocProvider.of<FilterCubit>(context).setTier(val);
               },
               wrapped: true,

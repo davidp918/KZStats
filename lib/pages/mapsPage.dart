@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,14 +53,20 @@ class _MapsPageState extends State<MapsPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     this.filterState = context.watch<FilterCubit>().state;
-    this.mapInfo = filterMapData(UserSharedPreferences.getMapData());
   }
 
   List<MapInfo> filterMapData(List<MapInfo> data) {
     List<MapInfo> newData = [];
-    for (MapInfo info in data) {
-      if (filterState.tier.contains(info.difficulty)) newData.add(info);
-    }
+    List<int> tiers = [for (int tier in filterState.tier) tier + 1];
+    int sortBy = filterState.sortBy;
+    for (MapInfo info in data)
+      if (tiers.contains(info.difficulty)) newData.add(info);
+    if (sortBy == 0) newData.sort((a, b) => a.mapName.compareTo(b.mapName));
+    if (sortBy == 1) newData.sort((b, a) => a.mapName.compareTo(b.mapName));
+    if (sortBy == 2) newData.sort((b, a) => a.mapId.compareTo(b.mapId));
+    if (sortBy == 3) newData.sort((a, b) => a.updatedOn.compareTo(b.updatedOn));
+    if (sortBy == 4) newData.sort((b, a) => a.filesize.compareTo(b.filesize));
+    if (sortBy == 5) newData.sort((a, b) => a.filesize.compareTo(b.filesize));
     return newData;
   }
 
@@ -160,8 +164,8 @@ class _MapsPageState extends State<MapsPage> {
           AspectRatio(
             aspectRatio: 200 / 113,
             child: getNetworkImage(
-              entry.mapName!,
-              '$imageBaseURL${entry.mapName!}.webp',
+              entry.mapName,
+              '$imageBaseURL${entry.mapName}.webp',
               AssetImage('assets/icon/noimage.png'),
             ),
           ),
