@@ -2,7 +2,7 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/global/detailed_pages.dart';
+import 'package:kzstats/common/appbars/simpleAppbar.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
@@ -25,119 +25,117 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     final UserState userState = context.watch<UserCubit>().state;
-    return DetailedPage(
-      title: 'Login',
-      builder: (BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.all(30),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 80,
-                child: Image.asset('assets/icon/steam_icon.png'),
+    return Scaffold(
+      appBar: sAppbar('Login'),
+      body: Padding(
+        padding: const EdgeInsets.all(30),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 80,
+              child: Image.asset('assets/icon/steam_icon.png'),
+            ),
+            Text(
+              'Login via Steam',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+                fontWeight: FontWeight.w300,
               ),
-              Text(
-                'Login via Steam',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w300,
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 15),
+            Card(
+              elevation: 2.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              color: primarythemeBlue(),
+              child: ListTile(
+                title: Text(
+                  userState.info.steam64 == ''
+                      ? 'You are not logged in'
+                      : 'You are logged in as: ${userState.info.name}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-                textAlign: TextAlign.center,
+                leading: Container(
+                  decoration: BoxDecoration(shape: BoxShape.circle),
+                  child: Icon(Icons.person, color: Colors.white),
+                ),
+                trailing: userState.info.steam64 == ''
+                    ? Icon(LineariconsFree.cross, color: Colors.red)
+                    : Icon(Icons.check, color: Colors.green),
               ),
-              SizedBox(height: 15),
-              Card(
-                elevation: 2.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-                color: primarythemeBlue(),
-                child: ListTile(
-                  title: Text(
-                    userState.info.steam64 == ''
-                        ? 'You are not logged in'
-                        : 'You are logged in as: ${userState.info.name}',
-                    style: TextStyle(
+            ),
+            SizedBox(height: 8),
+            Card(
+              color: primarythemeBlue(),
+              elevation: 4.0,
+              margin: const EdgeInsets.fromLTRB(36, 8, 36, 6),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(
+                      CommunityMaterialIcons.login,
                       color: Colors.white,
-                      fontWeight: FontWeight.w400,
                     ),
+                    title: Text(
+                      'Login',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    trailing: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: Colors.white,
+                    ),
+                    onTap: () async {
+                      final steamid64 = await Navigator.pushNamed(
+                        context,
+                        '/steamLogin',
+                      );
+                      if (steamid64 != null) {
+                        BlocProvider.of<UserCubit>(context).load();
+                        setState(() {
+                          this.steamid64 = steamid64.toString();
+                        });
+                      }
+                    },
                   ),
-                  leading: Container(
-                    decoration: BoxDecoration(shape: BoxShape.circle),
-                    child: Icon(Icons.person, color: Colors.white),
+                  _buildDivider(),
+                  ListTile(
+                    leading: Icon(
+                      CommunityMaterialIcons.logout,
+                      color: Colors.white,
+                    ),
+                    title: Text(
+                      'Logout',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    trailing: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: Colors.white,
+                    ),
+                    onTap: () async {
+                      UserInfo user = UserInfo(
+                        steam32: '',
+                        steam64: '',
+                        avatarUrl: '',
+                        name: '',
+                      );
+                      BlocProvider.of<UserCubit>(context).setinfo(user);
+                    },
                   ),
-                  trailing: userState.info.steam64 == ''
-                      ? Icon(LineariconsFree.cross, color: Colors.red)
-                      : Icon(Icons.check, color: Colors.green),
-                ),
+                ],
               ),
-              SizedBox(height: 8),
-              Card(
-                color: primarythemeBlue(),
-                elevation: 4.0,
-                margin: const EdgeInsets.fromLTRB(36, 8, 36, 6),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      leading: Icon(
-                        CommunityMaterialIcons.login,
-                        color: Colors.white,
-                      ),
-                      title: Text(
-                        'Login',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      trailing: Icon(
-                        Icons.keyboard_arrow_right,
-                        color: Colors.white,
-                      ),
-                      onTap: () async {
-                        final steamid64 = await Navigator.pushNamed(
-                          context,
-                          '/steamLogin',
-                        );
-                        if (steamid64 != null) {
-                          BlocProvider.of<UserCubit>(context).load();
-                          setState(() {
-                            this.steamid64 = steamid64.toString();
-                          });
-                        }
-                      },
-                    ),
-                    _buildDivider(),
-                    ListTile(
-                      leading: Icon(
-                        CommunityMaterialIcons.logout,
-                        color: Colors.white,
-                      ),
-                      title: Text(
-                        'Logout',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      trailing: Icon(
-                        Icons.keyboard_arrow_right,
-                        color: Colors.white,
-                      ),
-                      onTap: () async {
-                        UserInfo user = UserInfo(
-                          steam32: '',
-                          steam64: '',
-                          avatarUrl: '',
-                          name: '',
-                        );
-                        BlocProvider.of<UserCubit>(context).setinfo(user);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              progress(userState),
-            ],
-          ),
-        );
-      },
+            ),
+            SizedBox(height: 10),
+            progress(userState),
+          ],
+        ),
+      ),
     );
   }
 

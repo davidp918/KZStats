@@ -4,6 +4,7 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/widgets/datatable.dart';
+import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/global/detailed_pages.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:kzstats/common/error.dart';
@@ -37,8 +38,16 @@ class _PlayerDetailState extends State<PlayerDetail> {
   final String steamId64;
   final String playerName;
   late Future _future;
+  late bool marked;
   late ModeState modeState;
   _PlayerDetailState(this.steamId64, this.playerName);
+
+  @override
+  void initState() {
+    super.initState();
+    this.marked =
+        UserSharedPreferences.getMarkedPlayers().contains(this.steamId64);
+  }
 
   @override
   void didChangeDependencies() {
@@ -59,6 +68,8 @@ class _PlayerDetailState extends State<PlayerDetail> {
   @override
   Widget build(BuildContext context) {
     return DetailedPage(
+      markedType: 'player',
+      current: this.steamId64,
       title: this.playerName,
       builder: (BuildContext context) {
         return FutureBuilder<dynamic>(

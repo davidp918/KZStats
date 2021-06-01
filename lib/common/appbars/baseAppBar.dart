@@ -1,16 +1,12 @@
-import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/common/Popup_mode.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String currentPage;
   final bool showProfile;
-  BaseAppBar(
-    this.currentPage,
-    this.showProfile,
-  );
+  final List<Widget>? actions;
+  BaseAppBar(this.currentPage, this.showProfile, [this.actions]);
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -29,13 +25,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: TextStyle(fontWeight: FontWeight.w500),
       ),
       brightness: Brightness.dark,
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(EvilIcons.search),
-          onPressed: () => Navigator.pushNamed(context, '/search'),
-        ),
-        PopUpModeSelect(),
-      ],
+      actions: this.actions,
     );
   }
 

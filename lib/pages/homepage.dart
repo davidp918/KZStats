@@ -1,4 +1,6 @@
+import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:kzstats/common/Popup_mode.dart';
 import 'package:kzstats/common/appbars/baseAppbar.dart';
 import 'package:kzstats/pages/tabs/bans.dart';
 import 'package:kzstats/pages/tabs/jumpstats.dart';
@@ -26,7 +28,13 @@ class _HomepageState extends State<Homepage>
   void initState() {
     super.initState();
     this._scrollController = ScrollController();
-    this.appbar = BaseAppBar('KZStats', true);
+    this.appbar = BaseAppBar('KZStats', true, [
+      IconButton(
+        icon: Icon(EvilIcons.search),
+        onPressed: () => Navigator.pushNamed(context, '/search'),
+      ),
+      PopUpModeSelect(),
+    ]);
     this.tabs = [
       Latest(),
       Leaderboard(type: 'Points'),

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/widgets/datatable.dart';
+import 'package:kzstats/data/shared_preferences.dart';
 
 import 'package:kzstats/global/detailed_pages.dart';
 import 'package:kzstats/common/error.dart';
@@ -35,10 +36,15 @@ class _MapDetailState extends State<MapDetail> {
   late String mapName;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     this.mapId = widget.mapInfo[0];
     this.mapName = widget.mapInfo[1];
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     this.state = context.watch<ModeCubit>().state;
     this._future = Future.wait(
       [
@@ -72,7 +78,7 @@ class _MapDetailState extends State<MapDetail> {
         getRequest(
           globalApiMapInfoUrl(this.mapId.toString()),
           mapInfoFromJson,
-        ),
+        )
       ],
     );
   }
@@ -80,37 +86,31 @@ class _MapDetailState extends State<MapDetail> {
   @override
   Widget build(BuildContext context) {
     return DetailedPage(
+      markedType: 'map',
+      current: this.mapId.toString(),
       title: this.mapName,
       builder: (BuildContext context) {
         return FutureBuilder<List<dynamic>>(
           future: this._future,
           builder:
               (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) =>
-                  transition(
-            context,
-            snapshot,
-          ),
+                  snapshot.connectionState == ConnectionState.done
+                      ? snapshot.hasData
+                          ? mainBody(
+                              // index 0: top 100 records of current bloc state
+                              // index 1: single instance of Maptop: nub wr
+                              // index 2: single instance of Maptop: pro wr
+                              // index 3: map info
+                              snapshot.data?.elementAt(0),
+                              snapshot.data?.elementAt(1)?.elementAt(0),
+                              snapshot.data?.elementAt(2)?.elementAt(0),
+                              snapshot.data?.elementAt(3),
+                            )
+                          : errorScreen()
+                      : loadingFromApi(),
         );
       },
     );
-  }
-
-  Widget transition(
-      BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-    return snapshot.connectionState == ConnectionState.done
-        ? snapshot.hasData
-            ? mainBody(
-                // index 0: top 100 records of current bloc state
-                // index 1: single instance of Maptop: nub wr
-                // index 2: single instance of Maptop: pro wr
-                // index 3: map info
-                snapshot.data?.elementAt(0),
-                snapshot.data?.elementAt(1)?.elementAt(0),
-                snapshot.data?.elementAt(2)?.elementAt(0),
-                snapshot.data?.elementAt(3),
-              )
-            : errorScreen()
-        : loadingFromApi();
   }
 
   Widget mainBody(
