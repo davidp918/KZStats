@@ -4,6 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/utils/getModeId.dart';
 
+Widget searchWidget(BuildContext context) => IconButton(
+      icon: Icon(EvilIcons.search),
+      onPressed: () => Navigator.pushNamed(context, '/search'),
+    );
+
 class PopUpModeSelect extends StatelessWidget {
   static const modes = <String>['Kztimer', 'SimpleKZ', 'Vanilla', 'Pro', 'Nub'];
 

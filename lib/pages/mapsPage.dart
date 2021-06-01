@@ -1,6 +1,7 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kzstats/common/appbar_widgets.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/cubit/mapFilter_cubit.dart';
@@ -28,7 +29,7 @@ class _MapsPageState extends State<MapsPage> {
     super.initState();
     this._loadMaps = UserSharedPreferences.updateMapData();
     //this._tabs = [Maps(), Maps()];
-    this._tabsTitle = ['All', 'Marked']
+    this._tabsTitle = ['All', 'Favourites']
         .map(
           (data) => Align(
             alignment: Alignment.center,
@@ -97,6 +98,7 @@ class _MapsPageState extends State<MapsPage> {
               ),
             ),
             actions: <Widget>[
+              searchWidget(context),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: IconButton(
