@@ -28,7 +28,6 @@ class _MapsPageState extends State<MapsPage> {
   void initState() {
     super.initState();
     this._loadMaps = UserSharedPreferences.updateMapData();
-    //this._tabs = [Maps(), Maps()];
     this._tabsTitle = ['All', 'Favourites']
         .map(
           (data) => Align(
@@ -50,6 +49,12 @@ class _MapsPageState extends State<MapsPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     this.filterState = context.watch<FilterCubit>().state;
+    List<MapInfo> data = UserSharedPreferences.getMapData();
+    this.mapInfo = filterMapData(data);
+    this._tabs = [
+      MapCards(info: this.mapInfo, marked: false),
+      MapCards(info: this.mapInfo, marked: true),
+    ];
   }
 
   List<MapInfo> filterMapData(List<MapInfo> data) {

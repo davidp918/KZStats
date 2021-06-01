@@ -33,11 +33,6 @@ class _MapCardsState extends State<MapCards> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     if (widget.marked) {
       markState = context.watch<MarkCubit>().state;
