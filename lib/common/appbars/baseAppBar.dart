@@ -16,7 +16,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return SliverAppBar(
       floating: true,
       pinned: false,
-      toolbarHeight: kToolbarHeight,
+      toolbarHeight: kToolbarHeight * 0.9,
       snap: false,
       centerTitle: !this.showProfile,
       leading: leadingIcon(context),

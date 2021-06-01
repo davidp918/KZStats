@@ -9,7 +9,7 @@ class About extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: sAppbar('About'),
+      appBar: defaultAppbar('About'),
       body: Column(
         children: <Widget>[
           Padding(
