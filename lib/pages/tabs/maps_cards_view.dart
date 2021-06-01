@@ -10,15 +10,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class MapCards extends StatelessWidget {
   final List<MapInfo> prevInfo;
   final bool marked;
-  MapCards({
-    Key? key,
-    required this.prevInfo,
-    required this.marked,
-  }) : super(key: key);
+  MapCards({Key? key, required this.prevInfo, required this.marked});
 
-  ScrollController _scrollController = ScrollController();
-
-  late List<MapInfo> mapInfo;
+  final ScrollController _scrollController = ScrollController();
+  final List<MapInfo> mapInfo = [];
 
   @override
   Widget build(BuildContext context) {
