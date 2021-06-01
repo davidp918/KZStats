@@ -71,7 +71,7 @@ class UserSharedPreferences {
     int prevLength = prev.length;
     List<MapInfo>? check =
         await getMaps(1, prevLength, multiMapInfoFromJson, 0);
-    if (check != null || check != [])
+    if (check != null)
       await updateAllMapData();
     else
       print('No update available');

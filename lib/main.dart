@@ -13,7 +13,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
-import 'package:kzstats/cubit/tier_cubit.dart';
+import 'package:kzstats/cubit/mapFilter_cubit.dart';
 import 'package:kzstats/cubit/search_cubit.dart';
 import 'package:kzstats/cubit/playerdisplay_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
