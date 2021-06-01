@@ -17,7 +17,7 @@ class MapInfo {
     required this.mapName,
     required this.filesize,
     this.validated,
-    this.difficulty,
+    required this.difficulty,
     required this.createdOn,
     required this.updatedOn,
     this.approvedBySteamid64,
@@ -29,7 +29,7 @@ class MapInfo {
   String mapName;
   int filesize;
   bool? validated;
-  int? difficulty;
+  int difficulty;
   DateTime? createdOn;
   DateTime updatedOn;
   String? approvedBySteamid64;
@@ -41,7 +41,7 @@ class MapInfo {
         mapName: json?["name"] ?? '',
         filesize: json?["filesize"] ?? -1,
         validated: json?["validated"],
-        difficulty: json?["difficulty"],
+        difficulty: json?["difficulty"] ?? -1,
         createdOn: DateTime.parse(json?["created_on"]),
         updatedOn: DateTime.parse(json?["updated_on"]),
         approvedBySteamid64: json?["approved_by_steamid64"],

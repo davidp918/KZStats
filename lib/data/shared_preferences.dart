@@ -81,8 +81,8 @@ class UserSharedPreferences {
     final Map<String, int> tierMap = {};
     final List<int> tierCountInt = [0, 0, 0, 0, 0, 0, 0];
     for (MapInfo each in data) {
-      tierMap[each.mapName] = each.difficulty!;
-      tierCountInt[each.difficulty! - 1] += 1;
+      tierMap[each.mapName] = each.difficulty;
+      tierCountInt[each.difficulty - 1] += 1;
     }
     final List<String> tierCount =
         tierCountInt.map((e) => e.toString()).toList();

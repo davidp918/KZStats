@@ -16,10 +16,12 @@ class MapsFilterState extends State<MapsFilter> {
   final List<String> sortByOptions = [
     'Alphabetical Order - Ascending',
     'Alphabetical Order - Descending',
+    'Tier - Ascending',
+    'Tier - Descending',
     'Latest Release',
     'Oldest Release',
     'Largest Map in size',
-    'Smallest Map in size'
+    'Smallest Map in size',
   ];
   final List<String> tierOptions = [
     'Very Easy',

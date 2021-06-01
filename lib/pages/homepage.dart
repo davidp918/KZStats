@@ -15,7 +15,6 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin<Homepage> {
-  late TabController _tabController;
   late List<Widget> tabs, tabsTitle;
   late Widget appbar;
   late int curIndex;
@@ -27,7 +26,6 @@ class _HomepageState extends State<Homepage>
   void initState() {
     super.initState();
     this._scrollController = ScrollController();
-    this._tabController = TabController(length: 5, vsync: this);
     this.appbar = BaseAppBar('KZStats', true);
     this.tabs = [
       Latest(),
@@ -81,11 +79,5 @@ class _HomepageState extends State<Homepage>
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    this._tabController.dispose();
-    super.dispose();
   }
 }
