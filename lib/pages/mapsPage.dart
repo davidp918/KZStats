@@ -58,16 +58,22 @@ class _MapsPageState extends State<MapsPage> {
     int sortBy = filterState.sortBy;
     for (MapInfo info in data)
       if (tiers.contains(info.difficulty)) newData.add(info);
-    if (sortBy == 0) newData.sort((a, b) => a.mapName.compareTo(b.mapName));
-    if (sortBy == 1) newData.sort((b, a) => a.mapName.compareTo(b.mapName));
-    if (sortBy == 2)
+    if (sortBy == 0)
+      newData.sort((a, b) => a.mapName.compareTo(b.mapName));
+    else if (sortBy == 1)
+      newData.sort((b, a) => a.mapName.compareTo(b.mapName));
+    else if (sortBy == 2)
       newData.sort((a, b) => a.difficulty.compareTo(b.difficulty));
-    if (sortBy == 3)
+    else if (sortBy == 3)
       newData.sort((b, a) => a.difficulty.compareTo(b.difficulty));
-    if (sortBy == 4) newData.sort((b, a) => a.mapId.compareTo(b.mapId));
-    if (sortBy == 5) newData.sort((a, b) => a.updatedOn.compareTo(b.updatedOn));
-    if (sortBy == 6) newData.sort((b, a) => a.filesize.compareTo(b.filesize));
-    if (sortBy == 7) newData.sort((a, b) => a.filesize.compareTo(b.filesize));
+    else if (sortBy == 4)
+      newData.sort((b, a) => a.mapId.compareTo(b.mapId));
+    else if (sortBy == 5)
+      newData.sort((a, b) => a.updatedOn.compareTo(b.updatedOn));
+    else if (sortBy == 6)
+      newData.sort((b, a) => a.filesize.compareTo(b.filesize));
+    else if (sortBy == 7)
+      newData.sort((a, b) => a.filesize.compareTo(b.filesize));
     return newData;
   }
 
