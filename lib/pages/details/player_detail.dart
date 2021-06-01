@@ -4,7 +4,6 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/widgets/datatable.dart';
-import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/global/detailed_pages.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:kzstats/common/error.dart';

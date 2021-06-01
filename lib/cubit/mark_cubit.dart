@@ -16,8 +16,12 @@ class MarkState {
       };
 
   factory MarkState.fromMap(Map<String, dynamic> map) => MarkState(
-        mapIds: json.decode(map['mapIds']),
-        playerIds: json.decode(map['playerIds']),
+        mapIds: (json.decode(map['mapIds']) as List)
+            .map((e) => e.toString())
+            .toList(),
+        playerIds: (json.decode(map['playerIds']) as List)
+            .map((e) => e.toString())
+            .toList(),
       );
 }
 

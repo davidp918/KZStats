@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/Popup_mode.dart';
 import 'package:kzstats/common/appbars/baseAppbar.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
-import 'package:kzstats/data/shared_preferences.dart';
 
 class DetailedPage extends StatefulWidget {
   const DetailedPage({
