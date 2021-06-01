@@ -12,6 +12,7 @@ import 'package:kzstats/cubit/notification_cubit.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:kzstats/cubit/mode_cubit.dart';
+import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/cubit/mapFilter_cubit.dart';
 import 'package:kzstats/cubit/search_cubit.dart';
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<MarkCubit>(create: (context) => MarkCubit()),
         BlocProvider<NotificationCubit>(
             create: (context) => NotificationCubit()),
         BlocProvider<UserCubit>(create: (context) => UserCubit()),

@@ -38,31 +38,20 @@ class _PlayerDetailState extends State<PlayerDetail> {
   final String steamId64;
   final String playerName;
   late Future _future;
-  late bool marked;
   late ModeState modeState;
   _PlayerDetailState(this.steamId64, this.playerName);
-
-  @override
-  void initState() {
-    super.initState();
-    this.marked =
-        UserSharedPreferences.getMarkedPlayers().contains(this.steamId64);
-  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     this.modeState = context.watch<ModeCubit>().state;
-    this._future = Future.wait(
-      [
-        getRequest(
-            kzstatsApiPlayerInfoUrl(steamId64), kzstatsApiPlayerFromJson),
-        getRequest(
-            globalApiPlayerRecordsUrl(
-                modeState.mode, modeState.nub, 99999, steamId64),
-            recordFromJson),
-      ],
-    );
+    this._future = Future.wait([
+      getRequest(kzstatsApiPlayerInfoUrl(steamId64), kzstatsApiPlayerFromJson),
+      getRequest(
+          globalApiPlayerRecordsUrl(
+              modeState.mode, modeState.nub, 99999, steamId64),
+          recordFromJson),
+    ]);
   }
 
   @override

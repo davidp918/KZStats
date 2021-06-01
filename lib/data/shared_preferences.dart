@@ -16,32 +16,13 @@ class UserSharedPreferences {
   static const _tierMap = 'tierMapping';
   static const _tierCount = 'tierCount';
   static const _firstStart = 'firstStart';
-  static const _markedMaps = 'markedMaps';
-  static const _markedPlayer = 'markedPlayers';
 
-  static Future init() async {
-    _preferences = await SharedPreferences.getInstance();
-  }
+  static Future init() async =>
+      _preferences = await SharedPreferences.getInstance();
 
   static Future setStarted() async =>
       await _preferences.setBool(_firstStart, false);
   static bool getFirstStart() => _preferences.getBool(_firstStart) ?? true;
-
-  // Marked maps
-  static Future setMarkedMaps(List<String> mapIds) async =>
-      await _preferences.setStringList(_markedMaps, mapIds);
-  static List<String> getMarkedMaps() {
-    List<String>? data = _preferences.getStringList(_markedMaps);
-    return data ?? [];
-  }
-
-  // Marked players
-  static Future setMarkedPlayers(List<String> steam64ids) async =>
-      await _preferences.setStringList(_markedPlayer, steam64ids);
-  static List<String> getMarkedPlayers() {
-    List<String>? data = _preferences.getStringList(_markedPlayer);
-    return data ?? [];
-  }
 
   // User settings
   static Future setUserInfo(UserInfo userInfo) async {
