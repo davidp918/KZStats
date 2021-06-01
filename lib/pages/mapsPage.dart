@@ -55,13 +55,15 @@ class _MapsPageState extends State<MapsPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     this.filterState = context.watch<FilterCubit>().state;
+    this.mapInfo = filterMapData(UserSharedPreferences.getMapData());
   }
 
-  void filterMapData(List<MapInfo> data) {
+  List<MapInfo> filterMapData(List<MapInfo> data) {
     List<MapInfo> newData = [];
     for (MapInfo info in data) {
       if (filterState.tier.contains(info.difficulty)) newData.add(info);
     }
+    return newData;
   }
 
   @override
@@ -118,7 +120,7 @@ class _MapsPageState extends State<MapsPage> {
               return loadingFromApi();
             List<MapInfo> data = UserSharedPreferences.getMapData();
             if (data == []) return errorScreen();
-            this.mapInfo = data;
+            this.mapInfo = filterMapData(data);
             return CustomScrollView(
               controller: this._scrollController,
               slivers: <Widget>[
@@ -157,10 +159,10 @@ class _MapsPageState extends State<MapsPage> {
         children: [
           AspectRatio(
             aspectRatio: 200 / 113,
-            child: GetNetworkImage(
-              fileName: entry.mapName!,
-              url: '$imageBaseURL${entry.mapName!}.webp',
-              errorImage: AssetImage('assets/icon/noimage.png'),
+            child: getNetworkImage(
+              entry.mapName!,
+              '$imageBaseURL${entry.mapName!}.webp',
+              AssetImage('assets/icon/noimage.png'),
             ),
           ),
           Expanded(

@@ -111,10 +111,10 @@ class _PlayerDetailState extends State<PlayerDetail> {
             Container(
               width: avatarSize,
               height: avatarSize,
-              child: GetNetworkImage(
-                fileName: '${kzstatsPlayerInfo.steamid32}',
-                url: kzstatsPlayerInfo.avatarfull!,
-                errorImage: AssetImage('assets/icon/noimage.png'),
+              child: getNetworkImage(
+                '${kzstatsPlayerInfo.steamid32}',
+                kzstatsPlayerInfo.avatarfull!,
+                AssetImage('assets/icon/noimage.png'),
               ),
             ),
             SizedBox(width: 14),

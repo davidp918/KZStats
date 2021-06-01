@@ -127,10 +127,10 @@ class _LatestBodyState extends State<LatestBody> {
                         '/map_detail',
                         arguments: [info.mapId, info.mapName],
                       ),
-                      child: GetNetworkImage(
-                        fileName: info.mapName,
-                        url: '$imageBaseURL${info.mapName}.webp',
-                        errorImage: AssetImage('assets/icon/noimage.png'),
+                      child: getNetworkImage(
+                        info.mapName,
+                        '$imageBaseURL${info.mapName}.webp',
+                        AssetImage('assets/icon/noimage.png'),
                       ),
                     ),
                   ),

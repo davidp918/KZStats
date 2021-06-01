@@ -127,10 +127,10 @@ class _MapDetailState extends State<MapDetail> {
           SizedBox(height: 14),
           Container(
             height: crossHeight,
-            child: GetNetworkImage(
-              fileName: '${this.mapName}',
-              url: '$imageBaseURL${this.mapName}.webp',
-              errorImage: AssetImage('assets/icon/noimage.png'),
+            child: getNetworkImage(
+              '${this.mapName}',
+              '$imageBaseURL${this.mapName}.webp',
+              AssetImage('assets/icon/noimage.png'),
             ),
           ),
           mapInfo == null
