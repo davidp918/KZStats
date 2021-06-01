@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
             create: (context) => NotificationCubit()),
         BlocProvider<UserCubit>(create: (context) => UserCubit()),
         BlocProvider<ModeCubit>(create: (context) => ModeCubit(), lazy: false),
-        BlocProvider<TierCubit>(create: (context) => TierCubit()),
+        BlocProvider<FilterCubit>(create: (context) => FilterCubit()),
         BlocProvider<PlayerdisplayCubit>(
             create: (context) => PlayerdisplayCubit()),
         BlocProvider<SearchCubit>(create: (context) => SearchCubit()),

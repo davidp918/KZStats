@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
-import 'package:kzstats/pages/tabs/maps.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/web/json.dart';
@@ -29,7 +28,7 @@ class _MapsPageState extends State<MapsPage> {
     super.initState();
     this.mapInfo = UserSharedPreferences.getMapData() ?? [];
     this._scrollController = ScrollController();
-    this._tabs = [Maps(), Maps()];
+    //this._tabs = [Maps(), Maps()];
     this._tabsTitle = ['All', 'Marked']
         .map(
           (data) => Align(

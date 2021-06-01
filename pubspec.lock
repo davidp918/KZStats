@@ -50,6 +50,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.0"
+  chips_choice:
+    dependency: "direct main"
+    description:
+      path: "../flutter_chips_choice"
+      relative: true
+    source: path
+    version: "3.0.0"
   clock:
     dependency: transitive
     description:
@@ -511,13 +518,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  smart_select:
-    dependency: "direct main"
-    description:
-      name: smart_select
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "4.3.2"
   source_span:
     dependency: transitive
     description:
