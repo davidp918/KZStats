@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/utils/pointsClassification.dart';
@@ -108,7 +110,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final int rowsPerPage = 10;
+    final int rowsPerPage = min(10, this.data.length);
     final double dataPagerHeight = 60.0;
     final double contentRowHeight = 44.0;
     final double headerRowHeight = 49.0;
@@ -163,7 +165,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
 class TableDataSource extends DataGridSource {
   List<DataGridRow> _rows = [];
-  final int rowsPerPage = 10;
+  late int rowsPerPage;
   late BuildContext context;
   late List<Map<String, dynamic>> paginated;
   late List<Map<String, dynamic>> data;
@@ -180,7 +182,9 @@ class TableDataSource extends DataGridSource {
     this.data = data;
     this.columns = columns;
     this.identifyAttr = identifyAttr;
-    this.paginated = this.data.getRange(0, 9).toList(growable: false);
+    this.rowsPerPage = min(10, this.data.length);
+    this.paginated =
+        this.data.getRange(0, min(this.data.length, 9)).toList(growable: false);
     this.buildPaginatedDataGridRows();
   }
 

@@ -7,40 +7,28 @@ import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MapCards extends StatefulWidget {
-  final List<MapInfo> info;
+class MapCards extends StatelessWidget {
+  final List<MapInfo> prevInfo;
   final bool marked;
   MapCards({
     Key? key,
-    required this.info,
+    required this.prevInfo,
     required this.marked,
   }) : super(key: key);
 
-  @override
-  _MapCardsState createState() => _MapCardsState();
-}
+  ScrollController _scrollController = ScrollController();
 
-class _MapCardsState extends State<MapCards> {
-  late ScrollController _scrollController;
-  late MarkState markState;
-  List<MapInfo> mapInfo = [];
-
-  @override
-  void initState() {
-    super.initState();
-    this._scrollController = ScrollController();
-    if (!widget.marked) this.mapInfo = widget.info;
-  }
+  late List<MapInfo> mapInfo;
 
   @override
   Widget build(BuildContext context) {
-    if (widget.marked) {
-      markState = context.watch<MarkCubit>().state;
-      this.mapInfo = [];
-      for (MapInfo info in widget.info) {
+    List<MapInfo> mapInfo = prevInfo;
+    if (marked) {
+      MarkState markState = context.watch<MarkCubit>().state;
+      mapInfo = [];
+      for (MapInfo info in prevInfo) {
         if (markState.mapIds.contains(info.mapId.toString()) &&
-            !this.mapInfo.contains(info.mapId.toString()))
-          this.mapInfo.add(info);
+            !mapInfo.contains(info.mapId.toString())) mapInfo.add(info);
       }
     }
     return CustomScrollView(
@@ -51,7 +39,7 @@ class _MapCardsState extends State<MapCards> {
           sliver: SliverGrid(
             delegate: SliverChildBuilderDelegate(
               (context, index) => _itemBuilder(context, mapInfo[index], index),
-              childCount: this.mapInfo.length,
+              childCount: mapInfo.length,
               addAutomaticKeepAlives: true,
             ),
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(

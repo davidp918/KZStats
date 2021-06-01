@@ -52,8 +52,8 @@ class _MapsPageState extends State<MapsPage> {
     List<MapInfo> data = UserSharedPreferences.getMapData();
     this.mapInfo = filterMapData(data);
     this._tabs = [
-      MapCards(info: this.mapInfo, marked: false),
-      MapCards(info: this.mapInfo, marked: true),
+      MapCards(prevInfo: this.mapInfo, marked: false),
+      MapCards(prevInfo: this.mapInfo, marked: true),
     ];
   }
 
@@ -140,8 +140,8 @@ class _MapsPageState extends State<MapsPage> {
             if (data == []) return errorScreen();
             this.mapInfo = filterMapData(data);
             this._tabs = [
-              MapCards(info: this.mapInfo, marked: false),
-              MapCards(info: this.mapInfo, marked: true),
+              MapCards(prevInfo: this.mapInfo, marked: false),
+              MapCards(prevInfo: this.mapInfo, marked: true),
             ];
             return TabBarView(children: this._tabs);
           },
