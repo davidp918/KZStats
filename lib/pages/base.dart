@@ -2,7 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:kzstats/pages/indexedTransition.dart';
+import 'package:kzstats/common/indexedTransition.dart';
 import 'package:kzstats/pages/maps.dart';
 import 'package:kzstats/pages/explore.dart';
 import 'package:kzstats/pages/homepage.dart';
