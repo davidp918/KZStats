@@ -67,7 +67,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
           waiting: (context) => loadingFromApi(),
           error: (context, object, stacktrace) => errorScreen(),
           builder: (context, value) {
-            return whole(value.data[0], value.data[1]);
+            return whole(value[0], value[1]);
           },
         );
       },

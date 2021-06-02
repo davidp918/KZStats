@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
       child: Builder(
         builder: (context) {
           refresh(context);
+          timeDilation = 10;
           //FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
           return RefreshConfiguration(
             headerBuilder: () => LoadingGifHeader(),
@@ -86,6 +88,11 @@ class MyApp extends StatelessWidget {
             bottomHitBoundary: 110,
             child: MaterialApp(
               theme: ThemeData(
+                pageTransitionsTheme: PageTransitionsTheme(
+                  builders: <TargetPlatform, PageTransitionsBuilder>{
+                    TargetPlatform.android: ZoomPageTransitionsBuilder(),
+                  },
+                ),
                 scaffoldBackgroundColor: backgroundColor(),
                 fontFamily: 'NotoSansHK',
                 primaryColor: appbarColor(),
