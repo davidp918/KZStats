@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/cubit/user_cubit.dart';
+import 'package:kzstats/common/appbars/appbar_widgets.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String currentPage;
@@ -20,35 +19,16 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: height ?? kToolbarHeight * 0.9,
       snap: false,
       centerTitle: !this.showProfile,
-      leading: leadingIcon(context),
+      leading: userLeadingIcon(context),
       title: Text(
         '$currentPage',
-        style: TextStyle(fontWeight: FontWeight.w500),
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w400,
+        ),
       ),
       brightness: Brightness.dark,
       actions: this.actions,
     );
   }
-
-  Widget? leadingIcon(BuildContext context) => this.showProfile
-      ? BlocBuilder<UserCubit, UserState>(
-          builder: (context, userState) {
-            return IconButton(
-              icon: Icon(Icons.person),
-              onPressed: () {
-                if (userState.info.avatarUrl == '' &&
-                    userState.info.steam32 == '') {
-                  Navigator.pushNamed(context, '/login');
-                } else {
-                  Navigator.pushNamed(
-                    context,
-                    '/player_detail',
-                    arguments: [userState.info.steam64, userState.info.name],
-                  );
-                }
-              },
-            );
-          },
-        )
-      : null;
 }

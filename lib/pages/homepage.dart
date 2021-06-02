@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kzstats/common/appbar_widgets.dart';
+import 'package:kzstats/common/appbars/appbar_widgets.dart';
 import 'package:kzstats/common/appbars/baseAppbar.dart';
 import 'package:kzstats/pages/tabs/bans.dart';
 import 'package:kzstats/pages/tabs/jumpstats.dart';

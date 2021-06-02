@@ -1,11 +1,10 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/common/appbar_widgets.dart';
+import 'package:kzstats/common/appbars/appbar_widgets.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/cubit/mapFilter_cubit.dart';
-import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/pages/tabs/maps_cards_view.dart';
 import 'package:kzstats/look/colors.dart';
@@ -36,8 +35,8 @@ class _MapsState extends State<Maps> {
               data,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),
@@ -92,22 +91,7 @@ class _MapsState extends State<Maps> {
           preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
           child: AppBar(
             backgroundColor: appbarColor(),
-            leading: BlocBuilder<UserCubit, UserState>(
-              builder: (context, userState) => IconButton(
-                icon: Icon(Icons.person),
-                onPressed: () => userState.info.avatarUrl == '' &&
-                        userState.info.steam32 == ''
-                    ? Navigator.pushNamed(context, '/login')
-                    : Navigator.pushNamed(
-                        context,
-                        '/player_detail',
-                        arguments: [
-                          userState.info.steam64,
-                          userState.info.name
-                        ],
-                      ),
-              ),
-            ),
+            leading: userLeadingIcon(context),
             actions: <Widget>[
               searchWidget(context),
               Align(

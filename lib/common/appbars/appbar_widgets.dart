@@ -2,11 +2,29 @@ import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
+import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/utils/getModeId.dart';
 
 Widget searchWidget(BuildContext context) => IconButton(
       icon: Icon(EvilIcons.search),
       onPressed: () => Navigator.pushNamed(context, '/search'),
+    );
+Widget? userLeadingIcon(BuildContext context) =>
+    BlocBuilder<UserCubit, UserState>(
+      builder: (context, userState) => IconButton(
+        icon: Icon(Icons.person),
+        onPressed: () {
+          if (userState.info.avatarUrl == '' && userState.info.steam32 == '') {
+            Navigator.pushNamed(context, '/login');
+          } else {
+            Navigator.pushNamed(
+              context,
+              '/player_detail',
+              arguments: [userState.info.steam64, userState.info.name],
+            );
+          }
+        },
+      ),
     );
 
 class PopUpModeSelect extends StatelessWidget {

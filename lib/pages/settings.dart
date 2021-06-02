@@ -2,7 +2,7 @@ import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/common/appbar_widgets.dart';
+import 'package:kzstats/common/appbars/appbar_widgets.dart';
 import 'package:kzstats/common/appbars/baseAppbar.dart';
 import 'package:kzstats/cubit/notification_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
