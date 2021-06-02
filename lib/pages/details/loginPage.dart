@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/appbars/simpleAppbar.dart';
+import 'package:kzstats/common/progressIndicator.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
@@ -160,11 +161,7 @@ class _LoginState extends State<Login> {
         AsyncSnapshot<dynamic> snapshot,
       ) {
         return snapshot.connectionState != ConnectionState.done
-            ? Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white70,
-                ),
-              )
+            ? progressIndicator()
             : !snapshot.hasData || snapshot.data == null
                 ? failed()
                 : success(snapshot.data);

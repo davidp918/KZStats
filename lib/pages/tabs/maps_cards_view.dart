@@ -1,6 +1,8 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
+import 'package:kzstats/pages/details/map_detail.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
@@ -50,74 +52,71 @@ class MapCards extends StatelessWidget {
   }
 
   Widget _itemBuilder(BuildContext context, MapInfo entry, _) {
-    return Card(
-      color: primarythemeBlue(),
-      elevation: 4,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AspectRatio(
-            aspectRatio: 200 / 113,
-            child: InkWell(
-              child: getNetworkImage(
-                entry.mapName,
-                '$imageBaseURL${entry.mapName}.webp',
-                AssetImage('assets/icon/noimage.png'),
+    return OpenContainer(
+      openColor: backgroundColor(),
+      closedColor: backgroundColor(),
+      middleColor: backgroundColor(),
+      transitionDuration: Duration(milliseconds: 800),
+      closedElevation: 0,
+      openElevation: 0,
+      closedBuilder: (context, action) {
+        return Card(
+          color: primarythemeBlue(),
+          elevation: 4,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AspectRatio(
+                aspectRatio: 200 / 113,
+                child: getNetworkImage(
+                  entry.mapName,
+                  '$imageBaseURL${entry.mapName}.webp',
+                  AssetImage('assets/icon/noimage.png'),
+                ),
               ),
-              onTap: () {
-                Navigator.of(context).pushNamed(
-                  '/map_detail',
-                  arguments: [entry.mapId, entry.mapName],
-                );
-              },
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1.5),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        '/map_detail',
-                        arguments: [entry.mapId, entry.mapName],
-                      );
-                    },
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1.5),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                      child: Text(
+                        '${entry.mapName}',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: inkWellBlue(),
+                          fontSize: 17.5,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1.5),
+                  child: Align(
+                    alignment: Alignment.topLeft,
                     child: Text(
-                      '${entry.mapName}',
-                      overflow: TextOverflow.ellipsis,
+                      'Tier: ${identifyTier(entry.difficulty)}',
                       style: TextStyle(
-                        color: inkWellBlue(),
-                        fontSize: 17.5,
+                        color: Colors.white,
+                        fontSize: 13.5,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1.5),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Tier: ${identifyTier(entry.difficulty)}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
+      openBuilder: (context, action) {
+        return MapDetail(mapInfo: [entry.mapId, entry.mapName]);
+      },
     );
   }
 }
