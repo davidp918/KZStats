@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/urls.dart';
@@ -56,7 +56,6 @@ class MapCards extends StatelessWidget {
       openColor: backgroundColor(),
       closedColor: backgroundColor(),
       middleColor: backgroundColor(),
-      transitionDuration: Duration(milliseconds: 3800),
       closedElevation: 0,
       openElevation: 0,
       closedBuilder: (context, action) {

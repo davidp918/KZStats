@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/appbars/simpleAppbar.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 
 class About extends StatelessWidget {
   const About({Key? key}) : super(key: key);

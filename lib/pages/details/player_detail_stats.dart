@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:kzstats/data/shared_preferences.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/pointsSum.dart';
 import 'package:kzstats/utils/svg.dart';
 import 'package:kzstats/utils/tierIdentifier.dart';

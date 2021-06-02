@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:steam_login/steam_login.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 
 class SteamLogin extends StatefulWidget {
   @override

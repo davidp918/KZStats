@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/pointsClassification.dart';
 import 'package:kzstats/utils/timeConversion.dart';
 import 'package:syncfusion_flutter_core/theme.dart';

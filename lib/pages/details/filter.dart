@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kzstats/cubit/mapFilter_cubit.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

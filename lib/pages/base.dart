@@ -7,7 +7,7 @@ import 'package:kzstats/pages/maps.dart';
 import 'package:kzstats/pages/explore.dart';
 import 'package:kzstats/pages/homepage.dart';
 import 'package:kzstats/pages/settings.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 
 class Base extends StatefulWidget {
   Base({Key? key}) : super(key: key);

@@ -14,7 +14,7 @@ import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/cubit/playerdisplay_cubit.dart';
 import 'package:kzstats/global/floater.dart';
 import 'package:kzstats/pages/details/player_detail_stats.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/convertDegreeRad.dart';
 import 'package:kzstats/utils/pointsSum.dart';
 import 'package:kzstats/web/getRequest.dart';

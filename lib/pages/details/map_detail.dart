@@ -9,7 +9,7 @@ import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/svg.dart';
 import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/utils/timeConversion.dart';

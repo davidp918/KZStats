@@ -4,7 +4,7 @@ import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/appbars/simpleAppbar.dart';
 import 'package:kzstats/common/progressIndicator.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';

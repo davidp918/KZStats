@@ -6,7 +6,7 @@ import 'package:kzstats/pages/tabs/bans.dart';
 import 'package:kzstats/pages/tabs/jumpstats.dart';
 import 'package:kzstats/pages/tabs/latest.dart';
 import 'package:kzstats/pages/tabs/leaderboard.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 
 class Homepage extends StatefulWidget {
   Homepage({Key? key}) : super(key: key);

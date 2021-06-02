@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 
 PreferredSizeWidget defaultAppbar(String title) => PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight * 0.9),

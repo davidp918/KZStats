@@ -10,7 +10,7 @@ import 'package:substring_highlight/substring_highlight.dart';
 import 'package:kzstats/data/searchMapProvider.dart';
 import 'package:kzstats/data/searchPlayerProvider.dart';
 import 'package:kzstats/data/shared_preferences.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/cubit/search_cubit.dart';

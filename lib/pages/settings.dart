@@ -7,7 +7,7 @@ import 'package:kzstats/common/appbars/baseAppbar.dart';
 import 'package:kzstats/common/appbars/simpleAppbar.dart';
 import 'package:kzstats/cubit/notification_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 
 class Settings extends StatefulWidget {
   @override

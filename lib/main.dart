@@ -20,7 +20,7 @@ import 'package:kzstats/cubit/search_cubit.dart';
 import 'package:kzstats/cubit/playerdisplay_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/global/router.dart';
-import 'package:kzstats/theme/colors.dart';
+import 'package:kzstats/look/colors.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
       child: Builder(
         builder: (context) {
           refresh(context);
-          timeDilation = 10;
+          timeDilation = 5;
           //FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
           return RefreshConfiguration(
             headerBuilder: () => LoadingGifHeader(),
@@ -88,11 +88,7 @@ class MyApp extends StatelessWidget {
             bottomHitBoundary: 110,
             child: MaterialApp(
               theme: ThemeData(
-                pageTransitionsTheme: PageTransitionsTheme(
-                  builders: <TargetPlatform, PageTransitionsBuilder>{
-                    TargetPlatform.android: ZoomPageTransitionsBuilder(),
-                  },
-                ),
+                pageTransitionsTheme: PageTransitionsTheme(),
                 scaffoldBackgroundColor: backgroundColor(),
                 fontFamily: 'NotoSansHK',
                 primaryColor: appbarColor(),
