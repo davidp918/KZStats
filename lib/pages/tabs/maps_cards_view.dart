@@ -59,10 +59,18 @@ class MapCards extends StatelessWidget {
         children: [
           AspectRatio(
             aspectRatio: 200 / 113,
-            child: getNetworkImage(
-              entry.mapName,
-              '$imageBaseURL${entry.mapName}.webp',
-              AssetImage('assets/icon/noimage.png'),
+            child: InkWell(
+              child: getNetworkImage(
+                entry.mapName,
+                '$imageBaseURL${entry.mapName}.webp',
+                AssetImage('assets/icon/noimage.png'),
+              ),
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                  '/map_detail',
+                  arguments: [entry.mapId, entry.mapName],
+                );
+              },
             ),
           ),
           Expanded(

@@ -64,6 +64,7 @@ String globalApiAllMaps(int limit, int offset, int tier) {
 }
 
 // player data from steam api
+const webApiKey = 'D382A350B768E5203415355D707065FD';
 String steamApiPlayerInfoUrl(String steamId64) {
   const webApiKey = 'D382A350B768E5203415355D707065FD';
   const steam_player_url =
@@ -71,6 +72,9 @@ String steamApiPlayerInfoUrl(String steamId64) {
   const steam_player_url_connector = '&steamids=';
   return '$proxy$steam_player_url$webApiKey$steam_player_url_connector$steamId64';
 }
+
+String steamApiPlayerFriendList(String steamId64) =>
+    'http://api.steampowered.com/ISteamUser/GetFriendList/v0001?key=$webApiKey&steamid=$steamId64&relationship=friend';
 
 // player data from kzstats api
 String kzstatsApiPlayerInfoUrl(String? steamId64) {
