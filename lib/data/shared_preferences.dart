@@ -8,6 +8,13 @@ import 'package:kzstats/data/localPlayerClass.dart';
 
 class UserSharedPreferences {
   static late SharedPreferences _preferences;
+  static Future init() async =>
+      _preferences = await SharedPreferences.getInstance();
+
+  // check first start
+  static Future setStarted() async =>
+      await _preferences.setBool(_firstStart, false);
+  static bool getFirstStart() => _preferences.getBool(_firstStart) ?? true;
 
   static const _userInfo = 'userInfo';
   static const _mapData = 'mapData';
@@ -16,13 +23,6 @@ class UserSharedPreferences {
   static const _tierMap = 'tierMapping';
   static const _tierCount = 'tierCount';
   static const _firstStart = 'firstStart';
-
-  static Future init() async =>
-      _preferences = await SharedPreferences.getInstance();
-
-  static Future setStarted() async =>
-      await _preferences.setBool(_firstStart, false);
-  static bool getFirstStart() => _preferences.getBool(_firstStart) ?? true;
 
   // User settings
   static Future setUserInfo(UserInfo userInfo) async {
@@ -37,7 +37,7 @@ class UserSharedPreferences {
     return UserInfo.fromJson(jsonDecode(data));
   }
 
-  // Maps Data
+  // Local Maps Data
   static Future updateMapData() async {
     print('updating local map data...');
     // first check if need to update by:
