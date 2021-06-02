@@ -1,7 +1,7 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:kzstats/pages/mapsPage.dart';
+import 'package:kzstats/pages/maps.dart';
 import 'package:kzstats/pages/explore.dart';
 import 'package:kzstats/pages/homepage.dart';
 import 'package:kzstats/pages/settings.dart';
