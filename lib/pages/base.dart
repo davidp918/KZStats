@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:kzstats/pages/indexedTransition.dart';
 import 'package:kzstats/pages/maps.dart';
 import 'package:kzstats/pages/explore.dart';
 import 'package:kzstats/pages/homepage.dart';
@@ -41,7 +42,8 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: backgroundColor(),
-        body: PageTransitionSwitcher(
+        body: IndexedTransitionSwitcher(
+          index: this.curIndex,
           duration: const Duration(milliseconds: 300),
           reverse: this.reverseAnimation,
           transitionBuilder: (
@@ -57,7 +59,7 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
               transitionType: SharedAxisTransitionType.horizontal,
             );
           },
-          child: this.pages[this.curIndex],
+          children: this.pages,
         ),
         bottomNavigationBar: SizedBox(
           height: kToolbarHeight,
