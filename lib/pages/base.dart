@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +18,21 @@ class Base extends StatefulWidget {
 class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
   late int curIndex;
   late List<Widget> pages;
+  late bool reverseAnimation;
 
   @override
   void initState() {
     super.initState();
     this.curIndex = 0;
+    this.reverseAnimation = false;
     this.pages = [Homepage(), Explore(), Maps(), Settings()];
+  }
+
+  void onTap(index) {
+    setState(() {
+      this.reverseAnimation = index < this.curIndex;
+      this.curIndex = index;
+    });
   }
 
   @override
@@ -30,11 +40,29 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
     super.build(context);
     return SafeArea(
       child: Scaffold(
-        body: IndexedStack(children: this.pages, index: this.curIndex),
+        backgroundColor: backgroundColor(),
+        body: PageTransitionSwitcher(
+          duration: const Duration(milliseconds: 300),
+          reverse: this.reverseAnimation,
+          transitionBuilder: (
+            Widget child,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return SharedAxisTransition(
+              child: child,
+              animation: animation,
+              fillColor: backgroundColor(),
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.horizontal,
+            );
+          },
+          child: this.pages[this.curIndex],
+        ),
         bottomNavigationBar: SizedBox(
           height: kToolbarHeight,
           child: BottomNavigationBar(
-            onTap: (index) => setState(() => this.curIndex = index),
+            onTap: onTap,
             backgroundColor: appbarColor(),
             currentIndex: this.curIndex,
             type: BottomNavigationBarType.fixed,
