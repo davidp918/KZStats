@@ -19,7 +19,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: height ?? kToolbarHeight * 0.9,
       snap: false,
       centerTitle: !this.showProfile,
-      leading: userLeadingIcon(context),
+      leading: showProfile ? userLeadingIcon(context) : null,
       title: Text(
         '$currentPage',
         style: TextStyle(

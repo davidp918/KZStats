@@ -28,6 +28,21 @@ class MapCards extends StatelessWidget {
             !mapInfo.contains(info.mapId.toString())) mapInfo.add(info);
       }
     }
+    if (marked && mapInfo.length == 0) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'No Favourite Maps Yet...',
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            'Go add a few and grind them later!',
+            textAlign: TextAlign.center,
+          ),
+        ],
+      );
+    }
     return CustomScrollView(
       controller: this._scrollController,
       slivers: <Widget>[
