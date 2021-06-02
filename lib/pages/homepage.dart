@@ -1,4 +1,3 @@
-import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/appbar_widgets.dart';
 import 'package:kzstats/common/appbars/baseAppbar.dart';
@@ -27,10 +26,12 @@ class _HomepageState extends State<Homepage>
   void initState() {
     super.initState();
     this._scrollController = ScrollController();
-    this.appbar = BaseAppBar('KZStats', true, [
-      searchWidget(context),
-      PopUpModeSelect(),
-    ]);
+    this.appbar = BaseAppBar(
+      'KZStats',
+      true,
+      [searchWidget(context), PopUpModeSelect()],
+      kToolbarHeight * 0.8,
+    );
     this.tabs = [
       Latest(),
       Leaderboard(type: 'Points'),
@@ -45,12 +46,19 @@ class _HomepageState extends State<Homepage>
       'Bans',
       'Jumpstats',
     ]
-        .map((data) => Text(data,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.w300,
-            )))
+        .map(
+          (data) => Padding(
+            padding: EdgeInsets.only(bottom: 5),
+            child: Text(
+              data,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+        )
         .toList();
   }
 

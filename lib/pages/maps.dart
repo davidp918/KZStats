@@ -36,8 +36,8 @@ class _MapsState extends State<Maps> {
               data,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.w300,
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),

@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';

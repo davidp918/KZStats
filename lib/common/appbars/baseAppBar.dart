@@ -6,7 +6,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String currentPage;
   final bool showProfile;
   final List<Widget>? actions;
-  BaseAppBar(this.currentPage, this.showProfile, [this.actions]);
+  final double? height;
+  BaseAppBar(this.currentPage, this.showProfile, [this.actions, this.height]);
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -16,7 +17,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return SliverAppBar(
       floating: true,
       pinned: false,
-      toolbarHeight: kToolbarHeight * 0.9,
+      toolbarHeight: height ?? kToolbarHeight * 0.9,
       snap: false,
       centerTitle: !this.showProfile,
       leading: leadingIcon(context),
