@@ -22,7 +22,7 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
   void initState() {
     super.initState();
     this.curIndex = 0;
-    this.pages = [Homepage(), Explore(), MapsPage(), Settings()];
+    this.pages = [Homepage(), Explore(), Maps(), Settings()];
   }
 
   @override

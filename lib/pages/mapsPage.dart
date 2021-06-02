@@ -11,14 +11,14 @@ import 'package:kzstats/pages/tabs/maps_cards_view.dart';
 import 'package:kzstats/theme/colors.dart';
 import 'package:kzstats/web/json.dart';
 
-class MapsPage extends StatefulWidget {
-  MapsPage({Key? key}) : super(key: key);
+class Maps extends StatefulWidget {
+  Maps({Key? key}) : super(key: key);
 
   @override
-  _MapsPageState createState() => _MapsPageState();
+  _MapsState createState() => _MapsState();
 }
 
-class _MapsPageState extends State<MapsPage> {
+class _MapsState extends State<Maps> {
   late List<MapInfo> mapInfo;
   late List<Widget> _tabsTitle, _tabs;
   late Future _loadMaps;

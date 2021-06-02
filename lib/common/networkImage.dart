@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:async_builder/async_builder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/progressIndicator.dart';
@@ -8,23 +9,19 @@ import 'package:http/http.dart' as http;
 
 Widget getNetworkImage(String fileName, String url, AssetImage errorImage) {
   Future<String> _future = loadImage(fileName, url);
-  bool firstBuilt = true;
   return ClipRRect(
     borderRadius: BorderRadius.circular(4),
-    child: FutureBuilder<String>(
+    child: AsyncBuilder<String>(
+      retain: true,
       future: _future,
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        if (snapshot.connectionState != ConnectionState.done && firstBuilt)
-          return progressIndicator();
-        if (!snapshot.hasData) return Image(image: errorImage);
-        firstBuilt = false;
-        return Image.file(
-          File(snapshot.data!),
-          errorBuilder: (context, object, stacktrace) {
-            return Image(image: errorImage);
-          },
-        );
-      },
+      waiting: (context) => progressIndicator(),
+      error: (context, object, stacktrace) => Image(image: errorImage),
+      builder: (context, value) => Image.file(
+        File(value!),
+        errorBuilder: (context, object, stacktrace) {
+          return Image(image: errorImage);
+        },
+      ),
     ),
   );
 }

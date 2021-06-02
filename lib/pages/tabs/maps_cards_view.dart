@@ -56,7 +56,7 @@ class MapCards extends StatelessWidget {
       openColor: backgroundColor(),
       closedColor: backgroundColor(),
       middleColor: backgroundColor(),
-      transitionDuration: Duration(milliseconds: 800),
+      transitionDuration: Duration(milliseconds: 1800),
       closedElevation: 0,
       openElevation: 0,
       closedBuilder: (context, action) {
