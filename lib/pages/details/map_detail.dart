@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:async_builder/async_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/widgets/datatable.dart';
@@ -88,24 +89,23 @@ class _MapDetailState extends State<MapDetail> {
       current: this.mapId.toString(),
       title: this.mapName,
       builder: (BuildContext context) {
-        return FutureBuilder<List<dynamic>>(
+        return AsyncBuilder<List<dynamic>>(
+          retain: true,
           future: this._future,
-          builder:
-              (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) =>
-                  snapshot.connectionState == ConnectionState.done
-                      ? snapshot.hasData
-                          ? mainBody(
-                              // index 0: top 100 records of current bloc state
-                              // index 1: single instance of Maptop: nub wr
-                              // index 2: single instance of Maptop: pro wr
-                              // index 3: map info
-                              snapshot.data?.elementAt(0),
-                              snapshot.data?.elementAt(1)?.elementAt(0),
-                              snapshot.data?.elementAt(2)?.elementAt(0),
-                              snapshot.data?.elementAt(3),
-                            )
-                          : errorScreen()
-                      : loadingFromApi(),
+          waiting: (context) => loadingFromApi(),
+          error: (context, object, stacktrace) => errorScreen(),
+          builder: (context, value) {
+            return mainBody(
+              // index 0: top 100 records of current bloc state
+              // index 1: single instance of Maptop: nub wr
+              // index 2: single instance of Maptop: pro wr
+              // index 3: map info
+              value?.elementAt(0),
+              value?.elementAt(1)?.elementAt(0),
+              value?.elementAt(2)?.elementAt(0),
+              value?.elementAt(3),
+            );
+          },
         );
       },
     );

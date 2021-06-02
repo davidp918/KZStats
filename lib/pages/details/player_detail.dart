@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:async_builder/async_builder.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,15 +61,13 @@ class _PlayerDetailState extends State<PlayerDetail> {
       current: this.steamId64,
       title: this.playerName,
       builder: (BuildContext context) {
-        return FutureBuilder<dynamic>(
+        return AsyncBuilder<dynamic>(
+          retain: true,
           future: this._future,
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            return snapshot.connectionState == ConnectionState.done
-                ? snapshot.hasData && snapshot.data[0] != null
-                    // snapshot.data[1] can be null
-                    ? whole(snapshot.data[0], snapshot.data[1])
-                    : errorScreen()
-                : loadingFromApi();
+          waiting: (context) => loadingFromApi(),
+          error: (context, object, stacktrace) => errorScreen(),
+          builder: (context, value) {
+            return whole(value.data[0], value.data[1]);
           },
         );
       },
