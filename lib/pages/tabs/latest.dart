@@ -5,7 +5,9 @@ import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
+import 'package:kzstats/look/animation.dart';
 import 'package:kzstats/look/colors.dart';
+import 'package:kzstats/pages/details/map_detail.dart';
 import 'package:kzstats/utils/strCheckLen.dart';
 import 'package:kzstats/utils/svg.dart';
 import 'package:kzstats/utils/timeConversion.dart';
@@ -122,12 +124,10 @@ class _LatestBodyState extends State<LatestBody> {
                   child: Container(
                     width: crossWidth,
                     height: crossHeight,
-                    child: InkWell(
-                      onTap: () => Navigator.of(context).pushNamed(
-                        '/map_detail',
-                        arguments: [info.mapId, info.mapName],
-                      ),
-                      child: getNetworkImage(
+                    child: ContainerAnimationWidget(
+                      openBuilder: (context, action) =>
+                          MapDetail(mapInfo: [info.mapId, info.mapName]),
+                      closedBuilder: (context, action) => getNetworkImage(
                         info.mapName,
                         '$imageBaseURL${info.mapName}.webp',
                         AssetImage('assets/icon/noimage.png'),

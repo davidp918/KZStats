@@ -88,7 +88,11 @@ class MyApp extends StatelessWidget {
             bottomHitBoundary: 110,
             child: MaterialApp(
               theme: ThemeData(
-                pageTransitionsTheme: PageTransitionsTheme(),
+                pageTransitionsTheme: PageTransitionsTheme(
+                  builders: <TargetPlatform, PageTransitionsBuilder>{
+                    TargetPlatform.android: ZoomPageTransitionsBuilder(),
+                  },
+                ),
                 scaffoldBackgroundColor: backgroundColor(),
                 fontFamily: 'NotoSansHK',
                 primaryColor: appbarColor(),

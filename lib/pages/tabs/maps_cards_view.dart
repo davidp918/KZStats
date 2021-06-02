@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
+import 'package:kzstats/look/animation.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
 import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/tierIdentifier.dart';
@@ -52,12 +53,7 @@ class MapCards extends StatelessWidget {
   }
 
   Widget _itemBuilder(BuildContext context, MapInfo entry, _) {
-    return OpenContainer(
-      openColor: backgroundColor(),
-      closedColor: backgroundColor(),
-      middleColor: backgroundColor(),
-      closedElevation: 0,
-      openElevation: 0,
+    return ContainerAnimationWidget(
       closedBuilder: (context, action) {
         return Card(
           color: primarythemeBlue(),
