@@ -19,7 +19,6 @@ class _HomepageState extends State<Homepage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin<Homepage> {
   late List<Widget> tabs, tabsTitle;
   late Widget appbar;
-  late int curIndex;
   late ScrollController _scrollController;
   @override
   bool get wantKeepAlive => true;
@@ -53,7 +52,6 @@ class _HomepageState extends State<Homepage>
               fontWeight: FontWeight.w300,
             )))
         .toList();
-    this.curIndex = 0;
   }
 
   @override
