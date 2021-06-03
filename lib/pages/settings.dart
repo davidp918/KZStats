@@ -47,7 +47,7 @@ class _SettingsState extends State<Settings> {
               child: ListTile(
                 onTap: () => Navigator.pushNamed(context, '/login'),
                 title: Text(
-                  steamid64 == '' ? 'Click to Login' : '$name',
+                  steamid64 == null ? 'Click to Login' : '$name',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -72,24 +72,6 @@ class _SettingsState extends State<Settings> {
                   borderRadius: BorderRadius.circular(10)),
               child: Column(
                 children: <Widget>[
-                  /*      ListTile(
-                    leading: Icon(
-                      Icons.brightness_6_outlined,
-                      color: Colors.white,
-                    ),
-                    title: Text(
-                      'Change Theme',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    trailing: Icon(
-                      EvaIcons.moonOutline,
-                      color: Colors.white,
-                    ),
-                    onTap: () {
-                      //open change password
-                    },
-                  ),
-                  _buildDivider(), */
                   ListTile(
                     leading: Icon(
                       EvilIcons.question,

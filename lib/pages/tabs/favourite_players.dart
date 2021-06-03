@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
+import 'package:kzstats/web/getRequest.dart';
+import 'package:kzstats/web/json/record_json.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,24 +17,20 @@ class FavouritePlayers extends StatefulWidget {
 class FavouritePlayersState extends State<FavouritePlayers> {
   late RefreshController _refreshController;
   late UserState userState;
+  late MarkState markState;
   late bool loggedIn;
-  late List<String> _steamFriends;
 
   @override
   void initState() {
     super.initState();
     this._refreshController = RefreshController(initialRefresh: true);
-    this._steamFriends = UserSharedPreferences.getSteamFriends();
   }
 
-  // check if a user is a kzer by {await getPlayerRecords(player, false)}
-  // non-kzer return result.length == 0
   void _onRefresh() async {
-/*     print('refreshing friend records...');
-    await refreshSteamFriends(context);
-    await refreshFriendsRecords();
+    print('refreshing friend records...');
+    await refreshFavouritePlayersRecords(this.markState.playerIds);
     print('refresh friend records done');
-    setState(() {}); */
+    setState(() {});
     _refreshController.refreshCompleted();
   }
 
@@ -56,7 +55,25 @@ class FavouritePlayersState extends State<FavouritePlayers> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     this.userState = context.watch<UserCubit>().state;
+    this.markState = context.watch<MarkCubit>().state;
     this.loggedIn = !(userState.playerInfo.avatarfull == null &&
         userState.playerInfo.steamid == null);
+  }
+
+  Future refreshFavouritePlayersRecords(List<String> playerIds) async {
+    List<List<Record>> records = await Future.wait([
+      for (String steamid64 in playerIds) getPlayerRecords(steamid64, false)
+    ]);
+
+    for (int i = 0; i < playerIds.length; i++) {
+      List<Record> curRecords = records[i];
+      String curSteamid64 = playerIds[i];
+      curRecords.sort((a, b) {
+        if (a.createdOn != null || b.createdOn != null)
+          return a.createdOn!.compareTo(b.createdOn!);
+        return 0;
+      });
+      await UserSharedPreferences.setPlayerRecords(curSteamid64, curRecords);
+    }
   }
 }
