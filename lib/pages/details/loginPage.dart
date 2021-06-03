@@ -53,9 +53,9 @@ class _LoginState extends State<Login> {
               color: primarythemeBlue(),
               child: ListTile(
                 title: Text(
-                  userState.info.steam64 == ''
+                  userState.playerInfo.steamid == null
                       ? 'You are not logged in'
-                      : 'You are logged in as: ${userState.info.name}',
+                      : 'You are logged in as: ${userState.playerInfo.personaname}',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -65,7 +65,7 @@ class _LoginState extends State<Login> {
                   decoration: BoxDecoration(shape: BoxShape.circle),
                   child: Icon(Icons.person, color: Colors.white),
                 ),
-                trailing: userState.info.steam64 == ''
+                trailing: userState.playerInfo.steamid == null
                     ? Icon(LineariconsFree.cross, color: Colors.red)
                     : Icon(Icons.check, color: Colors.green),
               ),
@@ -120,13 +120,8 @@ class _LoginState extends State<Login> {
                       color: Colors.white,
                     ),
                     onTap: () async {
-                      UserInfo user = UserInfo(
-                        steam32: '',
-                        steam64: '',
-                        avatarUrl: '',
-                        name: '',
-                      );
-                      BlocProvider.of<UserCubit>(context).setinfo(user);
+                      BlocProvider.of<UserCubit>(context)
+                          .setinfo(KzstatsApiPlayer());
                     },
                   ),
                 ],
@@ -170,20 +165,13 @@ class _LoginState extends State<Login> {
   }
 
   Widget failed() {
-    UserInfo user = UserInfo(steam32: '', steam64: '', avatarUrl: '', name: '');
-    BlocProvider.of<UserCubit>(context).setinfo(user);
+    BlocProvider.of<UserCubit>(context).setinfo(KzstatsApiPlayer());
     return Container();
   }
 
   Widget success(dynamic data) {
     KzstatsApiPlayer userInfo = data;
-    UserInfo user = UserInfo(
-      steam32: userInfo.steamid32.toString(),
-      steam64: userInfo.steamid.toString(),
-      avatarUrl: userInfo.avatarfull ?? '',
-      name: userInfo.personaname ?? '',
-    );
-    BlocProvider.of<UserCubit>(context).setinfo(user);
+    BlocProvider.of<UserCubit>(context).setinfo(userInfo);
     return Container();
   }
 }

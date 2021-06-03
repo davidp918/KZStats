@@ -1,6 +1,6 @@
 import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
-import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/getRequest.dart';
+import 'package:kzstats/web/json/wr_json.dart';
 import 'package:kzstats/web/urls.dart';
 
 Future<List<String>> getPlayerKzstatsNation(

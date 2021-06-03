@@ -29,8 +29,8 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     UserState state = context.watch<UserCubit>().state;
-    String steamid64 = state.info.steam64;
-    String name = state.info.name;
+    String? steamid64 = state.playerInfo.steamid;
+    String? name = state.playerInfo.personaname;
     return NestedScrollView(
       controller: this._scrollController,
       headerSliverBuilder: (BuildContext context, _) => <Widget>[this.appbar],

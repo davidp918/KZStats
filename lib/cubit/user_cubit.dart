@@ -1,35 +1,29 @@
 import 'package:bloc/bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:kzstats/global/userInfo_class.dart';
+import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
 
 class UserState {
-  UserInfo info;
+  KzstatsApiPlayer playerInfo;
   bool loading;
-  UserState({required this.info, required this.loading});
+  UserState({required this.playerInfo, required this.loading});
 
-  Map<String, dynamic> toMap() => {'info': info.toJson(), 'loading': loading};
+  Map<String, dynamic> toMap() =>
+      {'info': playerInfo.toJson(), 'loading': loading};
 
   factory UserState.fromMap(Map<String, dynamic> map) => UserState(
-        info: UserInfo.fromJson(map['info']),
+        playerInfo: KzstatsApiPlayer.fromJson(map['info']),
         loading: map['loading'],
       );
 }
 
 class UserCubit extends Cubit<UserState> with HydratedMixin {
   UserCubit()
-      : super(UserState(
-            info: UserInfo(
-              avatarUrl: '',
-              name: '',
-              steam32: '',
-              steam64: '',
-            ),
-            loading: false));
+      : super(UserState(playerInfo: KzstatsApiPlayer(), loading: false));
 
-  void setinfo(UserInfo newinfo) =>
-      emit(UserState(info: newinfo, loading: false));
+  void setinfo(KzstatsApiPlayer newinfo) =>
+      emit(UserState(playerInfo: newinfo, loading: false));
 
-  void load() => emit(UserState(info: state.info, loading: true));
+  void load() => emit(UserState(playerInfo: state.playerInfo, loading: true));
 
   @override
   UserState fromJson(Map<String, dynamic> json) {

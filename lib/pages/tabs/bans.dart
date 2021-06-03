@@ -3,7 +3,7 @@ import 'package:flutter_pagewise/flutter_pagewise.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/web/getRequest.dart';
-import 'package:kzstats/web/json.dart';
+import 'package:kzstats/web/json/globalApiBans_json.dart';
 
 class Bans extends StatefulWidget {
   static const int pageSize = 10;

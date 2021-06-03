@@ -8,7 +8,7 @@ import 'package:kzstats/cubit/mapFilter_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/pages/tabs/maps_cards_view.dart';
 import 'package:kzstats/look/colors.dart';
-import 'package:kzstats/web/json.dart';
+import 'package:kzstats/web/json/mapinfo_json.dart';
 
 class Maps extends StatefulWidget {
   Maps({Key? key}) : super(key: key);

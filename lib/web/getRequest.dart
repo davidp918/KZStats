@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:kzstats/utils/emptyListNull.dart';
-import 'package:kzstats/web/json.dart';
+import 'package:kzstats/web/json/globalApiBans_json.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/urls.dart';
 

@@ -111,8 +111,8 @@ class SteamFriendsState extends State<SteamFriends> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     this.userState = context.watch<UserCubit>().state;
-    this.loggedIn =
-        !(userState.info.avatarUrl == '' && userState.info.steam32 == '');
+    this.loggedIn = !(userState.playerInfo.avatarfull == null &&
+        userState.playerInfo.steamid == null);
   }
 
   Widget notLoggedInView() => Center(

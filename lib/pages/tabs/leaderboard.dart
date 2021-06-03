@@ -5,7 +5,8 @@ import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/web/getRequest.dart';
-import 'package:kzstats/web/json.dart';
+import 'package:kzstats/web/json/leaderboardPoints_json.dart';
+import 'package:kzstats/web/json/leaderboardRecords_json.dart';
 import 'package:kzstats/web/urls.dart';
 
 class Leaderboard extends StatefulWidget {

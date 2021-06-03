@@ -14,7 +14,8 @@ import 'package:kzstats/utils/svg.dart';
 import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/web/getRequest.dart';
-import 'package:kzstats/web/json.dart';
+import 'package:kzstats/web/json/mapinfo_json.dart';
+import 'package:kzstats/web/json/record_json.dart';
 import 'package:kzstats/web/urls.dart';
 
 class MapDetail extends StatefulWidget {

@@ -7,6 +7,9 @@ import 'dart:convert';
 KzstatsApiPlayer kzstatsApiPlayerFromJson(String str) =>
     KzstatsApiPlayer.fromJson(json.decode(str));
 
+String wrToJson(List<KzstatsApiPlayer> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class KzstatsApiPlayer {
   KzstatsApiPlayer({
     this.steamid,
@@ -66,4 +69,23 @@ class KzstatsApiPlayer {
         country: json["country"],
         steamid32: json["steamid32"],
       );
+  Map<String, dynamic> toJson() => {
+        'steamid': steamid,
+        'communityvisibilitystate': communityvisibilitystate,
+        'profilestate': profilestate,
+        'personaname': personaname,
+        'commentpermission': commentpermission,
+        'profileurl': profileurl,
+        'avatar': avatar,
+        'avatarmedium': avatarmedium,
+        'avatarfull': avatarfull,
+        'avatarhash': avatarhash,
+        'personastate': personastate,
+        'primaryclanid': primaryclanid,
+        'timecreated': timecreated,
+        'personastateflags': personastateflags,
+        'loccountrycode': loccountrycode,
+        'country': country,
+        'steamid32': steamid32,
+      };
 }

@@ -14,13 +14,17 @@ Widget? userLeadingIcon(BuildContext context) =>
       builder: (context, userState) => IconButton(
         icon: Icon(Icons.person),
         onPressed: () {
-          if (userState.info.avatarUrl == '' && userState.info.steam32 == '') {
+          if (userState.playerInfo.steamid == null &&
+              userState.playerInfo.avatarfull == null) {
             Navigator.pushNamed(context, '/login');
           } else {
             Navigator.pushNamed(
               context,
               '/player_detail',
-              arguments: [userState.info.steam64, userState.info.name],
+              arguments: [
+                userState.playerInfo.steamid,
+                userState.playerInfo.personaname
+              ],
             );
           }
         },

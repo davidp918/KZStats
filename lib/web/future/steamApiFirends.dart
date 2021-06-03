@@ -10,7 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future refreshSteamFriends(BuildContext context) async {
   UserState userState = context.read<UserCubit>().state;
-  String url = steamApiPlayerFriendList(userState.info.steam64);
+  print(userState.playerInfo);
+  String url = steamApiPlayerFriendList(userState.playerInfo.steamid ?? '');
   SteamFriend data = await getRequest(url, steamFriendFromJson);
   List<String> steamFriendsSteamid64 = [];
   for (Friend each in data.friendslist.friends)

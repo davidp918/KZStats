@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/widgets/datatable.dart';
 import 'package:kzstats/common/detailed_pages.dart';
+import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
+import 'package:kzstats/web/json/record_json.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
@@ -18,7 +20,6 @@ import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/convertDegreeRad.dart';
 import 'package:kzstats/utils/pointsSum.dart';
 import 'package:kzstats/web/getRequest.dart';
-import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/urls.dart';
 
 class PlayerDetail extends StatefulWidget {
