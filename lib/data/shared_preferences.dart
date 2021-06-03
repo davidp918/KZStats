@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:kzstats/web/getRequest.dart';
+import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/json/record_json.dart';
+import 'package:kzstats/web/urls.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kzstats/data/localPlayerClass.dart';
@@ -23,24 +25,33 @@ class UserSharedPreferences {
   static const _tierMap = 'tierMapping';
   static const _tierCount = 'tierCount';
   static const _firstStart = 'firstStart';
-  static const _steamFriends = 'steamFriends';
 
-  // steam friends
-  //static Future setSteamFriends() {}
+  // save player info
+  static Future savePlayerInfo(
+      String steamid64, KzstatsApiPlayer kzstatsPlayerinfo) async {
+    await _preferences.setString(
+        '${steamid64}_info', json.encode(kzstatsPlayerinfo.toJson()));
+  }
 
-  static List<String> getSteamFriends() =>
-      _preferences.getStringList(_steamFriends) ?? [];
-
-  static Future setSteamFriends(List<String> friends) async =>
-      await _preferences.setStringList(_steamFriends, friends);
+  static Future<KzstatsApiPlayer> getPlayerInfo(String steamid64) async {
+    String? data = _preferences.getString('${steamid64}_info');
+    if (data == null) {
+      KzstatsApiPlayer info = await getRequest(
+          kzstatsApiPlayerInfoUrl(steamid64), kzstatsApiPlayerFromJson);
+      await savePlayerInfo(steamid64, info);
+      return info;
+    }
+    return KzstatsApiPlayer.fromJson(json.decode(data));
+  }
 
   // set player records
   static Future setPlayerRecords(String steamid64, List<Record> records) async {
-    await _preferences.setString(steamid64, multiRecordsToJson(records));
+    await _preferences.setString(
+        '${steamid64}_records', multiRecordsToJson(records));
   }
 
   static List<Record> getPlayerRecords(String steamid64) {
-    String? data = _preferences.getString(steamid64);
+    String? data = _preferences.getString('${steamid64}_records');
     if (data == null) return [];
     return multiRecordsFromJson(data);
   }

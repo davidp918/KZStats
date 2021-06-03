@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
@@ -19,6 +20,7 @@ class FavouritePlayersState extends State<FavouritePlayers> {
   late UserState userState;
   late MarkState markState;
   late bool loggedIn;
+  late List<String> players;
 
   @override
   void initState() {
@@ -27,7 +29,7 @@ class FavouritePlayersState extends State<FavouritePlayers> {
   }
 
   void _onRefresh() async {
-    print('refreshing friend records...');
+    print('refreshing ${this.markState.playerIds.length} friends records...');
     await refreshFavouritePlayersRecords(this.markState.playerIds);
     print('refresh friend records done');
     setState(() {});
@@ -41,13 +43,66 @@ class FavouritePlayersState extends State<FavouritePlayers> {
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
-      enablePullDown: true,
-      enablePullUp: true,
-      controller: _refreshController,
-      onRefresh: () => _onRefresh(),
-      onLoading: () => _onLoading(),
-      child: Container(),
+    return Container(
+      child: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        controller: _refreshController,
+        onRefresh: () => _onRefresh(),
+        onLoading: () => _onLoading(),
+        scrollDirection: Axis.vertical,
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: 15,
+                itemBuilder: (BuildContext context, int index) => Card(
+                  child: Center(child: Text('Dummy Card Text')),
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (ctx, int) {
+                  return Card(
+                    child: ListTile(
+                        title: Text('Motivation $int'),
+                        subtitle:
+                            Text('this is a description of the motivation')),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget playerHeaderBuilder(
+      {required String steamid64,
+      required String name,
+      required String avatarUrl}) {
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: 30.0,
+          backgroundColor: Colors.transparent,
+          child: ClipOval(
+            child: getNetworkImage(
+              steamid64,
+              avatarUrl,
+              AssetImage('assets/icon/noimage.png'),
+            ),
+          ),
+        ),
+        Text('$name'),
+      ],
     );
   }
 
@@ -58,6 +113,7 @@ class FavouritePlayersState extends State<FavouritePlayers> {
     this.markState = context.watch<MarkCubit>().state;
     this.loggedIn = !(userState.playerInfo.avatarfull == null &&
         userState.playerInfo.steamid == null);
+    this.players = markState.playerIds;
   }
 
   Future refreshFavouritePlayersRecords(List<String> playerIds) async {

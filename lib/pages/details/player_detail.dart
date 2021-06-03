@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/widgets/datatable.dart';
 import 'package:kzstats/common/detailed_pages.dart';
+import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
 import 'package:kzstats/web/json/record_json.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -36,21 +37,21 @@ class PlayerDetail extends StatefulWidget {
 }
 
 class _PlayerDetailState extends State<PlayerDetail> {
-  final String steamId64;
+  final String steamid64;
   final String playerName;
   late Future _future;
   late ModeState modeState;
-  _PlayerDetailState(this.steamId64, this.playerName);
+  _PlayerDetailState(this.steamid64, this.playerName);
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     this.modeState = context.watch<ModeCubit>().state;
     this._future = Future.wait([
-      getRequest(kzstatsApiPlayerInfoUrl(steamId64), kzstatsApiPlayerFromJson),
+      UserSharedPreferences.getPlayerInfo(steamid64),
       getRequest(
           globalApiPlayerRecordsUrl(
-              modeState.nub, 99999, steamId64, modeState.mode),
+              modeState.nub, 99999, steamid64, modeState.mode),
           recordFromJson),
     ]);
   }
@@ -59,7 +60,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
   Widget build(BuildContext context) {
     return DetailedPage(
       markedType: 'player',
-      current: this.steamId64,
+      current: this.steamid64,
       title: this.playerName,
       builder: (BuildContext context) {
         return AsyncBuilder<dynamic>(
@@ -76,6 +77,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
   }
 
   Widget whole(KzstatsApiPlayer kzstatsPlayerInfo, List<Record>? records) {
+    //UserSharedPreferences.savePlayerInfo(kzstatsPlayerInfo);
     int totalPoints = pointsSum(records);
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -88,7 +90,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
             shrinkWrap: true,
             children: [
               playerHeader(kzstatsPlayerInfo, totalPoints),
-              MainBody(steamId64: this.steamId64, records: records),
+              MainBody(steamId64: this.steamid64, records: records),
               Container(height: 100),
             ],
           ),
@@ -111,7 +113,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
               width: avatarSize,
               height: avatarSize,
               child: getNetworkImage(
-                '${kzstatsPlayerInfo.steamid32}',
+                '${kzstatsPlayerInfo.steamid}',
                 kzstatsPlayerInfo.avatarfull!,
                 AssetImage('assets/icon/noimage.png'),
               ),

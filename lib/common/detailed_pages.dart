@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/appbars/appbar_widgets.dart';
 import 'package:kzstats/common/appbars/baseAppbar.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
+import 'package:kzstats/data/shared_preferences.dart';
 
 class DetailedPage extends StatefulWidget {
   const DetailedPage({
@@ -62,11 +63,12 @@ class _DetailedPageState extends State<DetailedPage> {
                             icon: Icon(Icons.star_border),
                             onPressed: () {
                               data.insert(0, widget.current);
-                              widget.markedType == 'player'
-                                  ? BlocProvider.of<MarkCubit>(context)
-                                      .setPlayerIds(data)
-                                  : BlocProvider.of<MarkCubit>(context)
-                                      .setMapIds(data);
+                              if (widget.markedType == 'player') {
+                                markPlayer(widget.current, data);
+                              } else {
+                                BlocProvider.of<MarkCubit>(context)
+                                    .setMapIds(data);
+                              }
                             },
                           );
                   },
@@ -79,6 +81,11 @@ class _DetailedPageState extends State<DetailedPage> {
         body: widget.builder(context),
       ),
     );
+  }
+
+  void markPlayer(String steamid64, List<String> data) async {
+    await UserSharedPreferences.getPlayerInfo(steamid64);
+    BlocProvider.of<MarkCubit>(context).setPlayerIds(data);
   }
 
   @override

@@ -7,7 +7,7 @@ import 'dart:convert';
 KzstatsApiPlayer kzstatsApiPlayerFromJson(String str) =>
     KzstatsApiPlayer.fromJson(json.decode(str));
 
-String wrToJson(List<KzstatsApiPlayer> data) =>
+String kzstatsApiPlayerToJson(List<KzstatsApiPlayer> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class KzstatsApiPlayer {

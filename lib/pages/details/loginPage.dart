@@ -9,7 +9,6 @@ import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
 import 'package:kzstats/web/urls.dart';
-import 'package:kzstats/global/userInfo_class.dart';
 
 class Login extends StatefulWidget {
   @override
