@@ -4,7 +4,7 @@ import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/indexedTransition.dart';
 import 'package:kzstats/pages/maps.dart';
-import 'package:kzstats/pages/explore.dart';
+import 'package:kzstats/pages/favourites.dart';
 import 'package:kzstats/pages/homepage.dart';
 import 'package:kzstats/pages/settings.dart';
 import 'package:kzstats/look/colors.dart';
@@ -26,7 +26,7 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
     super.initState();
     this.curIndex = 0;
     this.reverseAnimation = false;
-    this.pages = [Homepage(), Explore(), Maps(), Settings()];
+    this.pages = [Homepage(), Favourites(), Maps(), Settings()];
   }
 
   void onTap(index) {
@@ -83,7 +83,7 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.favorite_border_rounded),
-                label: 'Explore',
+                label: 'Favourites',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.map_sharp),

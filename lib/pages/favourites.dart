@@ -7,20 +7,20 @@ import 'package:kzstats/web/future/steamApiFirends.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Explore extends StatefulWidget {
-  Explore({Key? key}) : super(key: key);
+class Favourites extends StatefulWidget {
+  Favourites({Key? key}) : super(key: key);
 
   @override
-  _ExploreState createState() => _ExploreState();
+  _FavouritesState createState() => _FavouritesState();
 }
 
-class _ExploreState extends State<Explore> {
+class _FavouritesState extends State<Favourites> {
   late List<Widget> _tabsTitle, _tabs;
 
   @override
   void initState() {
     super.initState();
-    this._tabsTitle = ['Friends', 'Favourites']
+    this._tabsTitle = ['Maps', 'Players']
         .map((data) => Align(
             alignment: Alignment.center,
             child: Text(data,
@@ -83,11 +83,11 @@ class SteamFriendsState extends State<SteamFriends> {
   // check if a user is a kzer by {await getPlayerRecords(player, false)}
   // non-kzer return result.length == 0
   void _onRefresh() async {
-    print('refreshing friend records...');
+/*     print('refreshing friend records...');
     await refreshSteamFriends(context);
     await refreshFriendsRecords();
     print('refresh friend records done');
-    setState(() {});
+    setState(() {}); */
     _refreshController.refreshCompleted();
   }
 

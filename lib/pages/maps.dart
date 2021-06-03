@@ -19,7 +19,6 @@ class Maps extends StatefulWidget {
 
 class _MapsState extends State<Maps> {
   late List<MapInfo> mapInfo;
-  late List<Widget> _tabsTitle, _tabs;
   late Future _loadMaps;
   late FilterState filterState;
 
@@ -27,21 +26,6 @@ class _MapsState extends State<Maps> {
   void initState() {
     super.initState();
     this._loadMaps = UserSharedPreferences.updateMapData();
-    this._tabsTitle = ['All', 'Favourites']
-        .map(
-          (data) => Align(
-            alignment: Alignment.center,
-            child: Text(
-              data,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-        )
-        .toList();
   }
 
   @override
@@ -50,10 +34,6 @@ class _MapsState extends State<Maps> {
     this.filterState = context.watch<FilterCubit>().state;
     List<MapInfo> data = UserSharedPreferences.getMapData();
     this.mapInfo = filterMapData(data);
-    this._tabs = [
-      MapCards(prevInfo: this.mapInfo, marked: false),
-      MapCards(prevInfo: this.mapInfo, marked: true),
-    ];
   }
 
   List<MapInfo> filterMapData(List<MapInfo> data) {
@@ -92,6 +72,14 @@ class _MapsState extends State<Maps> {
           child: AppBar(
             backgroundColor: appbarColor(),
             leading: userLeadingIcon(context),
+            title: Text(
+              'Maps',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
             actions: <Widget>[
               searchWidget(context),
               Align(
@@ -104,15 +92,6 @@ class _MapsState extends State<Maps> {
                 ),
               )
             ],
-            flexibleSpace: Center(
-              child: TabBar(
-                tabs: this._tabsTitle,
-                isScrollable: true,
-                indicatorColor: Colors.white,
-                indicatorWeight: 1.4,
-                indicatorSize: TabBarIndicatorSize.label,
-              ),
-            ),
           ),
         ),
         body: FutureBuilder(
@@ -121,14 +100,9 @@ class _MapsState extends State<Maps> {
             if (snapshot.connectionState != ConnectionState.done)
               return loadingFromApi();
             List<MapInfo> data = UserSharedPreferences.getMapData();
-
             if (data == []) return errorScreen();
             this.mapInfo = filterMapData(data);
-            this._tabs = [
-              MapCards(prevInfo: this.mapInfo, marked: false),
-              MapCards(prevInfo: this.mapInfo, marked: true),
-            ];
-            return TabBarView(children: this._tabs);
+            return MapCards(prevInfo: this.mapInfo, marked: false);
           },
         ),
       ),
