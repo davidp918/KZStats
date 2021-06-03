@@ -3,6 +3,7 @@ import 'package:kzstats/common/appbars/appbar_widgets.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/look/colors.dart';
+import 'package:kzstats/pages/tabs/maps_cards_view.dart';
 import 'package:kzstats/web/future/steamApiFirends.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,11 @@ class _FavouritesState extends State<Favourites> {
   @override
   void initState() {
     super.initState();
-    this._tabsTitle = ['Maps', 'Players']
+    this._tabs = [
+      MapCards(prevInfo: UserSharedPreferences.getMapData(), marked: true),
+      MapCards(prevInfo: UserSharedPreferences.getMapData(), marked: true),
+    ];
+    this._tabsTitle = ['Players', 'Maps']
         .map((data) => Align(
             alignment: Alignment.center,
             child: Text(data,
@@ -54,7 +59,9 @@ class _FavouritesState extends State<Favourites> {
             ),
           ),
         ),
-        body: SteamFriends(),
+        body: TabBarView(
+          children: this._tabs,
+        ), //SteamFriends(),
       ),
     );
   }
@@ -98,7 +105,6 @@ class SteamFriendsState extends State<SteamFriends> {
 
   @override
   Widget build(BuildContext context) {
-    if (!this.loggedIn) return notLoggedInView();
     return SmartRefresher(
       enablePullDown: true,
       enablePullUp: true,
@@ -108,50 +114,6 @@ class SteamFriendsState extends State<SteamFriends> {
       child: Container(),
     );
   }
-
-  Widget notLoggedInView() => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'You have not logged in',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(height: 2),
-            Text(
-              "Log in to view your friends' latest records",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w300,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-            SizedBox(height: 6),
-            InkWell(
-              onTap: () => Navigator.pushNamed(context, '/login'),
-              child: Container(
-                height: 40,
-                width: 170,
-                child: Card(
-                  elevation: 2.0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  color: primarythemeBlue(),
-                  child: Center(
-                    child: Text(
-                      'Login',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
 
   @override
   void didChangeDependencies() {

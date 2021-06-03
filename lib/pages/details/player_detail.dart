@@ -319,7 +319,7 @@ class MainBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (this.records == null) {
+    if (this.records == null || this.records?.length == 0) {
       return Align(
         alignment: Alignment.center,
         child: Text('No data available'),

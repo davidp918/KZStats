@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/networkImage.dart';
+import 'package:kzstats/common/none.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/look/animation.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
@@ -23,24 +24,16 @@ class MapCards extends StatelessWidget {
     if (marked) {
       MarkState markState = context.watch<MarkCubit>().state;
       mapInfo = [];
-      for (MapInfo info in prevInfo) {
-        if (markState.mapIds.contains(info.mapId.toString()) &&
-            !mapInfo.contains(info.mapId.toString())) mapInfo.add(info);
+      for (String mapId in markState.mapIds) {
+        for (MapInfo info in prevInfo) {
+          if (info.mapId.toString() == mapId) mapInfo.add(info);
+        }
       }
     }
     if (marked && mapInfo.length == 0) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'No Favourite Maps Yet...',
-            textAlign: TextAlign.center,
-          ),
-          Text(
-            'Go add a few and grind them later!',
-            textAlign: TextAlign.center,
-          ),
-        ],
+      return noneView(
+        title: 'No Favourite Maps Yet...',
+        subTitle: 'Go mark a few and grind them later!',
       );
     }
     return CustomScrollView(
