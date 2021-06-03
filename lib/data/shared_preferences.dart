@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
+import 'package:kzstats/web/json/record_json.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:kzstats/global/userInfo_class.dart';
 import 'package:kzstats/data/localPlayerClass.dart';
 
 class UserSharedPreferences {
@@ -16,25 +17,32 @@ class UserSharedPreferences {
       await _preferences.setBool(_firstStart, false);
   static bool getFirstStart() => _preferences.getBool(_firstStart) ?? true;
 
-  static const _userInfo = 'userInfo';
   static const _mapData = 'mapData';
   static const _mapHistory = 'mapHistory';
   static const _playerHistory = 'playerHistory';
   static const _tierMap = 'tierMapping';
   static const _tierCount = 'tierCount';
   static const _firstStart = 'firstStart';
+  static const _steamFriends = 'steamFriends';
 
-  // User settings
-  static Future setUserInfo(UserInfo userInfo) async {
-    await _preferences.setString(_userInfo, jsonEncode(userInfo.toJson()));
+  // steam friends
+  //static Future setSteamFriends() {}
+
+  static List<String> getSteamFriends() =>
+      _preferences.getStringList(_steamFriends) ?? [];
+
+  static Future setSteamFriends(List<String> friends) async =>
+      await _preferences.setStringList(_steamFriends, friends);
+
+  // set player records
+  static Future setPlayerRecords(String steamid64, List<Record> records) async {
+    await _preferences.setString(steamid64, multiRecordsToJson(records));
   }
 
-  static UserInfo getUserInfo() {
-    dynamic data = _preferences.getString(_userInfo);
-    if (data == null) {
-      return UserInfo(steam32: '', steam64: '', avatarUrl: '', name: '');
-    }
-    return UserInfo.fromJson(jsonDecode(data));
+  static List<Record> getPlayerRecords(String steamid64) {
+    dynamic data = _preferences.getString(steamid64);
+    if (data == null) return [];
+    return multiRecordsFromJson(data);
   }
 
   // Local Maps Data

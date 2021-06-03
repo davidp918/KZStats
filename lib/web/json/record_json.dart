@@ -4,6 +4,11 @@
 
 import 'dart:convert';
 
+List<Record> multiRecordsFromJson(String str) =>
+    List<Record>.from(json.decode(str).map((x) => Record.fromJson(x)));
+String multiRecordsToJson(List<Record> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 List<Record> recordFromJson(String str) =>
     List<Record>.from(json.decode(str).map((x) => Record.fromJson(x)));
 

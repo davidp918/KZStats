@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
       child: Builder(
         builder: (context) {
           refresh(context);
-          timeDilation = 5;
+          //timeDilation = 5;
           //FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
           return RefreshConfiguration(
             headerBuilder: () => LoadingGifHeader(),

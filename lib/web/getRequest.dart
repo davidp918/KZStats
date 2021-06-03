@@ -6,7 +6,7 @@ import 'package:kzstats/web/json.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/urls.dart';
 
-Future<dynamic> getRequest(String url, Function fromjson) async {
+Future getRequest(String url, Function fromjson) async {
   dynamic res;
   try {
     var response = await http.get(

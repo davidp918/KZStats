@@ -49,7 +49,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
       getRequest(kzstatsApiPlayerInfoUrl(steamId64), kzstatsApiPlayerFromJson),
       getRequest(
           globalApiPlayerRecordsUrl(
-              modeState.mode, modeState.nub, 99999, steamId64),
+              modeState.nub, 99999, steamId64, modeState.mode),
           recordFromJson),
     ]);
   }

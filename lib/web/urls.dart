@@ -32,16 +32,12 @@ String globalApiMaptopRecordsUrl(
 }
 
 // all records of a specific player
-String globalApiPlayerRecordsUrl(
-  String mode,
-  bool ifNub,
-  int limit,
-  String steamId64,
-) {
+String globalApiPlayerRecordsUrl(bool ifNub, int limit, String steamId64,
+    [String? mode]) {
   const kz_mapTopRecords =
-      "https://kztimerglobal.com/api/v2.0/records/top?steamid64=!steamId64&modes_list_string=!mode!ifNub&limit=!limit&stage=0&tickrate=128";
+      "https://kztimerglobal.com/api/v2.0/records/top?steamid64=!steamId64!mode!ifNub&limit=!limit&stage=0&tickrate=128";
   return kz_mapTopRecords
-      .replaceAll('!mode', mode)
+      .replaceAll('!mode', mode == null ? '' : '&modes_list_string=$mode')
       .replaceAll('!steamId64', steamId64)
       .replaceAll('!limit', limit.toString())
       .replaceAll('!ifNub', ifNub ? '' : '&has_teleports=false');
