@@ -8,7 +8,7 @@ import 'package:kzstats/web/json/steamFriend_json.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future refreshSteamFriends(BuildContext context) async {
+/* Future refreshSteamFriends(BuildContext context) async {
   UserState userState = context.read<UserCubit>().state;
   String url = steamApiPlayerFriendList(userState.playerInfo.steamid ?? '');
   SteamFriend data = await getRequest(url, steamFriendFromJson);
@@ -16,7 +16,7 @@ Future refreshSteamFriends(BuildContext context) async {
   for (Friend each in data.friendslist.friends)
     steamFriendsSteamid64.add(each.steamid);
   await UserSharedPreferences.setSteamFriends(steamFriendsSteamid64);
-}
+} */
 
 Future refreshFriendsRecords() async {
   List<String> friends = UserSharedPreferences.getSteamFriends();
@@ -45,8 +45,3 @@ Future refreshFriendsRecords() async {
     await UserSharedPreferences.setPlayerRecords(curSteamid64, curRecords);
   }
 }
-
-Future<dynamic> getKzstatsPlayerInfo(String steamid64) async => getRequest(
-      kzstatsApiPlayerInfoUrl(steamid64),
-      kzstatsApiPlayerFromJson,
-    );
