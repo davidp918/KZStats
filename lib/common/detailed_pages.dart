@@ -62,7 +62,6 @@ class _DetailedPageState extends State<DetailedPage> {
                             icon: Icon(Icons.star_border),
                             onPressed: () {
                               data.insert(0, widget.current);
-                              print(data);
                               widget.markedType == 'player'
                                   ? BlocProvider.of<MarkCubit>(context)
                                       .setPlayerIds(data)
