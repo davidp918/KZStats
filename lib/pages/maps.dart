@@ -121,6 +121,7 @@ class _MapsState extends State<Maps> {
             if (snapshot.connectionState != ConnectionState.done)
               return loadingFromApi();
             List<MapInfo> data = UserSharedPreferences.getMapData();
+
             if (data == []) return errorScreen();
             this.mapInfo = filterMapData(data);
             this._tabs = [

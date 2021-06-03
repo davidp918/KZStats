@@ -83,8 +83,10 @@ class SteamFriendsState extends State<SteamFriends> {
   // check if a user is a kzer by {await getPlayerRecords(player, false)}
   // non-kzer return result.length == 0
   void _onRefresh() async {
-    // get friends
+    print('refreshing friend records...');
     await refreshSteamFriends(context);
+    await refreshFriendsRecords();
+    print('refresh friend records done');
     setState(() {});
     _refreshController.refreshCompleted();
   }
@@ -105,14 +107,6 @@ class SteamFriendsState extends State<SteamFriends> {
       onLoading: () => _onLoading(),
       child: Container(),
     );
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    this.userState = context.watch<UserCubit>().state;
-    this.loggedIn = !(userState.playerInfo.avatarfull == null &&
-        userState.playerInfo.steamid == null);
   }
 
   Widget notLoggedInView() => Center(
@@ -158,4 +152,12 @@ class SteamFriendsState extends State<SteamFriends> {
           ],
         ),
       );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    this.userState = context.watch<UserCubit>().state;
+    this.loggedIn = !(userState.playerInfo.avatarfull == null &&
+        userState.playerInfo.steamid == null);
+  }
 }

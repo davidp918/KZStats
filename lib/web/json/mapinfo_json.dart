@@ -30,7 +30,7 @@ class MapInfo {
   int filesize;
   bool? validated;
   int difficulty;
-  DateTime? createdOn;
+  DateTime createdOn;
   DateTime updatedOn;
   String? approvedBySteamid64;
   String? workshopUrl;
@@ -54,7 +54,7 @@ class MapInfo {
         "filesize": filesize,
         "validated": validated,
         "difficulty": difficulty,
-        "created_on": createdOn,
+        "created_on": createdOn.toIso8601String(),
         "updated_on": updatedOn.toIso8601String(),
         "approved_by_steamid64": approvedBySteamid64,
         "workshop_url": workshopUrl,

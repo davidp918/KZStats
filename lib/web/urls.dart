@@ -70,7 +70,7 @@ String steamApiPlayerInfoUrl(String steamId64) {
 }
 
 String steamApiPlayerFriendList(String steamId64) =>
-    'http://api.steampowered.com/ISteamUser/GetFriendList/v0001?key=$webApiKey&steamid=$steamId64&relationship=friend';
+    '${proxy}http://api.steampowered.com/ISteamUser/GetFriendList/v0001?key=$webApiKey&steamid=$steamId64&relationship=friend';
 
 // player data from kzstats api
 String kzstatsApiPlayerInfoUrl(String? steamId64) {

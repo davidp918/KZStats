@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:kzstats/utils/emptyListNull.dart';
 import 'package:kzstats/web/json/globalApiBans_json.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
+import 'package:kzstats/web/json/record_json.dart';
 import 'package:kzstats/web/urls.dart';
 
 Future getRequest(String url, Function fromjson) async {
@@ -76,6 +77,21 @@ Future<List<Ban>> getBans(int limit, int offset, Function fromjson) async {
   }
   if (res is List) {
     return ifEmptyListReNull(res);
+  }
+  return res;
+}
+
+Future<List<Record>> getPlayerRecords(String steamid64, bool ifNub) async {
+  List<Record> res = [];
+  try {
+    var response = await http.get(
+      Uri.parse(globalApiPlayerRecordsUrl(ifNub, 99999, steamid64)),
+    );
+    response.statusCode == HttpStatus.ok
+        ? res = recordFromJson(response.body)
+        : print('something wrong');
+  } catch (exception) {
+    throw UnimplementedError();
   }
   return res;
 }

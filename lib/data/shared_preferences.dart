@@ -40,7 +40,7 @@ class UserSharedPreferences {
   }
 
   static List<Record> getPlayerRecords(String steamid64) {
-    dynamic data = _preferences.getString(steamid64);
+    String? data = _preferences.getString(steamid64);
     if (data == null) return [];
     return multiRecordsFromJson(data);
   }
