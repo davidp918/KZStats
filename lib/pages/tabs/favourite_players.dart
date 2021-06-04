@@ -39,7 +39,7 @@ class FavouritePlayersState extends State<FavouritePlayers> {
     await refreshFavouritePlayersRecords(this.markState.playerIds);
     for (String steamid64 in this.players) {
       this.playerDetails[steamid64] = {
-        'info': UserSharedPreferences.getPlayerInfo(steamid64),
+        'info': UserSharedPreferences.readPlayerInfo(steamid64),
         'records': UserSharedPreferences.getPlayerRecords(steamid64),
       };
     }
@@ -95,15 +95,18 @@ class FavouritePlayersState extends State<FavouritePlayers> {
     );
   }
 
-  List<Widget> playerHeaders() => <Widget>[
-        for (String steamid64 in this.players)
-          playerHeaderBuilder(
-            steamid64: steamid64,
-            name: this.playerDetails[steamid64]?['info']?.personaname ??
-                'Unknown name',
-            avatarUrl: this.playerDetails[steamid64]?['info']?.avatarfull ?? '',
-          ),
-      ];
+  List<Widget> playerHeaders() {
+    print(this.playerDetails);
+    return <Widget>[
+      for (String steamid64 in this.players)
+        playerHeaderBuilder(
+          steamid64: steamid64,
+          name: this.playerDetails[steamid64]?['info']?.personaname ??
+              'Unknown name',
+          avatarUrl: this.playerDetails[steamid64]?['info']?.avatarfull ?? '',
+        ),
+    ];
+  }
 
   Widget playerHeaderBuilder(
       {required String steamid64,
