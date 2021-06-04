@@ -69,8 +69,8 @@ class UserSharedPreferences {
     // 1. local is null?
     // 2. if local is null then ofcourse write,
     // 3. if not, check if it is outdated by
-    dynamic prev = getMapData();
-    if (prev == null) {
+    List<MapInfo> prev = getMapData();
+    if (prev.length == 0) {
       await updateAllMapData();
       return;
     }

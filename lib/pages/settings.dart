@@ -13,7 +13,8 @@ class Settings extends StatefulWidget {
   _SettingsState createState() => _SettingsState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsState extends State<Settings>
+    with AutomaticKeepAliveClientMixin<Settings> {
   late ScrollController _scrollController;
   late Widget appbar;
   @override
@@ -28,6 +29,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     UserState state = context.watch<UserCubit>().state;
     String? steamid64 = state.playerInfo.steamid;
     String? name = state.playerInfo.personaname;
@@ -266,4 +268,7 @@ class _SettingsState extends State<Settings> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

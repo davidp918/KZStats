@@ -87,7 +87,7 @@ class _LatestBodyState extends State<LatestBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Scrollbar(
       child: SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,

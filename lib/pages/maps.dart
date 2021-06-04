@@ -17,7 +17,7 @@ class Maps extends StatefulWidget {
   _MapsState createState() => _MapsState();
 }
 
-class _MapsState extends State<Maps> {
+class _MapsState extends State<Maps> with AutomaticKeepAliveClientMixin<Maps> {
   late List<MapInfo> mapInfo;
   late Future _loadMaps;
   late FilterState filterState;
@@ -63,6 +63,7 @@ class _MapsState extends State<Maps> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return DefaultTabController(
       length: 2,
       initialIndex: 0,
@@ -108,4 +109,7 @@ class _MapsState extends State<Maps> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

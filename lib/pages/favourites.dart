@@ -12,7 +12,8 @@ class Favourites extends StatefulWidget {
   _FavouritesState createState() => _FavouritesState();
 }
 
-class _FavouritesState extends State<Favourites> {
+class _FavouritesState extends State<Favourites>
+    with AutomaticKeepAliveClientMixin<Favourites> {
   late List<Widget> _tabsTitle, _tabs;
 
   @override
@@ -36,6 +37,7 @@ class _FavouritesState extends State<Favourites> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -62,4 +64,7 @@ class _FavouritesState extends State<Favourites> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

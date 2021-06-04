@@ -18,7 +18,8 @@ class FavouritePlayers extends StatefulWidget {
   FavouritePlayersState createState() => FavouritePlayersState();
 }
 
-class FavouritePlayersState extends State<FavouritePlayers> {
+class FavouritePlayersState extends State<FavouritePlayers>
+    with AutomaticKeepAliveClientMixin<FavouritePlayers> {
   late RefreshController _refreshController;
   late UserState userState;
   late MarkState markState;
@@ -44,17 +45,13 @@ class FavouritePlayersState extends State<FavouritePlayers> {
       };
     }
     print('refresh friend records done');
-    setState(() {});
+    if (mounted) setState(() {});
     _refreshController.refreshCompleted();
-  }
-
-  void _onLoading() async {
-    // load more
-    _refreshController.loadComplete();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (this.players.length == 0)
       return noneView(
         title: 'No Favourite Players Yet...',
@@ -63,10 +60,9 @@ class FavouritePlayersState extends State<FavouritePlayers> {
     return Container(
       child: SmartRefresher(
         enablePullDown: true,
-        enablePullUp: true,
+        enablePullUp: false,
         controller: _refreshController,
         onRefresh: () => _onRefresh(),
-        onLoading: () => _onLoading(),
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
@@ -96,7 +92,6 @@ class FavouritePlayersState extends State<FavouritePlayers> {
   }
 
   List<Widget> playerHeaders() {
-    print(this.playerDetails);
     return <Widget>[
       for (String steamid64 in this.players)
         playerHeaderBuilder(
@@ -185,4 +180,7 @@ class FavouritePlayersState extends State<FavouritePlayers> {
       await UserSharedPreferences.setPlayerRecords(curSteamid64, curRecords);
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

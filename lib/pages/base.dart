@@ -20,12 +20,14 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
   late int curIndex;
   late List<Widget> pages;
   late bool reverseAnimation;
+  late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
     this.curIndex = 0;
     this.reverseAnimation = false;
+    this._pageController = PageController();
     this.pages = [Homepage(), Favourites(), Maps(), Settings()];
   }
 
@@ -33,6 +35,7 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
     setState(() {
       this.reverseAnimation = index < this.curIndex;
       this.curIndex = index;
+      this._pageController.jumpToPage(index);
     });
   }
 
@@ -42,23 +45,9 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: backgroundColor(),
-        body: IndexedTransitionSwitcher(
-          index: this.curIndex,
-          duration: const Duration(milliseconds: 300),
-          reverse: this.reverseAnimation,
-          transitionBuilder: (
-            Widget child,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return SharedAxisTransition(
-              child: child,
-              animation: animation,
-              fillColor: backgroundColor(),
-              secondaryAnimation: secondaryAnimation,
-              transitionType: SharedAxisTransitionType.horizontal,
-            );
-          },
+        body: PageView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: this._pageController,
           children: this.pages,
         ),
         bottomNavigationBar: SizedBox(
