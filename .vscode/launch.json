@@ -8,6 +8,13 @@
             "name": "kzstats",
             "request": "launch",
             "type": "dart"
-        }
+        },
+/*         {
+            "name": "Flutter",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "profile"
+        }, */
     ]
 }

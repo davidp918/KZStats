@@ -8,6 +8,7 @@ import 'package:kzstats/web/json/record_json.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@pragma("vm:entry-point")
 class FavouritePlayers extends StatefulWidget {
   FavouritePlayers({Key? key}) : super(key: key);
 
@@ -51,34 +52,8 @@ class FavouritePlayersState extends State<FavouritePlayers> {
         onRefresh: () => _onRefresh(),
         onLoading: () => _onLoading(),
         scrollDirection: Axis.vertical,
-        child: ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: 15,
-                itemBuilder: (BuildContext context, int index) => Card(
-                  child: Center(child: Text('Dummy Card Text')),
-                ),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 10,
-                itemBuilder: (ctx, int) {
-                  return Card(
-                    child: ListTile(
-                        title: Text('Motivation $int'),
-                        subtitle:
-                            Text('this is a description of the motivation')),
-                  );
-                },
-              ),
-            ),
-          ],
+        child: Column(
+          children: [Text('af')],
         ),
       ),
     );

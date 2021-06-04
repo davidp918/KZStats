@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-import 'package:kzstats/utils/emptyListNull.dart';
 import 'package:kzstats/web/json/globalApiBans_json.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/json/record_json.dart';
@@ -19,15 +18,15 @@ Future getRequest(String url, Function fromjson) async {
   } catch (exception) {
     throw UnimplementedError();
   }
-  if (res is List) return ifEmptyListReNull(res);
+  if (res is List && res.length == 0) return [];
   // may need to perform null replace check for
   // other data types
   return res;
 }
 
-Future<List<MapInfo>?> getMaps(
+Future<List<MapInfo>> getMaps(
     int limit, int offset, Function fromjson, int tier) async {
-  dynamic res;
+  List<MapInfo> res = [];
   try {
     var response = await http.get(
       Uri.parse(globalApiAllMaps(limit, offset, tier)),
@@ -38,15 +37,13 @@ Future<List<MapInfo>?> getMaps(
   } catch (exception) {
     throw ('get map exceptions: $exception');
   }
-  if (res is List) {
-    return ifEmptyListReNull(res);
-  }
+  if (res.length == 0) return [];
   return res;
 }
 
 Future<List<MapInfo>> getAMaps(
     int limit, int offset, Function fromjson, int tier) async {
-  dynamic res;
+  List<MapInfo> res = [];
   try {
     var response = await http.get(
       Uri.parse(globalApiAllMaps(limit, offset, tier)),
@@ -57,14 +54,12 @@ Future<List<MapInfo>> getAMaps(
   } catch (exception) {
     throw ('get map exceptions: $exception');
   }
-  if (res is List) {
-    return ifEmptyListReNull(res);
-  }
+  if (res.length == 0) return [];
   return res;
 }
 
 Future<List<Ban>> getBans(int limit, int offset, Function fromjson) async {
-  dynamic res;
+  List<Ban> res = [];
   try {
     var response = await http.get(
       Uri.parse(globalApiBans(limit, offset)),
@@ -75,9 +70,7 @@ Future<List<Ban>> getBans(int limit, int offset, Function fromjson) async {
   } catch (exception) {
     throw UnimplementedError();
   }
-  if (res is List) {
-    return ifEmptyListReNull(res);
-  }
+  if (res.length == 0) return [];
   return res;
 }
 
@@ -93,5 +86,6 @@ Future<List<Record>> getPlayerRecords(String steamid64, bool ifNub) async {
   } catch (exception) {
     throw UnimplementedError();
   }
+  if (res.length == 0) return [];
   return res;
 }
