@@ -44,6 +44,12 @@ class UserSharedPreferences {
     return KzstatsApiPlayer.fromJson(json.decode(data));
   }
 
+  static KzstatsApiPlayer? readPlayerInfo(String steamid64) {
+    String? data = _preferences.getString('${steamid64}_info');
+    if (data == null) return null;
+    return KzstatsApiPlayer.fromJson(json.decode(data));
+  }
+
   // set player records
   static Future setPlayerRecords(String steamid64, List<Record> records) async {
     await _preferences.setString(
@@ -69,9 +75,8 @@ class UserSharedPreferences {
       return;
     }
     int prevLength = prev.length;
-    List<MapInfo>? check =
-        await getMaps(1, prevLength, multiMapInfoFromJson, 0);
-    if (check != null)
+    List<MapInfo> check = await getMaps(1, prevLength, multiMapInfoFromJson, 0);
+    if (check.length == 0)
       await updateAllMapData();
     else
       print('No update available');
@@ -79,8 +84,8 @@ class UserSharedPreferences {
 
   static Future updateAllMapData() async {
     print('Downloading map data...');
-    List<MapInfo>? allMaps = await getMaps(9999, 0, multiMapInfoFromJson, 0);
-    if (allMaps == null) return;
+    List<MapInfo> allMaps = await getMaps(9999, 0, multiMapInfoFromJson, 0);
+    if (allMaps.length == 0) return;
     await setMapTierInfo(allMaps);
     allMaps.sort((a, b) => a.mapId.compareTo(b.mapId));
     await _preferences.setString(_mapData, multiMapInfoToJson(allMaps));

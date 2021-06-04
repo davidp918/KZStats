@@ -85,7 +85,7 @@ class _DetailedPageState extends State<DetailedPage> {
 
   void markPlayer(String steamid64, List<String> data) async {
     await UserSharedPreferences.getPlayerInfo(steamid64);
-    BlocProvider.of<MarkCubit>(context).setPlayerIds(data);
+    if (mounted) BlocProvider.of<MarkCubit>(context).setPlayerIds(data);
   }
 
   @override

@@ -6,11 +6,13 @@ Widget noneView({required String title, required String subTitle}) => Center(
         children: [
           Text(
             '$title',
+            textAlign: TextAlign.center,
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 2),
           Text(
             '$subTitle',
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w300,
