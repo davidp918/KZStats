@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:kzstats/common/customDivider.dart';
 import 'package:kzstats/common/networkImage.dart';
@@ -5,6 +7,7 @@ import 'package:kzstats/common/none.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
+import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json/record_json.dart';
@@ -31,6 +34,14 @@ class FavouritePlayersState extends State<FavouritePlayers>
   late Map<String, List<Record>> playerRecords;
   late int curPageSize;
   int pageSize = 15;
+  Random random = Random();
+  final completeChoices = [
+    'was on',
+    'completed',
+    'finished',
+    'played',
+    'had beaten'
+  ];
 
   @override
   void initState() {
@@ -85,14 +96,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
             ),
           ),
-          SingleChildScrollView(
-            primary: true,
-            child: Container(
-              child: Row(
-                children: playerHeaders(),
-              ),
-            ),
-          ),
+          playerHeaders(),
           customDivider(16),
           ListView.builder(
             shrinkWrap: true,
@@ -108,28 +112,74 @@ class FavouritePlayersState extends State<FavouritePlayers>
   Widget _itemBuilder(BuildContext context, int index) {
     Record curRecord = this.latestRecords[index];
     String steamid64 = curRecord.steamid64.toString();
-    String name = curRecord.playerName ?? '';
+    String playerName = curRecord.playerName ?? '';
+    String mapName = curRecord.mapName ?? '';
     double radius = 21;
     return Column(
       children: [
         Padding(
           padding: EdgeInsets.all(16),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: [
               getAvatar(steamid64, radius),
-              SizedBox(width: 8),
+              SizedBox(width: 12),
               Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  InkWell(
-                    child: Text('$name'),
-                    onTap: () => Navigator.of(context).pushNamed(
-                      '/player_detail',
-                      arguments: [curRecord.steamid64, curRecord.playerName],
+                  Container(
+                    width: MediaQuery.of(context).size.width - 2 * radius - 50,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () => Navigator.of(context).pushNamed(
+                            '/player_detail',
+                            arguments: [
+                              curRecord.steamid64,
+                              curRecord.playerName
+                            ],
+                          ),
+                          child: Text(
+                            playerName,
+                            style: TextStyle(
+                              color: inkWellBlue(),
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          ' ${this.completeChoices[this.random.nextInt(this.completeChoices.length)]} ',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => Navigator.of(context)
+                                .pushNamed('/map_detail', arguments: [
+                              curRecord.mapId,
+                              curRecord.mapName
+                            ]),
+                            child: Text(
+                              '$mapName aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: inkWellBlue(),
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Text(
                     '${diffofNow(curRecord.createdOn)}',
-                    style: TextStyle(fontSize: 14),
+                    style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
                   ),
                 ],
               ),
@@ -141,37 +191,42 @@ class FavouritePlayersState extends State<FavouritePlayers>
     );
   }
 
-  List<Widget> playerHeaders() {
+  Widget playerHeaders() {
     double radius = 26;
-    return <Widget>[
-      for (String steamid64 in this.subscribedPlayersSteam64id)
-        Container(
-          height: 112,
-          padding: const EdgeInsets.fromLTRB(14, 14, 2, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              getAvatar(steamid64, radius),
-              SizedBox(height: 10),
-              SizedBox(
-                width: radius * 2 + 6,
-                child: Text(
-                  '${this.playerDetails[steamid64]?['info']?.personaname ?? 'Unknown name'}',
-                  softWrap: true,
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.w300,
-                    height: 1,
+    return SingleChildScrollView(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          for (String steamid64 in this.subscribedPlayersSteam64id)
+            Container(
+              height: 112,
+              padding: const EdgeInsets.fromLTRB(14, 14, 2, 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  getAvatar(steamid64, radius),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    width: radius * 2 + 6,
+                    child: Text(
+                      '${this.playerDetails[steamid64]?['info']?.personaname ?? ''}',
+                      softWrap: true,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w300,
+                        height: 1,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
-    ];
+            ),
+        ],
+      ),
+    );
   }
 
   Widget getAvatar(String steamid64, double radius) => CircleAvatar(
