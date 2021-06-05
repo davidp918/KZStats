@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 Color inkWellBlue() => Colors.blue.shade100;
 Color appbarColor() => Color(0xff222837);
 Color bottomColor() => Color(0xff3f4454);
+Color blankAreaColor() => Color(0xff464c5d);
 Color backgroundColor() => Color(0xff4E5567);
 Color primarythemeBlue() => Color(0xff313747);
 Color secondarythemeBlue() => Color(0xff282D3C);
 Color imageBorderColor() => Color(0xff606060);
-Color dividerColor() => Colors.white30;
+Color dividerColor() => Color(0xff333333);
 Color colorLight() => Colors.grey.shade200.withOpacity(0.9);
 List<Color> tierColors() => [
       Color(0xff24A015),

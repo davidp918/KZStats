@@ -6,3 +6,9 @@ Widget customDivider(double padding) => Padding(
     child: Divider(
       color: dividerColor(),
     ));
+
+Widget areaDivider(BuildContext context) => Container(
+      width: MediaQuery.of(context).size.width,
+      height: 8,
+      color: blankAreaColor(),
+    );

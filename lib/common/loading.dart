@@ -72,18 +72,19 @@ class LoadingGifHeaderState extends RefreshIndicatorState<LoadingGifHeader>
 
   @override
   Widget buildContent(BuildContext context, RefreshStatus mode) {
-    return Column(
-      children: [
-        GifImage(
-          image: AssetImage("assets/icon/loading.gif"),
-          controller: _gifController,
-          height: 100.0,
-        ),
-        Container(
-          width: 100,
-          child: Divider(height: 4, color: dividerColor()),
-        ),
-      ],
+    return Container(
+      height: 1000,
+      color: blankAreaColor(),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          GifImage(
+            image: AssetImage("assets/icon/loading.gif"),
+            controller: _gifController,
+            height: 100.0,
+          ),
+        ],
+      ),
     );
   }
 

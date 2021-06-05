@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kzstats/common/customDivider.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/common/none.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
@@ -89,10 +90,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Divider(color: dividerColor()),
-          ),
+          areaDivider(context),
           Expanded(
             child: ListView.builder(
               physics: ClampingScrollPhysics(),
