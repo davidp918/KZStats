@@ -54,7 +54,7 @@ class _DetailedPageState extends State<DetailedPage> {
                               data.remove(widget.current);
                               widget.markedType == 'player'
                                   ? BlocProvider.of<MarkCubit>(context)
-                                      .setPlayerIds(data)
+                                      .setPlayerIds(data, context)
                                   : BlocProvider.of<MarkCubit>(context)
                                       .setMapIds(data);
                             },
@@ -85,7 +85,8 @@ class _DetailedPageState extends State<DetailedPage> {
 
   void markPlayer(String steamid64, List<String> data) async {
     await UserSharedPreferences.getPlayerInfo(steamid64);
-    if (mounted) BlocProvider.of<MarkCubit>(context).setPlayerIds(data);
+    if (mounted)
+      BlocProvider.of<MarkCubit>(context).setPlayerIds(data, context);
   }
 
   @override

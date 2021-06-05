@@ -155,7 +155,8 @@ class _PlayerDetailState extends State<PlayerDetail> {
                         fontSize: 15,
                       ),
                     ),
-                    kzstatsPlayerInfo.loccountrycode != null
+                    kzstatsPlayerInfo.loccountrycode != null &&
+                            kzstatsPlayerInfo.loccountrycode != ''
                         ? Row(
                             children: <Widget>[
                               Image(

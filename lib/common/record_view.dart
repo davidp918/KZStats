@@ -130,7 +130,7 @@ Widget recordCardView(BuildContext context, RecordInfo info) {
                             SizedBox(
                               width: 4,
                             ),
-                            info.nation != 'null'
+                            info.nation != 'null' && info.nation != ''
                                 ? Image(
                                     image: AssetImage(
                                         'assets/flag/${info.nation}.png'),

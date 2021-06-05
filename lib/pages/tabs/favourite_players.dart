@@ -36,6 +36,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
   late List<Record> latestRecords;
   late Map<String, Map<String, dynamic>> playerDetails;
   late Map<String, List<Record>> playerRecords;
+  late Map<String, bool> gotNewRecord;
   late int curPageSize;
   int pageSize = 15;
   Random random = Random();
@@ -53,6 +54,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
     this.curPageSize = pageSize;
     this.playerDetails = {};
     this.playerRecords = {};
+    this.gotNewRecord = {};
     this.subscribedPlayersSteam64id = [];
     this.latestRecords = [];
     this._refreshController = RefreshController(initialRefresh: true);
@@ -60,16 +62,17 @@ class FavouritePlayersState extends State<FavouritePlayers>
 
   void _onRefresh() async {
     print('refreshing ${this.markState.playerIds.length} friends records...');
-    await refreshFavouritePlayersRecords(this.markState.playerIds);
+    await refreshPlayersRecords(this.markState.playerIds);
     this._setPlayerDetails();
-    loadLatestRecords(this.pageSize);
+    _loadLatestRecords(this.pageSize);
+    _sortPlayers();
     print('refresh friend records done');
     if (mounted) setState(() {});
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
-    this.loadLatestRecords(this.latestRecords.length + this.pageSize);
+    this._loadLatestRecords(this.latestRecords.length + this.pageSize);
     if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
@@ -94,7 +97,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
         children: [
           Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.fromLTRB(16, 10, 14, 2),
+            padding: EdgeInsets.fromLTRB(16, 10, 14, 0),
             child: Text(
               'Latest runs',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
@@ -126,7 +129,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
     double crossHeight = imageWidth *
         ratio; // min((size.height - 56) / 6.4, imageWidth * ratio);
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.fromLTRB(16, 10, 10, 0),
       child: Column(
         children: [
           Row(
@@ -195,6 +198,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
               ),
             ],
           ),
+          SizedBox(height: 10),
           Row(
             children: [
               SizedBox(
@@ -253,13 +257,19 @@ class FavouritePlayersState extends State<FavouritePlayers>
 
   Widget playerHeaders() {
     double radius = 26;
-    return SingleChildScrollView(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width,
+        maxHeight: 105,
+      ),
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
         children: <Widget>[
           for (String steamid64 in this.subscribedPlayersSteam64id)
             Container(
-              height: 112,
+              height: 105,
               padding: const EdgeInsets.fromLTRB(14, 14, 2, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -284,22 +294,46 @@ class FavouritePlayersState extends State<FavouritePlayers>
                 ],
               ),
             ),
+          SizedBox(width: 10),
         ],
       ),
     );
   }
 
-  Widget getAvatar(String steamid64, double radius) => CircleAvatar(
-        radius: radius,
-        backgroundColor: Colors.transparent,
-        child: ClipOval(
-          child: getNetworkImage(
-            steamid64,
-            this.playerDetails[steamid64]?['info']?.avatarfull ?? '',
-            AssetImage('assets/icon/noimage.png'),
+  Widget getAvatar(String steamid64, double radius) {
+    double redDotRadius = 10;
+    double distance = radius - sqrt(0.5 * radius * radius) - redDotRadius / 2;
+    return Stack(
+      children: [
+        Container(
+          child: CircleAvatar(
+            radius: radius,
+            backgroundColor: Colors.transparent,
+            child: ClipOval(
+              child: getNetworkImage(
+                steamid64,
+                this.playerDetails[steamid64]?['info']?.avatarfull ?? '',
+                AssetImage('assets/icon/noimage.png'),
+              ),
+            ),
           ),
         ),
-      );
+        this.gotNewRecord[steamid64] ?? false
+            ? Positioned(
+                right: distance,
+                bottom: distance,
+                child: ClipOval(
+                  child: Container(
+                    height: redDotRadius,
+                    width: redDotRadius,
+                    color: Colors.red.shade400,
+                  ),
+                ),
+              )
+            : Container(),
+      ],
+    );
+  }
 
   @override
   void didChangeDependencies() {
@@ -310,7 +344,21 @@ class FavouritePlayersState extends State<FavouritePlayers>
         userState.playerInfo.steamid == null);
     this.subscribedPlayersSteam64id = markState.playerIds;
     _setPlayerDetails();
-    loadLatestRecords(this.pageSize);
+    _loadLatestRecords(this.pageSize);
+    _sortPlayers();
+  }
+
+  void _sortPlayers() {
+    this.subscribedPlayersSteam64id.sort((b, a) {
+      if (this.playerRecords[a] == null ||
+          this.playerRecords[b] == null ||
+          this.playerRecords[b]?.length == 0 ||
+          this.playerRecords[a]?.length == 0) return 0;
+      DateTime? valA = this.playerRecords[a]?.first.createdOn;
+      DateTime? valB = this.playerRecords[b]?.first.createdOn;
+      if (valA == null || valB == null) return 0;
+      return valA.compareTo(valB);
+    });
   }
 
   void _setPlayerDetails() {
@@ -324,7 +372,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
     }
   }
 
-  void loadLatestRecords(int range) {
+  void _loadLatestRecords(int range) {
     List<Record> latest = [
       for (List<Record> each in this.playerRecords.values.take(range).toList())
         ...each
@@ -337,19 +385,30 @@ class FavouritePlayersState extends State<FavouritePlayers>
     this.latestRecords = latest.take(range).toList();
   }
 
-  Future refreshFavouritePlayersRecords(List<String> playerIds) async {
+  Future refreshPlayersRecords(List<String> playerIds) async {
     List<List<Record>> records = await Future.wait([
       for (String steamid64 in playerIds) getPlayerRecords(steamid64, false)
     ]);
     for (int i = 0; i < playerIds.length; i++) {
       List<Record> curRecords = records[i];
       String curSteamid64 = playerIds[i];
+      List<Record> localData =
+          UserSharedPreferences.getPlayerRecords(curSteamid64);
+      Record oldLatestRecords = localData.length == 0
+          ? Record()
+          : UserSharedPreferences.getPlayerRecords(curSteamid64).first;
       curRecords.sort((b, a) {
         if (a.createdOn != null || b.createdOn != null)
           return a.createdOn!.compareTo(b.createdOn!);
         return 0;
       });
-      await UserSharedPreferences.setPlayerRecords(curSteamid64, curRecords);
+      if (oldLatestRecords.time == curRecords[0].time) {
+        this.gotNewRecord[curSteamid64] = false;
+        continue;
+      } else {
+        this.gotNewRecord[curSteamid64] = true;
+        await UserSharedPreferences.setPlayerRecords(curSteamid64, curRecords);
+      }
     }
   }
 
