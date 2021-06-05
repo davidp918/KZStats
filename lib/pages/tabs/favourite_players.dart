@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/customDivider.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/common/none.dart';
@@ -16,7 +17,6 @@ import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json/record_json.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 @pragma("vm:entry-point")
 class FavouritePlayers extends StatefulWidget {
@@ -121,7 +121,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
     double radius = 21;
     Size size = MediaQuery.of(context).size;
     double ratio = 113 / 200;
-    double imageWidth = 200;
+    double imageWidth = 160;
     double crossWidth = min((size.width / 2) * 33 / 41, imageWidth);
     double crossHeight = imageWidth *
         ratio; // min((size.height - 56) / 6.4, imageWidth * ratio);

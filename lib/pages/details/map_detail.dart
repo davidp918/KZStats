@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:async_builder/async_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/common/widgets/datatable.dart';
 import 'package:kzstats/common/detailed_pages.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
+import 'package:kzstats/common/widgets/datatable.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/svg.dart';
@@ -147,40 +147,43 @@ class _MapDetailState extends State<MapDetail> {
     );
   }
 
-  dynamic recordSection(dynamic proWr, dynamic nubWr, dynamic maptop) =>
-      proWr == null && nubWr == null
-          ? <Widget>[
-              Center(
-                child: Text(
-                  'No one has beaten this map yet!',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w300,
-                    fontStyle: FontStyle.italic,
-                  ),
+  dynamic recordSection(dynamic proWr, dynamic nubWr, dynamic maptop) {
+    print(proWr);
+    print(nubWr);
+    return (proWr == null && nubWr == null) || (proWr == [] && nubWr == [])
+        ? <Widget>[
+            Center(
+              child: Text(
+                'No one has beaten this map yet!',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.italic,
                 ),
               ),
-            ]
-          : <Widget>[
-              worldRecordRow('Pro', proWr),
-              worldRecordRow('Nub', nubWr),
-              SizedBox(height: 4),
-              CustomDataTable(
-                data: maptop,
-                columns: [
-                  '#',
-                  'Player',
-                  'Time',
-                  'Points',
-                  'TPs',
-                  'Date',
-                  'Server'
-                ],
-                initialSortedColumnIndex: 2,
-                initialAscending: true,
-              ),
-            ];
+            ),
+          ]
+        : <Widget>[
+            worldRecordRow('Pro', proWr),
+            worldRecordRow('Nub', nubWr),
+            SizedBox(height: 4),
+            CustomDataTable(
+              data: maptop,
+              columns: [
+                '#',
+                'Player',
+                'Time',
+                'Points',
+                'TPs',
+                'Date',
+                'Server'
+              ],
+              initialSortedColumnIndex: 2,
+              initialAscending: true,
+            ),
+          ];
+  }
 
   Widget worldRecordRow(String prefix, dynamic wr) {
     return wr == null
