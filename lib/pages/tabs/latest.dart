@@ -91,6 +91,7 @@ class _LatestBodyState extends State<LatestBody> {
         controller: _refreshController,
         onRefresh: () => _onRefresh(widget.state),
         onLoading: () => _onLoading(widget.state),
+        physics: ClampingScrollPhysics(),
         child: ListView.builder(
           physics: ClampingScrollPhysics(),
           itemBuilder: this._itemBuilder,

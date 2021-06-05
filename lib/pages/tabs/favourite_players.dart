@@ -92,6 +92,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
       onRefresh: () => _onRefresh(),
       onLoading: () => _onLoading(),
       scrollDirection: Axis.vertical,
+      physics: ClampingScrollPhysics(),
       child: ListView(
         shrinkWrap: true,
         children: [
