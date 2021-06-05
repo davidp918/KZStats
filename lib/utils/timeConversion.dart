@@ -36,5 +36,5 @@ String diffofNow(DateTime? timeRecordCreated) {
     diff = (diff / limit[i]).truncate();
   }
 
-  return ('Fatal error');
+  return ('error');
 }

@@ -59,7 +59,7 @@ class UserSharedPreferences {
   static List<Record> getPlayerRecords(String steamid64) {
     String? data = _preferences.getString('${steamid64}_records');
     if (data == null) return [];
-    return multiRecordsFromJson(data);
+    return recordFromJson(data);
   }
 
   // Local Maps Data

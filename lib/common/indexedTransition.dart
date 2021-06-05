@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+/* import 'package:flutter/widgets.dart';
 
 /// Based on the PageTransitionSwitcher from the animations package, this widget
 /// allows you to transition between an array of widgets using entry and exit
@@ -179,3 +179,4 @@ class _ChildEntry {
     secondaryController.dispose();
   }
 }
+ */

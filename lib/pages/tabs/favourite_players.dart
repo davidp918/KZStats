@@ -5,7 +5,7 @@ import 'package:kzstats/common/none.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
-import 'package:kzstats/look/colors.dart';
+import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json/record_json.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -47,14 +47,16 @@ class FavouritePlayersState extends State<FavouritePlayers>
     print('refreshing ${this.markState.playerIds.length} friends records...');
     await refreshFavouritePlayersRecords(this.markState.playerIds);
     this._setPlayerDetails();
+    loadLatestRecords(this.pageSize);
     print('refresh friend records done');
     if (mounted) setState(() {});
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
-    this.loadLatestRecords();
+    this.loadLatestRecords(this.latestRecords.length + this.pageSize);
     if (mounted) setState(() {});
+    _refreshController.loadComplete();
   }
 
   @override
@@ -72,11 +74,12 @@ class FavouritePlayersState extends State<FavouritePlayers>
       onRefresh: () => _onRefresh(),
       onLoading: () => _onLoading(),
       scrollDirection: Axis.vertical,
-      child: Column(
+      child: ListView(
+        shrinkWrap: true,
         children: [
           Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.fromLTRB(16, 10, 14, 0),
+            padding: EdgeInsets.fromLTRB(16, 10, 14, 2),
             child: Text(
               'Latest runs',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
@@ -90,13 +93,12 @@ class FavouritePlayersState extends State<FavouritePlayers>
               ),
             ),
           ),
-          areaDivider(context),
-          Expanded(
-            child: ListView.builder(
-              physics: ClampingScrollPhysics(),
-              itemBuilder: _itemBuilder,
-              itemCount: this.latestRecords.length,
-            ),
+          customDivider(16),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: _itemBuilder,
+            itemCount: this.latestRecords.length,
           ),
         ],
       ),
@@ -104,7 +106,39 @@ class FavouritePlayersState extends State<FavouritePlayers>
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
-    return Container();
+    Record curRecord = this.latestRecords[index];
+    String steamid64 = curRecord.steamid64.toString();
+    String name = curRecord.playerName ?? '';
+    double radius = 21;
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(16),
+          child: Row(
+            children: [
+              getAvatar(steamid64, radius),
+              SizedBox(width: 8),
+              Column(
+                children: [
+                  InkWell(
+                    child: Text('$name'),
+                    onTap: () => Navigator.of(context).pushNamed(
+                      '/player_detail',
+                      arguments: [curRecord.steamid64, curRecord.playerName],
+                    ),
+                  ),
+                  Text(
+                    '${diffofNow(curRecord.createdOn)}',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        customDivider(16),
+      ],
+    );
   }
 
   List<Widget> playerHeaders() {
@@ -117,17 +151,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              CircleAvatar(
-                radius: radius,
-                backgroundColor: Colors.transparent,
-                child: ClipOval(
-                  child: getNetworkImage(
-                    steamid64,
-                    this.playerDetails[steamid64]?['info']?.avatarfull ?? '',
-                    AssetImage('assets/icon/noimage.png'),
-                  ),
-                ),
-              ),
+              getAvatar(steamid64, radius),
               SizedBox(height: 10),
               SizedBox(
                 width: radius * 2 + 6,
@@ -150,6 +174,18 @@ class FavouritePlayersState extends State<FavouritePlayers>
     ];
   }
 
+  Widget getAvatar(String steamid64, double radius) => CircleAvatar(
+        radius: radius,
+        backgroundColor: Colors.transparent,
+        child: ClipOval(
+          child: getNetworkImage(
+            steamid64,
+            this.playerDetails[steamid64]?['info']?.avatarfull ?? '',
+            AssetImage('assets/icon/noimage.png'),
+          ),
+        ),
+      );
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -159,6 +195,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
         userState.playerInfo.steamid == null);
     this.subscribedPlayersSteam64id = markState.playerIds;
     _setPlayerDetails();
+    loadLatestRecords(this.pageSize);
   }
 
   void _setPlayerDetails() {
@@ -172,13 +209,12 @@ class FavouritePlayersState extends State<FavouritePlayers>
     }
   }
 
-  void loadLatestRecords() {
-    int range = this.latestRecords.length + this.pageSize;
+  void loadLatestRecords(int range) {
     List<Record> latest = [
       for (List<Record> each in this.playerRecords.values.take(range).toList())
         ...each
     ];
-    latest.sort((a, b) {
+    latest.sort((b, a) {
       if (a.createdOn != null || b.createdOn != null)
         return a.createdOn!.compareTo(b.createdOn!);
       return 0;
@@ -190,11 +226,10 @@ class FavouritePlayersState extends State<FavouritePlayers>
     List<List<Record>> records = await Future.wait([
       for (String steamid64 in playerIds) getPlayerRecords(steamid64, false)
     ]);
-
     for (int i = 0; i < playerIds.length; i++) {
       List<Record> curRecords = records[i];
       String curSteamid64 = playerIds[i];
-      curRecords.sort((a, b) {
+      curRecords.sort((b, a) {
         if (a.createdOn != null || b.createdOn != null)
           return a.createdOn!.compareTo(b.createdOn!);
         return 0;
