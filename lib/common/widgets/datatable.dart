@@ -88,8 +88,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
       cur['index'] = i + 1;
       this.data.add(cur);
     }
-    this.data.sort((a, b) => compareString(
-        widget.initialAscending, a, b, widget.initialSortedColumnIndex));
     for (int i = 0; i < this.data.length; i++) this.data[i]['index'] = i + 1;
     this._tableDataSource = TableDataSource(
       data: this.data,
@@ -98,14 +96,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
       identifyAttr: this.identifyAttr,
     );
   }
-
-  int compareString(bool ascending, Map<String, dynamic> a,
-          Map<String, dynamic> b, int index) =>
-      ascending
-          ? a[identifyAttr[widget.columns[index]]]
-              .compareTo(b[identifyAttr[widget.columns[index]]])
-          : b[identifyAttr[widget.columns[index]]]
-              .compareTo(a[identifyAttr[widget.columns[index]]]);
 
   @override
   Widget build(BuildContext context) {
@@ -302,8 +292,8 @@ class TableDataSource extends DataGridSource {
       case '#':
         return vanillaDataCell(data?['index']);
       case 'Player':
-        return buttonDataCell(context, data?['playerName'], '/player_detail',
-            [data?['steamid64'], data?['playerName']]);
+        return buttonDataCell(context, data?['player_name'], '/player_detail',
+            [data?['steamid64'], data?['player_name']]);
       case 'Count':
         return vanillaDataCell(data?['count']);
       case 'Average':
@@ -315,18 +305,18 @@ class TableDataSource extends DataGridSource {
       case 'Finishes':
         return vanillaDataCell(data?['finishes']);
       case 'Map':
-        return buttonDataCell(context, data?['mapName'], '/map_detail',
-            [data['mapId'], data['mapName']]);
+        return buttonDataCell(context, data?['map_name'], '/map_detail',
+            [data['mapId'], data['map_name']]);
       case 'Time':
         return vanillaDataCell(toMinSec(data?['time']));
       case 'TPs':
         return vanillaDataCell(data?['teleports']);
       case 'Date':
-        String? date = data?['createdOn'].toString();
+        String? date = data?['created_on'].toString();
         return vanillaDataCell(
             '${date?.substring(0, 11)} ${date?.substring(11, 19)}');
       case 'Server':
-        return vanillaDataCell(data?['serverName']);
+        return vanillaDataCell(data?['server_name']);
       case 'Points in total':
         return vanillaDataCell(data?['totalPoints']);
       default:
