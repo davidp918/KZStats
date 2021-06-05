@@ -24,124 +24,132 @@ class FavouritePlayersState extends State<FavouritePlayers>
   late UserState userState;
   late MarkState markState;
   late bool loggedIn;
-  late List<String> players;
+  late List<String> subscribedPlayersSteam64id;
+  late List<Record> latestRecords;
   late Map<String, Map<String, dynamic>> playerDetails;
+  late Map<String, List<Record>> playerRecords;
+  late int curPageSize;
+  int pageSize = 15;
 
   @override
   void initState() {
     super.initState();
+    this.curPageSize = pageSize;
     this.playerDetails = {};
-    this.players = [];
+    this.playerRecords = {};
+    this.subscribedPlayersSteam64id = [];
+    this.latestRecords = [];
     this._refreshController = RefreshController(initialRefresh: true);
   }
 
   void _onRefresh() async {
     print('refreshing ${this.markState.playerIds.length} friends records...');
     await refreshFavouritePlayersRecords(this.markState.playerIds);
-    for (String steamid64 in this.players) {
-      this.playerDetails[steamid64] = {
-        'info': UserSharedPreferences.readPlayerInfo(steamid64),
-        'records': UserSharedPreferences.getPlayerRecords(steamid64),
-      };
-    }
+    this._setPlayerDetails();
     print('refresh friend records done');
     if (mounted) setState(() {});
     _refreshController.refreshCompleted();
   }
 
+  void _onLoading() async {
+    this.loadLatestRecords();
+    if (mounted) setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    if (this.players.length == 0)
+    if (this.subscribedPlayersSteam64id.length == 0)
       return noneView(
         title: 'No Favourite Players Yet...',
         subTitle: 'Go mark a few and keep an eye out of their runs',
       );
-    return Container(
-      child: SmartRefresher(
-        enablePullDown: true,
-        enablePullUp: false,
-        controller: _refreshController,
-        onRefresh: () => _onRefresh(),
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.fromLTRB(16, 10, 14, 0),
-              child: Text(
-                'Latest runs',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                physics: ClampingScrollPhysics(),
-                children: [
-                  ...playerHeaders(),
-                  SizedBox(width: 12),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-          ],
-        ),
-      ),
-    );
-  }
-
-  List<Widget> playerHeaders() {
-    return <Widget>[
-      for (String steamid64 in this.players)
-        playerHeaderBuilder(
-          steamid64: steamid64,
-          name: this.playerDetails[steamid64]?['info']?.personaname ??
-              'Unknown name',
-          avatarUrl: this.playerDetails[steamid64]?['info']?.avatarfull ?? '',
-        ),
-    ];
-  }
-
-  Widget playerHeaderBuilder(
-      {required String steamid64,
-      required String name,
-      required String avatarUrl}) {
-    double radius = 26;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(14, 10, 2, 14),
+    return SmartRefresher(
+      enablePullDown: true,
+      enablePullUp: true,
+      controller: _refreshController,
+      onRefresh: () => _onRefresh(),
+      onLoading: () => _onLoading(),
+      scrollDirection: Axis.vertical,
       child: Column(
         children: [
-          CircleAvatar(
-            radius: radius,
-            backgroundColor: Colors.transparent,
-            child: ClipOval(
-              child: getNetworkImage(
-                steamid64,
-                avatarUrl,
-                AssetImage('assets/icon/noimage.png'),
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.fromLTRB(16, 10, 14, 0),
+            child: Text(
+              'Latest runs',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+            ),
+          ),
+          SingleChildScrollView(
+            primary: true,
+            child: Container(
+              child: Row(
+                children: playerHeaders(),
               ),
             ),
           ),
-          SizedBox(height: 8),
-          SizedBox(
-            width: radius * 2 + 6,
-            child: Text(
-              '$name',
-              softWrap: true,
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 13.5,
-                fontWeight: FontWeight.w300,
-                height: 1,
-              ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Divider(color: dividerColor()),
+          ),
+          Expanded(
+            child: ListView.builder(
+              physics: ClampingScrollPhysics(),
+              itemBuilder: _itemBuilder,
+              itemCount: this.latestRecords.length,
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget _itemBuilder(BuildContext context, int index) {
+    return Container();
+  }
+
+  List<Widget> playerHeaders() {
+    double radius = 26;
+    return <Widget>[
+      for (String steamid64 in this.subscribedPlayersSteam64id)
+        Container(
+          height: 112,
+          padding: const EdgeInsets.fromLTRB(14, 14, 2, 0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                radius: radius,
+                backgroundColor: Colors.transparent,
+                child: ClipOval(
+                  child: getNetworkImage(
+                    steamid64,
+                    this.playerDetails[steamid64]?['info']?.avatarfull ?? '',
+                    AssetImage('assets/icon/noimage.png'),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              SizedBox(
+                width: radius * 2 + 6,
+                child: Text(
+                  '${this.playerDetails[steamid64]?['info']?.personaname ?? 'Unknown name'}',
+                  softWrap: true,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w300,
+                    height: 1,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+    ];
   }
 
   @override
@@ -151,17 +159,33 @@ class FavouritePlayersState extends State<FavouritePlayers>
     this.markState = context.watch<MarkCubit>().state;
     this.loggedIn = !(userState.playerInfo.avatarfull == null &&
         userState.playerInfo.steamid == null);
-    this.players = markState.playerIds;
-    getPlayerDetails();
+    this.subscribedPlayersSteam64id = markState.playerIds;
+    _setPlayerDetails();
   }
 
-  void getPlayerDetails() {
-    for (String steamid64 in this.players) {
+  void _setPlayerDetails() {
+    for (String steamid64 in this.subscribedPlayersSteam64id) {
+      this.playerRecords[steamid64] =
+          UserSharedPreferences.getPlayerRecords(steamid64);
       this.playerDetails[steamid64] = {
         'info': UserSharedPreferences.readPlayerInfo(steamid64),
         'records': UserSharedPreferences.getPlayerRecords(steamid64),
       };
     }
+  }
+
+  void loadLatestRecords() {
+    int range = this.latestRecords.length + this.pageSize;
+    List<Record> latest = [
+      for (List<Record> each in this.playerRecords.values.take(range).toList())
+        ...each
+    ];
+    latest.sort((a, b) {
+      if (a.createdOn != null || b.createdOn != null)
+        return a.createdOn!.compareTo(b.createdOn!);
+      return 0;
+    });
+    this.latestRecords = latest.take(range).toList();
   }
 
   Future refreshFavouritePlayersRecords(List<String> playerIds) async {
@@ -179,6 +203,12 @@ class FavouritePlayersState extends State<FavouritePlayers>
       });
       await UserSharedPreferences.setPlayerRecords(curSteamid64, curRecords);
     }
+  }
+
+  @override
+  void dispose() {
+    this._refreshController.dispose();
+    super.dispose();
   }
 
   @override

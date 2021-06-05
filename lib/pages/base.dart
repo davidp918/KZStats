@@ -32,11 +32,12 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
   }
 
   void onTap(index) {
-    setState(() {
-      this.reverseAnimation = index < this.curIndex;
-      this.curIndex = index;
-      this._pageController.jumpToPage(index);
-    });
+    if (mounted)
+      setState(() {
+        this.reverseAnimation = index < this.curIndex;
+        this.curIndex = index;
+        this._pageController.jumpToPage(index);
+      });
   }
 
   @override

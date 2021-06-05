@@ -232,7 +232,7 @@ class _FloaterState extends State<Floater> with SingleTickerProviderStateMixin {
       CurvedAnimation(parent: animationController, curve: Curves.easeOut),
     );
     animationController.addListener(() {
-      setState(() {});
+      if (mounted) setState(() {});
     });
   }
 

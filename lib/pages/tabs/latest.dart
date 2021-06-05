@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kzstats/common/customDivider.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
@@ -67,9 +68,14 @@ class LatestBody extends StatefulWidget {
 class _LatestBodyState extends State<LatestBody> {
   List<RecordInfo> items;
   _LatestBodyState({required this.items});
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  late RefreshController _refreshController;
   int pageSize = 12;
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshController = RefreshController(initialRefresh: false);
+  }
 
   void _onRefresh(state) async {
     this.items =
@@ -244,11 +250,14 @@ class _LatestBodyState extends State<LatestBody> {
             ],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: padding),
-          child: Divider(height: 4, color: dividerColor()),
-        ),
+        customDivider(padding),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    this._refreshController.dispose();
+    super.dispose();
   }
 }

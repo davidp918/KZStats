@@ -98,9 +98,10 @@ class _LoginState extends State<Login> {
                       );
                       if (steamid64 != null) {
                         BlocProvider.of<UserCubit>(context).load();
-                        setState(() {
-                          this.steamid64 = steamid64.toString();
-                        });
+                        if (mounted)
+                          setState(() {
+                            this.steamid64 = steamid64.toString();
+                          });
                       }
                     },
                   ),
