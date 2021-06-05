@@ -11,7 +11,7 @@ int getModeId(String mode) {
   }
 }
 
-String stateConvert(String mode) {
+String modeConvert(String mode) {
   switch (mode) {
     case 'Kztimer':
       return 'kz_timer';
@@ -23,6 +23,12 @@ String stateConvert(String mode) {
       return 'false';
     case 'Nub':
       return 'true';
+    case 'kz_timer':
+      return 'Kztimer';
+    case 'kz_simple':
+      return 'SimpleKZ';
+    case 'kz_vanilla':
+      return 'Vanilla';
     default:
       return 'error';
   }

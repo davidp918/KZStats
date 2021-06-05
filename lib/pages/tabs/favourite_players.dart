@@ -7,10 +7,14 @@ import 'package:kzstats/common/none.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
+import 'package:kzstats/look/animation.dart';
 import 'package:kzstats/look/colors.dart';
+import 'package:kzstats/pages/details/map_detail.dart';
+import 'package:kzstats/utils/getModeId.dart';
 import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json/record_json.dart';
+import 'package:kzstats/web/urls.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -115,11 +119,17 @@ class FavouritePlayersState extends State<FavouritePlayers>
     String playerName = curRecord.playerName ?? '';
     String mapName = curRecord.mapName ?? '';
     double radius = 21;
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(16),
-          child: Row(
+    Size size = MediaQuery.of(context).size;
+    double ratio = 113 / 200;
+    double imageWidth = 200;
+    double crossWidth = min((size.width / 2) * 33 / 41, imageWidth);
+    double crossHeight = imageWidth *
+        ratio; // min((size.height - 56) / 6.4, imageWidth * ratio);
+    return Padding(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
@@ -131,7 +141,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width - 2 * radius - 50,
+                    width: size.width - 2 * radius - 50,
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -165,7 +175,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
                               curRecord.mapName
                             ]),
                             child: Text(
-                              '$mapName aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+                              '$mapName',
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: inkWellBlue(),
@@ -185,9 +195,59 @@ class FavouritePlayersState extends State<FavouritePlayers>
               ),
             ],
           ),
-        ),
-        customDivider(16),
-      ],
+          Row(
+            children: [
+              SizedBox(
+                width: radius * 2 + 12,
+              ),
+              Container(
+                width: crossWidth,
+                height: crossHeight,
+                child: ContainerAnimationWidget(
+                  openBuilder: (context, action) =>
+                      MapDetail(mapInfo: [curRecord.mapId, curRecord.mapName]),
+                  closedBuilder: (context, action) => getNetworkImage(
+                    curRecord.mapName ?? '',
+                    '$imageBaseURL${curRecord.mapName}.webp',
+                    AssetImage('assets/icon/noimage.png'),
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      'Ran under ${modeConvert(curRecord.mode ?? '')},',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+                    ),
+                    Text(
+                      'in ${toMinSec(curRecord.time)},',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+                    ),
+                    Text(
+                      'used ${curRecord.teleports} teleports,',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+                    ),
+                    Text(
+                      'scored ${curRecord.points} points.',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          customDivider(16),
+        ],
+      ),
     );
   }
 

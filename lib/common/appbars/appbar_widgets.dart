@@ -43,8 +43,8 @@ class PopUpModeSelect extends StatelessWidget {
               value,
               style: TextStyle(
                 color: Colors.white,
-                decoration: stateConvert(value) == state.mode ||
-                        stateConvert(value) == state.nub.toString()
+                decoration: modeConvert(value) == state.mode ||
+                        modeConvert(value) == state.nub.toString()
                     ? TextDecoration.underline
                     : null,
               ),
