@@ -132,7 +132,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
     double crossHeight = imageWidth *
         ratio; // min((size.height - 56) / 6.4, imageWidth * ratio);
     return Padding(
-      padding: EdgeInsets.fromLTRB(16, 10, 10, 0),
+      padding: EdgeInsets.fromLTRB(16, 15, 10, 0),
       child: Column(
         children: [
           Row(
@@ -305,7 +305,6 @@ class FavouritePlayersState extends State<FavouritePlayers>
                 ],
               ),
             ),
-          SizedBox(width: 10),
         ],
       ),
     );
