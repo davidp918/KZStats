@@ -285,7 +285,14 @@ class FavouritePlayersState extends State<FavouritePlayers>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  getAvatar(steamid64, radius),
+                  InkWell(
+                    child: getAvatar(steamid64, radius),
+                    onTap: () {
+                      this.gotNewRecord[steamid64] = false;
+                      this.latestRecords = this.playerRecords[steamid64] ?? [];
+                      if (mounted) setState(() {});
+                    },
+                  ),
                   SizedBox(height: 10),
                   SizedBox(
                     width: radius * 2 + 6,
