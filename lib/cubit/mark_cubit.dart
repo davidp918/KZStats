@@ -45,7 +45,7 @@ class MarkCubit extends Cubit<MarkState> with HydratedMixin {
       ));
 
   void setPlayerIds(List<String> newPlayerIds, BuildContext context) {
-    print('marked');
+    print('Marked ${newPlayerIds.length} players');
     emit(MarkState(
       mapIds: state.mapIds,
       playerIds: newPlayerIds,

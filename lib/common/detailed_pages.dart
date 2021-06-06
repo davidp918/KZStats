@@ -52,16 +52,24 @@ class _DetailedPageState extends State<DetailedPage> {
                               icon: Icon(Icons.star, color: Colors.amber),
                               onPressed: () {
                                 data.remove(widget.current);
-                                if (mounted)
-                                  BlocProvider.of<MarkCubit>(context)
-                                      .setPlayerIds(data, context);
+                                markPlayer(widget.current, data);
                               },
                             )
                           : IconButton(
                               icon: Icon(Icons.star_border),
                               onPressed: () {
-                                data.insert(0, widget.current);
-                                markPlayer(widget.current, data);
+                                print(markState.playerIds.length >= 10);
+                                if (markState.playerIds.length >= 10) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'Exceeding maximum limit of favourite players, anywhere beyond 10 will cram globalApi.'),
+                                    ),
+                                  );
+                                } else {
+                                  data.insert(0, widget.current);
+                                  markPlayer(widget.current, data);
+                                }
                               },
                             );
                     } else {
@@ -80,7 +88,6 @@ class _DetailedPageState extends State<DetailedPage> {
                               icon: Icon(Icons.star_border),
                               onPressed: () {
                                 data.insert(0, widget.current);
-
                                 if (mounted)
                                   BlocProvider.of<MarkCubit>(context)
                                       .setMapIds(data);
@@ -100,18 +107,9 @@ class _DetailedPageState extends State<DetailedPage> {
   }
 
   void markPlayer(String steamid64, List<String> data) async {
-    if (data.length >= 8) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              'Exceeding maximum limit of favourite players, anywhere beyond 8 will cram GlobalApi.'),
-        ),
-      );
-    } else {
-      await UserSharedPreferences.getPlayerInfo(steamid64);
-      if (mounted)
-        BlocProvider.of<MarkCubit>(context).setPlayerIds(data, context);
-    }
+    await UserSharedPreferences.getPlayerInfo(steamid64);
+    if (mounted)
+      BlocProvider.of<MarkCubit>(context).setPlayerIds(data, context);
   }
 
   @override
