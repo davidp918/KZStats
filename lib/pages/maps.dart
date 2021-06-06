@@ -101,7 +101,7 @@ class _MapsState extends State<Maps> with AutomaticKeepAliveClientMixin<Maps> {
             if (snapshot.connectionState != ConnectionState.done)
               return loadingFromApi();
             List<MapInfo> data = UserSharedPreferences.getMapData();
-            if (data == []) return errorScreen();
+            if (data.length == 0) return errorScreen();
             this.mapInfo = filterMapData(data);
             return MapCards(prevInfo: this.mapInfo, marked: false);
           },

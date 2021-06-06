@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/customDivider.dart';
@@ -11,6 +10,7 @@ import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/look/animation.dart';
 import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
+import 'package:kzstats/pages/details/player_detail.dart';
 import 'package:kzstats/utils/getModeId.dart';
 import 'package:kzstats/utils/timeConversion.dart';
 import 'package:kzstats/web/getRequest.dart';
@@ -18,7 +18,6 @@ import 'package:kzstats/web/json/record_json.dart';
 import 'package:kzstats/web/urls.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-@pragma("vm:entry-point")
 class FavouritePlayers extends StatefulWidget {
   FavouritePlayers({Key? key}) : super(key: key);
 
@@ -45,7 +44,8 @@ class FavouritePlayersState extends State<FavouritePlayers>
     'completed',
     'finished',
     'played',
-    'had beaten'
+    'had beaten',
+    'Ran',
   ];
 
   @override
@@ -85,34 +85,36 @@ class FavouritePlayersState extends State<FavouritePlayers>
         title: 'No Favourite Players Yet...',
         subTitle: 'Go mark a few and keep an eye out of their runs',
       );
-    return SmartRefresher(
-      enablePullDown: true,
-      enablePullUp: true,
-      controller: _refreshController,
-      onRefresh: () => _onRefresh(),
-      onLoading: () => _onLoading(),
-      scrollDirection: Axis.vertical,
-      physics: ClampingScrollPhysics(),
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.fromLTRB(16, 10, 14, 0),
-            child: Text(
-              'Latest runs',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+    return Scrollbar(
+      child: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        controller: _refreshController,
+        onRefresh: () => _onRefresh(),
+        onLoading: () => _onLoading(),
+        scrollDirection: Axis.vertical,
+        physics: ClampingScrollPhysics(),
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.fromLTRB(16, 10, 14, 0),
+              child: Text(
+                'Latest runs',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              ),
             ),
-          ),
-          playerHeaders(),
-          customDivider(16),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: _itemBuilder,
-            itemCount: this.latestRecords.length,
-          ),
-        ],
+            playerHeaders(),
+            customDivider(16),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: _itemBuilder,
+              itemCount: this.latestRecords.length,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -138,7 +140,15 @@ class FavouritePlayersState extends State<FavouritePlayers>
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              getAvatar(steamid64, radius),
+              ContainerAnimationWidget(
+                  openBuilder: (context, action) => PlayerDetail(
+                        playerInfo: [
+                          curRecord.steamid64,
+                          curRecord.playerName,
+                        ],
+                      ),
+                  closedBuilder: (context, action) =>
+                      getAvatar(steamid64, radius)),
               SizedBox(width: 12),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -225,7 +235,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      'Ran under ${modeConvert(curRecord.mode ?? '')},',
+                      'Under ${modeConvert(curRecord.mode ?? '')},',
                       style:
                           TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
                     ),
@@ -403,7 +413,8 @@ class FavouritePlayersState extends State<FavouritePlayers>
           return a.createdOn!.compareTo(b.createdOn!);
         return 0;
       });
-      if (oldLatestRecords.time == curRecords[0].time) {
+      if (curRecords.length != 0 &&
+          oldLatestRecords.time == curRecords[0].time) {
         this.gotNewRecord[curSteamid64] = false;
         continue;
       } else {

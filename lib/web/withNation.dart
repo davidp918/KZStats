@@ -16,7 +16,7 @@ Future<List<RecordInfo>> getInfoWithNation(
       getRequest(
         globalApiWrRecordsUrl(mode, nub, limit, offset),
         wrFromJson,
-      ).then((value) => getPlayerKzstatsNation(value!)),
+      ).then((value) => getPlayerKzstatsNation(value)),
     ],
   );
   List<Wr?>? wrs = data[0];

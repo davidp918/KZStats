@@ -44,33 +44,49 @@ class _DetailedPageState extends State<DetailedPage> {
               [
                 BlocBuilder<MarkCubit, MarkState>(
                   builder: (context, markState) {
-                    List<String> data = widget.markedType == 'player'
-                        ? markState.playerIds
-                        : markState.mapIds;
-                    return data.contains(widget.current)
-                        ? IconButton(
-                            icon: Icon(Icons.star, color: Colors.amber),
-                            onPressed: () {
-                              data.remove(widget.current);
-                              widget.markedType == 'player'
-                                  ? BlocProvider.of<MarkCubit>(context)
-                                      .setPlayerIds(data, context)
-                                  : BlocProvider.of<MarkCubit>(context)
-                                      .setMapIds(data);
-                            },
-                          )
-                        : IconButton(
-                            icon: Icon(Icons.star_border),
-                            onPressed: () {
-                              data.insert(0, widget.current);
-                              if (widget.markedType == 'player') {
+                    if (widget.markedType == 'player') {
+                      if (!markState.readyToMarkPlayer) return Container();
+                      List<String> data = markState.playerIds;
+                      return data.contains(widget.current)
+                          ? IconButton(
+                              icon: Icon(Icons.star, color: Colors.amber),
+                              onPressed: () {
+                                data.remove(widget.current);
+                                if (mounted)
+                                  BlocProvider.of<MarkCubit>(context)
+                                      .setPlayerIds(data, context);
+                              },
+                            )
+                          : IconButton(
+                              icon: Icon(Icons.star_border),
+                              onPressed: () {
+                                data.insert(0, widget.current);
                                 markPlayer(widget.current, data);
-                              } else {
-                                BlocProvider.of<MarkCubit>(context)
-                                    .setMapIds(data);
-                              }
-                            },
-                          );
+                              },
+                            );
+                    } else {
+                      List<String> data = markState.mapIds;
+                      return data.contains(widget.current)
+                          ? IconButton(
+                              icon: Icon(Icons.star, color: Colors.amber),
+                              onPressed: () {
+                                data.remove(widget.current);
+                                if (mounted)
+                                  BlocProvider.of<MarkCubit>(context)
+                                      .setMapIds(data);
+                              },
+                            )
+                          : IconButton(
+                              icon: Icon(Icons.star_border),
+                              onPressed: () {
+                                data.insert(0, widget.current);
+
+                                if (mounted)
+                                  BlocProvider.of<MarkCubit>(context)
+                                      .setMapIds(data);
+                              },
+                            );
+                    }
                   },
                 ),
                 PopUpModeSelect(),
@@ -84,9 +100,18 @@ class _DetailedPageState extends State<DetailedPage> {
   }
 
   void markPlayer(String steamid64, List<String> data) async {
-    await UserSharedPreferences.getPlayerInfo(steamid64);
-    if (mounted)
-      BlocProvider.of<MarkCubit>(context).setPlayerIds(data, context);
+    if (data.length >= 8) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              'Exceeding maximum limit of favourite players, anywhere beyond 8 will cram GlobalApi.'),
+        ),
+      );
+    } else {
+      await UserSharedPreferences.getPlayerInfo(steamid64);
+      if (mounted)
+        BlocProvider.of<MarkCubit>(context).setPlayerIds(data, context);
+    }
   }
 
   @override

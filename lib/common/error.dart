@@ -32,7 +32,7 @@ Widget errorScreen({String? exception}) {
           color: Colors.red.shade300,
         ),
         Text(
-          'Global API is down',
+          'Internet Error',
           style: TextStyle(
             fontSize: 25,
           ),
@@ -40,9 +40,10 @@ Widget errorScreen({String? exception}) {
         Text(
           'Try again later',
           style: TextStyle(
-            fontSize: 22,
+            fontSize: 20,
           ),
         ),
+        SizedBox(height: 100),
       ],
     ),
   );

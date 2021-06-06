@@ -83,8 +83,7 @@ class MyApp extends StatelessWidget {
             dragSpeedRatio: 0.9,
             hideFooterWhenNotFull: true,
             maxOverScrollExtent: 200,
-            topHitBoundary: 90,
-            bottomHitBoundary: 110,
+            topHitBoundary: 20,
             child: MaterialApp(
               theme: ThemeData(
                 pageTransitionsTheme: PageTransitionsTheme(
@@ -115,7 +114,7 @@ class MyApp extends StatelessWidget {
 
 void refresh(BuildContext context) async {
   if (!UserSharedPreferences.getFirstStart()) return;
-  print('first');
+  print('first startup');
   await UserSharedPreferences.setStarted();
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   NotificationSettings settings = await messaging.requestPermission(

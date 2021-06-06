@@ -9,18 +9,14 @@ import 'package:kzstats/web/urls.dart';
 Future getRequest(String url, Function fromjson) async {
   dynamic res;
   try {
-    var response = await http.get(
-      Uri.parse(url),
-    );
+    var response = await http.get(Uri.parse(url));
     response.statusCode == HttpStatus.ok
         ? res = fromjson(response.body)
-        : print('something wrong');
+        : print('request failed');
   } catch (exception) {
     throw UnimplementedError();
   }
   if (res is List && res.length == 0) return [];
-  // may need to perform null replace check for
-  // other data types
   return res;
 }
 
@@ -33,28 +29,10 @@ Future<List<MapInfo>> getMaps(
     );
     response.statusCode == HttpStatus.ok
         ? res = fromjson(response.body)
-        : print('something wrong');
+        : print('request failed');
   } catch (exception) {
     throw ('get map exceptions: $exception');
   }
-  if (res.length == 0) return [];
-  return res;
-}
-
-Future<List<MapInfo>> getAMaps(
-    int limit, int offset, Function fromjson, int tier) async {
-  List<MapInfo> res = [];
-  try {
-    var response = await http.get(
-      Uri.parse(globalApiAllMaps(limit, offset, tier)),
-    );
-    response.statusCode == HttpStatus.ok
-        ? res = fromjson(response.body)
-        : print('something wrong');
-  } catch (exception) {
-    throw ('get map exceptions: $exception');
-  }
-  if (res.length == 0) return [];
   return res;
 }
 
@@ -66,11 +44,10 @@ Future<List<Ban>> getBans(int limit, int offset, Function fromjson) async {
     );
     response.statusCode == HttpStatus.ok
         ? res = fromjson(response.body)
-        : print('something wrong');
+        : print('request failed');
   } catch (exception) {
     throw UnimplementedError();
   }
-  if (res.length == 0) return [];
   return res;
 }
 
@@ -82,10 +59,9 @@ Future<List<Record>> getPlayerRecords(String steamid64, bool ifNub) async {
     );
     response.statusCode == HttpStatus.ok
         ? res = recordFromJson(response.body)
-        : print('something wrong');
+        : print('request failed');
   } catch (exception) {
     throw UnimplementedError();
   }
-  if (res.length == 0) return [];
   return res;
 }

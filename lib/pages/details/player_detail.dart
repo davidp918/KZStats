@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/widgets/datatable.dart';
 import 'package:kzstats/common/detailed_pages.dart';
+import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
 import 'package:kzstats/web/json/record_json.dart';
@@ -39,20 +40,23 @@ class PlayerDetail extends StatefulWidget {
 class _PlayerDetailState extends State<PlayerDetail> {
   final String steamid64;
   final String playerName;
-  late Future _future;
+  late Future<List<dynamic>> _future;
   late ModeState modeState;
+  late MarkState markState;
   _PlayerDetailState(this.steamid64, this.playerName);
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     this.modeState = context.watch<ModeCubit>().state;
+    BlocProvider.of<MarkCubit>(context).setIfReady(false);
     this._future = Future.wait([
       UserSharedPreferences.getPlayerInfo(steamid64),
       getRequest(
-          globalApiPlayerRecordsUrl(
-              modeState.nub, 99999, steamid64, modeState.mode),
-          recordFromJson),
+        globalApiPlayerRecordsUrl(
+            modeState.nub, 99999, steamid64, modeState.mode),
+        recordFromJson,
+      ),
     ]);
   }
 
@@ -64,11 +68,11 @@ class _PlayerDetailState extends State<PlayerDetail> {
       title: this.playerName,
       builder: (BuildContext context) {
         return AsyncBuilder<dynamic>(
-          retain: true,
           future: this._future,
           waiting: (context) => loadingFromApi(),
           error: (context, object, stacktrace) => errorScreen(),
           builder: (context, value) {
+            BlocProvider.of<MarkCubit>(context).setIfReady(true);
             return whole(value[0], value[1]);
           },
         );
@@ -76,8 +80,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
     );
   }
 
-  Widget whole(KzstatsApiPlayer kzstatsPlayerInfo, List<Record>? records) {
-    //UserSharedPreferences.savePlayerInfo(kzstatsPlayerInfo);
+  Widget whole(KzstatsApiPlayer? kzstatsPlayerInfo, List<Record>? records) {
     int totalPoints = pointsSum(records);
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -100,9 +103,10 @@ class _PlayerDetailState extends State<PlayerDetail> {
     );
   }
 
-  Widget playerHeader(KzstatsApiPlayer kzstatsPlayerInfo, int totalPoints) {
+  Widget playerHeader(KzstatsApiPlayer? kzstatsPlayerInfo, int totalPoints) {
     Size size = MediaQuery.of(context).size;
     double avatarSize = min(140, size.width / 3);
+    kzstatsPlayerInfo ??= KzstatsApiPlayer();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -114,7 +118,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
               height: avatarSize,
               child: getNetworkImage(
                 '${kzstatsPlayerInfo.steamid}',
-                kzstatsPlayerInfo.avatarfull!,
+                kzstatsPlayerInfo.avatarfull ?? '',
                 AssetImage('assets/icon/noimage.png'),
               ),
             ),
@@ -161,7 +165,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
                             children: <Widget>[
                               Image(
                                 image: AssetImage(
-                                  'assets/flag/${kzstatsPlayerInfo.loccountrycode!.toLowerCase()}.png',
+                                  'assets/flag/${kzstatsPlayerInfo.loccountrycode?.toLowerCase()}.png',
                                 ),
                               ),
                               SizedBox(width: 6),
@@ -184,7 +188,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
                         ),
                       ),
                       onTap: () async {
-                        String url = '${kzstatsPlayerInfo.profileurl}';
+                        String url = '${kzstatsPlayerInfo?.profileurl}';
                         await canLaunch(url)
                             ? await launch(url)
                             : throw ('could not launch $url');

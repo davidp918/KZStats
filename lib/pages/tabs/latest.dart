@@ -1,3 +1,4 @@
+import 'package:async_builder/async_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/error.dart';
@@ -16,7 +17,7 @@ class Latest extends StatefulWidget {
 class _LatestState extends State<Latest>
     with AutomaticKeepAliveClientMixin<Latest> {
   late ModeState state;
-  late Future _future;
+  late Future<List<RecordInfo>> _future;
 
   @override
   bool get wantKeepAlive => true;
@@ -31,13 +32,12 @@ class _LatestState extends State<Latest>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return FutureBuilder(
+    return AsyncBuilder<List<RecordInfo>>(
       future: _future,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState != ConnectionState.done)
-          return loadingFromApi();
-        if (!snapshot.hasData || snapshot.data == []) return errorScreen();
-        return LatestBody(items: snapshot.data!, state: state);
+      waiting: (context) => loadingFromApi(),
+      error: (context, object, stacktrace) => errorScreen(),
+      builder: (context, value) {
+        return LatestBody(items: value!, state: state);
       },
     );
   }

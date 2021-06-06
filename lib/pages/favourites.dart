@@ -46,7 +46,7 @@ class _FavouritesState extends State<Favourites>
           child: AppBar(
             backgroundColor: appbarColor(),
             leading: userLeadingIcon(context),
-            actions: <Widget>[searchWidget(context), PopUpModeSelect()],
+            actions: <Widget>[searchWidget(context)],
             flexibleSpace: Center(
               child: TabBar(
                 tabs: this._tabsTitle,

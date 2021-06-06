@@ -96,6 +96,10 @@ class _MapDetailState extends State<MapDetail> {
           waiting: (context) => loadingFromApi(),
           error: (context, object, stacktrace) => errorScreen(),
           builder: (context, value) {
+            if (value?[0] == null &&
+                value?[1] == null &&
+                value?[2] == null &&
+                value?[3] == null) return errorScreen();
             return mainBody(
               // index 0: top 100 records of current bloc state
               // index 1: single instance of Maptop: nub wr
@@ -148,9 +152,7 @@ class _MapDetailState extends State<MapDetail> {
   }
 
   dynamic recordSection(dynamic proWr, dynamic nubWr, dynamic maptop) {
-    print(proWr);
-    print(nubWr);
-    return (proWr == null && nubWr == null) || (proWr == [] && nubWr == [])
+    return (proWr == null && nubWr == null)
         ? <Widget>[
             Center(
               child: Text(

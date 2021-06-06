@@ -3,9 +3,7 @@ import 'package:kzstats/web/getRequest.dart';
 import 'package:kzstats/web/json/wr_json.dart';
 import 'package:kzstats/web/urls.dart';
 
-Future<List<String>> getPlayerKzstatsNation(
-  List<Wr> kzInfosnapshot,
-) async {
+Future<List<String>> getPlayerKzstatsNation(List<Wr> kzInfosnapshot) async {
   return Future.wait(
     kzInfosnapshot.map(
       (item) {
