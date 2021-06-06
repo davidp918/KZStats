@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/customDivider.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/common/none.dart';
+import 'package:kzstats/cubit/curPlayer_cubit.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
@@ -34,7 +35,6 @@ class FavouritePlayersState extends State<FavouritePlayers>
   late List<String> subscribedPlayersSteam64id;
   late List<Record> latestRecords;
   late Map<String, Map<String, dynamic>> playerDetails;
-  late Map<String, List<Record>> playerRecords;
   late Map<String, bool> gotNewRecord;
   late int curPageSize;
   int pageSize = 15;
@@ -53,7 +53,6 @@ class FavouritePlayersState extends State<FavouritePlayers>
     super.initState();
     this.curPageSize = pageSize;
     this.playerDetails = {};
-    this.playerRecords = {};
     this.gotNewRecord = {};
     this.subscribedPlayersSteam64id = [];
     this.latestRecords = [];
@@ -64,8 +63,8 @@ class FavouritePlayersState extends State<FavouritePlayers>
     print('refreshing ${this.markState.playerIds.length} friends records...');
     await refreshPlayersRecords(this.markState.playerIds);
     this._setPlayerDetails();
-    _loadLatestRecords(this.pageSize);
-    _sortPlayers();
+    this._loadLatestRecords(this.pageSize);
+    this._sortPlayers();
     print('refresh friend records done');
     if (mounted) setState(() {});
     _refreshController.refreshCompleted();
@@ -107,12 +106,18 @@ class FavouritePlayersState extends State<FavouritePlayers>
             ),
             playerHeaders(),
             customDivider(16),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: _itemBuilder,
-              itemCount: this.latestRecords.length,
-            ),
+            this.latestRecords.length == 0
+                ? noneView(
+                    title: 'No records available...',
+                    subTitle:
+                        'may be due to the limit of requests to globalApi, try again in 5 minutes',
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: _itemBuilder,
+                    itemCount: this.latestRecords.length,
+                  ),
           ],
         ),
       ),
@@ -288,8 +293,10 @@ class FavouritePlayersState extends State<FavouritePlayers>
                   InkWell(
                     child: getAvatar(steamid64, radius),
                     onTap: () {
+                      //TODO: add go back to all view button, also add a highlight to the focused player header
                       this.gotNewRecord[steamid64] = false;
-                      this.latestRecords = this.playerRecords[steamid64] ?? [];
+                      BlocProvider.of<CurPlayerCubit>(context).set(steamid64);
+                      this._loadLatestRecords(this.pageSize);
                       if (mounted) setState(() {});
                     },
                   ),
@@ -360,19 +367,19 @@ class FavouritePlayersState extends State<FavouritePlayers>
     this.loggedIn = !(userState.playerInfo.avatarfull == null &&
         userState.playerInfo.steamid == null);
     this.subscribedPlayersSteam64id = markState.playerIds;
-    _setPlayerDetails();
-    _loadLatestRecords(this.pageSize);
-    _sortPlayers();
+    this._setPlayerDetails();
+    this._loadLatestRecords(this.pageSize);
+    this._sortPlayers();
   }
 
   void _sortPlayers() {
     this.subscribedPlayersSteam64id.sort((b, a) {
-      if (this.playerRecords[a] == null ||
-          this.playerRecords[b] == null ||
-          this.playerRecords[b]?.length == 0 ||
-          this.playerRecords[a]?.length == 0) return 0;
-      DateTime? valA = this.playerRecords[a]?.first.createdOn;
-      DateTime? valB = this.playerRecords[b]?.first.createdOn;
+      if (this.playerDetails[a]?['records'] == null ||
+          this.playerDetails[b]?['records'] == null ||
+          this.playerDetails[b]?['records']?.length == 0 ||
+          this.playerDetails[a]?['records']?.length == 0) return 0;
+      DateTime? valA = this.playerDetails[a]?['records']?.first.createdOn;
+      DateTime? valB = this.playerDetails[b]?['records']?.first.createdOn;
       if (valA == null || valB == null) return 0;
       return valA.compareTo(valB);
     });
@@ -380,8 +387,6 @@ class FavouritePlayersState extends State<FavouritePlayers>
 
   void _setPlayerDetails() {
     for (String steamid64 in this.subscribedPlayersSteam64id) {
-      this.playerRecords[steamid64] =
-          UserSharedPreferences.getPlayerRecords(steamid64);
       this.playerDetails[steamid64] = {
         'info': UserSharedPreferences.readPlayerInfo(steamid64),
         'records': UserSharedPreferences.getPlayerRecords(steamid64),
@@ -390,21 +395,34 @@ class FavouritePlayersState extends State<FavouritePlayers>
   }
 
   void _loadLatestRecords(int range) {
-    List<Record> latest = [
-      for (List<Record> each in this.playerRecords.values.take(range).toList())
-        ...each
-    ];
-    latest.sort((b, a) {
-      if (a.createdOn != null || b.createdOn != null)
-        return a.createdOn!.compareTo(b.createdOn!);
-      return 0;
-    });
-    this.latestRecords = latest.take(range).toList();
+    CurPlayerState curPlayerState = context.read<CurPlayerCubit>().state;
+    print('Reading: ${curPlayerState.curPlayer}');
+    if (curPlayerState.curPlayer == null) {
+      List<Record> latest = [
+        for (List<Record> each
+            in this.playerDetails.values.map((e) => e['records']))
+          ...each
+      ];
+      latest.sort((b, a) {
+        if (a.createdOn != null || b.createdOn != null)
+          return a.createdOn!.compareTo(b.createdOn!);
+        return 0;
+      });
+      this.latestRecords = latest.take(range).toList();
+    } else {
+      this.latestRecords = this
+          .playerDetails[curPlayerState.curPlayer]?['records']
+          .sublist(0, range)
+          .toList();
+      print(
+          this.playerDetails[curPlayerState.curPlayer]?['records'][0].mapName);
+    }
   }
 
   Future refreshPlayersRecords(List<String> playerIds) async {
     List<List<Record>> records = await Future.wait([
-      for (String steamid64 in playerIds) getPlayerRecords(steamid64, false)
+      // TODO:not obtaining the latest first run, wtf??? check if the player detail one is also messed up after sort on initialization works
+      for (String steamid64 in playerIds) getPlayerRecords(steamid64, true)
     ]);
     for (int i = 0; i < playerIds.length; i++) {
       List<Record> curRecords = records[i];
@@ -422,7 +440,6 @@ class FavouritePlayersState extends State<FavouritePlayers>
       if (curRecords.length != 0 &&
           oldLatestRecords.time == curRecords[0].time) {
         this.gotNewRecord[curSteamid64] = false;
-        continue;
       } else {
         this.gotNewRecord[curSteamid64] = true;
         await UserSharedPreferences.setPlayerRecords(curSteamid64, curRecords);

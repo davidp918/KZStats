@@ -9,6 +9,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:collection/collection.dart';
 
 class CustomDataTable extends StatefulWidget {
+  //TODO: sort on initialization, center
   final List<dynamic> data;
   final List<String> columns;
   final int initialSortedColumnIndex;

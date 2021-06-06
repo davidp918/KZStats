@@ -45,6 +45,7 @@ dependencies:
   animations: ^2.0.0
   async_builder: ^1.3.0
   #json_annotation: ^4.0.1
+  boxy: ^2.0.1
   flutter_gifimage:
     path: ../flutter_gifimage/
   chips_choice:
