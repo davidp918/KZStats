@@ -48,14 +48,11 @@ class _PlayerDetailState extends State<PlayerDetail>
   void initState() {
     super.initState();
     this.curIndex = 0;
-    this._tabController = new TabController(length: 2, vsync: this);
-    this._tabController.addListener(_handleTabSelection);
-  }
-
-  _handleTabSelection() {
-    if (_tabController.indexIsChanging) {
-      setState(() {});
-    }
+    this._tabController = new TabController(
+      length: 2,
+      vsync: this,
+      initialIndex: curIndex,
+    );
   }
 
   @override
@@ -91,48 +88,54 @@ class _PlayerDetailState extends State<PlayerDetail>
               ),
               PlayerDetailStats(records: value[1]),
             ];
-            return DefaultTabController(
-              length: 2,
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: appbarColor(),
-                    child: TabBar(
-                      isScrollable: false,
-                      indicatorColor: Colors.white,
-                      indicatorWeight: 1.4,
-                      indicatorSize: TabBarIndicatorSize.label,
-                      tabs: ['Records', 'Statistics']
-                          .map(
-                            (data) => Padding(
-                              padding: EdgeInsets.only(bottom: 5),
-                              child: Text(
-                                data,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w300,
-                                ),
+            return Column(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  color: appbarColor(),
+                  child: TabBar(
+                    controller: this._tabController,
+                    isScrollable: false,
+                    indicatorColor: Colors.white,
+                    indicatorWeight: 1.4,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    onTap: (int index) {
+                      if (mounted)
+                        setState(() {
+                          this.curIndex = index;
+                          this._tabController.animateTo(index);
+                        });
+                    },
+                    tabs: ['Records', 'Statistics']
+                        .map(
+                          (data) => Padding(
+                            padding: EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              data,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w300,
                               ),
                             ),
-                          )
-                          .toList(),
-                    ),
+                          ),
+                        )
+                        .toList(),
                   ),
-                  Expanded(
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        playerHeader(value[0], pointsSum(value[1])),
-                        this.tabs[this._tabController.index],
-                      ],
-                    ),
-                  )
-                  /* playerHeader(value[0], pointsSum(value[1])),
-                  TabBarView(children: this.tabs), */
-                ],
-              ),
+                ),
+                Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      playerHeader(value[0], pointsSum(value[1])),
+                      IndexedStack(
+                        children: this.tabs,
+                        index: this.curIndex,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             );
           },
         );

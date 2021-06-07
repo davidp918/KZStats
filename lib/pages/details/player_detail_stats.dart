@@ -14,13 +14,13 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 class PlayerDetailStats extends StatelessWidget {
   final List<Record> records;
   PlayerDetailStats({Key? key, required this.records}) : super(key: key);
+
   final List<int> gold = [0, 0, 0, 0, 0, 0, 0];
   final List<int> silver = [0, 0, 0, 0, 0, 0, 0];
   final List<int> bronze = [0, 0, 0, 0, 0, 0, 0];
   final List<int> playerTierFinishes = [0, 0, 0, 0, 0, 0, 0];
   final List<int> playerPtrs = [0, 0, 0, 0, 0, 0, 0];
   final trash = [0];
-
   @override
   Widget build(BuildContext context) {
     List<Widget> indicators = [];
