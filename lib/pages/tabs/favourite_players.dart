@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:boxy/flex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttericon/linearicons_free_icons.dart';
@@ -469,7 +468,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
     List<List<Record>> records = await Future.wait([
       // TODO: API is broken
       for (String steamid64 in playerIds)
-        getPlayerRecords(true, 99999, steamid64, null)
+        getPlayerRecords(true, 99999, steamid64, null, false)
     ]);
     for (int i = 0; i < playerIds.length; i++) {
       List<Record> curRecords = records[i];

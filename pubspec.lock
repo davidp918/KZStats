@@ -50,13 +50,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  boxy:
-    dependency: "direct main"
-    description:
-      name: boxy
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   characters:
     dependency: "direct main"
     description:
@@ -113,13 +106,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  draggable_scrollbar:
-    dependency: "direct main"
-    description:
-      name: draggable_scrollbar
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
   eva_icons_flutter:
     dependency: "direct main"
     description:
