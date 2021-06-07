@@ -316,7 +316,8 @@ class FavouritePlayersState extends State<FavouritePlayers>
                     onTap: () {
                       //TODO: Add a highlight to the focused player header
                       this.gotNewRecord[steamid64] = false;
-                      BlocProvider.of<CurPlayerCubit>(context).set(steamid64);
+                      if (mounted)
+                        BlocProvider.of<CurPlayerCubit>(context).set(steamid64);
                       this._loadLatestRecords(this.pageSize);
                       if (mounted) setState(() {});
                     },

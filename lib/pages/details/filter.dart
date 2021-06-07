@@ -59,8 +59,10 @@ class MapsFilterState extends State<MapsFilter> {
             title: 'Sort by',
             child: ChipsChoice<int>.single(
               value: this.filterState.sortBy,
-              onChanged: (int val) =>
-                  BlocProvider.of<FilterCubit>(context).setSortBy(val),
+              onChanged: (int val) {
+                if (mounted)
+                  BlocProvider.of<FilterCubit>(context).setSortBy(val);
+              },
               choiceItems: C2Choice.listFrom(
                 source: this.sortByOptions,
                 value: (int i, String v) => i,
@@ -82,7 +84,7 @@ class MapsFilterState extends State<MapsFilter> {
                 label: (int i, String v) => v,
               ),
               onChanged: (List<dynamic> val) {
-                BlocProvider.of<FilterCubit>(context).setTier(val);
+                if (mounted) BlocProvider.of<FilterCubit>(context).setTier(val);
               },
               wrapped: true,
             ),

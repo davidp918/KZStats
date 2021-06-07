@@ -148,7 +148,8 @@ class _SettingsState extends State<Settings>
               contentPadding: EdgeInsets.all(0),
               value: state.enabled,
               onChanged: (val) {
-                BlocProvider.of<NotificationCubit>(context).toggleEnabled();
+                if (mounted)
+                  BlocProvider.of<NotificationCubit>(context).toggleEnabled();
               },
             ),
             !state.enabled
@@ -184,14 +185,17 @@ class _SettingsState extends State<Settings>
                             ],
                             onPressed: (index) {
                               if (index == 0) {
-                                BlocProvider.of<NotificationCubit>(context)
-                                    .toggleKZT();
+                                if (mounted)
+                                  BlocProvider.of<NotificationCubit>(context)
+                                      .toggleKZT();
                               } else if (index == 1) {
-                                BlocProvider.of<NotificationCubit>(context)
-                                    .toggleSKZ();
+                                if (mounted)
+                                  BlocProvider.of<NotificationCubit>(context)
+                                      .toggleSKZ();
                               } else if (index == 2) {
-                                BlocProvider.of<NotificationCubit>(context)
-                                    .toggleVNL();
+                                if (mounted)
+                                  BlocProvider.of<NotificationCubit>(context)
+                                      .toggleVNL();
                               }
                             },
                           ),
@@ -223,11 +227,13 @@ class _SettingsState extends State<Settings>
                             ],
                             onPressed: (index) {
                               if (index == 0) {
-                                BlocProvider.of<NotificationCubit>(context)
-                                    .toggleNUB();
+                                if (mounted)
+                                  BlocProvider.of<NotificationCubit>(context)
+                                      .toggleNUB();
                               } else if (index == 1) {
-                                BlocProvider.of<NotificationCubit>(context)
-                                    .toggleNUB();
+                                if (mounted)
+                                  BlocProvider.of<NotificationCubit>(context)
+                                      .toggleNUB();
                               }
                             },
                           ),

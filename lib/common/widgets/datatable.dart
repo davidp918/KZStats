@@ -130,18 +130,23 @@ class _CustomDataTableState extends State<CustomDataTable> {
               verticalScrollPhysics: NeverScrollableScrollPhysics(),
             ),
           ),
-          Container(
+          SizedBox(
             height: dataPagerHeight,
             child: SfDataPagerTheme(
               data: SfDataPagerThemeData(
-                itemColor: Colors.white70,
-                selectedItemColor: primarythemeBlue(),
+                brightness: Brightness.dark,
+                itemTextStyle: TextStyle(
+                    color: inkWellBlue(), fontWeight: FontWeight.w400),
+                itemColor: primarythemeBlue(),
+                selectedItemColor: backgroundColor(),
+                selectedItemTextStyle: TextStyle(
+                    color: inkWellBlue(), fontWeight: FontWeight.w800),
                 itemBorderRadius: BorderRadius.circular(5),
-                backgroundColor: backgroundColor(),
-                disabledItemColor: Colors.white30,
+                backgroundColor: primarythemeBlue(),
+                disabledItemColor: primarythemeBlue(),
               ),
               child: SfDataPager(
-                visibleItemsCount: 10,
+                visibleItemsCount: rowsPerPage,
                 delegate: _tableDataSource,
                 pageCount: this.data.length / rowsPerPage,
                 direction: Axis.horizontal,
@@ -220,10 +225,9 @@ class TableDataSource extends DataGridSource {
       'Finishes',
       'Points in total'
     ];
-    Color getBackgroundColor() => primarythemeBlue();
 
     return DataGridRowAdapter(
-      color: getBackgroundColor(),
+      color: primarythemeBlue(),
       cells: row.getCells().map<Widget>((each) {
         String name = each.columnName;
         return Container(

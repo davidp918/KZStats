@@ -48,6 +48,6 @@ class LeaderboardPoints {
         "finishes": finishes,
         "steamid64": steamid64,
         "steamid": steamid,
-        "playerName": playerName,
+        "player_name": playerName,
       };
 }

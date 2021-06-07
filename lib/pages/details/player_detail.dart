@@ -22,7 +22,6 @@ import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/convertDegreeRad.dart';
 import 'package:kzstats/utils/pointsSum.dart';
 import 'package:kzstats/web/getRequest.dart';
-import 'package:kzstats/web/urls.dart';
 
 class PlayerDetail extends StatefulWidget {
   final List<dynamic> playerInfo;
@@ -68,7 +67,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
           waiting: (context) => loadingFromApi(),
           error: (context, object, stacktrace) => errorScreen(),
           builder: (context, value) {
-            BlocProvider.of<MarkCubit>(context).setIfReady(true);
+            if (mounted) BlocProvider.of<MarkCubit>(context).setIfReady(true);
             return whole(value[0], value[1]);
           },
         );
@@ -302,7 +301,8 @@ class _FloaterState extends State<Floater> with SingleTickerProviderStateMixin {
           color: color,
           icon: icon,
           onClick: () {
-            BlocProvider.of<PlayerdisplayCubit>(context).set(newDisplay);
+            if (mounted)
+              BlocProvider.of<PlayerdisplayCubit>(context).set(newDisplay);
           },
         ),
       ),

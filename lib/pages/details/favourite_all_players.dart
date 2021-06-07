@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

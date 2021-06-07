@@ -97,11 +97,12 @@ class _LoginState extends State<Login> {
                         '/steamLogin',
                       );
                       if (steamid64 != null) {
-                        BlocProvider.of<UserCubit>(context).load();
-                        if (mounted)
+                        if (mounted) {
+                          BlocProvider.of<UserCubit>(context).load();
                           setState(() {
                             this.steamid64 = steamid64.toString();
                           });
+                        }
                       }
                     },
                   ),
@@ -120,8 +121,9 @@ class _LoginState extends State<Login> {
                       color: Colors.white,
                     ),
                     onTap: () async {
-                      BlocProvider.of<UserCubit>(context)
-                          .setinfo(KzstatsApiPlayer());
+                      if (mounted)
+                        BlocProvider.of<UserCubit>(context)
+                            .setinfo(KzstatsApiPlayer());
                     },
                   ),
                 ],
