@@ -110,7 +110,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
                   Expanded(child: Container()),
                   InkWell(
                     child: Text(
-                      'View all',
+                      'manage',
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w300,

@@ -45,7 +45,7 @@ class _FavouriteAllPlayersState extends State<FavouriteAllPlayers> {
           centerTitle: true,
           brightness: Brightness.dark,
           title: Text(
-            'Favourite Players',
+            'My favourites',
             style: TextStyle(fontWeight: FontWeight.w400),
           ),
         ),
