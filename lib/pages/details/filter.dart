@@ -51,10 +51,6 @@ class MapsFilterState extends State<MapsFilter> {
       body: ListView(
         addAutomaticKeepAlives: true,
         children: [
-          /* buildCard(
-              'Sort by', ['Alphabetical Order', 'Latest Released', 'Map Size']), */
-          // tier
-          // mapper
           OptionsChoice(
             title: 'Sort by',
             child: ChipsChoice<int>.single(

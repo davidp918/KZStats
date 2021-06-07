@@ -136,9 +136,6 @@ class SearchMapBody extends StatelessWidget {
               ],
             ),
             Divider(color: dividerColor()),
-            /* Text('Explore', style: TextStyle(fontSize: 24)),
-            SizedBox(height: 4),
-            Divider(color: dividerColor()), */
           ],
         ),
       ),
@@ -379,9 +376,6 @@ class SearchPlayerBody extends StatelessWidget {
               ],
             ),
             Divider(color: dividerColor()),
-            /* Text('Explore', style: TextStyle(fontSize: 24)),
-            SizedBox(height: 4),
-            Divider(color: dividerColor()), */
             Align(
               alignment: Alignment.topRight,
               child: Text(

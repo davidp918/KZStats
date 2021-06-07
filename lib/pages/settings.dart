@@ -1,11 +1,13 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/appbars/appbar_widgets.dart';
 import 'package:kzstats/common/appbars/baseAppbar.dart';
-import 'package:kzstats/common/customDivider.dart';
 import 'package:kzstats/cubit/notification_cubit.dart';
+import 'package:kzstats/cubit/table_cubit.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/look/colors.dart';
 
@@ -18,6 +20,9 @@ class _SettingsState extends State<Settings>
     with AutomaticKeepAliveClientMixin<Settings> {
   late ScrollController _scrollController;
   late Widget appbar;
+  final numberOptions = [5, 10, 15, 20, 50];
+  final letterOptions = ['F', 'T', 'F', 'T', 'F'];
+
   @override
   void initState() {
     super.initState();
@@ -77,20 +82,73 @@ class _SettingsState extends State<Settings>
                 children: <Widget>[
                   ListTile(
                     leading: Icon(
-                      EvilIcons.question,
+                      CommunityMaterialIcons.table,
                       color: Colors.white,
                     ),
                     title: Text(
-                      'About',
+                      'Table Settings',
                       style: TextStyle(color: Colors.white),
                     ),
                     trailing: Icon(
                       Icons.keyboard_arrow_right,
                       color: Colors.white,
                     ),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/about');
-                    },
+                    onTap: () => showMaterialModalBottomSheet(
+                      backgroundColor: backgroundColor(),
+                      context: context,
+                      builder: (context) => SingleChildScrollView(
+                        controller: ModalScrollController.of(context),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 30),
+                          child: BlocBuilder<TableCubit, TableState>(
+                            builder: (context, state) {
+                              return Column(
+                                children: [0, 1, 2, 3, 4]
+                                    .map(
+                                      (e) => ListTile(
+                                        leading: CircleAvatar(
+                                          child: Center(
+                                            child: Text(
+                                              '${this.letterOptions[e]}',
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                          ),
+                                          backgroundColor: primarythemeBlue()
+                                              .withOpacity(0.8),
+                                        ),
+                                        title: Text(
+                                          'Show ${this.numberOptions[e]} rows per page',
+                                          style: TextStyle(
+                                            color: state.rowCount ==
+                                                    numberOptions[e]
+                                                ? inkWellBlue()
+                                                : Colors.white,
+                                            fontWeight: state.rowCount ==
+                                                    numberOptions[e]
+                                                ? FontWeight.w400
+                                                : FontWeight.w300,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          BlocProvider.of<TableCubit>(context)
+                                              .setRowCount(
+                                                  this.numberOptions[e]);
+                                        },
+                                      ),
+                                    )
+                                    .toList(),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 12.0),
+                    width: double.infinity,
+                    height: 1.0,
+                    color: Colors.white30,
                   ),
                   ListTile(
                     leading: Icon(

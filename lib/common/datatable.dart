@@ -1,12 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:kzstats/cubit/table_cubit.dart';
 import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/pointsClassification.dart';
 import 'package:kzstats/utils/timeConversion.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomDataTable extends StatefulWidget {
   //TODO: center
@@ -31,6 +33,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
   late Map<String, String> identifyAttr;
   late List<GridTextColumn> _columns;
   late TableDataSource _tableDataSource;
+  late int rowsPerPage;
   final Map<String, double> _width = {
     '#': 50,
     'Player': 130,
@@ -50,6 +53,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
   @override
   void initState() {
     super.initState();
+    this.rowsPerPage = context.read<TableCubit>().state.rowCount;
     this.identifyAttr = {
       'Player': 'playerName',
       'Count': 'count',
@@ -101,7 +105,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final int rowsPerPage = min(10, this.data.length);
+    final int rowsPerPage = min(this.rowsPerPage, this.data.length);
     final double dataPagerHeight = 60.0;
     final double contentRowHeight = 44.0;
     final double headerRowHeight = 49.0;
@@ -178,7 +182,8 @@ class TableDataSource extends DataGridSource {
     this.data = data;
     this.columns = columns;
     this.identifyAttr = identifyAttr;
-    this.rowsPerPage = min(10, this.data.length);
+    this.rowsPerPage =
+        min(context.read<TableCubit>().state.rowCount, this.data.length);
     this.paginated =
         this.data.getRange(0, min(this.data.length, 9)).toList(growable: false);
     this.buildPaginatedDataGridRows();

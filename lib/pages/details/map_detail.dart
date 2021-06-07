@@ -7,7 +7,7 @@ import 'package:kzstats/common/detailed_pages.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
-import 'package:kzstats/common/widgets/datatable.dart';
+import 'package:kzstats/common/datatable.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/svg.dart';

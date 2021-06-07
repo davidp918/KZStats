@@ -46,10 +46,13 @@ dependencies:
   async_builder: ^1.3.0
   #json_annotation: ^4.0.1
   #draggable_scrollbar: ^0.1.0
+  modal_bottom_sheet: ^2.0.0
   flutter_gifimage:
     path: ../flutter_gifimage/
   chips_choice:
     path: ../flutter_chips_choice/
+  #smart_select:
+  #  path: ../flutter_smart_select/
 
   firebase_messaging: ^10.0.1
   firebase_analytics: ^8.1.1

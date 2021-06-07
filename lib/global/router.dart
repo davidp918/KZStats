@@ -6,7 +6,7 @@ import 'package:kzstats/pages/details/map_detail.dart';
 import 'package:kzstats/pages/details/player_detail.dart';
 import 'package:kzstats/pages/details/loginPage.dart';
 import 'package:kzstats/pages/details/about.dart';
-import 'package:kzstats/common/search.dart';
+import 'package:kzstats/pages/details/search.dart';
 import 'package:kzstats/pages/details/steamLogin.dart';
 
 class AppRouter {

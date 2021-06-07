@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:async_builder/async_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/common/widgets/datatable.dart';
+import 'package:kzstats/common/datatable.dart';
 import 'package:kzstats/common/detailed_pages.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
