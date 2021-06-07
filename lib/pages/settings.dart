@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/appbars/appbar_widgets.dart';
 import 'package:kzstats/common/appbars/baseAppbar.dart';
+import 'package:kzstats/common/customDivider.dart';
 import 'package:kzstats/cubit/notification_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/look/colors.dart';
@@ -74,6 +75,23 @@ class _SettingsState extends State<Settings>
                   borderRadius: BorderRadius.circular(10)),
               child: Column(
                 children: <Widget>[
+                  ListTile(
+                    leading: Icon(
+                      EvilIcons.question,
+                      color: Colors.white,
+                    ),
+                    title: Text(
+                      'About',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    trailing: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: Colors.white,
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/about');
+                    },
+                  ),
                   ListTile(
                     leading: Icon(
                       EvilIcons.question,
