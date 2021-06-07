@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'package:boxy/flex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttericon/linearicons_free_icons.dart';
 import 'package:kzstats/common/customDivider.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/common/none.dart';
@@ -126,7 +128,27 @@ class FavouritePlayersState extends State<FavouritePlayers>
               ),
             ),
             playerHeaders(),
-            customDivider(16),
+            BlocBuilder<CurPlayerCubit, CurPlayerState>(
+              builder: (context, state) {
+                if (state.curPlayer == null)
+                  return Container(height: 24, child: customDivider(16));
+                return Row(
+                  children: [
+                    Expanded(child: customDivider(16)),
+                    InkWell(
+                      child: Icon(LineariconsFree.cross, color: Colors.white70),
+                      onTap: () {
+                        if (mounted)
+                          BlocProvider.of<CurPlayerCubit>(context).set(null);
+                        this._loadLatestRecords(this.pageSize);
+                        if (mounted) setState(() {});
+                      },
+                    ),
+                    SizedBox(width: 16),
+                  ],
+                );
+              },
+            ),
             this.latestRecords.length == 0
                 ? noneView(
                     title: 'No records available...',
@@ -306,7 +328,6 @@ class FavouritePlayersState extends State<FavouritePlayers>
         children: <Widget>[
           for (String steamid64 in this.subscribedPlayersSteam64id)
             Container(
-              height: 105,
               padding: const EdgeInsets.fromLTRB(14, 14, 2, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -325,16 +346,21 @@ class FavouritePlayersState extends State<FavouritePlayers>
                   SizedBox(height: 10),
                   SizedBox(
                     width: radius * 2 + 6,
-                    child: Text(
-                      '${this.playerDetails[steamid64]?['info']?.personaname ?? ''}',
-                      softWrap: true,
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 13.5,
-                        fontWeight: FontWeight.w300,
-                        height: 1,
+                    child: BlocBuilder<CurPlayerCubit, CurPlayerState>(
+                      builder: (context, state) => Text(
+                        '${this.playerDetails[steamid64]?['info']?.personaname ?? ''}',
+                        softWrap: true,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w300,
+                          height: 1,
+                          color: state.curPlayer == steamid64
+                              ? inkWellBlue()
+                              : null,
+                        ),
                       ),
                     ),
                   ),
