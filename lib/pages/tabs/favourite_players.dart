@@ -335,7 +335,6 @@ class FavouritePlayersState extends State<FavouritePlayers>
                   InkWell(
                     child: getAvatar(steamid64, radius),
                     onTap: () {
-                      //TODO: Add a highlight to the focused player header
                       this.gotNewRecord[steamid64] = false;
                       if (mounted)
                         BlocProvider.of<CurPlayerCubit>(context).set(steamid64);
