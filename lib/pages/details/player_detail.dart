@@ -40,7 +40,7 @@ class _PlayerDetailState extends State<PlayerDetail>
   late ModeState modeState;
   late MarkState markState;
   late List<Widget> tabs;
-  //late TabController _tabController;
+  late TabController _tabController;
   late int curIndex;
   _PlayerDetailState(this.steamid64, this.playerName);
 
@@ -48,7 +48,14 @@ class _PlayerDetailState extends State<PlayerDetail>
   void initState() {
     super.initState();
     this.curIndex = 0;
-    //this._tabController = new TabController(length: 2, vsync: this);
+    this._tabController = new TabController(length: 2, vsync: this);
+    this._tabController.addListener(_handleTabSelection);
+  }
+
+  _handleTabSelection() {
+    if (_tabController.indexIsChanging) {
+      setState(() {});
+    }
   }
 
   @override
@@ -113,12 +120,17 @@ class _PlayerDetailState extends State<PlayerDetail>
                           .toList(),
                     ),
                   ),
-                  playerHeader(value[0], pointsSum(value[1])),
                   Expanded(
-                    child: TabBarView(
-                      children: this.tabs,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        playerHeader(value[0], pointsSum(value[1])),
+                        this.tabs[this._tabController.index],
+                      ],
                     ),
-                  ),
+                  )
+                  /* playerHeader(value[0], pointsSum(value[1])),
+                  TabBarView(children: this.tabs), */
                 ],
               ),
             );
@@ -225,5 +237,11 @@ class _PlayerDetailState extends State<PlayerDetail>
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 }
