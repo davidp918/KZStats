@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:async_builder/async_builder.dart';
-import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/widgets/datatable.dart';
@@ -16,10 +15,8 @@ import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/cubit/playerdisplay_cubit.dart';
-import 'package:kzstats/global/floater.dart';
 import 'package:kzstats/pages/details/player_detail_stats.dart';
 import 'package:kzstats/look/colors.dart';
-import 'package:kzstats/utils/convertDegreeRad.dart';
 import 'package:kzstats/utils/pointsSum.dart';
 import 'package:kzstats/web/getRequest.dart';
 
@@ -68,33 +65,15 @@ class _PlayerDetailState extends State<PlayerDetail> {
           error: (context, object, stacktrace) => errorScreen(),
           builder: (context, value) {
             if (mounted) BlocProvider.of<MarkCubit>(context).setIfReady(true);
-            return whole(value[0], value[1]);
+            return Column(
+              children: [
+                playerHeader(value[0], pointsSum(value[1])),
+                MainBody(steamId64: this.steamid64, records: value[1]),
+              ],
+            );
           },
         );
       },
-    );
-  }
-
-  Widget whole(KzstatsApiPlayer? kzstatsPlayerInfo, List<Record>? records) {
-    int totalPoints = pointsSum(records);
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width,
-      height: size.height,
-      child: Stack(
-        children: [
-          ListView(
-            padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
-            shrinkWrap: true,
-            children: [
-              playerHeader(kzstatsPlayerInfo, totalPoints),
-              MainBody(steamId64: this.steamid64, records: records),
-              Container(height: 100),
-            ],
-          ),
-          Floater(),
-        ],
-      ),
     );
   }
 
@@ -102,209 +81,97 @@ class _PlayerDetailState extends State<PlayerDetail> {
     Size size = MediaQuery.of(context).size;
     double avatarSize = min(140, size.width / 3);
     kzstatsPlayerInfo ??= KzstatsApiPlayer();
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            SizedBox(width: 2),
-            Container(
-              width: avatarSize,
-              height: avatarSize,
-              child: getNetworkImage(
-                '${kzstatsPlayerInfo.steamid}',
-                kzstatsPlayerInfo.avatarfull ?? '',
-                AssetImage('assets/icon/noimage.png'),
-              ),
-            ),
-            SizedBox(width: 14),
-            Expanded(
-              child: Container(
-                height: 130,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          '${kzstatsPlayerInfo.personaname}',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 28,
-                          ),
-                        ),
-                        Text(
-                          '(${kzstatsPlayerInfo.steamid32})',
-                          style: TextStyle(
-                            color: Colors.white54,
-                            fontSize: 13,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      'Points: ${totalPoints.toString()}',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 15,
-                      ),
-                    ),
-                    kzstatsPlayerInfo.loccountrycode != null &&
-                            kzstatsPlayerInfo.loccountrycode != ''
-                        ? Row(
-                            children: <Widget>[
-                              Image(
-                                image: AssetImage(
-                                  'assets/flag/${kzstatsPlayerInfo.loccountrycode?.toLowerCase()}.png',
-                                ),
-                              ),
-                              SizedBox(width: 6),
-                              Text(
-                                '${kzstatsPlayerInfo.country}',
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          )
-                        : Container(),
-                    InkWell(
-                      child: Text(
-                        'steam profile',
-                        style: TextStyle(
-                          color: inkWellBlue(),
-                          fontSize: 14,
-                        ),
-                      ),
-                      onTap: () async {
-                        String url = '${kzstatsPlayerInfo?.profileurl}';
-                        await canLaunch(url)
-                            ? await launch(url)
-                            : throw ('could not launch $url');
-                      },
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 6),
-      ],
-    );
-  }
-}
-
-class Floater extends StatefulWidget {
-  Floater({Key? key}) : super(key: key);
-
-  @override
-  _FloaterState createState() => _FloaterState();
-}
-
-class _FloaterState extends State<Floater> with SingleTickerProviderStateMixin {
-  late AnimationController animationController;
-  late Animation oneAnimation, twoAnimation, rotationAnimation;
-  @override
-  void initState() {
-    super.initState();
-    this.animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 350));
-    this.oneAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.4), weight: 55.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.4, end: 1.0), weight: 45.0),
-    ]).animate(animationController);
-    this.twoAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.75), weight: 35.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.75, end: 1.0), weight: 65.0),
-    ]).animate(animationController);
-    this.rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
-      CurvedAnimation(parent: animationController, curve: Curves.easeOut),
-    );
-    animationController.addListener(() {
-      if (mounted) setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      right: 30,
-      bottom: 30,
-      child: Stack(
-        alignment: Alignment.bottomRight,
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Row(
         children: <Widget>[
-          IgnorePointer(
-            child: Container(
-                color: Colors.transparent, height: 200.0, width: 200.0),
+          SizedBox(width: 2),
+          Container(
+            width: avatarSize,
+            height: avatarSize,
+            child: getNetworkImage(
+              '${kzstatsPlayerInfo.steamid}',
+              kzstatsPlayerInfo.avatarfull ?? '',
+              AssetImage('assets/icon/noimage.png'),
+            ),
           ),
-          ...subFloaters(),
-          Transform(
-            transform: Matrix4.rotationZ(
-                getRadiansFromDegree(rotationAnimation.value)),
-            alignment: Alignment.center,
-            child: CircularFloatingButton(
-              width: 54,
-              height: 54,
-              color: Colors.white,
-              icon: Icon(Icons.menu),
-              onClick: () {
-                animationController.isCompleted
-                    ? animationController.reverse()
-                    : animationController.forward();
-              },
+          SizedBox(width: 14),
+          Expanded(
+            child: Container(
+              height: 130,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        '${kzstatsPlayerInfo.personaname}',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 28,
+                        ),
+                      ),
+                      Text(
+                        '(${kzstatsPlayerInfo.steamid32})',
+                        style: TextStyle(
+                          color: Colors.white54,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    'Points: ${totalPoints.toString()}',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
+                  ),
+                  kzstatsPlayerInfo.loccountrycode != null &&
+                          kzstatsPlayerInfo.loccountrycode != ''
+                      ? Row(
+                          children: <Widget>[
+                            Image(
+                              image: AssetImage(
+                                'assets/flag/${kzstatsPlayerInfo.loccountrycode?.toLowerCase()}.png',
+                              ),
+                            ),
+                            SizedBox(width: 6),
+                            Text(
+                              '${kzstatsPlayerInfo.country}',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Container(),
+                  InkWell(
+                    child: Text(
+                      'steam profile',
+                      style: TextStyle(
+                        color: inkWellBlue(),
+                        fontSize: 14,
+                      ),
+                    ),
+                    onTap: () async {
+                      String url = '${kzstatsPlayerInfo?.profileurl}';
+                      await canLaunch(url)
+                          ? await launch(url)
+                          : throw ('could not launch $url');
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  List<Transform> subFloaters() {
-    return [
-      subFloater(250, twoAnimation, 100, Colors.white70,
-          Icon(CommunityMaterialIcons.format_list_bulleted), 'records'),
-      subFloater(200, oneAnimation, 100, Colors.white70,
-          Icon(CommunityMaterialIcons.graphql), 'stats'),
-    ];
-  }
-
-  Transform subFloater(double angle, Animation<dynamic> parameter,
-      double magnitude, Color color, Icon icon, String newDisplay) {
-    return Transform.translate(
-      offset: Offset.fromDirection(
-          getRadiansFromDegree(angle), parameter.value * magnitude),
-      child: Transform(
-        transform:
-            Matrix4.rotationZ(getRadiansFromDegree(rotationAnimation.value))
-              ..scale(parameter.value),
-        alignment: Alignment.center,
-        child: CircularFloatingButton(
-          width: 40,
-          height: 40,
-          color: color,
-          icon: icon,
-          onClick: () {
-            if (mounted)
-              BlocProvider.of<PlayerdisplayCubit>(context).set(newDisplay);
-          },
-        ),
       ),
     );
   }
