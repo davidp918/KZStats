@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kzstats/pages/base.dart';
+import 'package:kzstats/pages/details/favourite_all_players.dart';
 import 'package:kzstats/pages/details/filter.dart';
 import 'package:kzstats/pages/details/map_detail.dart';
 import 'package:kzstats/pages/details/player_detail.dart';
@@ -39,6 +40,9 @@ class AppRouter {
 
       case '/filter':
         return MaterialPageRoute(builder: (_) => MapsFilter());
+
+      case '/favourite_all_players':
+        return MaterialPageRoute(builder: (_) => FavouriteAllPlayers());
 
       default:
         return MaterialPageRoute(builder: (context) => Base());

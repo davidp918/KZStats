@@ -98,10 +98,29 @@ class FavouritePlayersState extends State<FavouritePlayers>
           children: [
             Container(
               alignment: Alignment.centerLeft,
-              padding: EdgeInsets.fromLTRB(16, 10, 14, 0),
-              child: Text(
-                'Latest runs',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              padding: EdgeInsets.fromLTRB(16, 10, 16, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    'Latest runs',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                  ),
+                  Expanded(child: Container()),
+                  InkWell(
+                    child: Text(
+                      'View all',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    onTap: () => Navigator.of(context).pushNamed(
+                      '/favourite_all_players',
+                    ),
+                  ),
+                ],
               ),
             ),
             playerHeaders(),
