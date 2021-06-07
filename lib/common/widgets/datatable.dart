@@ -279,14 +279,16 @@ class TableDataSource extends DataGridSource {
 
   Widget buttonDataCell(BuildContext context, dynamic data, String destination,
           dynamic parameter) =>
-      InkWell(
-          onTap: () => Navigator.of(context)
-              .pushNamed(destination, arguments: parameter),
-          child: Text(
-            '${data == null ? '<Unknown>' : Characters(data.toString())}',
-            style: TextStyle(color: inkWellBlue()),
-            overflow: TextOverflow.ellipsis,
-          ));
+      data == null
+          ? vanillaDataCell(data)
+          : InkWell(
+              onTap: () => Navigator.of(context)
+                  .pushNamed(destination, arguments: parameter),
+              child: Text(
+                '${Characters(data.toString())}',
+                style: TextStyle(color: inkWellBlue()),
+                overflow: TextOverflow.ellipsis,
+              ));
 
   Widget getCell(String column, dynamic data) {
     switch (column) {

@@ -8,6 +8,7 @@ import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/tierIdentifier.dart';
 import 'package:kzstats/web/json/mapinfo_json.dart';
 import 'package:kzstats/web/urls.dart';
+//import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MapCards extends StatelessWidget {
@@ -36,26 +37,33 @@ class MapCards extends StatelessWidget {
         subTitle: 'Go mark a few and grind them later!',
       );
     }
-    return CustomScrollView(
-      controller: this._scrollController,
-      slivers: <Widget>[
-        SliverPadding(
-          padding: EdgeInsets.all(15.0),
-          sliver: SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => _itemBuilder(context, mapInfo[index], index),
-              childCount: mapInfo.length,
-              addAutomaticKeepAlives: true,
-            ),
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200.0,
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 8.0,
-              childAspectRatio: 1.0,
+    return /* DraggableScrollbar.rrect(
+      controller: _scrollController,
+      padding: EdgeInsets.symmetric(horizontal: 2),
+      heightScrollThumb: 60, */
+        Scrollbar(
+      child: CustomScrollView(
+        controller: this._scrollController,
+        slivers: <Widget>[
+          SliverPadding(
+            padding: EdgeInsets.all(15.0),
+            sliver: SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) =>
+                    _itemBuilder(context, mapInfo[index], index),
+                childCount: mapInfo.length,
+                addAutomaticKeepAlives: true,
+              ),
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 200.0,
+                mainAxisSpacing: 8.0,
+                crossAxisSpacing: 8.0,
+                childAspectRatio: 1.0,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
