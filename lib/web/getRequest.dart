@@ -51,12 +51,14 @@ Future<List<Ban>> getBans(int limit, int offset, Function fromjson) async {
   return res;
 }
 
-Future<List<Record>> getPlayerRecords(String steamid64, bool ifNub) async {
+Future<List<Record>> getPlayerRecords(
+    bool ifNub, int limit, String steamid64, String? mode) async {
   List<Record> res = [];
   try {
     var response = await http.get(
-      Uri.parse(globalApiPlayerRecordsUrl(ifNub, 99999, steamid64)),
+      Uri.parse(globalApiPlayerRecordsUrl(ifNub, limit, steamid64, mode)),
     );
+    // print('$steamid64 all records: ${response.body}');
     response.statusCode == HttpStatus.ok
         ? res = recordFromJson(response.body)
         : print('request failed');

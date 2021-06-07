@@ -52,11 +52,7 @@ class _PlayerDetailState extends State<PlayerDetail> {
     BlocProvider.of<MarkCubit>(context).setIfReady(false);
     this._future = Future.wait([
       UserSharedPreferences.getPlayerInfo(steamid64),
-      getRequest(
-        globalApiPlayerRecordsUrl(
-            modeState.nub, 99999, steamid64, modeState.mode),
-        recordFromJson,
-      ),
+      getPlayerRecords(modeState.nub, 99999, steamid64, modeState.mode),
     ]);
   }
 

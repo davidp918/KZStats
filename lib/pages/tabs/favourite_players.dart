@@ -6,6 +6,7 @@ import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/common/none.dart';
 import 'package:kzstats/cubit/curPlayer_cubit.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
+import 'package:kzstats/cubit/mode_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/look/animation.dart';
@@ -30,6 +31,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
     with AutomaticKeepAliveClientMixin<FavouritePlayers> {
   late RefreshController _refreshController;
   late UserState userState;
+  late ModeState state;
   late MarkState markState;
   late bool loggedIn;
   late List<String> subscribedPlayersSteam64id;
@@ -312,7 +314,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
                   InkWell(
                     child: getAvatar(steamid64, radius),
                     onTap: () {
-                      //TODO: add go back to all view button, also add a highlight to the focused player header
+                      //TODO: Add a highlight to the focused player header
                       this.gotNewRecord[steamid64] = false;
                       BlocProvider.of<CurPlayerCubit>(context).set(steamid64);
                       this._loadLatestRecords(this.pageSize);
@@ -440,8 +442,9 @@ class FavouritePlayersState extends State<FavouritePlayers>
 
   Future refreshPlayersRecords(List<String> playerIds) async {
     List<List<Record>> records = await Future.wait([
-      // TODO:not obtaining the latest first run, wtf??? check if the player detail one is also messed up after sort on initialization works
-      for (String steamid64 in playerIds) getPlayerRecords(steamid64, true)
+      // TODO: API is broken
+      for (String steamid64 in playerIds)
+        getPlayerRecords(true, 99999, steamid64, null)
     ]);
     for (int i = 0; i < playerIds.length; i++) {
       List<Record> curRecords = records[i];
