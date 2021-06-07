@@ -443,7 +443,6 @@ class FavouritePlayersState extends State<FavouritePlayers>
 
   void _loadLatestRecords(int range) {
     CurPlayerState curPlayerState = context.read<CurPlayerCubit>().state;
-    print('Reading: ${curPlayerState.curPlayer}');
     if (curPlayerState.curPlayer == null) {
       List<Record> latest = [
         for (List<Record> each

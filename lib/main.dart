@@ -17,7 +17,6 @@ import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/cubit/user_cubit.dart';
 import 'package:kzstats/cubit/mapFilter_cubit.dart';
 import 'package:kzstats/cubit/search_cubit.dart';
-import 'package:kzstats/cubit/playerdisplay_cubit.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/global/router.dart';
 import 'package:kzstats/look/colors.dart';
@@ -70,8 +69,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<UserCubit>(create: (context) => UserCubit()),
         BlocProvider<ModeCubit>(create: (context) => ModeCubit(), lazy: false),
         BlocProvider<FilterCubit>(create: (context) => FilterCubit()),
-        BlocProvider<PlayerdisplayCubit>(
-            create: (context) => PlayerdisplayCubit()),
         BlocProvider<SearchCubit>(create: (context) => SearchCubit()),
       ],
       child: Builder(

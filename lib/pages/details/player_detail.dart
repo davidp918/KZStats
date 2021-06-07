@@ -14,7 +14,6 @@ import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
-import 'package:kzstats/cubit/playerdisplay_cubit.dart';
 import 'package:kzstats/pages/details/player_detail_stats.dart';
 import 'package:kzstats/look/colors.dart';
 import 'package:kzstats/utils/pointsSum.dart';
@@ -33,13 +32,24 @@ class PlayerDetail extends StatefulWidget {
       );
 }
 
-class _PlayerDetailState extends State<PlayerDetail> {
+class _PlayerDetailState extends State<PlayerDetail>
+    with SingleTickerProviderStateMixin {
   final String steamid64;
   final String playerName;
   late Future<List<dynamic>> _future;
   late ModeState modeState;
   late MarkState markState;
+  late List<Widget> tabs;
+  //late TabController _tabController;
+  late int curIndex;
   _PlayerDetailState(this.steamid64, this.playerName);
+
+  @override
+  void initState() {
+    super.initState();
+    this.curIndex = 0;
+    //this._tabController = new TabController(length: 2, vsync: this);
+  }
 
   @override
   void didChangeDependencies() {
@@ -65,11 +75,52 @@ class _PlayerDetailState extends State<PlayerDetail> {
           error: (context, object, stacktrace) => errorScreen(),
           builder: (context, value) {
             if (mounted) BlocProvider.of<MarkCubit>(context).setIfReady(true);
-            return Column(
-              children: [
-                playerHeader(value[0], pointsSum(value[1])),
-                MainBody(steamId64: this.steamid64, records: value[1]),
-              ],
+            this.tabs = [
+              CustomDataTable(
+                data: value[1],
+                columns: ['Map', 'Time', 'Points', 'TPs', 'Date', 'Server'],
+                initialSortedColumnIndex: 4,
+                initialAscending: false,
+              ),
+              PlayerDetailStats(records: value[1]),
+            ];
+            return DefaultTabController(
+              length: 2,
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: appbarColor(),
+                    child: TabBar(
+                      isScrollable: false,
+                      indicatorColor: Colors.white,
+                      indicatorWeight: 1.4,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      tabs: ['Records', 'Statistics']
+                          .map(
+                            (data) => Padding(
+                              padding: EdgeInsets.only(bottom: 5),
+                              child: Text(
+                                data,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                  playerHeader(value[0], pointsSum(value[1])),
+                  Expanded(
+                    child: TabBarView(
+                      children: this.tabs,
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         );
@@ -98,10 +149,10 @@ class _PlayerDetailState extends State<PlayerDetail> {
           SizedBox(width: 14),
           Expanded(
             child: Container(
-              height: 130,
+              height: avatarSize,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,40 +225,5 @@ class _PlayerDetailState extends State<PlayerDetail> {
         ],
       ),
     );
-  }
-}
-
-class MainBody extends StatelessWidget {
-  final String steamId64;
-  final List<Record>? records;
-
-  const MainBody({
-    Key? key,
-    required this.steamId64,
-    required this.records,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (this.records == null || this.records?.length == 0) {
-      return Align(
-        alignment: Alignment.center,
-        child: Text('No data available'),
-      );
-    }
-    Size size = MediaQuery.of(context).size;
-    final playerDisplayState = context.watch<PlayerdisplayCubit>().state;
-    if (playerDisplayState.playerDisplay == 'records') {
-      return CustomDataTable(
-        data: records!,
-        columns: ['Map', 'Time', 'Points', 'TPs', 'Date', 'Server'],
-        initialSortedColumnIndex: 4,
-        initialAscending: false,
-      );
-    } else if (playerDisplayState.playerDisplay == 'stats') {
-      return PlayerDetailStats(records: records!);
-    }
-    // minus 395 to make the loading icon center
-    return Container(height: size.height - 395, child: loadingFromApi());
   }
 }
