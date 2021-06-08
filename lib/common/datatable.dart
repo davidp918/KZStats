@@ -30,7 +30,7 @@ class CustomDataTable extends StatefulWidget {
 
 class _CustomDataTableState extends State<CustomDataTable> {
   List<Map<String, dynamic>> data = [];
-  late Map<String, String> identifyAttr;
+
   late List<GridTextColumn> _columns;
   late TableDataSource _tableDataSource;
   late int rowsPerPage;
@@ -54,20 +54,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
   void initState() {
     super.initState();
     this.rowsPerPage = context.read<TableCubit>().state.rowCount;
-    this.identifyAttr = {
-      'Player': 'playerName',
-      'Count': 'count',
-      'Average': 'average',
-      'Points': 'points',
-      'Rating': 'rating',
-      'Finishes': 'finishes',
-      'Map': 'mapName',
-      'Time': 'time',
-      'TPs': 'teleports',
-      'Date': 'createdOn',
-      'Server': 'serverName',
-      'Points in total': 'totalPoints',
-    };
+
     this._columns = widget.columns
         .map(
           (String column) => GridTextColumn(
@@ -98,7 +85,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
       data: this.data,
       columns: widget.columns,
       context: context,
-      identifyAttr: this.identifyAttr,
     );
   }
 
@@ -170,18 +156,29 @@ class TableDataSource extends DataGridSource {
   late List<Map<String, dynamic>> paginated;
   late List<Map<String, dynamic>> data;
   late List<String> columns;
-  late Map<String, String> identifyAttr;
+  final Map<String, String> identifyAttr = {
+    'Player': 'player_name',
+    'Count': 'count',
+    'Average': 'average',
+    'Points': 'points',
+    'Rating': 'rating',
+    'Finishes': 'finishes',
+    'Map': 'map_name',
+    'Time': 'time',
+    'TPs': 'teleports',
+    'Date': 'created_on',
+    'Server': 'server_name',
+    'Points in total': 'totalPoints',
+  };
 
   TableDataSource({
     required List<Map<String, dynamic>> data,
     required List<String> columns,
     required BuildContext context,
-    required Map<String, String> identifyAttr,
   }) {
     this.context = context;
     this.data = data;
     this.columns = columns;
-    this.identifyAttr = identifyAttr;
     this.rowsPerPage =
         min(context.read<TableCubit>().state.rowCount, this.data.length);
     this.paginated =
