@@ -11,7 +11,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomDataTable extends StatefulWidget {
-  //TODO: center
   final List<dynamic> data;
   final List<String> columns;
   CustomDataTable({

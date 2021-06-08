@@ -36,25 +36,27 @@ class _FavouriteAllPlayersState extends State<FavouriteAllPlayers> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
-        child: AppBar(
-          backgroundColor: appbarColor(),
-          centerTitle: true,
-          brightness: Brightness.dark,
-          title: Text(
-            'My favourites',
-            style: TextStyle(fontWeight: FontWeight.w400),
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
+          child: AppBar(
+            backgroundColor: appbarColor(),
+            centerTitle: true,
+            brightness: Brightness.dark,
+            title: Text(
+              'My favourites',
+              style: TextStyle(fontWeight: FontWeight.w400),
+            ),
           ),
         ),
-      ),
-      body: Column(
-        children: this
-            .playerInfo
-            .keys
-            .map((steamid64) => customTile(steamid64))
-            .toList(),
+        body: Column(
+          children: this
+              .playerInfo
+              .keys
+              .map((steamid64) => customTile(steamid64))
+              .toList(),
+        ),
       ),
     );
   }

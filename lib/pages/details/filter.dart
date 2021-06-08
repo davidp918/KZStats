@@ -41,51 +41,54 @@ class MapsFilterState extends State<MapsFilter> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: appbarColor(),
-        centerTitle: true,
-        brightness: Brightness.dark,
-        title: Text('Filter'),
-      ),
-      body: ListView(
-        addAutomaticKeepAlives: true,
-        children: [
-          OptionsChoice(
-            title: 'Sort by',
-            child: ChipsChoice<int>.single(
-              value: this.filterState.sortBy,
-              onChanged: (int val) {
-                if (mounted)
-                  BlocProvider.of<FilterCubit>(context).setSortBy(val);
-              },
-              choiceItems: C2Choice.listFrom(
-                source: this.sortByOptions,
-                value: (int i, String v) => i,
-                label: (int i, String v) => v,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: appbarColor(),
+          centerTitle: true,
+          brightness: Brightness.dark,
+          title: Text('Filter'),
+        ),
+        body: ListView(
+          addAutomaticKeepAlives: true,
+          children: [
+            OptionsChoice(
+              title: 'Sort by',
+              child: ChipsChoice<int>.single(
+                value: this.filterState.sortBy,
+                onChanged: (int val) {
+                  if (mounted)
+                    BlocProvider.of<FilterCubit>(context).setSortBy(val);
+                },
+                choiceItems: C2Choice.listFrom(
+                  source: this.sortByOptions,
+                  value: (int i, String v) => i,
+                  label: (int i, String v) => v,
+                ),
+                choiceStyle: C2ChoiceStyle(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                ),
+                wrapped: true,
               ),
-              choiceStyle: C2ChoiceStyle(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-              ),
-              wrapped: true,
             ),
-          ),
-          OptionsChoice(
-            title: 'Tier',
-            child: ChipsChoice<dynamic>.multiple(
-              value: this.filterState.tier,
-              choiceItems: C2Choice.listFrom(
-                source: this.tierOptions,
-                value: (int i, String v) => i,
-                label: (int i, String v) => v,
+            OptionsChoice(
+              title: 'Tier',
+              child: ChipsChoice<dynamic>.multiple(
+                value: this.filterState.tier,
+                choiceItems: C2Choice.listFrom(
+                  source: this.tierOptions,
+                  value: (int i, String v) => i,
+                  label: (int i, String v) => v,
+                ),
+                onChanged: (List<dynamic> val) {
+                  if (mounted)
+                    BlocProvider.of<FilterCubit>(context).setTier(val);
+                },
+                wrapped: true,
               ),
-              onChanged: (List<dynamic> val) {
-                if (mounted) BlocProvider.of<FilterCubit>(context).setTier(val);
-              },
-              wrapped: true,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

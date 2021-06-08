@@ -25,113 +25,115 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     final UserState userState = context.watch<UserCubit>().state;
-    return Scaffold(
-      appBar: defaultAppbar('Login'),
-      body: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 80,
-              child: Image.asset('assets/icon/steam_icon.png'),
-            ),
-            Text(
-              'Login via Steam',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 30,
-                fontWeight: FontWeight.w300,
+    return SafeArea(
+      child: Scaffold(
+        appBar: defaultAppbar('Login'),
+        body: Padding(
+          padding: const EdgeInsets.all(30),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 80,
+                child: Image.asset('assets/icon/steam_icon.png'),
               ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 15),
-            Card(
-              elevation: 2.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              color: primarythemeBlue(),
-              child: ListTile(
-                title: Text(
-                  userState.playerInfo.steamid == null
-                      ? 'You are not logged in'
-                      : 'You are logged in as: ${userState.playerInfo.personaname}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
+              Text(
+                'Login via Steam',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w300,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 15),
+              Card(
+                elevation: 2.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                color: primarythemeBlue(),
+                child: ListTile(
+                  title: Text(
+                    userState.playerInfo.steamid == null
+                        ? 'You are not logged in'
+                        : 'You are logged in as: ${userState.playerInfo.personaname}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
+                  leading: Container(
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: Icon(Icons.person, color: Colors.white),
+                  ),
+                  trailing: userState.playerInfo.steamid == null
+                      ? Icon(LineariconsFree.cross, color: Colors.red)
+                      : Icon(Icons.check, color: Colors.green),
                 ),
-                leading: Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle),
-                  child: Icon(Icons.person, color: Colors.white),
-                ),
-                trailing: userState.playerInfo.steamid == null
-                    ? Icon(LineariconsFree.cross, color: Colors.red)
-                    : Icon(Icons.check, color: Colors.green),
               ),
-            ),
-            SizedBox(height: 8),
-            Card(
-              color: primarythemeBlue(),
-              elevation: 4.0,
-              margin: const EdgeInsets.fromLTRB(36, 8, 36, 6),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(
-                      CommunityMaterialIcons.login,
-                      color: Colors.white,
-                    ),
-                    title: Text(
-                      'Login',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    trailing: Icon(
-                      Icons.keyboard_arrow_right,
-                      color: Colors.white,
-                    ),
-                    onTap: () async {
-                      final steamid64 = await Navigator.pushNamed(
-                        context,
-                        '/steamLogin',
-                      );
-                      if (steamid64 != null) {
-                        if (mounted) {
-                          BlocProvider.of<UserCubit>(context).load();
-                          setState(() {
-                            this.steamid64 = steamid64.toString();
-                          });
+              SizedBox(height: 8),
+              Card(
+                color: primarythemeBlue(),
+                elevation: 4.0,
+                margin: const EdgeInsets.fromLTRB(36, 8, 36, 6),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(
+                        CommunityMaterialIcons.login,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'Login',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      trailing: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                      ),
+                      onTap: () async {
+                        final steamid64 = await Navigator.pushNamed(
+                          context,
+                          '/steamLogin',
+                        );
+                        if (steamid64 != null) {
+                          if (mounted) {
+                            BlocProvider.of<UserCubit>(context).load();
+                            setState(() {
+                              this.steamid64 = steamid64.toString();
+                            });
+                          }
                         }
-                      }
-                    },
-                  ),
-                  _buildDivider(),
-                  ListTile(
-                    leading: Icon(
-                      CommunityMaterialIcons.logout,
-                      color: Colors.white,
+                      },
                     ),
-                    title: Text(
-                      'Logout',
-                      style: TextStyle(color: Colors.white),
+                    _buildDivider(),
+                    ListTile(
+                      leading: Icon(
+                        CommunityMaterialIcons.logout,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'Logout',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      trailing: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                      ),
+                      onTap: () async {
+                        if (mounted)
+                          BlocProvider.of<UserCubit>(context)
+                              .setinfo(KzstatsApiPlayer());
+                      },
                     ),
-                    trailing: Icon(
-                      Icons.keyboard_arrow_right,
-                      color: Colors.white,
-                    ),
-                    onTap: () async {
-                      if (mounted)
-                        BlocProvider.of<UserCubit>(context)
-                            .setinfo(KzstatsApiPlayer());
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            progress(userState),
-          ],
+              SizedBox(height: 10),
+              progress(userState),
+            ],
+          ),
         ),
       ),
     );
