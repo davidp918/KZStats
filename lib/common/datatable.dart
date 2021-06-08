@@ -92,54 +92,65 @@ class _CustomDataTableState extends State<CustomDataTable> {
     final double contentRowHeight = 44.0;
     final double headerRowHeight = 49.0;
     final double tableHeight = headerRowHeight + rowsPerPage * contentRowHeight;
+    double tableWidth = 0;
+    for (String column in widget.columns)
+      tableWidth += this._width[column] ?? 0;
+    tableWidth = min(tableWidth, size.width);
     return SfDataGridTheme(
       data: SfDataGridThemeData(
         headerColor: appbarColor(),
         gridLineStrokeWidth: 0,
         sortIconColor: Colors.white,
       ),
-      child: Column(
-        children: [
-          SizedBox(
-            height: tableHeight,
-            width: size.width,
-            child: SfDataGrid(
-              rowHeight: contentRowHeight,
-              headerRowHeight: headerRowHeight,
-              allowSorting: true,
-              allowMultiColumnSorting: true,
-              allowTriStateSorting: true,
-              showSortNumbers: true,
-              isScrollbarAlwaysShown: false,
-              columns: this._columns,
-              source: this._tableDataSource,
-              verticalScrollPhysics: NeverScrollableScrollPhysics(),
-            ),
+      child: Align(
+        alignment: Alignment.center,
+        child: Container(
+          width: tableWidth,
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              SizedBox(
+                height: tableHeight,
+                width: size.width,
+                child: SfDataGrid(
+                  rowHeight: contentRowHeight,
+                  headerRowHeight: headerRowHeight,
+                  allowSorting: true,
+                  allowMultiColumnSorting: true,
+                  allowTriStateSorting: true,
+                  showSortNumbers: true,
+                  isScrollbarAlwaysShown: false,
+                  columns: this._columns,
+                  source: this._tableDataSource,
+                  verticalScrollPhysics: NeverScrollableScrollPhysics(),
+                ),
+              ),
+              SizedBox(
+                height: dataPagerHeight,
+                child: SfDataPagerTheme(
+                  data: SfDataPagerThemeData(
+                    brightness: Brightness.dark,
+                    itemTextStyle: TextStyle(
+                        color: inkWellBlue(), fontWeight: FontWeight.w400),
+                    itemColor: primarythemeBlue(),
+                    selectedItemColor: backgroundColor(),
+                    selectedItemTextStyle: TextStyle(
+                        color: inkWellBlue(), fontWeight: FontWeight.w800),
+                    itemBorderRadius: BorderRadius.circular(5),
+                    backgroundColor: primarythemeBlue(),
+                    disabledItemColor: primarythemeBlue(),
+                  ),
+                  child: SfDataPager(
+                    visibleItemsCount: rowsPerPage,
+                    delegate: _tableDataSource,
+                    pageCount: this.data.length / rowsPerPage,
+                    direction: Axis.horizontal,
+                  ),
+                ),
+              )
+            ],
           ),
-          SizedBox(
-            height: dataPagerHeight,
-            child: SfDataPagerTheme(
-              data: SfDataPagerThemeData(
-                brightness: Brightness.dark,
-                itemTextStyle: TextStyle(
-                    color: inkWellBlue(), fontWeight: FontWeight.w400),
-                itemColor: primarythemeBlue(),
-                selectedItemColor: backgroundColor(),
-                selectedItemTextStyle: TextStyle(
-                    color: inkWellBlue(), fontWeight: FontWeight.w800),
-                itemBorderRadius: BorderRadius.circular(5),
-                backgroundColor: primarythemeBlue(),
-                disabledItemColor: primarythemeBlue(),
-              ),
-              child: SfDataPager(
-                visibleItemsCount: rowsPerPage,
-                delegate: _tableDataSource,
-                pageCount: this.data.length / rowsPerPage,
-                direction: Axis.horizontal,
-              ),
-            ),
-          )
-        ],
+        ),
       ),
     );
   }
