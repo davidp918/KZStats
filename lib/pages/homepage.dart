@@ -91,4 +91,10 @@ class _HomepageState extends State<Homepage>
       ),
     );
   }
+
+  @override
+  void dispose() {
+    this._scrollController.dispose();
+    super.dispose();
+  }
 }

@@ -352,5 +352,11 @@ class _SettingsState extends State<Settings>
   }
 
   @override
+  void dispose() {
+    this._scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   bool get wantKeepAlive => true;
 }

@@ -89,5 +89,11 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
   }
 
   @override
+  void dispose() {
+    this._pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   bool get wantKeepAlive => true;
 }
