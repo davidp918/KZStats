@@ -52,8 +52,7 @@ class UserSharedPreferences {
 
   // set player records
   static Future setPlayerRecords(String steamid64, List<Record> records) async {
-    await _preferences.setString(
-        '${steamid64}_records', multiRecordsToJson(records));
+    await _preferences.setString('${steamid64}_records', recordToJson(records));
   }
 
   static List<Record> getPlayerRecords(String steamid64) {

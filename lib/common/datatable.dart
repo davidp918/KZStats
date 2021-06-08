@@ -50,7 +50,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
   void initState() {
     super.initState();
     this.rowsPerPage = context.read<TableCubit>().state.rowCount;
-
     this._columns = widget.columns
         .map(
           (String column) => GridTextColumn(
@@ -77,6 +76,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
       this.data.add(cur);
     }
     for (int i = 0; i < this.data.length; i++) this.data[i]['index'] = i + 1;
+    print(this.data);
     this._tableDataSource = TableDataSource(
       data: this.data,
       columns: widget.columns,
