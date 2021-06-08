@@ -83,14 +83,10 @@ class _LeaderboardState extends State<Leaderboard>
                   'Finishes',
                   'Points in total'
                 ],
-                initialSortedColumnIndex: 3,
-                initialAscending: false,
               )
             : CustomDataTable(
                 data: data,
                 columns: ['#', 'Player', 'Count'],
-                initialSortedColumnIndex: 2,
-                initialAscending: false,
               ),
         Container(height: 100),
       ],

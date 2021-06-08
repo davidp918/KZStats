@@ -14,14 +14,10 @@ class CustomDataTable extends StatefulWidget {
   //TODO: center
   final List<dynamic> data;
   final List<String> columns;
-  final int initialSortedColumnIndex;
-  final bool initialAscending;
   CustomDataTable({
     Key? key,
     required this.data,
     required this.columns,
-    required this.initialSortedColumnIndex,
-    required this.initialAscending,
   }) : super(key: key);
 
   @override

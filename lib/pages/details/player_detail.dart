@@ -93,8 +93,6 @@ class _PlayerDetailState extends State<PlayerDetail>
               CustomDataTable(
                 data: records,
                 columns: ['Map', 'Time', 'Points', 'TPs', 'Date', 'Server'],
-                initialSortedColumnIndex: 4,
-                initialAscending: false,
               ),
               PlayerDetailStats(records: records),
             ];

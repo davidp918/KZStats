@@ -181,8 +181,6 @@ class _MapDetailState extends State<MapDetail> {
                 'Date',
                 'Server'
               ],
-              initialSortedColumnIndex: 2,
-              initialAscending: true,
             ),
           ];
   }
