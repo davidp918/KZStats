@@ -27,7 +27,10 @@ class _SteamLoginState extends State<SteamLogin> {
     return Scaffold(
       appBar: AppBar(
         backwardsCompatibility: false,
-        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: appbarColor()),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: appbarColor(),
+          statusBarBrightness: Brightness.dark,
+        ),
         backgroundColor: appbarColor(),
         elevation: 20,
         title: Text('Steam Login'),

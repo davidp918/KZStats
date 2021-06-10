@@ -16,8 +16,12 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      brightness: Brightness.dark,
       backwardsCompatibility: false,
-      systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: appbarColor()),
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: appbarColor(),
+        statusBarBrightness: Brightness.dark,
+      ),
       backgroundColor: appbarColor(),
       floating: true,
       pinned: false,

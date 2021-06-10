@@ -63,6 +63,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: appbarColor(),
+      statusBarBrightness: Brightness.dark,
     ));
     return MultiBlocProvider(
       providers: [

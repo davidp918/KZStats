@@ -46,8 +46,10 @@ class _FavouritesState extends State<Favourites>
           preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
           child: AppBar(
             backwardsCompatibility: false,
-            systemOverlayStyle:
-                SystemUiOverlayStyle(statusBarColor: appbarColor()),
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: appbarColor(),
+              statusBarBrightness: Brightness.dark,
+            ),
             backgroundColor: appbarColor(),
             leading: userLeadingIcon(context),
             actions: <Widget>[searchWidget(context)],
