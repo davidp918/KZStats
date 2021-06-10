@@ -39,15 +39,16 @@ class PlayerDetailStats extends StatelessWidget {
 
     for (Record each in this.records) {
       if (seen.contains(each.mapId)) continue;
-      seen.add(each.mapId!);
-      int curTierIndex = tierMapping[each.mapName!]! - 1;
-      playerPtrs[curTierIndex] += each.points!;
+      seen.add(each.mapId ?? 0);
+      int curTierIndex = tierMapping[each.mapName] ?? 1 - 1; //null
+      int points = each.points ?? 0;
+      playerPtrs[curTierIndex] += points;
       playerTierFinishes[curTierIndex] += 1;
-      each.points == 1000
+      points == 1000
           ? gold[curTierIndex] += 1
-          : each.points! >= 900
+          : points >= 900
               ? silver[curTierIndex] += 1
-              : each.points! >= 750
+              : points >= 750
                   ? bronze[curTierIndex] += 1
                   : trash[0] = 0;
     }

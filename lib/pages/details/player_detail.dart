@@ -62,8 +62,7 @@ class _PlayerDetailState extends State<PlayerDetail>
     BlocProvider.of<MarkCubit>(context).setIfReady(false);
     this._future = Future.wait([
       UserSharedPreferences.getPlayerInfo(steamid64 ?? ''),
-      getPlayerRecords(
-          modeState.nub, 99999, steamid64 ?? '', modeState.mode, false),
+      getTopRecords(modeState.nub, 99999, steamid64 ?? '', modeState.mode),
     ]);
   }
 
@@ -90,6 +89,7 @@ class _PlayerDetailState extends State<PlayerDetail>
           builder: (context, value) {
             if (mounted) BlocProvider.of<MarkCubit>(context).setIfReady(true);
             List<Record> records = filterTopRecords(value[1]);
+            print(records.length);
             this.tabs = [
               CustomDataTable(
                 data: records,

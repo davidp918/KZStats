@@ -31,16 +31,28 @@ String globalApiMaptopRecordsUrl(
       .replaceAll('!amount', amount.toString());
 }
 
-// all records of a specific player
-String globalApiPlayerRecordsUrl(
-    bool ifNub, int limit, String steamId64, String? mode, bool onlyTop) {
+// top records of a specific player
+String globalApiTopRecordsUrl({
+  required bool ifNub,
+  required int limit,
+  required String steamid64,
+  String? mode,
+}) =>
+    "https://kztimerglobal.com/api/v2.0/records/top?steamid64=!steamid64&tickrate=128&stage=0!ifNub&modes_list_string=!mode&limit=!limit"
+        .replaceAll('!mode', mode == null ? '' : '&modes_list_string=$mode')
+        .replaceAll('!steamid64', steamid64)
+        .replaceAll('!limit', limit.toString())
+        .replaceAll('!ifNub', ifNub ? '' : '&has_teleports=false');
+
+// recent records of a specific player
+String globalApiRecentRecordsUrl(
+    bool ifNub, int limit, String steamId64, String? mode) {
   const kz_mapTopRecords =
       "https://kztimerglobal.com/api/v2.0/records/top/recent?steamid64=!steamId64!ifNub&tickrate=128&stage=0!mode";
   return kz_mapTopRecords
       .replaceAll('!mode', mode == null ? '' : '&modes_list_string=$mode')
       .replaceAll('!steamId64', steamId64)
       .replaceAll('!limit', limit.toString())
-      .replaceAll('/recent', onlyTop ? '' : '/recent')
       .replaceAll('!ifNub', ifNub ? '' : '&has_teleports=false');
 }
 

@@ -468,7 +468,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
     List<List<Record>> records = await Future.wait([
       // TODO: API is broken
       for (String steamid64 in playerIds)
-        getPlayerRecords(true, 99999, steamid64, null, false)
+        getRecentRecords(true, 99999, steamid64, null, false)
     ]);
     for (int i = 0; i < playerIds.length; i++) {
       List<Record> curRecords = records[i];

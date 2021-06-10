@@ -55,7 +55,7 @@ class _LoginState extends State<Login> {
                   title: Text(
                     userState.playerInfo.steamid == null
                         ? 'You are not logged in'
-                        : 'You are logged in as: ${userState.playerInfo.personaname}',
+                        : '${userState.playerInfo.personaname}',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w400,
