@@ -320,7 +320,7 @@ class TableDataSource extends DataGridSource {
         return vanillaDataCell(data?['finishes']);
       case 'Map':
         return buttonDataCell(context, data?['map_name'], '/map_detail',
-            [data['mapId'], data['map_name']]);
+            [data['map_id'], data['map_name']]);
       case 'Time':
         return vanillaDataCell(toMinSec(data?['time']));
       case 'TPs':
