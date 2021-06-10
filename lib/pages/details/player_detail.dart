@@ -89,7 +89,6 @@ class _PlayerDetailState extends State<PlayerDetail>
           builder: (context, value) {
             if (mounted) BlocProvider.of<MarkCubit>(context).setIfReady(true);
             List<Record> records = filterTopRecords(value[1]);
-            print(records.length);
             this.tabs = [
               CustomDataTable(
                 data: records,

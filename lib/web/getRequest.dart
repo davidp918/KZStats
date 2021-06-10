@@ -69,7 +69,6 @@ Future<List<Record>> getRecentRecords(
     bool ifNub, int limit, String steamid64, String? mode, bool onlyTop) async {
   List<Record> res = [];
   String url = globalApiRecentRecordsUrl(ifNub, limit, steamid64, mode);
-  print(url);
   try {
     var response = await retry(
       () => http.get(Uri.parse(url)),
