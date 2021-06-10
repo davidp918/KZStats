@@ -37,6 +37,7 @@ class _DetailedPageState extends State<DetailedPage> {
     return Container(
       color: appbarColor(),
       child: SafeArea(
+        bottom: false,
         child: Scaffold(
           body: NestedScrollView(
             controller: this._scrollController,
