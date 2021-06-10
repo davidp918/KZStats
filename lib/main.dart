@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
                     TargetPlatform.android: ZoomPageTransitionsBuilder(),
                   },
                 ),
-                scaffoldBackgroundColor: backgroundColor(),
+                scaffoldBackgroundColor: appbarColor(),
                 fontFamily: 'NotoSansHK',
                 primaryColor: appbarColor(),
                 appBarTheme: AppBarTheme(),
