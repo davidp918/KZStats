@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kzstats/common/appbars/appbar_widgets.dart';
+import 'package:kzstats/look/colors.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String currentPage;
@@ -14,6 +16,9 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      backwardsCompatibility: false,
+      systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: appbarColor()),
+      backgroundColor: appbarColor(),
       floating: true,
       pinned: false,
       toolbarHeight: height ?? kToolbarHeight * 0.9,
@@ -27,7 +32,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           fontWeight: FontWeight.w400,
         ),
       ),
-      brightness: Brightness.dark,
+      //brightness: Brightness.dark,
       actions: this.actions,
     );
   }

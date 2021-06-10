@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kzstats/look/colors.dart';
 
 PreferredSizeWidget defaultAppbar(String title) => PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
       child: AppBar(
+        backwardsCompatibility: false,
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: appbarColor()),
         backgroundColor: appbarColor(),
         centerTitle: true,
-        brightness: Brightness.dark,
+        //brightness: Brightness.dark,
         title: Text('$title'),
       ),
     );

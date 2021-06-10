@@ -1,5 +1,6 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kzstats/common/appbars/appbar_widgets.dart';
 import 'package:kzstats/common/error.dart';
@@ -71,6 +72,9 @@ class _MapsState extends State<Maps> with AutomaticKeepAliveClientMixin<Maps> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
           child: AppBar(
+            backwardsCompatibility: false,
+            systemOverlayStyle:
+                SystemUiOverlayStyle(statusBarColor: appbarColor()),
             backgroundColor: appbarColor(),
             leading: userLeadingIcon(context),
             title: Text(

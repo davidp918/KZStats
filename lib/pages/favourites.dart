@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kzstats/common/appbars/appbar_widgets.dart';
 import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/look/colors.dart';
@@ -44,6 +45,9 @@ class _FavouritesState extends State<Favourites>
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
           child: AppBar(
+            backwardsCompatibility: false,
+            systemOverlayStyle:
+                SystemUiOverlayStyle(statusBarColor: appbarColor()),
             backgroundColor: appbarColor(),
             leading: userLeadingIcon(context),
             actions: <Widget>[searchWidget(context)],

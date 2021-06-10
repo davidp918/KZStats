@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kzstats/cubit/mapFilter_cubit.dart';
 import 'package:kzstats/look/colors.dart';
 import 'package:chips_choice/chips_choice.dart';
@@ -44,9 +45,12 @@ class MapsFilterState extends State<MapsFilter> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          backwardsCompatibility: false,
+          systemOverlayStyle:
+              SystemUiOverlayStyle(statusBarColor: appbarColor()),
           backgroundColor: appbarColor(),
           centerTitle: true,
-          brightness: Brightness.dark,
+          //brightness: Brightness.dark,
           title: Text('Filter'),
         ),
         body: ListView(

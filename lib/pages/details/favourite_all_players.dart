@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kzstats/common/networkImage.dart';
 import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,9 +42,12 @@ class _FavouriteAllPlayersState extends State<FavouriteAllPlayers> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
           child: AppBar(
+            backwardsCompatibility: false,
+            systemOverlayStyle:
+                SystemUiOverlayStyle(statusBarColor: appbarColor()),
             backgroundColor: appbarColor(),
             centerTitle: true,
-            brightness: Brightness.dark,
+            //brightness: Brightness.dark,
             title: Text(
               'My favourites',
               style: TextStyle(fontWeight: FontWeight.w400),

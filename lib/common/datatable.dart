@@ -75,7 +75,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
       this.data.add(cur);
     }
     for (int i = 0; i < this.data.length; i++) this.data[i]['index'] = i + 1;
-    print(this.data);
     this._tableDataSource = TableDataSource(
       data: this.data,
       columns: widget.columns,

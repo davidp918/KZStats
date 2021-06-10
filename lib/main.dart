@@ -61,6 +61,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: appbarColor(),
+    ));
     return MultiBlocProvider(
       providers: [
         BlocProvider<TableCubit>(create: (context) => TableCubit()),
@@ -95,6 +98,7 @@ class MyApp extends StatelessWidget {
                 scaffoldBackgroundColor: backgroundColor(),
                 fontFamily: 'NotoSansHK',
                 primaryColor: appbarColor(),
+                appBarTheme: AppBarTheme(),
                 textTheme: TextTheme(
                   bodyText1: TextStyle(),
                   bodyText2: TextStyle(),

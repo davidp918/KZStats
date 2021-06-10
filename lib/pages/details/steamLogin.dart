@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:steam_login/steam_login.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -26,11 +27,14 @@ class _SteamLoginState extends State<SteamLogin> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          backwardsCompatibility: false,
+          systemOverlayStyle:
+              SystemUiOverlayStyle(statusBarColor: appbarColor()),
           backgroundColor: appbarColor(),
           elevation: 20,
           title: Text('Steam Login'),
           centerTitle: true,
-          brightness: Brightness.dark,
+          //brightness: Brightness.dark,
         ),
         body: WebView(
           javascriptMode: JavascriptMode.unrestricted,
