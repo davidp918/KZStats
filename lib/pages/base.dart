@@ -48,9 +48,9 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
         controller: this._pageController,
         children: this.pages,
       ),
-      bottomNavigationBar: SizedBox(
-        height: kToolbarHeight,
-        child: SafeArea(
+      bottomNavigationBar: SafeArea(
+        child: SizedBox(
+          height: kToolbarHeight,
           child: BottomNavigationBar(
             onTap: onTap,
             backgroundColor: appbarColor(),
