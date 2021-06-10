@@ -37,14 +37,14 @@ class _HomepageState extends State<Homepage>
       Leaderboard(type: 'Points'),
       Leaderboard(type: 'Records'),
       Bans(),
-      Jumpstats(),
+      //Jumpstats(),
     ];
     this.tabsTitle = [
       'Latest',
       'Points',
       'Records',
       'Bans',
-      'Jumpstats',
+      //'Jumpstats',
     ]
         .map(
           (data) => Padding(
@@ -69,7 +69,7 @@ class _HomepageState extends State<Homepage>
       controller: this._scrollController,
       headerSliverBuilder: (BuildContext context, _) => <Widget>[this.appbar],
       body: DefaultTabController(
-        length: 5,
+        length: 4,
         child: Column(
           children: [
             Container(
@@ -78,7 +78,7 @@ class _HomepageState extends State<Homepage>
               child: Center(
                 child: TabBar(
                   tabs: this.tabsTitle,
-                  isScrollable: true,
+                  isScrollable: false,
                   indicatorColor: Colors.white,
                   indicatorWeight: 1.4,
                   indicatorSize: TabBarIndicatorSize.label,
