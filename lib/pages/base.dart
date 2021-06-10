@@ -50,37 +50,39 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
       ),
       bottomNavigationBar: SizedBox(
         height: kToolbarHeight,
-        child: BottomNavigationBar(
-          onTap: onTap,
-          backgroundColor: appbarColor(),
-          currentIndex: this.curIndex,
-          type: BottomNavigationBarType.fixed,
-          unselectedItemColor: Colors.grey.shade300,
-          selectedIconTheme: IconThemeData(color: Colors.white),
-          iconSize: 22,
-          selectedFontSize: 12,
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
-          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w300),
-          unselectedFontSize: 12,
-          selectedItemColor: Colors.white,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(CommunityMaterialIcons.home_outline),
-              label: 'Homepage',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border_rounded),
-              label: 'Favourites',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.map_sharp),
-              label: 'Maps',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(EvilIcons.gear),
-              label: 'Settings',
-            ),
-          ],
+        child: SafeArea(
+          child: BottomNavigationBar(
+            onTap: onTap,
+            backgroundColor: appbarColor(),
+            currentIndex: this.curIndex,
+            type: BottomNavigationBarType.fixed,
+            unselectedItemColor: Colors.grey.shade300,
+            selectedIconTheme: IconThemeData(color: Colors.white),
+            iconSize: 22,
+            selectedFontSize: 12,
+            selectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
+            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w300),
+            unselectedFontSize: 12,
+            selectedItemColor: Colors.white,
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(CommunityMaterialIcons.home_outline),
+                label: 'Homepage',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite_border_rounded),
+                label: 'Favourites',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.map_sharp),
+                label: 'Maps',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(EvilIcons.gear),
+                label: 'Settings',
+              ),
+            ],
+          ),
         ),
       ),
     );
