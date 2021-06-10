@@ -103,7 +103,6 @@ class _PlayerDetailState extends State<PlayerDetail>
                   color: appbarColor(),
                   child: TabBar(
                     controller: this._tabController,
-                    isScrollable: false,
                     indicatorColor: Colors.white,
                     indicatorWeight: 1.4,
                     indicatorSize: TabBarIndicatorSize.label,

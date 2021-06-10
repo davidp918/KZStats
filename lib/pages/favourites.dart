@@ -51,13 +51,15 @@ class _FavouritesState extends State<Favourites>
             backgroundColor: appbarColor(),
             leading: userLeadingIcon(context),
             actions: <Widget>[searchWidget(context)],
-            flexibleSpace: Center(
-              child: TabBar(
-                tabs: this._tabsTitle,
-                isScrollable: true,
-                indicatorColor: Colors.white,
-                indicatorWeight: 1.4,
-                indicatorSize: TabBarIndicatorSize.label,
+            flexibleSpace: SafeArea(
+              child: Center(
+                child: TabBar(
+                  tabs: this._tabsTitle,
+                  isScrollable: true,
+                  indicatorColor: Colors.white,
+                  indicatorWeight: 1.4,
+                  indicatorSize: TabBarIndicatorSize.label,
+                ),
               ),
             ),
           ),
