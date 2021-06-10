@@ -38,9 +38,10 @@ class PlayerDetailStats extends StatelessWidget {
     final List<int> tierCount = UserSharedPreferences.getTierCount()!;
 
     for (Record each in this.records) {
-      if (seen.contains(each.mapId)) continue;
+      if (seen.contains(each.mapId) && tierMapping[each.mapName] != null)
+        continue;
       seen.add(each.mapId ?? 0);
-      int curTierIndex = tierMapping[each.mapName] ?? 1 - 1; //null
+      int curTierIndex = tierMapping[each.mapName]! - 1; //null
       int points = each.points ?? 0;
       playerPtrs[curTierIndex] += points;
       playerTierFinishes[curTierIndex] += 1;
