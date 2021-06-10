@@ -32,8 +32,8 @@ class MapDetail extends StatefulWidget {
 class _MapDetailState extends State<MapDetail> {
   late Future<List<dynamic>> _future;
   late ModeState state;
-  late int mapId;
-  late String mapName;
+  late int? mapId;
+  late String? mapName;
 
   @override
   void initState() {
@@ -88,7 +88,7 @@ class _MapDetailState extends State<MapDetail> {
     return DetailedPage(
       markedType: 'map',
       current: this.mapId.toString(),
-      title: this.mapName,
+      title: this.mapName ?? 'kz_unknown',
       builder: (BuildContext context) {
         return AsyncBuilder<List<dynamic>>(
           retain: true,

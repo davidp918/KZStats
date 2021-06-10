@@ -34,8 +34,8 @@ class PlayerDetail extends StatefulWidget {
 
 class _PlayerDetailState extends State<PlayerDetail>
     with SingleTickerProviderStateMixin {
-  final String steamid64;
-  final String playerName;
+  final String? steamid64;
+  final String? playerName;
   late Future<List<dynamic>> _future;
   late ModeState modeState;
   late MarkState markState;
@@ -61,8 +61,9 @@ class _PlayerDetailState extends State<PlayerDetail>
     this.modeState = context.watch<ModeCubit>().state;
     BlocProvider.of<MarkCubit>(context).setIfReady(false);
     this._future = Future.wait([
-      UserSharedPreferences.getPlayerInfo(steamid64),
-      getPlayerRecords(modeState.nub, 99999, steamid64, modeState.mode, false),
+      UserSharedPreferences.getPlayerInfo(steamid64 ?? ''),
+      getPlayerRecords(
+          modeState.nub, 99999, steamid64 ?? '', modeState.mode, false),
     ]);
   }
 
@@ -79,8 +80,8 @@ class _PlayerDetailState extends State<PlayerDetail>
   Widget build(BuildContext context) {
     return DetailedPage(
       markedType: 'player',
-      current: this.steamid64,
-      title: this.playerName,
+      current: this.steamid64 ?? '',
+      title: this.playerName ?? '',
       builder: (BuildContext context) {
         return AsyncBuilder<dynamic>(
           future: this._future,
