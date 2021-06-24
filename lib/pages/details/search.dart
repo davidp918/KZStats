@@ -1,5 +1,6 @@
 import 'package:evil_icons_flutter/evil_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
@@ -22,21 +23,21 @@ class Search extends StatelessWidget {
     final searchState = context.watch<SearchCubit>().state;
     return SafeArea(
       bottom: false,
-      child: searchState.field == 'map'
-          ? ChangeNotifierProvider(
-              create: (_) => SearchMapProvider(),
-              child: Scaffold(
-                resizeToAvoidBottomInset: false,
-                body: SearchMapBody(),
-              ),
-            )
-          : ChangeNotifierProvider(
-              create: (_) => SearchPlayerProvider(),
-              child: Scaffold(
-                resizeToAvoidBottomInset: false,
-                body: SearchPlayerBody(),
-              ),
-            ),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.light,
+          child: searchState.field == 'map'
+              ? ChangeNotifierProvider(
+                  create: (_) => SearchMapProvider(),
+                  child: SearchMapBody(),
+                )
+              : ChangeNotifierProvider(
+                  create: (_) => SearchPlayerProvider(),
+                  child: SearchPlayerBody(),
+                ),
+        ),
+      ),
     );
   }
 }
