@@ -114,6 +114,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
                   rowHeight: contentRowHeight,
                   headerRowHeight: headerRowHeight,
                   allowSorting: true,
+                  //columnWidthMode: ColumnWidthMode.none,
                   allowMultiColumnSorting: true,
                   allowTriStateSorting: true,
                   showSortNumbers: true,

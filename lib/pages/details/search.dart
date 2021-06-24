@@ -20,21 +20,24 @@ class Search extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final searchState = context.watch<SearchCubit>().state;
-    return searchState.field == 'map'
-        ? ChangeNotifierProvider(
-            create: (_) => SearchMapProvider(),
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: SearchMapBody(),
+    return SafeArea(
+      bottom: false,
+      child: searchState.field == 'map'
+          ? ChangeNotifierProvider(
+              create: (_) => SearchMapProvider(),
+              child: Scaffold(
+                resizeToAvoidBottomInset: false,
+                body: SearchMapBody(),
+              ),
+            )
+          : ChangeNotifierProvider(
+              create: (_) => SearchPlayerProvider(),
+              child: Scaffold(
+                resizeToAvoidBottomInset: false,
+                body: SearchPlayerBody(),
+              ),
             ),
-          )
-        : ChangeNotifierProvider(
-            create: (_) => SearchPlayerProvider(),
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: SearchPlayerBody(),
-            ),
-          );
+    );
   }
 }
 
