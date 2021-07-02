@@ -26,24 +26,9 @@ class CustomDataTable extends StatefulWidget {
 class _CustomDataTableState extends State<CustomDataTable> {
   List<Map<String, dynamic>> data = [];
 
-  late List<GridTextColumn> _columns;
+  late List<GridColumn> _columns;
   late TableDataSource _tableDataSource;
   late int rowsPerPage;
-  final Map<String, double> _width = {
-    '#': 50,
-    'Player': 130,
-    'Count': 100,
-    'Average': 100,
-    'Points': 78,
-    'Rating': 80,
-    'Finishes': 100,
-    'Map': 160,
-    'Time': 80,
-    'TPs': 70,
-    'Date': 180,
-    'Server': 200,
-    'Points in total': 140,
-  };
 
   @override
   void initState() {
@@ -51,8 +36,7 @@ class _CustomDataTableState extends State<CustomDataTable> {
     this.rowsPerPage = context.read<TableCubit>().state.rowCount;
     this._columns = widget.columns
         .map(
-          (String column) => GridTextColumn(
-              width: this._width[column] ?? double.nan,
+          (String column) => GridColumn(
               columnName: column,
               label: Container(
                 alignment: Alignment.centerLeft,
@@ -91,8 +75,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
     final double headerRowHeight = 49.0;
     final double tableHeight = headerRowHeight + rowsPerPage * contentRowHeight;
     double tableWidth = 0;
-    for (String column in widget.columns)
-      tableWidth += this._width[column] ?? 0;
     tableWidth = min(tableWidth, size.width);
     return SfDataGridTheme(
       data: SfDataGridThemeData(
