@@ -40,8 +40,11 @@ class _CustomDataTableState extends State<CustomDataTable> {
           (String column) => GridColumn(
               columnName: column,
               label: Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                alignment:
+                    column == '#' ? Alignment.center : Alignment.centerLeft,
+                padding: column == 'Map'
+                    ? EdgeInsets.fromLTRB(16, 0, 0, 0)
+                    : EdgeInsets.symmetric(horizontal: 8.0),
                 color: appbarColor(),
                 child: Text(
                   '$column',
@@ -75,7 +78,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
     final double contentRowHeight = 44.0;
     final double headerRowHeight = 49.0;
     final double tableHeight = headerRowHeight + rowsPerPage * contentRowHeight;
-    double tableWidth = size.width;
     //tableWidth = min(tableWidth, size.width);
     return SfDataGridTheme(
       data: SfDataGridThemeData(
@@ -85,54 +87,50 @@ class _CustomDataTableState extends State<CustomDataTable> {
       ),
       child: Align(
         alignment: Alignment.center,
-        child: Container(
-          width: tableWidth,
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              SizedBox(
-                height: tableHeight,
-                width: size.width,
-                child: SfDataGrid(
-                  rowHeight: contentRowHeight,
-                  headerRowHeight: headerRowHeight,
-                  allowSorting: true,
-                  columnWidthMode: ColumnWidthMode.auto,
-                  columnSizer: this._sizer,
-                  allowMultiColumnSorting: true,
-                  allowTriStateSorting: true,
-                  showSortNumbers: true,
-                  isScrollbarAlwaysShown: false,
-                  columns: this._columns,
-                  source: this._tableDataSource,
-                  verticalScrollPhysics: NeverScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            SizedBox(
+              height: tableHeight,
+              // width: size.width,
+              child: SfDataGrid(
+                rowHeight: contentRowHeight,
+                headerRowHeight: headerRowHeight,
+                allowSorting: true,
+                columnWidthMode: ColumnWidthMode.auto,
+                columnSizer: this._sizer,
+                allowMultiColumnSorting: true,
+                allowTriStateSorting: true,
+                showSortNumbers: true,
+                isScrollbarAlwaysShown: false,
+                columns: this._columns,
+                source: this._tableDataSource,
+                verticalScrollPhysics: NeverScrollableScrollPhysics(),
+              ),
+            ),
+            SizedBox(
+              height: dataPagerHeight,
+              child: SfDataPagerTheme(
+                data: SfDataPagerThemeData(
+                  brightness: Brightness.dark,
+                  itemTextStyle: TextStyle(
+                      color: inkWellBlue(), fontWeight: FontWeight.w400),
+                  itemColor: primarythemeBlue(),
+                  selectedItemColor: backgroundColor(),
+                  selectedItemTextStyle: TextStyle(
+                      color: inkWellBlue(), fontWeight: FontWeight.w800),
+                  itemBorderRadius: BorderRadius.circular(5),
+                  backgroundColor: primarythemeBlue(),
+                  disabledItemColor: primarythemeBlue(),
+                ),
+                child: SfDataPager(
+                  visibleItemsCount: rowsPerPage,
+                  delegate: _tableDataSource,
+                  pageCount: this.data.length / rowsPerPage,
+                  direction: Axis.horizontal,
                 ),
               ),
-              SizedBox(
-                height: dataPagerHeight,
-                child: SfDataPagerTheme(
-                  data: SfDataPagerThemeData(
-                    brightness: Brightness.dark,
-                    itemTextStyle: TextStyle(
-                        color: inkWellBlue(), fontWeight: FontWeight.w400),
-                    itemColor: primarythemeBlue(),
-                    selectedItemColor: backgroundColor(),
-                    selectedItemTextStyle: TextStyle(
-                        color: inkWellBlue(), fontWeight: FontWeight.w800),
-                    itemBorderRadius: BorderRadius.circular(5),
-                    backgroundColor: primarythemeBlue(),
-                    disabledItemColor: primarythemeBlue(),
-                  ),
-                  child: SfDataPager(
-                    visibleItemsCount: rowsPerPage,
-                    delegate: _tableDataSource,
-                    pageCount: this.data.length / rowsPerPage,
-                    direction: Axis.horizontal,
-                  ),
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
@@ -239,21 +237,16 @@ class TableDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    List<String> centeredColumns = [
-      '#',
-      'TPs',
-      'Average',
-      'Rating',
-      'Finishes',
-      'Points in total'
-    ];
+    List<String> centeredColumns = ['#', 'TPs'];
 
     return DataGridRowAdapter(
       color: primarythemeBlue(),
       cells: row.getCells().map<Widget>((each) {
         String name = each.columnName;
         return Container(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          padding: name == 'Map'
+              ? EdgeInsets.fromLTRB(18, 0, 0, 0)
+              : EdgeInsets.symmetric(horizontal: 8.0),
           alignment: centeredColumns.contains(name)
               ? Alignment.center
               : Alignment.centerLeft,
