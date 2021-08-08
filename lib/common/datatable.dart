@@ -7,7 +7,6 @@ import 'package:kzstats/utils/pointsClassification.dart';
 import 'package:kzstats/utils/timeConversion.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomDataTable extends StatefulWidget {
@@ -29,10 +28,12 @@ class _CustomDataTableState extends State<CustomDataTable> {
   late List<GridColumn> _columns;
   late TableDataSource _tableDataSource;
   late int rowsPerPage;
+  late ColumnSizer _sizer;
 
   @override
   void initState() {
     super.initState();
+    this._sizer = ColumnSizer();
     this.rowsPerPage = context.read<TableCubit>().state.rowCount;
     this._columns = widget.columns
         .map(
@@ -74,8 +75,8 @@ class _CustomDataTableState extends State<CustomDataTable> {
     final double contentRowHeight = 44.0;
     final double headerRowHeight = 49.0;
     final double tableHeight = headerRowHeight + rowsPerPage * contentRowHeight;
-    double tableWidth = 0;
-    tableWidth = min(tableWidth, size.width);
+    double tableWidth = size.width;
+    //tableWidth = min(tableWidth, size.width);
     return SfDataGridTheme(
       data: SfDataGridThemeData(
         headerColor: appbarColor(),
@@ -96,7 +97,8 @@ class _CustomDataTableState extends State<CustomDataTable> {
                   rowHeight: contentRowHeight,
                   headerRowHeight: headerRowHeight,
                   allowSorting: true,
-                  //columnWidthMode: ColumnWidthMode.none,
+                  columnWidthMode: ColumnWidthMode.auto,
+                  columnSizer: this._sizer,
                   allowMultiColumnSorting: true,
                   allowTriStateSorting: true,
                   showSortNumbers: true,
@@ -143,8 +145,11 @@ class TableDataSource extends DataGridSource {
   late BuildContext context;
   late List<Map<String, dynamic>> paginated;
   late List<Map<String, dynamic>> data;
+  late Map<String, int> mapId = {};
+  late Map<String, String> playerId = {};
   late List<String> columns;
   final Map<String, String> identifyAttr = {
+    '#': 'index',
     'Player': 'player_name',
     'Count': 'count',
     'Average': 'average',
@@ -171,7 +176,35 @@ class TableDataSource extends DataGridSource {
         min(context.read<TableCubit>().state.rowCount, this.data.length);
     this.paginated =
         this.data.getRange(0, min(this.data.length, 9)).toList(growable: false);
+    this.initializeJump();
     this.buildPaginatedDataGridRows();
+  }
+
+  void initializeJump() {
+    if (this.columns.contains('Map')) {
+      for (Map<String, dynamic> each in this.data) {
+        this.mapId['map_name'] = each['map_id'];
+      }
+    }
+    if (this.columns.contains('Player')) {
+      Set<String> seen = {};
+      for (Map<String, dynamic> each in this.data) {
+        String curPlayer = each['player_name'];
+        if (seen.contains(curPlayer)) {
+          int counter = 1;
+          while (seen.contains('$curPlayer($counter)')) {
+            counter += 1;
+          }
+          String alias = '$curPlayer($counter)';
+          seen.add(alias);
+          each['player_name'] = alias;
+          this.playerId[alias] = each['steamid64'];
+        } else {
+          seen.add(curPlayer);
+          this.playerId[curPlayer] = each['steamid64'];
+        }
+      }
+    }
   }
 
   void buildPaginatedDataGridRows() {
@@ -182,7 +215,7 @@ class TableDataSource extends DataGridSource {
                 for (String column in columns)
                   DataGridCell(
                     columnName: column,
-                    value: each,
+                    value: each[identifyAttr[column]],
                   )
               ],
             ))
@@ -209,7 +242,6 @@ class TableDataSource extends DataGridSource {
     List<String> centeredColumns = [
       '#',
       'TPs',
-      'Points',
       'Average',
       'Rating',
       'Finishes',
@@ -232,34 +264,6 @@ class TableDataSource extends DataGridSource {
         );
       }).toList(),
     );
-  }
-
-  @override
-  int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
-    final dynamic value1 = a
-        ?.getCells()
-        .firstWhereOrNull((element) => element.columnName == sortColumn.name)
-        ?.value[identifyAttr[sortColumn.name]];
-    final dynamic value2 = b
-        ?.getCells()
-        .firstWhereOrNull((element) => element.columnName == sortColumn.name)
-        ?.value[identifyAttr[sortColumn.name]];
-
-    if (value1 == null || value2 == null) {
-      return 0;
-    }
-
-    if (value1.compareTo(value2) > 0) {
-      return sortColumn.sortDirection == DataGridSortDirection.ascending
-          ? 1
-          : -1;
-    } else if (value1.compareTo(value2) == -1) {
-      return sortColumn.sortDirection == DataGridSortDirection.ascending
-          ? -1
-          : 1;
-    } else {
-      return 0;
-    }
   }
 
   @override
@@ -287,35 +291,35 @@ class TableDataSource extends DataGridSource {
   Widget getCell(String column, dynamic data) {
     switch (column) {
       case '#':
-        return vanillaDataCell(data?['index']);
+        return vanillaDataCell(data);
       case 'Player':
-        return buttonDataCell(context, data?['player_name'], '/player_detail',
-            [data?['steamid64'], data?['player_name']]);
+        return buttonDataCell(
+            context, data, '/player_detail', [this.playerId[data], data]);
       case 'Count':
-        return vanillaDataCell(data?['count']);
+        return vanillaDataCell(data);
       case 'Average':
-        return vanillaDataCell(data?['average']);
+        return vanillaDataCell(data);
       case 'Points':
-        return classifyPoints(data?['points']);
+        return classifyPoints(data);
       case 'Rating':
-        return vanillaDataCell(data?['rating'].toString().substring(0, 6));
+        return vanillaDataCell(data.toString().substring(0, 6));
       case 'Finishes':
-        return vanillaDataCell(data?['finishes']);
+        return vanillaDataCell(data);
       case 'Map':
-        return buttonDataCell(context, data?['map_name'], '/map_detail',
-            [data['map_id'], data['map_name']]);
+        return buttonDataCell(
+            context, data, '/map_detail', [this.mapId[data], data]);
       case 'Time':
-        return vanillaDataCell(toMinSec(data?['time']));
+        return vanillaDataCell(toMinSec(data));
       case 'TPs':
-        return vanillaDataCell(data?['teleports']);
+        return vanillaDataCell(data);
       case 'Date':
-        String? date = data?['created_on'].toString();
+        String? date = data.toString();
         return vanillaDataCell(
-            '${date?.substring(0, 11)} ${date?.substring(11, 19)}');
+            '${date.substring(0, 11)} ${date.substring(11, 19)}');
       case 'Server':
-        return vanillaDataCell(data?['server_name']);
+        return vanillaDataCell(data);
       case 'Points in total':
-        return vanillaDataCell(data?['totalPoints']);
+        return vanillaDataCell(data);
       default:
         return vanillaDataCell('error');
     }
