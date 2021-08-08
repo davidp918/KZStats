@@ -68,11 +68,18 @@ class _PlayerDetailState extends State<PlayerDetail>
 
   List<Record> filterTopRecords(dynamic data) {
     if (data == null) return [];
-    List<Record> re = [];
+    List<Record> res = [];
     for (Record each in data) {
-      if (each.points != 0) re.add(each);
+      if (each.points != 0) res.add(each);
     }
-    return re;
+    res.sort((a, b) {
+      if (a.createdOn != null && b.createdOn != null) {
+        return b.createdOn!.compareTo(a.createdOn!);
+      } else {
+        return 0;
+      }
+    });
+    return res;
   }
 
   @override

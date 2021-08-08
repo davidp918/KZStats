@@ -72,13 +72,13 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     final int rowsPerPage = min(this.rowsPerPage, this.data.length);
     final double dataPagerHeight = 60.0;
     final double contentRowHeight = 44.0;
     final double headerRowHeight = 49.0;
     final double tableHeight = headerRowHeight + rowsPerPage * contentRowHeight;
-    //tableWidth = min(tableWidth, size.width);
+    // tableWidth = min(tableWidth, size.width);
     return SfDataGridTheme(
       data: SfDataGridThemeData(
         headerColor: appbarColor(),
@@ -282,39 +282,22 @@ class TableDataSource extends DataGridSource {
               ));
 
   Widget getCell(String column, dynamic data) {
-    switch (column) {
-      case '#':
-        return vanillaDataCell(data);
-      case 'Player':
-        return buttonDataCell(
-            context, data, '/player_detail', [this.playerId[data], data]);
-      case 'Count':
-        return vanillaDataCell(data);
-      case 'Average':
-        return vanillaDataCell(data);
-      case 'Points':
-        return classifyPoints(data);
-      case 'Rating':
-        return vanillaDataCell(data.toString().substring(0, 6));
-      case 'Finishes':
-        return vanillaDataCell(data);
-      case 'Map':
-        return buttonDataCell(
-            context, data, '/map_detail', [this.mapId[data], data]);
-      case 'Time':
-        return vanillaDataCell(toMinSec(data));
-      case 'TPs':
-        return vanillaDataCell(data);
-      case 'Date':
-        String? date = data.toString();
-        return vanillaDataCell(
-            '${date.substring(0, 11)} ${date.substring(11, 19)}');
-      case 'Server':
-        return vanillaDataCell(data);
-      case 'Points in total':
-        return vanillaDataCell(data);
-      default:
-        return vanillaDataCell('error');
+    if (column == 'Player') {
+      return buttonDataCell(
+          context, data, '/player_detail', [this.playerId[data], data]);
+    } else if (column == 'Map') {
+      return buttonDataCell(
+          context, data, '/map_detail', [this.mapId[data], data]);
+    } else if (column == 'Date') {
+      String? date = data.toString();
+      return vanillaDataCell(
+          '${date.substring(0, 11)} ${date.substring(11, 19)}');
+    } else if (column == 'Rating') {
+      return vanillaDataCell(data.toString().substring(0, 6));
+    } else if (column == 'Time') {
+      return vanillaDataCell(toMinSec(data));
+    } else {
+      return vanillaDataCell(data);
     }
   }
 }
