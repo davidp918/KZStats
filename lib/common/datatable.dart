@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:kzstats/cubit/table_cubit.dart';
 import 'package:kzstats/look/colors.dart';
+import 'package:kzstats/utils/pointsClassification.dart';
 import 'package:kzstats/utils/timeConversion.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -295,6 +296,8 @@ class TableDataSource extends DataGridSource {
       return vanillaDataCell(data.toString().substring(0, 6));
     } else if (column == 'Time') {
       return vanillaDataCell(toMinSec(data));
+    } else if (column == 'Points') {
+      return classifyPoints(data);
     } else {
       return vanillaDataCell(data);
     }
