@@ -236,7 +236,7 @@ class TableDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    List<String> centeredColumns = ['#', 'TPs'];
+    List<String> centeredColumns = ['#'];
 
     return DataGridRowAdapter(
       color: primarythemeBlue(),
