@@ -84,19 +84,17 @@ class _LatestBodyState extends State<LatestBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      child: SmartRefresher(
-        enablePullDown: true,
-        enablePullUp: true,
-        controller: _refreshController,
-        onRefresh: () => _onRefresh(widget.state),
-        onLoading: () => _onLoading(widget.state),
+    return SmartRefresher(
+      enablePullDown: true,
+      enablePullUp: true,
+      controller: _refreshController,
+      onRefresh: () => _onRefresh(widget.state),
+      onLoading: () => _onLoading(widget.state),
+      physics: ClampingScrollPhysics(),
+      child: ListView.builder(
         physics: ClampingScrollPhysics(),
-        child: ListView.builder(
-          physics: ClampingScrollPhysics(),
-          itemBuilder: this._itemBuilder,
-          itemCount: this.items.length,
-        ),
+        itemBuilder: this._itemBuilder,
+        itemCount: this.items.length,
       ),
     );
   }

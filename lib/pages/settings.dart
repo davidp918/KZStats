@@ -187,7 +187,7 @@ class _SettingsState extends State<Settings>
                 children: [
                   permissionText(),
                   Text(
-                    'Note that: Internet required',
+                    'Note that is Internet required to modify',
                     style: TextStyle(
                       color: Colors.white54,
                       fontSize: 12,
