@@ -97,6 +97,7 @@ class _PlayerDetailState extends State<PlayerDetail>
             if (mounted) BlocProvider.of<MarkCubit>(context).setIfReady(true);
             List<Record> records = filterTopRecords(value[1]);
             this.tabs = [
+              // TODO: changing mode does not change table, may because long live
               CustomDataTable(
                 data: records,
                 columns: ['Map', 'Time', 'Points', 'TPs', 'Date', 'Server'],
