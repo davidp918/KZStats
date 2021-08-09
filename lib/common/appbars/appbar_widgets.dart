@@ -63,22 +63,16 @@ class PopUpModeSelect extends StatelessWidget {
       //offset: Offset(20, 26),
       itemBuilder: (BuildContext context) => _selections(state),
       onSelected: (String result) {
-        switch (result) {
-          case 'Kztimer':
-            BlocProvider.of<ModeCubit>(context).kzt();
-            break;
-          case 'SimpleKZ':
-            BlocProvider.of<ModeCubit>(context).skz();
-            break;
-          case 'Vanilla':
-            BlocProvider.of<ModeCubit>(context).vnl();
-            break;
-          case 'Nub':
-            BlocProvider.of<ModeCubit>(context).toNub();
-            break;
-          case 'Pro':
-            BlocProvider.of<ModeCubit>(context).toPro();
-            break;
+        if (result == 'Kztimer') {
+          BlocProvider.of<ModeCubit>(context).kzt();
+        } else if (result == 'SimpleKZ') {
+          BlocProvider.of<ModeCubit>(context).skz();
+        } else if (result == 'Vanilla') {
+          BlocProvider.of<ModeCubit>(context).vnl();
+        } else if (result == 'Nub') {
+          BlocProvider.of<ModeCubit>(context).toNub();
+        } else if (result == 'Pro') {
+          BlocProvider.of<ModeCubit>(context).toPro();
         }
       },
     );

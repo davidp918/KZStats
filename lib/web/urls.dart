@@ -39,7 +39,7 @@ String globalApiTopRecordsUrl({
   String? mode,
 }) =>
     "https://kztimerglobal.com/api/v2.0/records/top?steamid64=!steamid64&tickrate=128&stage=0!ifNub&modes_list_string=!mode&limit=!limit"
-        .replaceAll('!mode', mode == null ? '' : '&modes_list_string=$mode')
+        .replaceAll('!mode', mode == null ? '' : '$mode')
         .replaceAll('!steamid64', steamid64)
         .replaceAll('!limit', limit.toString())
         .replaceAll('!ifNub', ifNub ? '' : '&has_teleports=false');
