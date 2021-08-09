@@ -20,8 +20,9 @@ class _SettingsState extends State<Settings>
     with AutomaticKeepAliveClientMixin<Settings> {
   late ScrollController _scrollController;
   late Widget appbar;
-  final numberOptions = [5, 10, 15, 20, 50];
-  final letterOptions = ['F', 'T', 'F', 'T', 'F'];
+
+  final numberOptions = [5, 10, 15, 20, 50, 1000];
+  final letterOptions = ['F', 'T', 'F', 'T', 'F', 'N'];
 
   @override
   void initState() {
@@ -103,7 +104,7 @@ class _SettingsState extends State<Settings>
                           child: BlocBuilder<TableCubit, TableState>(
                             builder: (context, state) {
                               return Column(
-                                children: [0, 1, 2, 3, 4]
+                                children: [0, 1, 2, 3, 4, 5]
                                     .map(
                                       (e) => ListTile(
                                         leading: CircleAvatar(
