@@ -101,7 +101,6 @@ class _CustomDataTableState extends State<CustomDataTable> {
                 allowMultiColumnSorting: true,
                 allowTriStateSorting: true,
                 showSortNumbers: true,
-                isScrollbarAlwaysShown: false,
                 columns: this._columns,
                 source: this._tableDataSource,
                 verticalScrollPhysics: NeverScrollableScrollPhysics(),

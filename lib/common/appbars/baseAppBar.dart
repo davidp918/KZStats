@@ -24,9 +24,9 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       backgroundColor: appbarColor(),
       floating: true,
-      pinned: false,
-      toolbarHeight: height ?? kToolbarHeight * 0.9,
+      pinned: true,
       snap: false,
+      toolbarHeight: height ?? kToolbarHeight * 0.9,
       centerTitle: !this.showProfile,
       leading: showProfile ? userLeadingIcon(context) : null,
       title: Text(
