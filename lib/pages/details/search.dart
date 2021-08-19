@@ -23,18 +23,15 @@ class Search extends StatelessWidget {
     final searchState = context.watch<SearchCubit>().state;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: searchState.field == 'map'
-            ? ChangeNotifierProvider(
-                create: (_) => SearchMapProvider(),
-                child: SearchMapBody(),
-              )
-            : ChangeNotifierProvider(
-                create: (_) => SearchPlayerProvider(),
-                child: SearchPlayerBody(),
-              ),
-      ),
+      body: searchState.field == 'map'
+          ? ChangeNotifierProvider(
+              create: (_) => SearchMapProvider(),
+              child: SearchMapBody(),
+            )
+          : ChangeNotifierProvider(
+              create: (_) => SearchPlayerProvider(),
+              child: SearchPlayerBody(),
+            ),
     );
   }
 }
@@ -57,6 +54,7 @@ class SearchMapBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
 
