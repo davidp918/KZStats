@@ -28,7 +28,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.0"
+    version: "2.6.1"
   async_builder:
     dependency: "direct main"
     description:
@@ -365,7 +365,7 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.0"
+    version: "1.3.0"
   modal_bottom_sheet:
     dependency: "direct main"
     description:
@@ -601,14 +601,14 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.1.66"
+    version: "19.2.56"
   syncfusion_flutter_datagrid:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_datagrid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.1.66-beta"
+    version: "19.2.56-beta"
   synchronized:
     dependency: transitive
     description:
@@ -629,7 +629,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0"
+    version: "0.3.0"
   timezone:
     dependency: transitive
     description:
