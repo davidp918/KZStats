@@ -83,6 +83,7 @@ class SearchMapBody extends StatelessWidget {
 
   Widget buildBody(BuildContext context, SearchMapProvider provider) {
     return FloatingSearchAppBar(
+      brightness: Brightness.light,
       height: 58,
       transitionDuration: Duration(milliseconds: 400),
       color: backgroundColor(),
