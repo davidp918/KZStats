@@ -64,36 +64,33 @@ class _HomepageState extends State<Homepage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-      color: appbarColor(),
-      child: NestedScrollView(
-        controller: this._scrollController,
-        headerSliverBuilder: (BuildContext context, _) => <Widget>[this.appbar],
-        body: DefaultTabController(
-          length: 4,
-          child: Column(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                color: appbarColor(),
-                child: Center(
-                  child: TabBar(
-                    tabs: this.tabsTitle,
-                    isScrollable: false,
-                    indicatorColor: Colors.white,
-                    indicatorWeight: 1.4,
-                    indicatorSize: TabBarIndicatorSize.label,
-                  ),
+    return NestedScrollView(
+      controller: this._scrollController,
+      headerSliverBuilder: (BuildContext context, _) => <Widget>[this.appbar],
+      body: DefaultTabController(
+        length: 4,
+        child: Column(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              color: appbarColor(),
+              child: Center(
+                child: TabBar(
+                  tabs: this.tabsTitle,
+                  isScrollable: false,
+                  indicatorColor: Colors.white,
+                  indicatorWeight: 1.4,
+                  indicatorSize: TabBarIndicatorSize.label,
                 ),
               ),
-              Expanded(
-                child: Container(
-                  color: backgroundColor(),
-                  child: TabBarView(children: this.tabs),
-                ),
+            ),
+            Expanded(
+              child: Container(
+                color: backgroundColor(),
+                child: TabBarView(children: this.tabs),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
