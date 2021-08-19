@@ -1,10 +1,8 @@
 import 'dart:math';
 
 import 'package:async_builder/async_builder.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/common/scrollbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:kzstats/common/datatable.dart';
@@ -102,7 +100,6 @@ class _PlayerDetailState extends State<PlayerDetail>
             if (mounted) BlocProvider.of<MarkCubit>(context).setIfReady(true);
             List<Record> records = filterTopRecords(value[1]);
             this.tabs = [
-              // TODO: changing mode does not change table, may because long live
               CustomDataTable(
                 data: records,
                 columns: ['Map', 'Time', 'Points', 'TPs', 'Date', 'Server'],

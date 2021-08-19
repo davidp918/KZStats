@@ -47,7 +47,6 @@ class _FavouritesState extends State<Favourites>
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
             child: AppBar(
-              backwardsCompatibility: false,
               systemOverlayStyle: SystemUiOverlayStyle(
                 statusBarColor: appbarColor(),
                 statusBarBrightness: Brightness.dark,

@@ -28,7 +28,6 @@ class _SteamLoginState extends State<SteamLogin> {
       bottom: false,
       child: Scaffold(
         appBar: AppBar(
-          backwardsCompatibility: false,
           systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: appbarColor(),
             statusBarBrightness: Brightness.dark,

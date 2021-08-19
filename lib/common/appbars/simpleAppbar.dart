@@ -5,7 +5,6 @@ import 'package:kzstats/look/colors.dart';
 PreferredSizeWidget defaultAppbar(String title) => PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
       child: AppBar(
-        backwardsCompatibility: false,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: appbarColor(),
           statusBarBrightness: Brightness.dark,
