@@ -324,6 +324,7 @@ class SearchPlayerBody extends StatelessWidget {
 
   Widget buildBody(BuildContext context, SearchPlayerProvider provider) {
     return FloatingSearchAppBar(
+      brightness: Brightness.light,
       height: 58,
       transitionDuration: Duration(milliseconds: 400),
       color: backgroundColor(),
