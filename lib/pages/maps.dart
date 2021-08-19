@@ -74,6 +74,7 @@ class _MapsState extends State<Maps> with AutomaticKeepAliveClientMixin<Maps> {
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
             child: AppBar(
+              backwardsCompatibility: false,
               systemOverlayStyle: SystemUiOverlayStyle(
                 statusBarColor: appbarColor(),
                 statusBarBrightness: Brightness.dark,

@@ -44,6 +44,7 @@ class MapsFilterState extends State<MapsFilter> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backwardsCompatibility: false,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: appbarColor(),
           statusBarBrightness: Brightness.dark,
