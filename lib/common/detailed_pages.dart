@@ -64,7 +64,6 @@ class _DetailedPageState extends State<DetailedPage> {
                               : IconButton(
                                   icon: Icon(Icons.star_border),
                                   onPressed: () {
-                                    print(markState.playerIds.length >= 10);
                                     if (markState.playerIds.length >= 10) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

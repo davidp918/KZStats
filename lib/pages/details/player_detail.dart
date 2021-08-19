@@ -34,7 +34,7 @@ class PlayerDetail extends StatefulWidget {
 }
 
 class _PlayerDetailState extends State<PlayerDetail>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final String? steamid64;
   final String? playerName;
   late Future<List<dynamic>> _future;
@@ -45,6 +45,9 @@ class _PlayerDetailState extends State<PlayerDetail>
   late ScrollController _scrollController;
   late int curIndex;
   _PlayerDetailState(this.steamid64, this.playerName);
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -87,6 +90,7 @@ class _PlayerDetailState extends State<PlayerDetail>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return DetailedPage(
       markedType: 'player',
       current: this.steamid64 ?? '',

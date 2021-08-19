@@ -43,162 +43,165 @@ class _SettingsState extends State<Settings>
     return NestedScrollView(
       controller: this._scrollController,
       headerSliverBuilder: (BuildContext context, _) => <Widget>[this.appbar],
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Card(
-              elevation: 2.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              color: primarythemeBlue(),
-              child: ListTile(
-                onTap: () => Navigator.pushNamed(context, '/login'),
-                title: Text(
-                  steamid64 == null ? 'Click to Login' : '$name',
-                  style: TextStyle(
+      body: Container(
+        color: backgroundColor(),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Card(
+                elevation: 2.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                color: primarythemeBlue(),
+                child: ListTile(
+                  onTap: () => Navigator.pushNamed(context, '/login'),
+                  title: Text(
+                    steamid64 == null ? 'Click to Login' : '$name',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  leading: Container(
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: Icon(Icons.person, color: Colors.white),
+                  ),
+                  trailing: Icon(
+                    Icons.edit,
                     color: Colors.white,
-                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                leading: Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle),
-                  child: Icon(Icons.person, color: Colors.white),
-                ),
-                trailing: Icon(
-                  Icons.edit,
-                  color: Colors.white,
-                ),
               ),
-            ),
-            SizedBox(height: 10),
-            Card(
-              color: primarythemeBlue(),
-              elevation: 4.0,
-              margin: const EdgeInsets.fromLTRB(32, 6, 32, 20),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(
-                      CommunityMaterialIcons.table,
-                      color: Colors.white,
-                    ),
-                    title: Text(
-                      'Table Settings',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    trailing: Icon(
-                      Icons.keyboard_arrow_right,
-                      color: Colors.white,
-                    ),
-                    onTap: () => showMaterialModalBottomSheet(
-                      backgroundColor: backgroundColor(),
-                      context: context,
-                      builder: (context) => SingleChildScrollView(
-                        controller: ModalScrollController.of(context),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 30),
-                          child: BlocBuilder<TableCubit, TableState>(
-                            builder: (context, state) {
-                              return Column(
-                                children: [0, 1, 2, 3, 4, 5]
-                                    .map(
-                                      (e) => ListTile(
-                                        leading: CircleAvatar(
-                                          child: Center(
-                                            child: Text(
-                                              '${this.letterOptions[e]}',
-                                              style: TextStyle(fontSize: 15),
+              SizedBox(height: 10),
+              Card(
+                color: primarythemeBlue(),
+                elevation: 4.0,
+                margin: const EdgeInsets.fromLTRB(32, 6, 32, 20),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(
+                        CommunityMaterialIcons.table,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'Table Settings',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      trailing: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                      ),
+                      onTap: () => showMaterialModalBottomSheet(
+                        backgroundColor: backgroundColor(),
+                        context: context,
+                        builder: (context) => SingleChildScrollView(
+                          controller: ModalScrollController.of(context),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 30),
+                            child: BlocBuilder<TableCubit, TableState>(
+                              builder: (context, state) {
+                                return Column(
+                                  children: [0, 1, 2, 3, 4, 5]
+                                      .map(
+                                        (e) => ListTile(
+                                          leading: CircleAvatar(
+                                            child: Center(
+                                              child: Text(
+                                                '${this.letterOptions[e]}',
+                                                style: TextStyle(fontSize: 15),
+                                              ),
+                                            ),
+                                            backgroundColor: primarythemeBlue()
+                                                .withOpacity(0.8),
+                                          ),
+                                          title: Text(
+                                            'Show ${this.numberOptions[e]} rows per page',
+                                            style: TextStyle(
+                                              color: state.rowCount ==
+                                                      numberOptions[e]
+                                                  ? inkWellBlue()
+                                                  : Colors.white,
+                                              fontWeight: state.rowCount ==
+                                                      numberOptions[e]
+                                                  ? FontWeight.w400
+                                                  : FontWeight.w300,
                                             ),
                                           ),
-                                          backgroundColor: primarythemeBlue()
-                                              .withOpacity(0.8),
+                                          onTap: () {
+                                            BlocProvider.of<TableCubit>(context)
+                                                .setRowCount(
+                                                    this.numberOptions[e]);
+                                          },
                                         ),
-                                        title: Text(
-                                          'Show ${this.numberOptions[e]} rows per page',
-                                          style: TextStyle(
-                                            color: state.rowCount ==
-                                                    numberOptions[e]
-                                                ? inkWellBlue()
-                                                : Colors.white,
-                                            fontWeight: state.rowCount ==
-                                                    numberOptions[e]
-                                                ? FontWeight.w400
-                                                : FontWeight.w300,
-                                          ),
-                                        ),
-                                        onTap: () {
-                                          BlocProvider.of<TableCubit>(context)
-                                              .setRowCount(
-                                                  this.numberOptions[e]);
-                                        },
-                                      ),
-                                    )
-                                    .toList(),
-                              );
-                            },
+                                      )
+                                      .toList(),
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 12.0),
-                    width: double.infinity,
-                    height: 1.0,
-                    color: Colors.white30,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      EvilIcons.question,
-                      color: Colors.white,
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 12.0),
+                      width: double.infinity,
+                      height: 1.0,
+                      color: Colors.white30,
                     ),
-                    title: Text(
-                      'About',
-                      style: TextStyle(color: Colors.white),
+                    ListTile(
+                      leading: Icon(
+                        EvilIcons.question,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'About',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      trailing: Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.white,
+                      ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/about');
+                      },
                     ),
-                    trailing: Icon(
-                      Icons.keyboard_arrow_right,
-                      color: Colors.white,
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/about');
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Text(
-              "Notification Settings",
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
+              Text(
+                "Notification Settings",
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            notificationArea(),
-            Align(
-              alignment: Alignment.topRight,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  permissionText(),
-                  Text(
-                    'Note that is Internet required to modify',
-                    style: TextStyle(
-                      color: Colors.white54,
-                      fontSize: 12,
-                      fontStyle: FontStyle.italic,
+              notificationArea(),
+              Align(
+                alignment: Alignment.topRight,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    permissionText(),
+                    Text(
+                      'Note that is Internet required to modify',
+                      style: TextStyle(
+                        color: Colors.white54,
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

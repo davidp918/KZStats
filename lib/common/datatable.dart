@@ -72,65 +72,60 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size;
     final int rowsPerPage = min(this.rowsPerPage, this.data.length);
     final double dataPagerHeight = 60.0;
     final double contentRowHeight = 44.0;
     final double headerRowHeight = 49.0;
     final double tableHeight = headerRowHeight + rowsPerPage * contentRowHeight;
-    // tableWidth = min(tableWidth, size.width);
     return SfDataGridTheme(
       data: SfDataGridThemeData(
         headerColor: appbarColor(),
         gridLineStrokeWidth: 0,
         sortIconColor: Colors.white,
       ),
-      child: Align(
-        alignment: Alignment.center,
-        child: Column(
-          children: [
-            SizedBox(
-              height: tableHeight,
-              // width: size.width,
-              child: SfDataGrid(
-                rowHeight: contentRowHeight,
-                headerRowHeight: headerRowHeight,
-                allowSorting: true,
-                columnWidthMode: ColumnWidthMode.auto,
-                columnSizer: this._sizer,
-                allowMultiColumnSorting: true,
-                allowTriStateSorting: true,
-                showSortNumbers: true,
-                columns: this._columns,
-                source: this._tableDataSource,
-                verticalScrollPhysics: NeverScrollableScrollPhysics(),
+      child: Column(
+        children: [
+          SizedBox(
+            height: tableHeight,
+            // width: size.width,
+            child: SfDataGrid(
+              rowHeight: contentRowHeight,
+              headerRowHeight: headerRowHeight,
+              allowSorting: true,
+              columnWidthMode: ColumnWidthMode.auto,
+              columnSizer: this._sizer,
+              allowMultiColumnSorting: true,
+              allowTriStateSorting: true,
+              showSortNumbers: true,
+              columns: this._columns,
+              source: this._tableDataSource,
+              verticalScrollPhysics: NeverScrollableScrollPhysics(),
+            ),
+          ),
+          SizedBox(
+            height: dataPagerHeight,
+            child: SfDataPagerTheme(
+              data: SfDataPagerThemeData(
+                brightness: Brightness.dark,
+                itemTextStyle: TextStyle(
+                    color: inkWellBlue(), fontWeight: FontWeight.w400),
+                itemColor: primarythemeBlue(),
+                selectedItemColor: backgroundColor(),
+                selectedItemTextStyle: TextStyle(
+                    color: inkWellBlue(), fontWeight: FontWeight.w800),
+                itemBorderRadius: BorderRadius.circular(5),
+                backgroundColor: primarythemeBlue(),
+                disabledItemColor: primarythemeBlue(),
+              ),
+              child: SfDataPager(
+                visibleItemsCount: rowsPerPage,
+                delegate: _tableDataSource,
+                pageCount: this.data.length / rowsPerPage,
+                direction: Axis.horizontal,
               ),
             ),
-            SizedBox(
-              height: dataPagerHeight,
-              child: SfDataPagerTheme(
-                data: SfDataPagerThemeData(
-                  brightness: Brightness.dark,
-                  itemTextStyle: TextStyle(
-                      color: inkWellBlue(), fontWeight: FontWeight.w400),
-                  itemColor: primarythemeBlue(),
-                  selectedItemColor: backgroundColor(),
-                  selectedItemTextStyle: TextStyle(
-                      color: inkWellBlue(), fontWeight: FontWeight.w800),
-                  itemBorderRadius: BorderRadius.circular(5),
-                  backgroundColor: primarythemeBlue(),
-                  disabledItemColor: primarythemeBlue(),
-                ),
-                child: SfDataPager(
-                  visibleItemsCount: rowsPerPage,
-                  delegate: _tableDataSource,
-                  pageCount: this.data.length / rowsPerPage,
-                  direction: Axis.horizontal,
-                ),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
@@ -180,7 +175,7 @@ class TableDataSource extends DataGridSource {
   void initializeJump() {
     if (this.columns.contains('Map')) {
       for (Map<String, dynamic> each in this.data) {
-        this.mapId['map_name'] = each['map_id'];
+        this.mapId[each['map_name']] = each['map_id'];
       }
     }
     if (this.columns.contains('Player')) {
