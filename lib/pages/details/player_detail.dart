@@ -1,23 +1,26 @@
 import 'dart:math';
 
 import 'package:async_builder/async_builder.dart';
+import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kzstats/common/scrollbar.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:kzstats/common/datatable.dart';
 import 'package:kzstats/common/detailed_pages.dart';
-import 'package:kzstats/cubit/mark_cubit.dart';
-import 'package:kzstats/data/shared_preferences.dart';
-import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
-import 'package:kzstats/web/json/record_json.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:kzstats/common/error.dart';
 import 'package:kzstats/common/loading.dart';
 import 'package:kzstats/common/networkImage.dart';
+import 'package:kzstats/cubit/mark_cubit.dart';
 import 'package:kzstats/cubit/mode_cubit.dart';
-import 'package:kzstats/pages/details/player_detail_stats.dart';
+import 'package:kzstats/data/shared_preferences.dart';
 import 'package:kzstats/look/colors.dart';
+import 'package:kzstats/pages/details/player_detail_stats.dart';
 import 'package:kzstats/utils/pointsSum.dart';
 import 'package:kzstats/web/getRequest.dart';
+import 'package:kzstats/web/json/kzstatsApiPlayer_json.dart';
+import 'package:kzstats/web/json/record_json.dart';
 
 class PlayerDetail extends StatefulWidget {
   final List<dynamic> playerInfo;
@@ -41,6 +44,7 @@ class _PlayerDetailState extends State<PlayerDetail>
   late MarkState markState;
   late List<Widget> tabs;
   late TabController _tabController;
+  late ScrollController _scrollController;
   late int curIndex;
   _PlayerDetailState(this.steamid64, this.playerName);
 
@@ -48,6 +52,7 @@ class _PlayerDetailState extends State<PlayerDetail>
   void initState() {
     super.initState();
     this.curIndex = 0;
+    this._scrollController = ScrollController();
     this._tabController = new TabController(
       length: 2,
       vsync: this,
@@ -68,11 +73,18 @@ class _PlayerDetailState extends State<PlayerDetail>
 
   List<Record> filterTopRecords(dynamic data) {
     if (data == null) return [];
-    List<Record> re = [];
+    List<Record> res = [];
     for (Record each in data) {
-      if (each.points != 0) re.add(each);
+      if (each.points != 0) res.add(each);
     }
-    return re;
+    res.sort((a, b) {
+      if (a.createdOn != null && b.createdOn != null) {
+        return b.createdOn!.compareTo(a.createdOn!);
+      } else {
+        return 0;
+      }
+    });
+    return res;
   }
 
   @override
@@ -90,6 +102,7 @@ class _PlayerDetailState extends State<PlayerDetail>
             if (mounted) BlocProvider.of<MarkCubit>(context).setIfReady(true);
             List<Record> records = filterTopRecords(value[1]);
             this.tabs = [
+              // TODO: changing mode does not change table, may because long live
               CustomDataTable(
                 data: records,
                 columns: ['Map', 'Time', 'Points', 'TPs', 'Date', 'Server'],
@@ -131,15 +144,18 @@ class _PlayerDetailState extends State<PlayerDetail>
                   ),
                 ),
                 Expanded(
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      playerHeader(value[0], pointsSum(value[1])),
-                      IndexedStack(
-                        children: this.tabs,
-                        index: this.curIndex,
-                      ),
-                    ],
+                  child: Scrollbar(
+                    child: ListView(
+                      shrinkWrap: false,
+                      controller: this._scrollController,
+                      children: [
+                        playerHeader(value[0], pointsSum(value[1])),
+                        IndexedStack(
+                          children: this.tabs,
+                          index: this.curIndex,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

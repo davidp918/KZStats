@@ -7,7 +7,6 @@ import 'package:kzstats/utils/pointsClassification.dart';
 import 'package:kzstats/utils/timeConversion.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomDataTable extends StatefulWidget {
@@ -26,37 +25,26 @@ class CustomDataTable extends StatefulWidget {
 class _CustomDataTableState extends State<CustomDataTable> {
   List<Map<String, dynamic>> data = [];
 
-  late List<GridTextColumn> _columns;
+  late List<GridColumn> _columns;
   late TableDataSource _tableDataSource;
   late int rowsPerPage;
-  final Map<String, double> _width = {
-    '#': 50,
-    'Player': 130,
-    'Count': 100,
-    'Average': 100,
-    'Points': 78,
-    'Rating': 80,
-    'Finishes': 100,
-    'Map': 160,
-    'Time': 80,
-    'TPs': 70,
-    'Date': 180,
-    'Server': 200,
-    'Points in total': 140,
-  };
+  late ColumnSizer _sizer;
 
   @override
   void initState() {
     super.initState();
+    this._sizer = ColumnSizer();
     this.rowsPerPage = context.read<TableCubit>().state.rowCount;
     this._columns = widget.columns
         .map(
-          (String column) => GridTextColumn(
-              width: this._width[column] ?? double.nan,
+          (String column) => GridColumn(
               columnName: column,
               label: Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                alignment:
+                    column == '#' ? Alignment.center : Alignment.centerLeft,
+                padding: column == 'Map'
+                    ? EdgeInsets.fromLTRB(16, 0, 0, 0)
+                    : EdgeInsets.symmetric(horizontal: 8.0),
                 color: appbarColor(),
                 child: Text(
                   '$column',
@@ -84,16 +72,13 @@ class _CustomDataTableState extends State<CustomDataTable> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     final int rowsPerPage = min(this.rowsPerPage, this.data.length);
     final double dataPagerHeight = 60.0;
     final double contentRowHeight = 44.0;
     final double headerRowHeight = 49.0;
     final double tableHeight = headerRowHeight + rowsPerPage * contentRowHeight;
-    double tableWidth = 0;
-    for (String column in widget.columns)
-      tableWidth += this._width[column] ?? 0;
-    tableWidth = min(tableWidth, size.width);
+    // tableWidth = min(tableWidth, size.width);
     return SfDataGridTheme(
       data: SfDataGridThemeData(
         headerColor: appbarColor(),
@@ -102,52 +87,49 @@ class _CustomDataTableState extends State<CustomDataTable> {
       ),
       child: Align(
         alignment: Alignment.center,
-        child: Container(
-          width: tableWidth,
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              SizedBox(
-                height: tableHeight,
-                width: size.width,
-                child: SfDataGrid(
-                  rowHeight: contentRowHeight,
-                  headerRowHeight: headerRowHeight,
-                  allowSorting: true,
-                  allowMultiColumnSorting: true,
-                  allowTriStateSorting: true,
-                  showSortNumbers: true,
-                  isScrollbarAlwaysShown: false,
-                  columns: this._columns,
-                  source: this._tableDataSource,
-                  verticalScrollPhysics: NeverScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            SizedBox(
+              height: tableHeight,
+              // width: size.width,
+              child: SfDataGrid(
+                rowHeight: contentRowHeight,
+                headerRowHeight: headerRowHeight,
+                allowSorting: true,
+                columnWidthMode: ColumnWidthMode.auto,
+                columnSizer: this._sizer,
+                allowMultiColumnSorting: true,
+                allowTriStateSorting: true,
+                showSortNumbers: true,
+                columns: this._columns,
+                source: this._tableDataSource,
+                verticalScrollPhysics: NeverScrollableScrollPhysics(),
+              ),
+            ),
+            SizedBox(
+              height: dataPagerHeight,
+              child: SfDataPagerTheme(
+                data: SfDataPagerThemeData(
+                  brightness: Brightness.dark,
+                  itemTextStyle: TextStyle(
+                      color: inkWellBlue(), fontWeight: FontWeight.w400),
+                  itemColor: primarythemeBlue(),
+                  selectedItemColor: backgroundColor(),
+                  selectedItemTextStyle: TextStyle(
+                      color: inkWellBlue(), fontWeight: FontWeight.w800),
+                  itemBorderRadius: BorderRadius.circular(5),
+                  backgroundColor: primarythemeBlue(),
+                  disabledItemColor: primarythemeBlue(),
+                ),
+                child: SfDataPager(
+                  visibleItemsCount: rowsPerPage,
+                  delegate: _tableDataSource,
+                  pageCount: this.data.length / rowsPerPage,
+                  direction: Axis.horizontal,
                 ),
               ),
-              SizedBox(
-                height: dataPagerHeight,
-                child: SfDataPagerTheme(
-                  data: SfDataPagerThemeData(
-                    brightness: Brightness.dark,
-                    itemTextStyle: TextStyle(
-                        color: inkWellBlue(), fontWeight: FontWeight.w400),
-                    itemColor: primarythemeBlue(),
-                    selectedItemColor: backgroundColor(),
-                    selectedItemTextStyle: TextStyle(
-                        color: inkWellBlue(), fontWeight: FontWeight.w800),
-                    itemBorderRadius: BorderRadius.circular(5),
-                    backgroundColor: primarythemeBlue(),
-                    disabledItemColor: primarythemeBlue(),
-                  ),
-                  child: SfDataPager(
-                    visibleItemsCount: rowsPerPage,
-                    delegate: _tableDataSource,
-                    pageCount: this.data.length / rowsPerPage,
-                    direction: Axis.horizontal,
-                  ),
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
@@ -160,8 +142,11 @@ class TableDataSource extends DataGridSource {
   late BuildContext context;
   late List<Map<String, dynamic>> paginated;
   late List<Map<String, dynamic>> data;
+  late Map<String, int> mapId = {};
+  late Map<String, String> playerId = {};
   late List<String> columns;
   final Map<String, String> identifyAttr = {
+    '#': 'index',
     'Player': 'player_name',
     'Count': 'count',
     'Average': 'average',
@@ -188,7 +173,35 @@ class TableDataSource extends DataGridSource {
         min(context.read<TableCubit>().state.rowCount, this.data.length);
     this.paginated =
         this.data.getRange(0, min(this.data.length, 9)).toList(growable: false);
+    this.initializeJump();
     this.buildPaginatedDataGridRows();
+  }
+
+  void initializeJump() {
+    if (this.columns.contains('Map')) {
+      for (Map<String, dynamic> each in this.data) {
+        this.mapId['map_name'] = each['map_id'];
+      }
+    }
+    if (this.columns.contains('Player')) {
+      Set<String> seen = {};
+      for (Map<String, dynamic> each in this.data) {
+        String curPlayer = each['player_name'];
+        if (seen.contains(curPlayer)) {
+          int counter = 1;
+          while (seen.contains('$curPlayer($counter)')) {
+            counter += 1;
+          }
+          String alias = '$curPlayer($counter)';
+          seen.add(alias);
+          each['player_name'] = alias;
+          this.playerId[alias] = each['steamid64'];
+        } else {
+          seen.add(curPlayer);
+          this.playerId[curPlayer] = each['steamid64'];
+        }
+      }
+    }
   }
 
   void buildPaginatedDataGridRows() {
@@ -199,7 +212,7 @@ class TableDataSource extends DataGridSource {
                 for (String column in columns)
                   DataGridCell(
                     columnName: column,
-                    value: each,
+                    value: each[identifyAttr[column]],
                   )
               ],
             ))
@@ -223,22 +236,16 @@ class TableDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    List<String> centeredColumns = [
-      '#',
-      'TPs',
-      'Points',
-      'Average',
-      'Rating',
-      'Finishes',
-      'Points in total'
-    ];
+    List<String> centeredColumns = ['#'];
 
     return DataGridRowAdapter(
       color: primarythemeBlue(),
       cells: row.getCells().map<Widget>((each) {
         String name = each.columnName;
         return Container(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          padding: name == 'Map'
+              ? EdgeInsets.fromLTRB(18, 0, 0, 0)
+              : EdgeInsets.symmetric(horizontal: 8.0),
           alignment: centeredColumns.contains(name)
               ? Alignment.center
               : Alignment.centerLeft,
@@ -249,34 +256,6 @@ class TableDataSource extends DataGridSource {
         );
       }).toList(),
     );
-  }
-
-  @override
-  int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
-    final dynamic value1 = a
-        ?.getCells()
-        .firstWhereOrNull((element) => element.columnName == sortColumn.name)
-        ?.value[identifyAttr[sortColumn.name]];
-    final dynamic value2 = b
-        ?.getCells()
-        .firstWhereOrNull((element) => element.columnName == sortColumn.name)
-        ?.value[identifyAttr[sortColumn.name]];
-
-    if (value1 == null || value2 == null) {
-      return 0;
-    }
-
-    if (value1.compareTo(value2) > 0) {
-      return sortColumn.sortDirection == DataGridSortDirection.ascending
-          ? 1
-          : -1;
-    } else if (value1.compareTo(value2) == -1) {
-      return sortColumn.sortDirection == DataGridSortDirection.ascending
-          ? -1
-          : 1;
-    } else {
-      return 0;
-    }
   }
 
   @override
@@ -302,39 +281,24 @@ class TableDataSource extends DataGridSource {
               ));
 
   Widget getCell(String column, dynamic data) {
-    switch (column) {
-      case '#':
-        return vanillaDataCell(data?['index']);
-      case 'Player':
-        return buttonDataCell(context, data?['player_name'], '/player_detail',
-            [data?['steamid64'], data?['player_name']]);
-      case 'Count':
-        return vanillaDataCell(data?['count']);
-      case 'Average':
-        return vanillaDataCell(data?['average']);
-      case 'Points':
-        return classifyPoints(data?['points']);
-      case 'Rating':
-        return vanillaDataCell(data?['rating'].toString().substring(0, 6));
-      case 'Finishes':
-        return vanillaDataCell(data?['finishes']);
-      case 'Map':
-        return buttonDataCell(context, data?['map_name'], '/map_detail',
-            [data['map_id'], data['map_name']]);
-      case 'Time':
-        return vanillaDataCell(toMinSec(data?['time']));
-      case 'TPs':
-        return vanillaDataCell(data?['teleports']);
-      case 'Date':
-        String? date = data?['created_on'].toString();
-        return vanillaDataCell(
-            '${date?.substring(0, 11)} ${date?.substring(11, 19)}');
-      case 'Server':
-        return vanillaDataCell(data?['server_name']);
-      case 'Points in total':
-        return vanillaDataCell(data?['totalPoints']);
-      default:
-        return vanillaDataCell('error');
+    if (column == 'Player') {
+      return buttonDataCell(
+          context, data, '/player_detail', [this.playerId[data], data]);
+    } else if (column == 'Map') {
+      return buttonDataCell(
+          context, data, '/map_detail', [this.mapId[data], data]);
+    } else if (column == 'Date') {
+      String? date = data.toString();
+      return vanillaDataCell(
+          '${date.substring(0, 11)} ${date.substring(11, 19)}');
+    } else if (column == 'Rating') {
+      return vanillaDataCell(data.toString().substring(0, 6));
+    } else if (column == 'Time') {
+      return vanillaDataCell(toMinSec(data));
+    } else if (column == 'Points') {
+      return classifyPoints(data);
+    } else {
+      return vanillaDataCell(data);
     }
   }
 }

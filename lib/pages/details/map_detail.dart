@@ -122,31 +122,33 @@ class _MapDetailState extends State<MapDetail> {
     double ratio = 113 / 200;
     double imageWidth = 200;
     double crossHeight = min((size.height - 56) / 6.4, imageWidth * ratio);
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(height: 14),
-          Container(
-            height: crossHeight,
-            child: getNetworkImage(
-              '${this.mapName}',
-              '$imageBaseURL${this.mapName}.webp',
-              AssetImage('assets/icon/noimage.png'),
+    return Scrollbar(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 14),
+            Container(
+              height: crossHeight,
+              child: getNetworkImage(
+                '${this.mapName}',
+                '$imageBaseURL${this.mapName}.webp',
+                AssetImage('assets/icon/noimage.png'),
+              ),
             ),
-          ),
-          mapInfo == null
-              ? Container()
-              : Text(
-                  'Tier: ${identifyTier(mapInfo.difficulty)}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
+            mapInfo == null
+                ? Container()
+                : Text(
+                    'Tier: ${identifyTier(mapInfo.difficulty)}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-          ...recordSection(proWr, nubWr, maptop),
-        ],
+            ...recordSection(proWr, nubWr, maptop),
+          ],
+        ),
       ),
     );
   }

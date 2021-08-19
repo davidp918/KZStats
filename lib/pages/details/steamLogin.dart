@@ -24,30 +24,33 @@ class _SteamLoginState extends State<SteamLogin> {
   @override
   Widget build(BuildContext context) {
     var openId = OpenId.raw('https://kzstats', 'https://kzstats/', {});
-    return Scaffold(
-      appBar: AppBar(
-        backwardsCompatibility: false,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: appbarColor(),
-          statusBarBrightness: Brightness.dark,
+    return SafeArea(
+      bottom: false,
+      child: Scaffold(
+        appBar: AppBar(
+          backwardsCompatibility: false,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: appbarColor(),
+            statusBarBrightness: Brightness.dark,
+          ),
+          backgroundColor: appbarColor(),
+          elevation: 20,
+          title: Text('Steam Login'),
+          centerTitle: true,
+          //brightness: Brightness.dark,
         ),
-        backgroundColor: appbarColor(),
-        elevation: 20,
-        title: Text('Steam Login'),
-        centerTitle: true,
-        //brightness: Brightness.dark,
-      ),
-      body: WebView(
-        javascriptMode: JavascriptMode.unrestricted,
-        initialUrl: openId.authUrl().toString(),
-        navigationDelegate: (navigation) {
-          var openId = OpenId.fromUri(Uri.parse(navigation.url));
-          if (openId.mode == 'id_res') {
-            Navigator.of(context).pop(openId.validate());
-            return NavigationDecision.prevent;
-          }
-          return NavigationDecision.navigate;
-        },
+        body: WebView(
+          javascriptMode: JavascriptMode.unrestricted,
+          initialUrl: openId.authUrl().toString(),
+          navigationDelegate: (navigation) {
+            var openId = OpenId.fromUri(Uri.parse(navigation.url));
+            if (openId.mode == 'id_res') {
+              Navigator.of(context).pop(openId.validate());
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
       ),
     );
   }

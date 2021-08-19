@@ -108,7 +108,7 @@ class FavouritePlayersState extends State<FavouritePlayers>
                 children: [
                   Text(
                     'Latest runs',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
                   ),
                   Expanded(child: Container()),
                   InkWell(
@@ -131,20 +131,32 @@ class FavouritePlayersState extends State<FavouritePlayers>
               builder: (context, state) {
                 if (state.curPlayer == null)
                   return Container(height: 24, child: customDivider(16));
-                return Row(
-                  children: [
-                    Expanded(child: customDivider(16)),
-                    InkWell(
-                      child: Icon(LineariconsFree.cross, color: Colors.white70),
-                      onTap: () {
-                        if (mounted)
-                          BlocProvider.of<CurPlayerCubit>(context).set(null);
-                        this._loadLatestRecords(this.pageSize);
-                        if (mounted) setState(() {});
-                      },
-                    ),
-                    SizedBox(width: 16),
-                  ],
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Divider(
+                          thickness: 0.55,
+                          color: dividerColor(),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(8, 0, 4, 0),
+                        child: InkWell(
+                          child: Icon(LineariconsFree.cross,
+                              color: Colors.white70),
+                          onTap: () {
+                            if (mounted)
+                              BlocProvider.of<CurPlayerCubit>(context)
+                                  .set(null);
+                            this._loadLatestRecords(this.pageSize);
+                            if (mounted) setState(() {});
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),

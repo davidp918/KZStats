@@ -41,43 +41,49 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      body: PageView(
-        physics: NeverScrollableScrollPhysics(),
-        controller: this._pageController,
-        children: this.pages,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: onTap,
-        backgroundColor: appbarColor(),
-        currentIndex: this.curIndex,
-        type: BottomNavigationBarType.fixed,
-        unselectedItemColor: Colors.grey.shade300,
-        selectedIconTheme: IconThemeData(color: Colors.white),
-        iconSize: 22,
-        selectedFontSize: 12,
-        selectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
-        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w300),
-        unselectedFontSize: 12,
-        selectedItemColor: Colors.white,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(CommunityMaterialIcons.home_outline),
-            label: 'Homepage',
+    return SafeArea(
+      bottom: false,
+      child: Scaffold(
+        body: PageView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: this._pageController,
+          children: this.pages,
+        ),
+        bottomNavigationBar: SizedBox(
+          height: kToolbarHeight - 5,
+          child: BottomNavigationBar(
+            onTap: onTap,
+            backgroundColor: appbarColor(),
+            currentIndex: this.curIndex,
+            type: BottomNavigationBarType.fixed,
+            unselectedItemColor: Colors.grey.shade300,
+            selectedIconTheme: IconThemeData(color: Colors.white),
+            iconSize: 22,
+            selectedFontSize: 12,
+            selectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
+            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w300),
+            unselectedFontSize: 12,
+            selectedItemColor: Colors.white,
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(CommunityMaterialIcons.home_outline),
+                label: 'Homepage',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite_border_rounded),
+                label: 'Favourites',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.map_sharp),
+                label: 'Maps',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(EvilIcons.gear),
+                label: 'Settings',
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border_rounded),
-            label: 'Favourites',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map_sharp),
-            label: 'Maps',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(EvilIcons.gear),
-            label: 'Settings',
-          ),
-        ],
+        ),
       ),
     );
   }
