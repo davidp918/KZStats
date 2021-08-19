@@ -1,10 +1,8 @@
 import 'dart:math';
 
 import 'package:async_builder/async_builder.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kzstats/common/scrollbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:kzstats/common/datatable.dart';
