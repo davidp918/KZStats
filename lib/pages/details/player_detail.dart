@@ -97,6 +97,7 @@ class _PlayerDetailState extends State<PlayerDetail>
       title: this.playerName ?? '',
       builder: (BuildContext context) {
         return AsyncBuilder<dynamic>(
+          retain: true,
           future: this._future,
           waiting: (context) => loadingFromApi(),
           error: (context, object, stacktrace) => errorScreen(),
