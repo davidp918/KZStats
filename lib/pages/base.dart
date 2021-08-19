@@ -41,14 +41,19 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SafeArea(
-      child: Scaffold(
-        body: PageView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: this._pageController,
-          children: this.pages,
+    return Scaffold(
+      body: Container(
+        color: appbarColor(),
+        child: SafeArea(
+          child: PageView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: this._pageController,
+            children: this.pages,
+          ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
+      ),
+      bottomNavigationBar: SafeArea(
+        child: BottomNavigationBar(
           onTap: onTap,
           backgroundColor: appbarColor(),
           currentIndex: this.curIndex,
