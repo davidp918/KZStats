@@ -34,12 +34,12 @@ class _DetailedPageState extends State<DetailedPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: Scaffold(
-        body: Container(
-          color: appbarColor(),
-          child: NestedScrollView(
+    return Container(
+      color: appbarColor(),
+      child: SafeArea(
+        bottom: false,
+        child: Scaffold(
+          body: NestedScrollView(
             controller: this._scrollController,
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {

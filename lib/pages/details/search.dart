@@ -21,22 +21,19 @@ class Search extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final searchState = context.watch<SearchCubit>().state;
-    return SafeArea(
-      bottom: false,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light,
-          child: searchState.field == 'map'
-              ? ChangeNotifierProvider(
-                  create: (_) => SearchMapProvider(),
-                  child: SearchMapBody(),
-                )
-              : ChangeNotifierProvider(
-                  create: (_) => SearchPlayerProvider(),
-                  child: SearchPlayerBody(),
-                ),
-        ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+        child: searchState.field == 'map'
+            ? ChangeNotifierProvider(
+                create: (_) => SearchMapProvider(),
+                child: SearchMapBody(),
+              )
+            : ChangeNotifierProvider(
+                create: (_) => SearchPlayerProvider(),
+                child: SearchPlayerBody(),
+              ),
       ),
     );
   }

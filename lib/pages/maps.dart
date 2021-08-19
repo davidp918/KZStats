@@ -68,52 +68,49 @@ class _MapsState extends State<Maps> with AutomaticKeepAliveClientMixin<Maps> {
     return DefaultTabController(
       length: 2,
       initialIndex: 0,
-      child: SafeArea(
-        bottom: false,
-        child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
-            child: AppBar(
-              backwardsCompatibility: false,
-              systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: appbarColor(),
-                statusBarBrightness: Brightness.dark,
-              ),
-              backgroundColor: appbarColor(),
-              leading: userLeadingIcon(context),
-              title: Text(
-                'Maps',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              actions: <Widget>[
-                searchWidget(context),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: IconButton(
-                    icon: Icon(CommunityMaterialIcons.filter_outline),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/filter');
-                    },
-                  ),
-                )
-              ],
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight * 0.9),
+          child: AppBar(
+            backwardsCompatibility: false,
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: appbarColor(),
+              statusBarBrightness: Brightness.dark,
             ),
+            backgroundColor: appbarColor(),
+            leading: userLeadingIcon(context),
+            title: Text(
+              'Maps',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            actions: <Widget>[
+              searchWidget(context),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: IconButton(
+                  icon: Icon(CommunityMaterialIcons.filter_outline),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/filter');
+                  },
+                ),
+              )
+            ],
           ),
-          body: FutureBuilder(
-            future: this._loadMaps,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState != ConnectionState.done)
-                return loadingFromApi();
-              List<MapInfo> data = UserSharedPreferences.getMapData();
-              if (data.length == 0) return errorScreen();
-              this.mapInfo = filterMapData(data);
-              return MapCards(prevInfo: this.mapInfo, marked: false);
-            },
-          ),
+        ),
+        body: FutureBuilder(
+          future: this._loadMaps,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState != ConnectionState.done)
+              return loadingFromApi();
+            List<MapInfo> data = UserSharedPreferences.getMapData();
+            if (data.length == 0) return errorScreen();
+            this.mapInfo = filterMapData(data);
+            return MapCards(prevInfo: this.mapInfo, marked: false);
+          },
         ),
       ),
     );
