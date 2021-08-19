@@ -54,7 +54,6 @@ class SearchMapBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
 
@@ -83,7 +82,7 @@ class SearchMapBody extends StatelessWidget {
 
   Widget buildBody(BuildContext context, SearchMapProvider provider) {
     return FloatingSearchAppBar(
-      brightness: Brightness.light,
+      brightness: Brightness.light, // android: dark, ios: light
       height: 58,
       transitionDuration: Duration(milliseconds: 400),
       color: backgroundColor(),
@@ -324,7 +323,7 @@ class SearchPlayerBody extends StatelessWidget {
 
   Widget buildBody(BuildContext context, SearchPlayerProvider provider) {
     return FloatingSearchAppBar(
-      brightness: Brightness.light,
+      brightness: Brightness.light, // android: dark, ios: light
       height: 58,
       transitionDuration: Duration(milliseconds: 400),
       color: backgroundColor(),

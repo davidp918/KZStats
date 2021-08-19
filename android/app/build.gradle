@@ -45,7 +45,7 @@ android {
         applicationId "com.dp.kzstats"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 70
+        versionCode 72
         versionName flutterVersionName
         multiDexEnabled true
     }
