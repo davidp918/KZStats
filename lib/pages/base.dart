@@ -42,7 +42,7 @@ class _BaseState extends State<Base> with AutomaticKeepAliveClientMixin<Base> {
   Widget build(BuildContext context) {
     super.build(context);
     return SafeArea(
-      bottom: false,
+      bottom: true,
       child: Scaffold(
         body: PageView(
           physics: NeverScrollableScrollPhysics(),
