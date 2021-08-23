@@ -34,82 +34,86 @@ class _DetailedPageState extends State<DetailedPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: Scaffold(
-        body: Container(
-          color: appbarColor(),
-          child: NestedScrollView(
-            controller: this._scrollController,
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                BaseAppBar(
-                  widget.title,
-                  false,
-                  [
-                    BlocBuilder<MarkCubit, MarkState>(
-                      builder: (context, markState) {
-                        if (widget.markedType == 'player') {
-                          if (!markState.readyToMarkPlayer) return Container();
-                          List<String> data = markState.playerIds;
-                          return data.contains(widget.current)
-                              ? IconButton(
-                                  icon: Icon(Icons.star, color: Colors.amber),
-                                  onPressed: () {
-                                    data.remove(widget.current);
-                                    markPlayer(widget.current, data);
-                                  },
-                                )
-                              : IconButton(
-                                  icon: Icon(Icons.star_border),
-                                  onPressed: () {
-                                    if (markState.playerIds.length >= 10) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                              'Exceeding maximum limit of favourite players, anywhere beyond 10 will cram globalApi.'),
-                                        ),
-                                      );
-                                    } else {
-                                      data.insert(0, widget.current);
+    return Container(
+      color: appbarColor(),
+      child: SafeArea(
+        bottom: false,
+        child: Scaffold(
+          body: Container(
+            color: appbarColor(),
+            child: NestedScrollView(
+              controller: this._scrollController,
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  BaseAppBar(
+                    widget.title,
+                    false,
+                    [
+                      BlocBuilder<MarkCubit, MarkState>(
+                        builder: (context, markState) {
+                          if (widget.markedType == 'player') {
+                            if (!markState.readyToMarkPlayer)
+                              return Container();
+                            List<String> data = markState.playerIds;
+                            return data.contains(widget.current)
+                                ? IconButton(
+                                    icon: Icon(Icons.star, color: Colors.amber),
+                                    onPressed: () {
+                                      data.remove(widget.current);
                                       markPlayer(widget.current, data);
-                                    }
-                                  },
-                                );
-                        } else {
-                          List<String> data = markState.mapIds;
-                          return data.contains(widget.current)
-                              ? IconButton(
-                                  icon: Icon(Icons.star, color: Colors.amber),
-                                  onPressed: () {
-                                    data.remove(widget.current);
-                                    if (mounted)
-                                      BlocProvider.of<MarkCubit>(context)
-                                          .setMapIds(data);
-                                  },
-                                )
-                              : IconButton(
-                                  icon: Icon(Icons.star_border),
-                                  onPressed: () {
-                                    data.insert(0, widget.current);
-                                    if (mounted)
-                                      BlocProvider.of<MarkCubit>(context)
-                                          .setMapIds(data);
-                                  },
-                                );
-                        }
-                      },
-                    ),
-                    PopUpModeSelect(),
-                  ],
-                )
-              ];
-            },
-            body: Container(
-              color: backgroundColor(),
-              child: widget.builder(context),
+                                    },
+                                  )
+                                : IconButton(
+                                    icon: Icon(Icons.star_border),
+                                    onPressed: () {
+                                      if (markState.playerIds.length >= 10) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'Exceeding maximum limit of favourite players, anywhere beyond 10 will cram globalApi.'),
+                                          ),
+                                        );
+                                      } else {
+                                        data.insert(0, widget.current);
+                                        markPlayer(widget.current, data);
+                                      }
+                                    },
+                                  );
+                          } else {
+                            List<String> data = markState.mapIds;
+                            return data.contains(widget.current)
+                                ? IconButton(
+                                    icon: Icon(Icons.star, color: Colors.amber),
+                                    onPressed: () {
+                                      data.remove(widget.current);
+                                      if (mounted)
+                                        BlocProvider.of<MarkCubit>(context)
+                                            .setMapIds(data);
+                                    },
+                                  )
+                                : IconButton(
+                                    icon: Icon(Icons.star_border),
+                                    onPressed: () {
+                                      data.insert(0, widget.current);
+                                      if (mounted)
+                                        BlocProvider.of<MarkCubit>(context)
+                                            .setMapIds(data);
+                                    },
+                                  );
+                          }
+                        },
+                      ),
+                      PopUpModeSelect(),
+                    ],
+                  )
+                ];
+              },
+              body: Container(
+                color: backgroundColor(),
+                child: widget.builder(context),
+              ),
             ),
           ),
         ),
