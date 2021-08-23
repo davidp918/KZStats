@@ -60,3 +60,4 @@ android/build.gradle
 # firebase
 #android/app/google-services.json
 #ios/Runner/GoogleService-Info.plist
+ios/GoogleService-Info.plist
