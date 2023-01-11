@@ -1,4 +1,4 @@
 # KZStats
 
-A Flutter App project, App version for kzstats.com
+A Flutter App project for CSGO Kreedz
 
